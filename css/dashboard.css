@@ -1,0 +1,543 @@
+/* ==========================
+   RESET
+========================== */
+
+*{
+
+margin:0;
+
+padding:0;
+
+box-sizing:border-box;
+
+}
+
+body{
+
+font-family:Arial,sans-serif;
+
+background:#f7f7f7;
+
+min-height:100vh;
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+
+
+/* ==========================
+   NAVBAR
+========================== */
+
+.dashboard-navbar{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:20px 6%;
+
+background:#c6d58f;
+
+flex-wrap:wrap;
+
+gap:20px;
+
+}
+
+
+
+/* ==========================
+   LOGO
+========================== */
+
+.logo{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+}
+
+.logo-img{
+
+width:55px;
+
+height:55px;
+
+object-fit:contain;
+
+}
+
+.logo h2{
+
+font-size:28px;
+
+color:#2d2b63;
+
+}
+
+
+
+/* ==========================
+   MENU
+========================== */
+
+.dashboard-menu{
+
+display:flex;
+
+gap:40px;
+
+flex-wrap:wrap;
+
+}
+
+.dashboard-menu a{
+
+text-decoration:none;
+
+color:black;
+
+font-weight:600;
+
+transition:0.3s;
+
+}
+
+.dashboard-menu a:hover{
+
+color:#2d2b63;
+
+}
+
+
+
+/* ==========================
+   RIGHT SIDE
+========================== */
+
+.dashboard-right{
+
+display:flex;
+
+align-items:center;
+
+gap:20px;
+
+}
+
+
+
+/* ==========================
+   LANGUAGE BUTTON
+========================== */
+
+.language-btn{
+
+padding:10px 20px;
+
+border:none;
+
+border-radius:10px;
+
+background:white;
+
+cursor:pointer;
+
+font-weight:bold;
+
+transition:0.3s;
+
+}
+
+.language-btn:hover{
+
+background:#ececec;
+
+}
+
+
+
+/* ==========================
+   PROFILE ICON
+========================== */
+
+.profile-icon{
+
+width:50px;
+
+height:50px;
+
+border-radius:50%;
+
+background:white;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:24px;
+
+text-decoration:none;
+
+color:black;
+
+cursor:pointer;
+
+transition:0.3s;
+
+}
+
+.profile-icon:hover{
+
+transform:scale(1.1);
+
+}
+
+
+
+/* ==========================
+   MAIN CONTAINER
+========================== */
+
+.dashboard-container{
+
+display:flex;
+
+padding:50px 6%;
+
+gap:60px;
+
+flex:1;
+
+}
+
+
+
+/* ==========================
+   SUBJECT BUTTONS
+========================== */
+
+.subjects{
+
+display:flex;
+
+flex-direction:column;
+
+gap:20px;
+
+}
+
+.subjects button{
+
+width:220px;
+
+height:70px;
+
+background:#efe8d2;
+
+border:1px solid #999;
+
+border-radius:10px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:0.3s;
+
+}
+
+.subjects button:hover{
+
+background:#e5dcc5;
+
+}
+
+
+
+/* ==========================
+   MAIN CONTENT
+========================== */
+
+.main-content{
+
+flex:1;
+
+position:relative;
+
+}
+
+.main-content h2{
+
+font-size:32px;
+
+margin-bottom:60px;
+
+color:#2d2b63;
+
+}
+
+
+
+/* ==========================
+   UNLOCK BUTTON
+========================== */
+
+.unlock-btn{
+
+position:absolute;
+
+top:0;
+
+right:0;
+
+padding:18px 35px;
+
+border:none;
+
+border-radius:10px;
+
+background:#d8dcc8;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:0.3s;
+
+}
+
+.unlock-btn:hover{
+
+background:#cfd3bd;
+
+}
+
+
+
+/* ==========================
+   GAMES
+========================== */
+
+.games-grid{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:40px;
+
+}
+
+.game-link{
+
+text-decoration:none;
+
+color:black;
+
+}
+
+.game-card{
+
+height:180px;
+
+background:#ddd;
+
+border-radius:15px;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+box-shadow:0 5px 15px rgba(0,0,0,0.08);
+
+cursor:pointer;
+
+transition:0.3s;
+
+}
+
+.game-card:hover{
+
+transform:translateY(-8px);
+
+}
+
+.active{
+
+background:#b6d34d;
+
+}
+
+
+
+/* ==========================
+   PLAY BUTTON
+========================== */
+
+.play-btn{
+
+width:60px;
+
+height:60px;
+
+border-radius:50%;
+
+background:#89dd31;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:28px;
+
+}
+
+.game-card p{
+
+margin-top:15px;
+
+font-weight:600;
+
+font-size:18px;
+
+}
+
+
+
+/* ==========================
+   FOOTER
+========================== */
+
+.dashboard-footer{
+
+background:white;
+
+padding:25px;
+
+text-align:center;
+
+border-top:1px solid #ddd;
+
+}
+
+
+
+/* ==========================
+   TABLET
+========================== */
+
+@media(max-width:992px){
+
+.dashboard-container{
+
+flex-direction:column;
+
+}
+
+.subjects{
+
+flex-direction:row;
+
+flex-wrap:wrap;
+
+justify-content:center;
+
+}
+
+}
+
+
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media(max-width:768px){
+
+.dashboard-navbar{
+
+flex-direction:column;
+
+}
+
+.dashboard-menu{
+
+justify-content:center;
+
+gap:20px;
+
+}
+
+.games-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.subjects{
+
+flex-direction:column;
+
+align-items:center;
+
+}
+
+.subjects button{
+
+width:100%;
+
+max-width:300px;
+
+}
+
+.unlock-btn{
+
+position:static;
+
+margin-bottom:30px;
+
+}
+
+}
+
+
+
+/* ==========================
+   SMALL PHONE
+========================== */
+
+@media(max-width:480px){
+
+.dashboard-menu{
+
+flex-direction:column;
+
+align-items:center;
+
+}
+
+.logo h2{
+
+font-size:24px;
+
+}
+
+}

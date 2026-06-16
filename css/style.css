@@ -1,0 +1,935 @@
+/* =========================================================
+   1. RESET SECTION
+   Removes browser default spacing
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+/* Website font */
+body{
+    font-family:Arial, sans-serif;
+}
+
+
+
+/* =========================================================
+   2. NAVBAR SECTION
+========================================================= */
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 8%;
+    background:rgb(171, 160, 160);
+    border-bottom:1px solid #ddd;
+}
+
+
+
+/* =========================================================
+   3. LOGO SECTION
+========================================================= */
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:30px;
+    font-weight:bold;
+}
+
+.logo-img{
+    width:60px;
+    height:60px;
+    object-fit:contain;
+}
+
+
+
+/* =========================================================
+   4. NAVIGATION LINKS
+========================================================= */
+
+.nav-links{
+    display:flex;
+    list-style:none;
+    gap:30px;
+    
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:black;
+    font-weight:600;
+}
+
+
+
+/* =========================================================
+   5. NAVBAR BUTTONS
+========================================================= */
+
+.nav-buttons{
+    display:flex;
+    gap:10px;
+}
+
+.language-btn,
+.signin-btn,
+.signup-btn{
+    padding:10px 20px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.language-btn{
+    background:#eeeeee;
+
+    /* Makes icon and text stay in one row */
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+/* =====================================
+   LANGUAGE ICON
+===================================== */
+
+.language-icon{
+    width:18px;
+    height:18px;
+    object-fit:contain;
+}
+
+.signin-btn{
+    background:#f5f5f5;
+}
+
+.signup-btn{
+    background:black;
+    color:white;
+}
+
+
+
+/* =========================================================
+   6. HERO SECTION
+========================================================= */
+
+.hero{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    padding:60px 20px;
+}
+
+
+
+/* =========================================================
+   7. HERO BADGE
+========================================================= */
+
+.hero-badge{
+    display:inline-block;
+    padding:12px 60px;
+    border:1px solid #d9d9d9;
+    border-radius:30px;
+    background:rgb(184, 175, 175);
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:25px;
+}
+
+
+
+/* =========================================================
+   8. HERO IMAGE
+========================================================= */
+
+.hero-image{
+    width:500px;
+    height:auto;
+    margin-bottom:30px;
+}
+
+
+
+/* =========================================================
+   9. HERO HEADING
+========================================================= */
+
+.hero h1{
+    font-size:3rem;
+    font-weight:500;
+    line-height:1;
+    color:#2d2b63;
+    margin-bottom:20px;
+}
+
+
+
+/* =========================================================
+   10. HERO PARAGRAPH
+========================================================= */
+
+.hero p{
+    max-width:700px;
+    line-height:1.8;
+    color:#666;
+    margin-bottom:30px;
+}
+
+
+
+/* =========================================================
+   11. HERO BUTTONS
+========================================================= */
+
+.hero-buttons{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
+.hero-buttons button{
+    padding:12px 24px;
+    border:none;
+    border-radius:10px;
+    background:#6b6a8d;
+    color:white;
+    cursor:pointer;
+    font-weight:600;
+}
+
+
+
+/* =========================================================
+   12. STATS SECTION
+========================================================= */
+
+.stats{
+    display:flex;
+    justify-content:center;
+    align-items:flex-end;
+    gap:60px;
+    margin-top:180px;
+    margin-bottom:100px;
+    flex-wrap:wrap;
+}
+
+
+
+/* =========================================================
+   13. INDIVIDUAL CARD CONTAINER
+========================================================= */
+
+.stat-box{
+    position:relative;
+    width:240px;
+}
+
+
+
+/* =========================================================
+   14. CHARACTER IMAGE ABOVE CARD
+========================================================= */
+
+.card-character{
+
+    /* Same box size for all images */
+    width:220px;
+    height:220px;
+
+    /* Prevent image stretching */
+    object-fit:contain;
+
+    /* Position image above card */
+    position:absolute;
+
+    top:-140px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    z-index:10;
+}
+
+
+
+/* =========================================================
+   15. CARD DESIGN
+========================================================= */
+
+.card{
+    width:220px;
+    height:230px;
+
+    background:white;
+
+    border-radius:15px;
+
+    text-align:center;
+
+    padding-top:130px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,0.15);
+}
+
+
+
+/* =========================================================
+   16. CARD POSITIONS
+========================================================= */
+
+/* Left Card */
+.card1{
+    transform:rotate(-8deg);
+}
+
+/* Middle Card */
+.card2{
+    transform:translateY(-40px);
+}
+
+/* Right Card */
+.card3{
+    transform:rotate(8deg);
+}
+
+
+
+/* =========================================================
+   17. CARD NUMBER
+========================================================= */
+
+.card h3{
+    font-size:3rem;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+
+
+/* =========================================================
+   18. CARD TEXT
+========================================================= */
+
+.card p{
+    font-size:1.2rem;
+    color:#555;
+}
+/* =========================================================
+   19. WHAT'S INSIDE SECTION
+========================================================= */
+
+.features{
+    text-align:center;
+    padding:100px 8%;
+}
+
+/* Small text: What's Inside? */
+.section-tag{
+    font-size:14px;
+    color:#777;
+    font-weight:600;
+}
+
+/* Main heading */
+.features h2{
+    font-size:42px;
+    color:#2d2b63;
+    margin-top:15px;
+    margin-bottom:20px;
+}
+
+/* Description paragraph */
+.section-description{
+    max-width:700px;
+    margin:0 auto 50px;
+    color:#666;
+    line-height:1.8;
+}
+
+/* =========================================================
+   20. FEATURE CARDS CONTAINER
+========================================================= */
+
+.feature-container{
+    display:flex;
+    justify-content:center;
+    gap:25px;
+    flex-wrap:wrap;
+}
+
+/* =========================================================
+   21. SINGLE FEATURE CARD
+========================================================= */
+
+.feature-card{
+    width:250px;
+    background:white;
+    border-radius:15px;
+    padding:30px 20px;
+    text-align:center;
+    box-shadow:0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* =========================================================
+   22. FEATURE CARD ICON
+========================================================= */
+
+.feature-card img{
+    width:60px;
+    height:60px;
+    object-fit:contain;
+    margin-bottom:15px;
+}
+
+/* =========================================================
+   23. FEATURE CARD TITLE
+========================================================= */
+
+.feature-card h3{
+    font-size:22px;
+    color:#2d2b63;
+    margin-bottom:10px;
+}
+
+/* =========================================================
+   24. FEATURE CARD DESCRIPTION
+========================================================= */
+
+.feature-card p{
+    font-size:16px;
+    color:#666;
+    line-height:1.6;
+}
+/* =========================================================
+   ABOUT SECTION
+========================================================= */
+
+.about-section{
+    max-width:1200px;
+    margin:100px auto;
+    padding:0 40px;
+}
+
+.about-tag{
+    font-size:14px;
+    color:#777;
+}
+
+.about-section h2{
+    font-size:42px;
+    color:#2d2b63;
+    margin-top:15px;
+    margin-bottom:25px;
+}
+
+.about-description{
+    max-width:700px;
+    color:#666;
+    line-height:1.8;
+    margin-bottom:40px;
+}
+
+/* =====================================
+   Mission / Approach / Privacy
+===================================== */
+
+.about-item{
+    display:flex;
+    align-items:flex-start;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.about-item img{
+    width:50px;
+    height:50px;
+    object-fit:contain;
+}
+
+.about-item h3{
+    margin-bottom:5px;
+    color:#2d2b63;
+}
+
+.about-item p{
+    color:#666;
+    line-height:1.6;
+}
+
+
+/* =========================================================
+   OUR TEAM SECTION
+========================================================= */
+
+.team-section{
+    max-width:1200px;
+    margin:60px auto 100px;
+    padding:0 30px;
+}
+
+/* White Card */
+
+.team-card{
+    background:white;
+    border-radius:25px;
+    padding:50px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:50px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+/* Left Side */
+
+.team-left{
+    flex:1;
+}
+
+.team-left h2{
+    color:#2d2b63;
+    margin-bottom:35px;
+}
+
+/* Team Member */
+
+.member{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.member-icon{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:#f2f2f2;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:20px;
+}
+
+.member h3{
+    font-size:18px;
+    margin-bottom:4px;
+}
+
+.member p{
+    color:#666;
+    font-size:14px;
+}
+
+/* Right Side */
+
+.team-right{
+    flex:1;
+    text-align:center;
+}
+
+.team-right img{
+    width:100%;
+    max-width:500px;
+}
+
+
+/* =========================================================
+   SPONSOR SECTION
+========================================================= */
+
+.sponsor-section{
+    display:flex;
+    justify-content:space-between;
+    gap:60px;
+    padding:80px 8%;
+    border-top:1px solid #ddd;
+}
+
+/* Left Side */
+
+.sponsor-left{
+    flex:1;
+}
+
+.sponsor-tag{
+    font-size:14px;
+    color:#777;
+}
+
+.sponsor-left h2{
+    margin-top:15px;
+    margin-bottom:20px;
+    font-size:42px;
+    color:#2d2b63;
+}
+
+.sponsor-text{
+    color:#666;
+    line-height:1.8;
+    margin-bottom:30px;
+}
+
+/* Donation Benefits */
+
+.donation-list{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.donation-item{
+    padding:18px 0;
+    border-bottom:1px solid #ddd;
+    color:#555;
+}
+
+/* Right Card */
+
+.sponsor-card{
+    width:420px;
+    background:white;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.sponsor-card h3{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+/* Amount Buttons */
+
+.amount-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.amount-grid button{
+    height:60px;
+    border:none;
+    border-radius:10px;
+    background:#f3f3f3;
+    cursor:pointer;
+}
+
+/* Custom Amount */
+
+.custom-amount{
+    display:flex;
+    align-items:center;
+    background:#f3f3f3;
+    border-radius:10px;
+    overflow:hidden;
+    margin-bottom:20px;
+}
+
+.custom-amount span{
+    padding:15px;
+    font-weight:bold;
+}
+
+.custom-amount input{
+    flex:1;
+    border:none;
+    padding:15px;
+    background:none;
+    outline:none;
+}
+
+/* Payment */
+
+.sponsor-card h4{
+    margin-bottom:15px;
+}
+
+.payment-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.payment-grid button{
+    height:55px;
+    border:none;
+    border-radius:10px;
+    background:#f3f3f3;
+    cursor:pointer;
+}
+
+/* Donate Button */
+
+.donate-btn{
+    width:100%;
+    height:55px;
+    border:none;
+    border-radius:10px;
+    background:#2d2b63;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+/* =========================================================
+   IMPACT STATS SECTION
+========================================================= */
+
+.impact-stats{
+
+    width:90%;
+
+    margin:50px auto;
+
+    background:rgb(138, 132, 132);
+
+    border-radius:15px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    overflow:hidden;
+
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+
+/* =========================================================
+   INDIVIDUAL STAT BOX
+========================================================= */
+
+.impact-box{
+
+    flex:1;
+
+    text-align:center;
+
+    padding:35px 20px;
+
+    border-right:2px solid #bbb5b5;
+}
+
+
+/* Remove last divider */
+
+.impact-box:last-child{
+    border-right:none;
+}
+
+
+/* =========================================================
+   TEXT
+========================================================= */
+
+.impact-box p{
+
+    font-size:24px;
+
+    font-weight:600;
+
+    color:#222;
+
+    margin:0;
+}
+/* =========================================================
+   FREE ACCESS SECTION
+========================================================= */
+
+.free-access{
+
+    width:90%;
+
+    margin:40px auto 70px auto;
+}
+
+
+/* White Card */
+
+.free-access-content{
+
+    background:white;
+
+    padding:40px;
+
+    border-radius:15px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+
+/* Heading */
+
+.free-access-content h2{
+
+    font-size:32px;
+
+    color:#222;
+
+    margin-bottom:15px;
+}
+
+
+/* Paragraph */
+
+.free-access-content p{
+
+    max-width:800px;
+
+    color:#666;
+
+    line-height:1.8;
+
+    margin-bottom:25px;
+}
+
+
+/* Button */
+
+.apply-btn{
+
+    background:#4a4a4a;
+
+    color:white;
+
+    border:none;
+
+    padding:14px 28px;
+
+    border-radius:10px;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+
+.apply-btn:hover{
+
+    background:#333;
+}
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+
+    background:#f8f8f8;
+
+    margin-top:80px;
+
+    padding-top:60px;
+}
+
+
+/* Main Footer Area */
+
+.footer-container{
+
+    width:90%;
+
+    margin:auto;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:50px;
+
+    flex-wrap:wrap;
+}
+
+
+/* Logo Area */
+
+.footer-logo{
+
+    max-width:300px;
+}
+
+.footer-logo img{
+
+    width:60px;
+
+    margin-bottom:10px;
+}
+
+.footer-logo h3{
+
+    margin-bottom:10px;
+
+    color:#2d2b63;
+}
+
+.footer-logo p{
+
+    color:#666;
+
+    line-height:1.7;
+}
+
+
+/* Columns */
+
+.footer-column{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+}
+
+.footer-column h4{
+
+    margin-bottom:10px;
+
+    color:#2d2b63;
+}
+
+.footer-column a{
+
+    text-decoration:none;
+
+    color:#666;
+}
+
+.footer-column a:hover{
+
+    color:#000;
+}
+
+
+/* Bottom Footer */
+
+.footer-bottom{
+
+    text-align:center;
+
+    padding:25px;
+
+    margin-top:40px;
+
+    border-top:1px solid #ddd;
+
+    color:#777;
+}
