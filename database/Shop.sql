@@ -1,4 +1,4 @@
-USE USER;
+USE gyan_setu;
 
 CREATE TABLE shop_items (
     item_id INT AUTO_INCREMENT PRIMARY KEY,

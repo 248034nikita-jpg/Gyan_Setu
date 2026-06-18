@@ -1,4 +1,4 @@
-USE USER; 
+USE gyan_setu;
 CREATE TABLE courses (
     course_id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
