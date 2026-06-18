@@ -1,0 +1,91 @@
+# Gyan Setu - Simple Code Explanation Guide
+
+This document explains in simple, non-technical terms how the different parts of the Gyan Setu website work and interact.
+
+## 🌟 The Big Picture
+Gyan Setu is an educational website designed for parents and children.
+1. **Frontend (What you see)**: Webpages with buttons, forms, text, and cards.
+2. **Backend (The brain)**: Hidden PHP files that process actions like logging in, creating child profiles, scoring games, or buying items.
+3. **Database (The memory)**: A MySQL database that stores parents' names, children's usernames, earned points, badges, quiz scores, and store items.
+
+---
+
+## 🔑 Part 1: Registration and Signing In
+To keep everyone's data safe, the website needs to know who you are.
+
+* **`index.html` (Home/Landing Page)**:
+  * This is the front page of the website. It introduces Gyan Setu.
+  * It has buttons like "Sign In" or "Create Family Account" that send users to the login screen.
+
+* **`index.php` (Login & Sign Up Screen)**:
+  * Contains the boxes where you type your information.
+  * Allows a parent to create an account (Sign Up) or any user to log in (Sign In).
+  * If a user inputs invalid info, it displays a clear error warning at the top.
+  * Contains a small automatic toggle script that switches the display between the "Sign In" form and "Sign Up" form depending on what the user clicks.
+
+* **`register.php` (The Login & Sign Up processor)**:
+  * Runs behind the scenes when a user clicks the Sign In or Sign Up buttons.
+  * **Signing Up**: Checks if a parent's email is already registered. If not, it scrambles (hashes) their password so it is secure, saves their details to the database, and logs them in.
+  * **Signing In**: Checks if the entered ID contains an `@` symbol (like `mom@email.com`).
+    * If it has `@`, it checks the **Parents** list.
+    * If it does NOT (like `alex`), it checks the **Children** list.
+    * If the password matches, the user is forwarded to their specific dashboard.
+
+* **`logout.php` (Exiting the website)**:
+  * When clicked, it deletes the current session data (tells the website to forget who is currently logged in) and redirects the user to the landing page so no one else can access their data.
+
+---
+
+## 👨‍👩‍👧 Part 2: The Parent Dashboard (`parent-dashboard.php`)
+This is the parent's control center. When a parent logs in, they see:
+1. **A progress summary of their children**: A list showing each child's name, their current level, average quiz scores, lessons completed, and points. It queries this data live from the database.
+2. **Add a Child**: A simple form where parents can type a username and password to create a profile for their child. This registers the child and links them to that parent's account.
+3. **Purchase History**: A list showing what items their children have bought from the store.
+
+---
+
+## 🎮 Part 3: The Child Dashboard (`child-dashboard.php`)
+When a child logs in, they see their fun learning dashboard:
+1. **Child Info**: Displays their username, level, and total points.
+2. **Badges**: Shows digital trophies/badges they have earned by scoring points or completing quizzes.
+3. **Play Simulator (Game Area)**:
+   * To simulate learning, children can click "Play" on different games.
+   * Clicking "Play" runs a background script that adds 20 points to their profile in the database, recalculates their level, records their new high score, awards any newly qualified badges (like "Math Genius"), and shows a celebratory notification popup on the screen!
+
+---
+
+## 🛒 Part 4: The Store (`shop.php`)
+This is where children spend the points they earn:
+1. **Item Catalog**: Fetches a list of available rewards (such as "Rocket Avatar Skin" or "Golden Crown") from the database and displays them with point costs.
+2. **Point Balance**: Displays the child's current point balance in the navbar.
+3. **Purchasing**:
+   * When a child clicks "Buy", the script checks if their balance is high enough.
+   * If yes: It deducts points from their balance, creates a purchase receipt in the database, and displays a success alert.
+   * If no: It alerts them that they need more points.
+
+---
+
+## ⚙️ Part 5: Database Connection & Seeding
+These files make sure the website can talk to its database memory.
+
+* **`database/includes/db_connect.php` (The Bridge)**:
+  * Connects the PHP code to the MySQL database server. If the database server is offline, it halts and prints a connection failure message.
+
+* **`Database/seed_data.php` (The Starter Kit)**:
+  * When a database is first set up, it starts completely empty. This script runs once to populate it with default information:
+    * 3 starter courses (Math, English, Science)
+    * Lessons and quiz questions
+    * Default shop rewards (such as the Golden Crown or Adventure Pass)
+    * Default badges (like "First Step" or "Super Star")
+  * This ensures the website is full of content immediately instead of being blank.
+
+---
+
+## 📂 Part 6: Database Blueprints (`.sql` files)
+These files tell the database server how to organize tables (like digital filing cabinets) for different types of information.
+
+* **`User schema.sql`**: Creates tables for parents, children, lessons progress, and quiz scores.
+* **`Badge.sql`**: Creates tables for coins/badges and links them to children who earned them.
+* **`Contents.sql`**: Creates tables for courses, lessons, quizzes, and quiz options.
+* **`Shop.sql`**: Creates tables for store items, purchase transactions, and cash logs.
+* **`Progress_Dash.sql`**: Sets up a special live report (a database View) that links parent and child stats together so the parent dashboard can display them instantly.
