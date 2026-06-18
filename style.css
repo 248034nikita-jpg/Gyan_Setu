@@ -32,20 +32,23 @@ input{
     background-color: transparent;
     border: none;
     border-bottom: 1px solid #757575;
-    padding-left: 1.5rem ;
+    padding: 10px 10px 10px 30px;
     font-size: 15px;
+    outline: none;
 }
 .input-group{
-    padding: 1% 0;
     position: relative;
+    margin-bottom: 25px;
+    margin-top: 15px;
 }
 .input-group i{
     position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
     color: black;
 }
 input:focus{
-    background-color: transparent;
-    outline: transparent;
     border-bottom: 2px solid hsl(327,90%, 28%);
 }
 input::placeholder{
@@ -53,16 +56,19 @@ input::placeholder{
 }
 label{
    color: #757575;
-   position: relative;
-   left: 1.2 em;
-   top: -1.3em;
-   cursor:auto;
-   transition: 0.3s;
+   position: absolute;
+   left: 30px;
+   top: 50%;
+   transform: translateY(-50%);
+   pointer-events: none;
+   transition: 0.3s ease;
 }
-input:focus ~ label,input:not(:placeholder-shown) ~ label{
-    top: -3em;
-    font-size: 15px;
+input:focus ~ label, input:not(:placeholder-shown) ~ label{
+    top: -10px;
+    font-size: 13px;
     color: hsl(327,90%, 28%);
+    background-color: #fff;
+    padding: 0 5px;
 }
 .recover{
     text-align: right;
