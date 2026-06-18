@@ -1,35 +1,38 @@
 /* ==========================
-   RESET
+RESET
 ========================== */
 
 *{
-
 margin:0;
-
 padding:0;
-
 box-sizing:border-box;
-
 }
 
 body{
-
 font-family:Arial,sans-serif;
-
 background:#f7f7f7;
-
 min-height:100vh;
-
 display:flex;
-
 flex-direction:column;
-
 }
 
 
+/* ==========================
+ALL CLICKABLE ITEMS
+========================== */
+
+button,
+a,
+.game-card,
+.logo,
+.profile-icon{
+transition:0.3s ease;
+cursor:pointer;
+}
+
 
 /* ==========================
-   NAVBAR
+NAVBAR
 ========================== */
 
 .dashboard-navbar{
@@ -40,7 +43,7 @@ justify-content:space-between;
 
 align-items:center;
 
-padding:20px 6%;
+padding:20px 5%;
 
 background:#c6d58f;
 
@@ -51,9 +54,8 @@ gap:20px;
 }
 
 
-
 /* ==========================
-   LOGO
+LOGO
 ========================== */
 
 .logo{
@@ -64,13 +66,21 @@ align-items:center;
 
 gap:12px;
 
+text-decoration:none;
+
+}
+
+.logo:hover{
+
+transform:translateY(-4px);
+
 }
 
 .logo-img{
 
-width:55px;
+width:60px;
 
-height:55px;
+height:60px;
 
 object-fit:contain;
 
@@ -78,23 +88,22 @@ object-fit:contain;
 
 .logo h2{
 
-font-size:28px;
+font-size:32px;
 
-color:#2d2b63;
+color:#000000;
 
 }
 
 
-
 /* ==========================
-   MENU
+MENU
 ========================== */
 
 .dashboard-menu{
 
 display:flex;
 
-gap:40px;
+gap:45px;
 
 flex-wrap:wrap;
 
@@ -106,9 +115,9 @@ text-decoration:none;
 
 color:black;
 
-font-weight:600;
+font-size:22px;
 
-transition:0.3s;
+font-weight:700;
 
 }
 
@@ -116,12 +125,13 @@ transition:0.3s;
 
 color:#2d2b63;
 
+transform:translateY(-3px);
+
 }
 
 
-
 /* ==========================
-   RIGHT SIDE
+RIGHT SIDE
 ========================== */
 
 .dashboard-right{
@@ -135,46 +145,46 @@ gap:20px;
 }
 
 
-
 /* ==========================
-   LANGUAGE BUTTON
+LANGUAGE BUTTON
 ========================== */
 
 .language-btn{
 
-padding:10px 20px;
+padding:14px 24px;
 
 border:none;
 
-border-radius:10px;
+border-radius:12px;
 
 background:white;
 
-cursor:pointer;
+font-size:18px;
 
 font-weight:bold;
 
-transition:0.3s;
+cursor:pointer;
 
 }
 
 .language-btn:hover{
 
-background:#ececec;
+transform:translateY(-4px);
+
+box-shadow:0 8px 18px rgba(0,0,0,0.15);
 
 }
 
 
-
 /* ==========================
-   PROFILE ICON
+PROFILE ICON
 ========================== */
 
 .profile-icon{
 
-width:50px;
+width:60px;
 
-height:50px;
+height:60px;
 
 border-radius:50%;
 
@@ -186,46 +196,42 @@ justify-content:center;
 
 align-items:center;
 
-font-size:24px;
+font-size:28px;
 
 text-decoration:none;
 
 color:black;
 
-cursor:pointer;
-
-transition:0.3s;
-
 }
 
 .profile-icon:hover{
 
-transform:scale(1.1);
+transform:translateY(-4px);
+
+box-shadow:0 8px 18px rgba(0,0,0,0.15);
 
 }
 
 
-
 /* ==========================
-   MAIN CONTAINER
+MAIN CONTAINER
 ========================== */
 
 .dashboard-container{
 
 display:flex;
 
-padding:50px 6%;
+padding:40px 5%;
 
-gap:60px;
+gap:40px;
 
 flex:1;
 
 }
 
 
-
 /* ==========================
-   SUBJECT BUTTONS
+SUBJECTS
 ========================== */
 
 .subjects{
@@ -234,40 +240,61 @@ display:flex;
 
 flex-direction:column;
 
-gap:20px;
+width:260px;
+
+gap:25px;
+
+}
+
+.subjects h2{
+
+font-size:22px;
+
+font-weight:700;
+
+color:#2d2b63;
+
+margin-bottom:15px;
 
 }
 
 .subjects button{
 
-width:220px;
+width:260px;
 
-height:70px;
+height:90px;
 
 background:#efe8d2;
 
 border:1px solid #999;
 
-border-radius:10px;
+border-radius:18px;
 
-font-weight:bold;
+font-size:22px;
+
+font-weight:700;
 
 cursor:pointer;
 
-transition:0.3s;
+text-align:left;
+
+padding-left:30px;
 
 }
 
 .subjects button:hover{
 
+transform:translateY(-4px);
+
 background:#e5dcc5;
+
+box-shadow:0 8px 18px rgba(0,0,0,0.15);
 
 }
 
 
-
 /* ==========================
-   MAIN CONTENT
+MAIN CONTENT
 ========================== */
 
 .main-content{
@@ -276,22 +303,15 @@ flex:1;
 
 position:relative;
 
-}
+display:flex;
 
-.main-content h2{
-
-font-size:32px;
-
-margin-bottom:60px;
-
-color:#2d2b63;
+flex-direction:column;
 
 }
-
 
 
 /* ==========================
-   UNLOCK BUTTON
+UNLOCK BUTTON
 ========================== */
 
 .unlock-btn{
@@ -302,32 +322,35 @@ top:0;
 
 right:0;
 
-padding:18px 35px;
+padding:16px 28px;
 
 border:none;
 
-border-radius:10px;
+border-radius:12px;
 
 background:#d8dcc8;
+
+font-size:18px;
 
 font-weight:bold;
 
 cursor:pointer;
 
-transition:0.3s;
+z-index:100;
 
 }
 
 .unlock-btn:hover{
 
-background:#cfd3bd;
+transform:translateY(-4px);
+
+box-shadow:0 8px 18px rgba(0,0,0,0.15);
 
 }
 
 
-
 /* ==========================
-   GAMES
+GAMES GRID
 ========================== */
 
 .games-grid{
@@ -338,7 +361,16 @@ grid-template-columns:1fr 1fr;
 
 gap:40px;
 
+padding:40px 5%;
+
+margin-top:70px;
+
 }
+
+
+/* ==========================
+GAME LINK
+========================== */
 
 .game-link{
 
@@ -348,13 +380,26 @@ color:black;
 
 }
 
+.game-link:hover{
+
+text-decoration:none;
+
+}
+
+
+/* ==========================
+GAME CARD
+========================== */
+
 .game-card{
 
-height:180px;
+width:500px;
+
+height:220px;
 
 background:#ddd;
 
-border-radius:15px;
+border-radius:20px;
 
 display:flex;
 
@@ -364,17 +409,15 @@ justify-content:center;
 
 align-items:center;
 
-box-shadow:0 5px 15px rgba(0,0,0,0.08);
-
-cursor:pointer;
-
-transition:0.3s;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
 
 }
 
 .game-card:hover{
 
 transform:translateY(-8px);
+
+box-shadow:0 12px 24px rgba(0,0,0,0.18);
 
 }
 
@@ -385,16 +428,15 @@ background:#b6d34d;
 }
 
 
-
 /* ==========================
-   PLAY BUTTON
+PLAY BUTTON
 ========================== */
 
 .play-btn{
 
-width:60px;
+width:85px;
 
-height:60px;
+height:85px;
 
 border-radius:50%;
 
@@ -406,24 +448,38 @@ justify-content:center;
 
 align-items:center;
 
-font-size:28px;
+font-size:42px;
+
+transition:0.3s ease;
 
 }
 
-.game-card p{
+.game-card:hover .play-btn{
 
-margin-top:15px;
-
-font-weight:600;
-
-font-size:18px;
+transform:scale(1.1);
 
 }
-
 
 
 /* ==========================
-   FOOTER
+GAME NAME
+========================== */
+
+.game-card p{
+
+margin-top:18px;
+
+font-size:20px;
+
+font-weight:700;
+
+text-align:center;
+
+}
+
+
+/* ==========================
+FOOTER
 ========================== */
 
 .dashboard-footer{
@@ -439,9 +495,21 @@ border-top:1px solid #ddd;
 }
 
 
+/* ==========================
+PRESS EFFECT
+========================== */
+
+button:active,
+a:active,
+.game-card:active{
+
+transform:scale(0.98);
+
+}
+
 
 /* ==========================
-   TABLET
+TABLET
 ========================== */
 
 @media(max-width:992px){
@@ -456,18 +524,25 @@ flex-direction:column;
 
 flex-direction:row;
 
-flex-wrap:wrap;
+width:100%;
 
 justify-content:center;
 
-}
+flex-wrap:wrap;
 
 }
 
+.games-grid{
+
+grid-template-columns:1fr;
+
+}
+
+}
 
 
 /* ==========================
-   MOBILE
+MOBILE
 ========================== */
 
 @media(max-width:768px){
@@ -486,17 +561,13 @@ gap:20px;
 
 }
 
-.games-grid{
-
-grid-template-columns:1fr;
-
-}
-
 .subjects{
 
 flex-direction:column;
 
 align-items:center;
+
+width:100%;
 
 }
 
@@ -512,31 +583,25 @@ max-width:300px;
 
 position:static;
 
+align-self:flex-end;
+
 margin-bottom:30px;
 
 }
 
-}
+.games-grid{
 
+grid-template-columns:1fr;
 
-
-/* ==========================
-   SMALL PHONE
-========================== */
-
-@media(max-width:480px){
-
-.dashboard-menu{
-
-flex-direction:column;
-
-align-items:center;
+padding:0;
 
 }
 
-.logo h2{
+.game-card{
 
-font-size:24px;
+width:100%;
+
+max-width:500px;
 
 }
 

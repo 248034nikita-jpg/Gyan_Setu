@@ -1,25 +1,51 @@
-/* ==========================================
-   RESET
-========================================== */
+/* ==========================
+RESET
+========================== */
 
 *{
+
 margin:0;
+
 padding:0;
+
 box-sizing:border-box;
+
 }
 
 body{
+
 font-family:Arial,sans-serif;
-background:#eef0dd;
+
+background:#f7f7f7;
+
+min-height:100vh;
+
+}
+
+
+/* ==========================
+ALL CLICKABLE ITEMS
+========================== */
+
+.logo,
+.dashboard-menu a,
+.language-btn,
+.profile-icon,
+.back-btn,
+.worksheet-card,
+.worksheet-card button{
+
+transition:0.3s ease;
+
 }
 
 
 
-/* ==========================================
-   NAVBAR
-========================================== */
+/* ==========================
+NAVBAR
+========================== */
 
-.shop-navbar{
+.dashboard-navbar{
 
 display:flex;
 
@@ -27,19 +53,21 @@ justify-content:space-between;
 
 align-items:center;
 
-padding:15px 6%;
+padding:20px 6%;
 
-background:#c8d68d;
+background:#c6d58f;
 
 flex-wrap:wrap;
+
+gap:20px;
 
 }
 
 
 
-/* ==========================================
-   LOGO
-========================================== */
+/* ==========================
+LOGO
+========================== */
 
 .logo{
 
@@ -47,15 +75,23 @@ display:flex;
 
 align-items:center;
 
-gap:10px;
+gap:12px;
+
+text-decoration:none;
 
 }
 
-.logo img{
+.logo:hover{
 
-width:50px;
+transform:translateY(-4px);
 
-height:50px;
+}
+
+.logo-img{
+
+width:55px;
+
+height:55px;
 
 object-fit:contain;
 
@@ -65,61 +101,53 @@ object-fit:contain;
 
 font-size:28px;
 
+color:#000000;
+
 }
 
 
 
-/* ==========================================
-   MENU
-========================================== */
+/* ==========================
+MENU
+========================== */
 
-.shop-menu{
+.dashboard-menu{
 
 display:flex;
 
-align-items:center;
-
-justify-content:center;
-
-gap:45px;
+gap:40px;
 
 flex-wrap:wrap;
 
 }
 
-.shop-menu a{
-
-display:flex;
-
-align-items:center;
-
-gap:8px;
+.dashboard-menu a{
 
 text-decoration:none;
 
 color:black;
 
-font-size:20px;
-
 font-weight:600;
 
-transition:0.3s;
+font-size:22px;
 
 }
 
-.shop-menu a:hover{
+.dashboard-menu a:hover{
 
-opacity:0.7;
+color:#2d2b63;
+
+transform:translateY(-4px);
 
 }
 
 
 
-/* ==========================================
-   RIGHT SIDE
-========================================== */
+/* ==========================
+RIGHT SIDE
+========================== */
 
-.right-side{
+.dashboard-right{
 
 display:flex;
 
@@ -129,9 +157,15 @@ gap:20px;
 
 }
 
+
+
+/* ==========================
+LANGUAGE
+========================== */
+
 .language-btn{
 
-padding:10px 18px;
+padding:12px 22px;
 
 border:none;
 
@@ -141,37 +175,63 @@ background:white;
 
 cursor:pointer;
 
-font-weight:600;
+font-weight:bold;
 
-transition:0.3s;
+font-size:18px;
 
 }
 
 .language-btn:hover{
 
-opacity:0.8;
+transform:translateY(-4px);
+
+box-shadow:0 8px 18px rgba(0,0,0,0.15);
 
 }
 
+
+
+/* ==========================
+PROFILE
+========================== */
+
 .profile-icon{
 
-font-size:35px;
+width:50px;
+
+height:50px;
+
+border-radius:50%;
+
+background:white;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:24px;
 
 text-decoration:none;
+
+color:black;
 
 }
 
 .profile-icon:hover{
 
-opacity:0.7;
+transform:translateY(-4px);
+
+box-shadow:0 8px 18px rgba(0,0,0,0.15);
 
 }
 
 
 
-/* ==========================================
-   TOP BAR
-========================================== */
+/* ==========================
+TOP BAR
+========================== */
 
 .top-bar{
 
@@ -181,55 +241,97 @@ justify-content:space-between;
 
 align-items:center;
 
-padding:15px 6%;
+padding:20px 6%;
 
-background:#f4f4ea;
+background:white;
 
 border-bottom:1px solid #ddd;
 
 }
 
+
+
+/* ==========================
+BACK BUTTON
+========================== */
+
 .back-btn{
 
 text-decoration:none;
 
-color:black;
+font-size:24px;
 
 font-weight:bold;
 
+color:black;
+
 }
+
+.back-btn:hover{
+
+transform:translateY(-4px);
+
+}
+
+
+
+/* ==========================
+COIN DISPLAY
+========================== */
 
 .coin-display{
 
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+font-size:24px;
+
 font-weight:bold;
+
+}
+
+.coin-display img{
+
+width:35px;
+
+height:35px;
+
+object-fit:contain;
 
 }
 
 
 
-/* ==========================================
-   SHOP SECTION
-========================================== */
+/* ==========================
+SHOP
+========================== */
 
 .shop-section{
 
-padding:40px 6%;
+padding:60px 6%;
 
 }
 
 .shop-section h2{
 
+font-size:48px;
+
 text-align:center;
 
-margin-bottom:30px;
+margin-bottom:50px;
+
+color:#2d2b63;
 
 }
 
 
 
-/* ==========================================
-   WORKSHEET GRID
-========================================== */
+/* ==========================
+GRID
+========================== */
 
 .worksheet-grid{
 
@@ -237,57 +339,89 @@ display:grid;
 
 grid-template-columns:repeat(4,1fr);
 
-gap:25px;
+gap:30px;
 
 }
 
 
 
-/* ==========================================
-   CARD
-========================================== */
+/* ==========================
+CARD
+========================== */
 
 .worksheet-card{
 
-background:#dcdcdc;
+background:white;
 
-padding:20px;
+padding:25px;
 
-border-radius:10px;
+border-radius:20px;
+
+box-shadow:0 5px 15px rgba(0,0,0,0.08);
+
+text-align:center;
 
 position:relative;
 
-text-align:center;
+}
+
+.worksheet-card:hover{
+
+transform:translateY(-10px);
+
+box-shadow:0 12px 24px rgba(0,0,0,0.18);
 
 }
 
 
 
-/* ==========================================
-   COIN ICON
-========================================== */
+/* ==========================
+COIN ICON
+========================== */
 
 .coin-icon{
 
 position:absolute;
 
-top:10px;
+top:20px;
 
-left:10px;
+left:20px;
+
+display:flex;
+
+align-items:center;
+
+gap:6px;
+
+font-size:18px;
+
+font-weight:bold;
+
+}
+
+.coin-icon img{
+
+width:28px;
+
+height:28px;
+
+object-fit:contain;
 
 }
 
 
 
-/* ==========================================
-   IMAGE AREA
-========================================== */
+/* ==========================
+IMAGE
+========================== */
 
 .worksheet-image{
 
-height:100px;
+height:150px;
 
-background:#eeeeee;
+background:#ececec;
+
+border-radius:10px;
 
 display:flex;
 
@@ -295,57 +429,7 @@ justify-content:center;
 
 align-items:center;
 
-margin-bottom:15px;
-
-border-radius:5px;
-
-}
-
-
-
-/* ==========================================
-   BUY BUTTON
-========================================== */
-
-.worksheet-card button{
-
-width:100px;
-
-height:40px;
-
-border:none;
-
-background:#bfd770;
-
-cursor:pointer;
-
-font-weight:bold;
-
-border-radius:5px;
-
-transition:0.3s;
-
-}
-
-.worksheet-card button:hover{
-
-opacity:0.8;
-
-}
-
-
-
-/* ==========================================
-   PARENT ZONE
-========================================== */
-
-.parent-zone{
-
-padding:0 6% 70px;
-
-}
-
-.parent-zone h3{
+font-size:50px;
 
 margin-bottom:25px;
 
@@ -353,99 +437,85 @@ margin-bottom:25px;
 
 
 
-/* ==========================================
-   PARENT GRID
-========================================== */
+/* ==========================
+TEXT
+========================== */
 
-.parent-grid{
+.worksheet-card p{
 
-display:flex;
-
-gap:30px;
-
-flex-wrap:wrap;
-
-}
-
-
-
-/* ==========================================
-   PARENT CARD
-========================================== */
-
-.parent-card{
-
-width:230px;
-
-background:#f7e79d;
-
-padding:20px;
-
-border-radius:10px;
-
-text-align:center;
-
-}
-
-
-
-/* ==========================================
-   PURCHASE ROW
-========================================== */
-
-.purchase-row{
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-gap:10px;
-
-margin-top:15px;
-
-}
-
-.purchase-row select{
-
-height:35px;
-
-padding:5px;
-
-}
-
-.purchase-row button{
-
-width:80px;
-
-height:35px;
-
-border:none;
-
-background:#bfd770;
-
-cursor:pointer;
+font-size:28px;
 
 font-weight:bold;
 
-border-radius:5px;
+margin-bottom:25px;
 
 }
 
 
 
-/* ==========================================
-   RESPONSIVE
-========================================== */
+/* ==========================
+BUY BUTTON
+========================== */
 
-@media(max-width:1000px){
+.worksheet-card button{
 
-.shop-navbar{
+width:130px;
+
+height:55px;
+
+border:none;
+
+border-radius:10px;
+
+background:#b6d34d;
+
+font-size:22px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+}
+
+.worksheet-card button:hover{
+
+transform:translateY(-4px);
+
+box-shadow:0 8px 18px rgba(0,0,0,0.15);
+
+}
+
+
+
+/* ==========================
+FOOTER
+========================== */
+
+.dashboard-footer{
+
+margin-top:70px;
+
+background:white;
+
+padding:25px;
+
+text-align:center;
+
+border-top:1px solid #ddd;
+
+}
+
+
+
+/* ==========================
+TABLET
+========================== */
+
+@media(max-width:992px){
+
+.dashboard-navbar{
 
 flex-direction:column;
-
-gap:20px;
 
 }
 
@@ -459,13 +529,17 @@ grid-template-columns:1fr 1fr;
 
 
 
-@media(max-width:700px){
+/* ==========================
+MOBILE
+========================== */
 
-.shop-menu{
+@media(max-width:768px){
+
+.dashboard-menu{
 
 flex-direction:column;
 
-gap:20px;
+align-items:center;
 
 }
 
@@ -473,25 +547,13 @@ gap:20px;
 
 flex-direction:column;
 
-gap:10px;
+gap:15px;
 
 }
 
 .worksheet-grid{
 
 grid-template-columns:1fr;
-
-}
-
-.parent-grid{
-
-justify-content:center;
-
-}
-
-.logo h2{
-
-font-size:22px;
 
 }
 

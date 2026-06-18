@@ -16,30 +16,25 @@
 
 <body>
 
-
 <!-- ==========================
 NAVBAR
-=========================== -->
+========================== -->
 
-<header class="shop-navbar">
+<header class="dashboard-navbar">
 
+<a href="index.html" class="logo">
 
-<!-- LEFT : LOGO -->
-
-<div class="logo">
-
-<img src="assets/images/logo.png"
-alt="Gyan Setu Logo">
+<img
+src="assets/images/logo.png"
+alt="Gyan Setu Logo"
+class="logo-img">
 
 <h2>Gyan Setu</h2>
 
-</div>
+</a>
 
 
-
-<!-- CENTER : MENU -->
-
-<nav class="shop-menu">
+<nav class="dashboard-menu">
 
 <a href="child-dashboard.html">
 
@@ -50,7 +45,7 @@ alt="Gyan Setu Logo">
 
 <a href="#">
 
-🎯 Stats
+📈 My Progress
 
 </a>
 
@@ -71,19 +66,16 @@ alt="Gyan Setu Logo">
 </nav>
 
 
+<div class="dashboard-right">
 
-<!-- RIGHT : LANGUAGE + PROFILE -->
-
-<div class="right-side">
-
-<button class="language-btn">
+<button class="language-btn" type="button">
 
 🌐 Language
 
 </button>
 
 
-<a href="#" class="profile-icon">
+<a href="profile.html" class="profile-icon">
 
 👤
 
@@ -91,19 +83,18 @@ alt="Gyan Setu Logo">
 
 </div>
 
-
 </header>
 
 
 
 <!-- ==========================
 TOP BAR
-=========================== -->
+========================== -->
 
 <div class="top-bar">
 
-<a href="child-dashboard.html"
-class="back-btn">
+
+<a href="child-dashboard.html" class="back-btn">
 
 ⬅ Back
 
@@ -112,7 +103,15 @@ class="back-btn">
 
 <div class="coin-display">
 
-🪙 Coins : 250
+<img
+src="assets/images/coin.png"
+alt="Coin">
+
+<span>
+
+250
+
+</span>
 
 </div>
 
@@ -121,22 +120,38 @@ class="back-btn">
 
 
 <!-- ==========================
-WORKSHEETS
-=========================== -->
+SHOP
+========================== -->
 
 <section class="shop-section">
 
-<h2>Worksheets</h2>
+<h2>
+
+Worksheets
+
+</h2>
+
 
 
 <div class="worksheet-grid">
 
 
+<!-- Worksheet 1 -->
+
 <div class="worksheet-card">
+
 
 <div class="coin-icon">
 
-🪙
+<img
+src="assets/images/coin.png"
+alt="Coin">
+
+<span>
+
+50
+
+</span>
 
 </div>
 
@@ -148,7 +163,14 @@ WORKSHEETS
 </div>
 
 
-<button>
+<p>
+
+Math Worksheet
+
+</p>
+
+
+<button type="button" aria-label="Buy Math Worksheet">
 
 BUY
 
@@ -158,26 +180,41 @@ BUY
 
 
 
+<!-- Worksheet 2 -->
+
 <div class="worksheet-card">
+
 
 <div class="coin-icon">
 
-🪙
+<img
+src="assets/images/coin.png"
+alt="Coin">
+
+<span>
+
+50
+
+</span>
 
 </div>
 
 
 <div class="worksheet-image">
 
-Worksheet Cover
+📘
 
 </div>
 
 
-<p>Name</p>
+<p>
+
+English Worksheet
+
+</p>
 
 
-<button>
+<button type="button" aria-label="Buy English Worksheet">
 
 BUY
 
@@ -187,26 +224,41 @@ BUY
 
 
 
+<!-- Worksheet 3 -->
+
 <div class="worksheet-card">
+
 
 <div class="coin-icon">
 
-🪙
+<img
+src="assets/images/coin.png"
+alt="Coin">
+
+<span>
+
+50
+
+</span>
 
 </div>
 
 
 <div class="worksheet-image">
 
-Worksheet Cover
+📖
 
 </div>
 
 
-<p>Name</p>
+<p>
+
+Story Worksheet
+
+</p>
 
 
-<button>
+<button type="button" aria-label="Buy Story Worksheet">
 
 BUY
 
@@ -216,26 +268,41 @@ BUY
 
 
 
+<!-- Worksheet 4 -->
+
 <div class="worksheet-card">
+
 
 <div class="coin-icon">
 
-🪙
+<img
+src="assets/images/coin.png"
+alt="Coin">
+
+<span>
+
+50
+
+</span>
 
 </div>
 
 
 <div class="worksheet-image">
 
-Worksheet Cover
+✏️
 
 </div>
 
 
-<p>Name</p>
+<p>
+
+Puzzle Worksheet
+
+</p>
 
 
-<button>
+<button type="button" aria-label="Buy Puzzle Worksheet">
 
 BUY
 
@@ -251,116 +318,18 @@ BUY
 
 
 <!-- ==========================
-PARENT ZONE
-=========================== -->
+FOOTER
+========================== -->
 
-<section class="parent-zone">
+<footer class="dashboard-footer">
 
+<p>
 
-<h3>
+© 2025 Gyan Setu. All rights reserved.
 
-🛡 Parent Zone
+</p>
 
-</h3>
-
-
-<div class="parent-grid">
-
-
-<div class="parent-card">
-
-<div class="worksheet-image">
-
-Worksheet Cover
-
-</div>
-
-
-<p>Name</p>
-
-<p>Price</p>
-
-
-<div class="purchase-row">
-
-<label>
-
-Qty:
-
-</label>
-
-
-<select>
-
-<option>1</option>
-
-<option>2</option>
-
-<option>3</option>
-
-</select>
-
-
-<button>
-
-BUY
-
-</button>
-
-</div>
-
-</div>
-
-
-
-<div class="parent-card">
-
-<div class="worksheet-image">
-
-Worksheet Cover
-
-</div>
-
-
-<p>Name</p>
-
-<p>Price</p>
-
-
-<div class="purchase-row">
-
-<label>
-
-Qty:
-
-</label>
-
-
-<select>
-
-<option>1</option>
-
-<option>2</option>
-
-<option>3</option>
-
-</select>
-
-
-<button>
-
-BUY
-
-</button>
-
-</div>
-
-</div>
-
-
-</div>
-
-</section>
+</footer>
 
 
 </body>
