@@ -34,7 +34,6 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #dfecf3, #c5db8a);
         }
         .container {
             margin: 20px auto;

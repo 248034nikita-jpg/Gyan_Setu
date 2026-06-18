@@ -1,0 +1,9 @@
+Changes made:
+
+1. Fixed the Theme:
+   - I removed the dark/green background gradient from `index.php`. It will now use the original white/light-blue theme defined in your main `style.css` file, restoring the previous look as you requested.
+
+2. Explained the Download Bug:
+   - Issue: When you click the interactive buttons (Sign In, Sign Up, etc.), the browser downloads `index.php` instead of opening the page.
+   - Reason: You are likely opening `index.html` directly from your computer folders (e.g., by double-clicking it, which shows a `file:///C:/xampp/...` URL). Browsers do not know how to process PHP files locally, so they download them.
+   - Fix: You MUST run the project through your XAMPP local server. Instead of double-clicking the file, open your browser and type: `http://localhost/jelshi-gyan/index.html` or `http://localhost/jelshi-gyan/index.php`. The buttons will then correctly redirect you without downloading the files!
