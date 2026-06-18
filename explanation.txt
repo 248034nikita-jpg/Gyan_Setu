@@ -89,3 +89,5 @@ These files tell the database server how to organize tables (like digital filing
 * **`Contents.sql`**: Creates tables for courses, lessons, quizzes, and quiz options.
 * **`Shop.sql`**: Creates tables for store items, purchase transactions, and cash logs.
 * **`Progress_Dash.sql`**: Sets up a special live report (a database View) that links parent and child stats together so the parent dashboard can display them instantly.
+
+

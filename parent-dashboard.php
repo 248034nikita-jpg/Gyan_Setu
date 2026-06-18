@@ -55,8 +55,8 @@ if (isset($_POST['add_child'])) {
 
 // Fetch Children from View
 $children_stats = [];
-$stmt = $conn->prepare("SELECT * FROM progress_dashboard WHERE parent_name = ?");
-$stmt->bind_param("s", $parent_name);
+$stmt = $conn->prepare("SELECT * FROM progress_dashboard WHERE child_name IN (SELECT username FROM children WHERE parent_id = ?)");
+$stmt->bind_param("i", $parent_id);
 $stmt->execute();
 $res = $stmt->get_result();
 while ($row = $res->fetch_assoc()) {
@@ -336,7 +336,7 @@ $stmt->close();
 
     <!-- NAVBAR -->
     <header class="navbar">
-        <a href="index.html" class="logo">
+        <a href="parent-dashboard.php" class="logo">
             <img src="assets/images/logo.png" alt="Gyan Setu Logo">
             <h2>Gyan Setu</h2>
         </a>

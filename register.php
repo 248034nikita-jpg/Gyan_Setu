@@ -17,6 +17,11 @@ if (isset($_POST['signUp'])) {
         exit();
     }
 
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        header("Location: index.php?error=invalid_email#signup");
+        exit();
+    }
+
     // Combine names
     $fullname = $fname . ' ' . $lname;
 

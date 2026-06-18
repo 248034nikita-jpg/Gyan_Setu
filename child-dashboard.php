@@ -124,7 +124,8 @@ $stmt->close();
 
     <!-- Navbar -->
     <header class="dashboard-navbar">
-        <a href="index.html" class="logo">
+        <!-- Logo -->
+        <a href="child-dashboard.php" class="logo">
             <img src="assets/images/logo.png" alt="Gyan Setu Logo" class="logo-img">
             <h2>Gyan Setu</h2>
         </a>
