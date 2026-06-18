@@ -14,8 +14,6 @@ body{
     font-family:Arial, sans-serif;
 }
 
-
-
 /* =========================================================
    2. NAVBAR SECTION
 ========================================================= */
@@ -25,8 +23,9 @@ body{
     justify-content:space-between;
     align-items:center;
     padding:20px 8%;
-    background:rgb(171, 160, 160);
+    background:rgb(213, 234, 245);
     border-bottom:1px solid #ddd;
+    font-size:1.3rem;
 }
 
 
@@ -35,20 +34,67 @@ body{
    3. LOGO SECTION
 ========================================================= */
 
+/* ==========================
+   LOGO
+========================== */
+
 .logo{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-size:30px;
-    font-weight:bold;
+
+display:flex;
+
+align-items:center;
+
+gap:15px;
+
+text-decoration:none;
+
+color:inherit;
+
+}
+
+.logo:visited{
+
+text-decoration:none;
+
+color:inherit;
+
+}
+
+.logo:hover{
+
+text-decoration:none;
+
+color:inherit;
+
+}
+
+.logo:active{
+
+text-decoration:none;
+
+color:inherit;
+
 }
 
 .logo-img{
-    width:60px;
-    height:60px;
-    object-fit:contain;
+
+width:85px;
+
+height:85px;
+
+object-fit:contain;
+
 }
 
+.logo span{
+
+font-size:2.2rem;
+
+font-weight:700;
+
+color:#000000;
+
+}
 
 
 /* =========================================================
@@ -58,7 +104,7 @@ body{
 .nav-links{
     display:flex;
     list-style:none;
-    gap:30px;
+    gap:60px;
     
 }
 
@@ -86,6 +132,7 @@ body{
     border:none;
     border-radius:8px;
     cursor:pointer;
+    font-size:1.1rem;
 }
 
 .language-btn{
@@ -141,8 +188,8 @@ body{
     padding:12px 60px;
     border:1px solid #d9d9d9;
     border-radius:30px;
-    background:rgb(184, 175, 175);
-    font-size:14px;
+    background:rgb(223, 240, 242);
+    font-size:16px;
     font-weight:600;
     margin-bottom:25px;
 }
@@ -154,7 +201,7 @@ body{
 ========================================================= */
 
 .hero-image{
-    width:500px;
+    width:700px;
     height:auto;
     margin-bottom:30px;
 }
@@ -167,7 +214,7 @@ body{
 
 .hero h1{
     font-size:3rem;
-    font-weight:500;
+    font-weight:600;
     line-height:1;
     color:#2d2b63;
     margin-bottom:20px;
@@ -184,6 +231,7 @@ body{
     line-height:1.8;
     color:#666;
     margin-bottom:30px;
+    font-size:1.3rem;
 }
 
 
@@ -198,6 +246,7 @@ body{
     gap:15px;
     flex-wrap:wrap;
     margin-top:20px;
+    
 }
 
 .hero-buttons button{
@@ -208,6 +257,7 @@ body{
     color:white;
     cursor:pointer;
     font-weight:600;
+    font-size:1.3rem;
 }
 
 
@@ -246,8 +296,8 @@ body{
 .card-character{
 
     /* Same box size for all images */
-    width:220px;
-    height:220px;
+    width:250px;
+    height:250px;
 
     /* Prevent image stretching */
     object-fit:contain;
@@ -270,8 +320,8 @@ body{
 ========================================================= */
 
 .card{
-    width:220px;
-    height:230px;
+    width: 250px;
+    height:260px;
 
     background:white;
 
@@ -292,7 +342,7 @@ body{
 
 /* Left Card */
 .card1{
-    transform:rotate(-8deg);
+    transform:rotate(-11deg);
 }
 
 /* Middle Card */
@@ -302,7 +352,7 @@ body{
 
 /* Right Card */
 .card3{
-    transform:rotate(8deg);
+    transform:rotate(11deg);
 }
 
 
@@ -338,7 +388,7 @@ body{
 
 /* Small text: What's Inside? */
 .section-tag{
-    font-size:14px;
+    font-size:18px;
     color:#777;
     font-weight:600;
 }
@@ -424,8 +474,8 @@ body{
 }
 
 .about-tag{
-    font-size:14px;
-    color:#777;
+    font-size:20px;
+    color:#383737;
 }
 
 .about-section h2{
@@ -566,7 +616,7 @@ body{
 }
 
 .sponsor-tag{
-    font-size:14px;
+    font-size:18px;
     color:#777;
 }
 
@@ -731,6 +781,7 @@ body{
 /* Remove last divider */
 
 .impact-box:last-child{
+
     border-right:none;
 }
 
@@ -932,4 +983,312 @@ body{
     border-top:1px solid #ddd;
 
     color:#777;
+}
+/* ==========================
+ALL CLICKABLE ITEMS HOVER
+========================== */
+
+/* Smooth animation */
+
+a,
+button,
+.logo,
+.nav-links a,
+.dashboard-menu a,
+.language-btn,
+.signin-btn,
+.signup-btn,
+.hero-buttons button,
+.feature-card,
+.amount-grid button,
+.payment-grid button,
+.donate-btn,
+.apply-btn,
+.game-link,
+.game-card,
+.profile-icon,
+.member,
+.footer-column a{
+
+transition:0.3s ease;
+
+}
+
+
+/* Lift effect */
+
+a:hover,
+button:hover,
+.logo:hover,
+.nav-links a:hover,
+.dashboard-menu a:hover,
+.language-btn:hover,
+.signin-btn:hover,
+.signup-btn:hover,
+.hero-buttons button:hover,
+.amount-grid button:hover,
+.payment-grid button:hover,
+.donate-btn:hover,
+.apply-btn:hover,
+.game-link:hover,
+.profile-icon:hover,
+.footer-column a:hover{
+
+transform:translateY(-4px);
+
+}
+
+
+/* Cards hover */
+
+.feature-card:hover,
+.game-card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:0 12px 24px rgba(0,0,0,0.15);
+
+}
+
+
+/* Navbar links */
+
+.nav-links a:hover,
+.dashboard-menu a:hover{
+
+color:#2d2b63;
+
+}
+
+
+/* Logo hover */
+
+.logo:hover{
+
+opacity:0.9;
+
+}
+
+
+/* Main buttons */
+
+.language-btn:hover,
+.signin-btn:hover,
+.signup-btn:hover,
+.hero-buttons button:hover,
+.donate-btn:hover,
+.apply-btn:hover{
+
+box-shadow:0 8px 18px rgba(0,0,0,0.15);
+
+}
+
+
+/* Amount buttons */
+
+.amount-grid button:hover,
+.payment-grid button:hover{
+
+background:#e8e8e8;
+
+box-shadow:0 8px 18px rgba(0,0,0,0.15);
+
+}
+
+
+/* Footer links */
+
+.footer-column a:hover{
+
+color:#2d2b63;
+
+}
+
+
+/* Team members */
+
+.member:hover{
+
+transform:translateX(8px);
+
+transition:0.3s;
+
+cursor:pointer;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET (max-width: 992px)
+   This file had no breakpoints at all, so on a phone or
+   tablet the navbar, hero image, sponsor card and impact
+   stats were overflowing the screen. Added to match the
+   breakpoints already used in dashboard.css / shop.css.
+========================================================= */
+
+@media(max-width:992px){
+
+.navbar{
+    flex-wrap:wrap;
+    row-gap:15px;
+}
+
+.hero-image{
+    width:100%;
+    max-width:500px;
+}
+
+.hero h1{
+    font-size:2.4rem;
+}
+
+.stats{
+    margin-top:160px;
+    gap:30px;
+}
+
+.features{
+    padding:80px 6%;
+}
+
+.about-section{
+    margin:70px auto;
+    padding:0 25px;
+}
+
+.team-card{
+    flex-direction:column;
+    padding:35px;
+}
+
+.team-right img{
+    max-width:350px;
+}
+
+.sponsor-section{
+    flex-direction:column;
+    padding:60px 6%;
+}
+
+.sponsor-card{
+    width:100%;
+    max-width:420px;
+    margin:0 auto;
+}
+
+.impact-stats{
+    flex-wrap:wrap;
+}
+
+.impact-box{
+    flex:1 1 50%;
+    border-right:none;
+    border-bottom:2px solid #bbb5b5;
+}
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — MOBILE (max-width: 768px)
+========================================================= */
+
+@media(max-width:768px){
+
+.navbar{
+    padding:20px 6%;
+}
+
+.nav-links{
+    gap:20px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.nav-buttons{
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.logo span{
+    font-size:1.7rem;
+}
+
+.logo-img{
+    width:60px;
+    height:60px;
+}
+
+.hero{
+    padding:40px 20px;
+}
+
+.hero h1{
+    font-size:1.9rem;
+}
+
+.hero p{
+    font-size:1.1rem;
+}
+
+.hero-buttons button{
+    width:100%;
+}
+
+.stats{
+    margin-top:140px;
+    margin-bottom:70px;
+    gap:60px 20px;
+}
+
+.card1,
+.card2,
+.card3{
+    transform:none;
+}
+
+.features h2,
+.sponsor-left h2,
+.about-section h2{
+    font-size:30px;
+}
+
+.feature-card{
+    width:100%;
+    max-width:320px;
+}
+
+.about-item{
+    flex-direction:column;
+}
+
+.donation-item{
+    font-size:15px;
+}
+
+.impact-box{
+    flex:1 1 100%;
+}
+
+.impact-box p{
+    font-size:20px;
+}
+
+.free-access-content{
+    padding:25px;
+}
+
+.free-access-content h2{
+    font-size:26px;
+}
+
+.footer-container{
+    text-align:center;
+    justify-content:center;
+}
+
+.footer-logo{
+    max-width:100%;
+}
+
 }

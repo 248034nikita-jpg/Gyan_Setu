@@ -26,16 +26,15 @@
     <header class="navbar">
 
         <!-- Logo Section -->
-        <div class="logo">
+        <a href="index.html" class="logo">
 
-            <img src="assets/images/logo.png"
-                 alt="Gyan Setu Logo"
-                 class="logo-img">
+<img src="assets/images/logo.png"
+alt="Gyan Setu Logo"
+class="logo-img">
 
-            <span>Gyan Setu</span>
+<span>Gyan Setu</span>
 
-        </div>
-
+</a>
 
         <!-- Navigation Menu -->
         <nav>
@@ -43,7 +42,7 @@
             <ul class="nav-links">
 
                 <li>
-   <a href="index.html">Home</a>
+   <a href="index.html" aria-current="page">Home</a>
 </li>
 
 <li>
@@ -61,7 +60,7 @@
         <!-- Right Side Buttons -->
         <div class="nav-buttons">
 
-            <button class="language-btn">
+            <button class="language-btn" type="button">
 
     <img src="assets/images/language.png"
          alt="Language Icon"
@@ -71,11 +70,11 @@
 
 </button>
 
-            <button class="signin-btn">
+            <button class="signin-btn" type="button">
                 Sign In
             </button>
 
-            <button class="signup-btn">
+            <button class="signup-btn" type="button">
                 Sign Up
             </button>
 
@@ -127,16 +126,18 @@
 
         <div class="hero-buttons">
 
-            <button>
-                Play for Free
+            <button type="button">
+                Play for Free 🎮
             </button>
 
-            <button>
-                Create Family Account
+            <button type="button">
+                Create Family Account 👨‍👩‍👧
+
+
             </button>
 
-            <button>
-                Learn More
+            <button type="button">
+                Learn More ↓
             </button>
 
         </div>
@@ -260,7 +261,7 @@
             <h3>Bilingual</h3>
             <p>
                 One-click switch between Nepali and
-                English for all content,games,and interface elements.
+                English for all content, games, and interface elements.
             </p>
         </div>
 
@@ -269,8 +270,8 @@
             <img src="assets/images/family.png" alt="">
             <h3>Family Account</h3>
             <p>
-                Track each child's progress,reset chapters,
-                 print reports,and manage your child's profile
+                Track each child's progress, reset chapters,
+                 print reports, and manage your child's profile
             </p>
         </div>
 
@@ -291,7 +292,7 @@
             <h3>Progress Tracking</h3>
             <p>
                 Parents can check how many
-                coins each child earnrd,which 
+                coins each child earned, which 
                 chapters they reached and their scores.
             </p>
         </div>
@@ -318,6 +319,7 @@
         </h2>
 
         <p class="sponsor-text">
+            <!-- TODO: replace Rs.XX with your real monthly Premium price -->
             Because we kept Premium affordable,
             your donation goes incredibly far. Rs.XX sponsors 
             a full month of premium for a child whose family 
@@ -344,7 +346,7 @@
             </div>
 
             <div class="donation-item">
-                Gives one child an entire year of Premium-free
+                Gives one child a full year of Premium access, completely free
             </div>
 
         </div>
@@ -360,10 +362,10 @@
         <!-- Amount Buttons -->
         <div class="amount-grid">
 
-            <button>Rs 150</button>
-            <button>Rs 300</button>
-            <button>Rs 600</button>
-            <button>Rs 1500</button>
+            <button type="button">Rs 150</button>
+            <button type="button">Rs 300</button>
+            <button type="button">Rs 600</button>
+            <button type="button">Rs 1500</button>
 
         </div>
 
@@ -375,6 +377,7 @@
 
             <input
                 type="text"
+                inputmode="numeric"
                 placeholder="Enter custom amount">
 
         </div>
@@ -385,15 +388,15 @@
 
         <div class="payment-grid">
 
-            <button>eSewa</button>
+            <button type="button">eSewa</button>
 
-            <button>Khalti</button>
+            <button type="button">Khalti</button>
 
-            <button>Card</button>
+            <button type="button">Card</button>
 
         </div>
 
-        <button class="donate-btn">
+        <button class="donate-btn" type="button">
             Donate Now
         </button>
 
@@ -401,6 +404,8 @@
 
 </section>
 <section class="impact-stats">
+    <!-- TODO: these boxes are missing their actual numbers, e.g. add an
+         <h3>127</h3> above each <p> once real/live figures are available -->
 
     <div class="impact-box">
         <p>Children sponsored so far</p>
@@ -428,13 +433,14 @@
         </h2>
 
         <p>
+            <!-- TODO: replace Rs. XX with your real monthly price -->
             If Rs. XX/month is beyond your means,
             apply here. We review every application
             with care and dignity — no judgment,
             no proof of poverty documents needed.
         </p>
 
-        <button class="apply-btn">
+        <button class="apply-btn" type="button">
             Apply for free access →
         </button>
 
@@ -482,7 +488,7 @@
             <h4>Resources</h4>
 
             <a href="#">Privacy Policy</a>
-            <a href="#">Terms & Conditions</a>
+            <a href="#">Terms &amp; Conditions</a>
             <a href="#">Contact</a>
 
         </div>
