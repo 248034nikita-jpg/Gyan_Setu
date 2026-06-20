@@ -55,7 +55,7 @@ if (isset($_POST['add_child'])) {
 
 // Fetch Children from View
 $children_stats = [];
-$stmt = $conn->prepare("SELECT * FROM progress_dashboard WHERE child_name IN (SELECT username FROM children WHERE parent_id = ?)");
+$stmt = $conn->prepare("SELECT * FROM progress_dashboard WHERE parent_id = ?");
 $stmt->bind_param("i", $parent_id);
 $stmt->execute();
 $res = $stmt->get_result();
