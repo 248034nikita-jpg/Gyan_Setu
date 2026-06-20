@@ -77,6 +77,7 @@ while ($row = $res->fetch_assoc()) {
     $shop_items[] = $row;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
