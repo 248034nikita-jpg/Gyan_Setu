@@ -1,1294 +1,926 @@
-/* =========================================================
-   1. RESET SECTION
-   Removes browser default spacing
-========================================================= */
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+/* Removes the default spacing the browser adds to everything. */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* Website font */
-body{
-    font-family:Arial, sans-serif;
+/* Stops the page from shaking or scrolling sideways on mobile. */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
-/* =========================================================
-   2. NAVBAR SECTION
-========================================================= */
-
-.navbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:20px 8%;
-    background:rgb(213, 234, 245);
-    border-bottom:1px solid #ddd;
-    font-size:1.3rem;
+/* Sets the font for the whole site. */
+body {
+    font-family: Arial, sans-serif;
 }
 
-
-
-/* =========================================================
-   3. LOGO SECTION
-========================================================= */
-
-/* ==========================
-   LOGO
-========================== */
-
-.logo{
-
-display:flex;
-
-align-items:center;
-
-gap:15px;
-
-text-decoration:none;
-
-color:inherit;
-
+/* The top navigation bar. */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 8%;
+    background: rgb(213, 234, 245);
+    border-bottom: 1px solid #ddd;
+    font-size: 1.3rem;
 }
 
-.logo:visited{
-
-text-decoration:none;
-
-color:inherit;
-
+/* The logo and site name. */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-decoration: none;
+    color: inherit;
 }
 
-.logo:hover{
-
-text-decoration:none;
-
-color:inherit;
-
+.logo:visited {
+    text-decoration: none;
+    color: inherit;
 }
 
-.logo:active{
-
-text-decoration:none;
-
-color:inherit;
-
+.logo:hover {
+    text-decoration: none;
+    color: inherit;
 }
 
-.logo-img{
-
-width:85px;
-
-height:85px;
-
-object-fit:contain;
-
+.logo:active {
+    text-decoration: none;
+    color: inherit;
 }
 
-.logo span{
-
-font-size:2.2rem;
-
-font-weight:700;
-
-color:#000000;
-
+.logo-img {
+    width: 85px;
+    height: 85px;
+    object-fit: contain;
 }
 
-
-/* =========================================================
-   4. NAVIGATION LINKS
-========================================================= */
-
-.nav-links{
-    display:flex;
-    list-style:none;
-    gap:60px;
-    
+.logo span {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #000000;
 }
 
-.nav-links a{
-    text-decoration:none;
-    color:black;
-    font-weight:600;
+/* The main menu links. */
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 60px;
 }
 
+.nav-links a {
+    text-decoration: none;
+    color: black;
+    font-weight: 600;
+}
 
-
-/* =========================================================
-   5. NAVBAR BUTTONS
-========================================================= */
-
-.nav-buttons{
-    display:flex;
-    gap:10px;
+/* The language, sign in, and sign up buttons. */
+.nav-buttons {
+    display: flex;
+    gap: 10px;
 }
 
 .language-btn,
 .signin-btn,
-.signup-btn{
-    padding:10px 20px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:1.1rem;
+.signup-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
 }
 
-.language-btn{
-    background:#eeeeee;
-
-    /* Makes icon and text stay in one row */
-    display:flex;
-    align-items:center;
-    gap:8px;
+.language-btn {
+    background: #eeeeee;
+    /* Keeps the icon and text on the same line. */
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-/* =====================================
-   LANGUAGE ICON
-===================================== */
-
-.language-icon{
-    width:18px;
-    height:18px;
-    object-fit:contain;
+.language-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
 }
 
-.signin-btn{
-    background:#f5f5f5;
+.signin-btn {
+    background: #f5f5f5;
 }
 
-.signup-btn{
-    background:black;
-    color:white;
+.signup-btn {
+    background: black;
+    color: white;
 }
 
-
-
-/* =========================================================
-   6. HERO SECTION
-========================================================= */
-
-.hero{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    text-align:center;
-    padding:60px 20px;
+/* The hero section near the top of the page. */
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 60px 20px;
 }
 
-
-
-/* =========================================================
-   7. HERO BADGE
-========================================================= */
-
-.hero-badge{
-    display:inline-block;
-    padding:12px 60px;
-    border:1px solid #d9d9d9;
-    border-radius:30px;
-    background:rgb(223, 240, 242);
-    font-size:16px;
-    font-weight:600;
-    margin-bottom:25px;
+/* The small badge above the hero heading. */
+.hero-badge {
+    display: inline-block;
+    padding: 12px 60px;
+    border: 1px solid #d9d9d9;
+    border-radius: 30px;
+    background: rgb(223, 240, 242);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 25px;
 }
 
-
-
-/* =========================================================
-   8. HERO IMAGE
-========================================================= */
-
-.hero-image{
-    width:700px;
-    height:auto;
-    margin-bottom:30px;
+.hero-image {
+    width: 700px;
+    height: auto;
+    margin-bottom: 30px;
 }
 
-
-
-/* =========================================================
-   9. HERO HEADING
-========================================================= */
-
-.hero h1{
-    font-size:3rem;
-    font-weight:600;
-    line-height:1;
-    color:#2d2b63;
-    margin-bottom:20px;
+.hero h1 {
+    font-size: 3rem;
+    font-weight: 600;
+    line-height: 1;
+    color: #2d2b63;
+    margin-bottom: 20px;
 }
 
-
-
-/* =========================================================
-   10. HERO PARAGRAPH
-========================================================= */
-
-.hero p{
-    max-width:700px;
-    line-height:1.8;
-    color:#666;
-    margin-bottom:30px;
-    font-size:1.3rem;
+.hero p {
+    max-width: 700px;
+    line-height: 1.8;
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 1.3rem;
 }
 
-
-
-/* =========================================================
-   11. HERO BUTTONS
-========================================================= */
-
-.hero-buttons{
-    display:flex;
-    justify-content:center;
-    gap:15px;
-    flex-wrap:wrap;
-    margin-top:20px;
-    
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 20px;
 }
 
-.hero-buttons button{
-    padding:12px 24px;
-    border:none;
-    border-radius:10px;
-    background:#6b6a8d;
-    color:white;
-    cursor:pointer;
-    font-weight:600;
-    font-size:1.3rem;
+.hero-buttons button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    background: #6b6a8d;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.3rem;
 }
 
-
-
-/* =========================================================
-   12. STATS SECTION
-========================================================= */
-
-.stats{
-    display:flex;
-    justify-content:center;
-    align-items:flex-end;
-    gap:60px;
-    margin-top:180px;
-    margin-bottom:100px;
-    flex-wrap:wrap;
+/* The 3 stat cards (age, languages, games). */
+.stats {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 60px;
+    margin-top: 180px;
+    margin-bottom: 100px;
+    flex-wrap: wrap;
 }
 
-
-
-/* =========================================================
-   13. INDIVIDUAL CARD CONTAINER
-========================================================= */
-
-.stat-box{
-    position:relative;
-    width:240px;
+.stat-box {
+    position: relative;
+    width: 240px;
 }
 
-
-
-/* =========================================================
-   14. CHARACTER IMAGE ABOVE CARD
-========================================================= */
-
-.card-character{
-
-    /* Same box size for all images */
-    width:250px;
-    height:250px;
-
-    /* Prevent image stretching */
-    object-fit:contain;
-
-    /* Position image above card */
-    position:absolute;
-
-    top:-140px;
-    left:50%;
-
-    transform:translateX(-50%);
-
-    z-index:10;
-}
-
-
-
-/* =========================================================
-   15. CARD DESIGN
-========================================================= */
-
-.card{
+/* The character image that sits above each stat card. */
+.card-character {
     width: 250px;
-    height:260px;
-
-    background:white;
-
-    border-radius:15px;
-
-    text-align:center;
-
-    padding-top:130px;
-
-    box-shadow:0 8px 20px rgba(0,0,0,0.15);
+    height: 250px;
+    object-fit: contain; /* keeps the image from stretching */
+    position: absolute;
+    top: -140px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
 }
-
-
-
-/* =========================================================
-   16. CARD POSITIONS
-========================================================= */
 
-/* Left Card */
-.card1{
-    transform:rotate(-11deg);
+.card {
+    width: 250px;
+    height: 260px;
+    background: white;
+    border-radius: 15px;
+    text-align: center;
+    padding-top: 130px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-/* Middle Card */
-.card2{
-    transform:translateY(-40px);
+/* Tilts the left and right cards slightly and raises the middle one. */
+.card1 {
+    transform: rotate(-11deg);
 }
 
-/* Right Card */
-.card3{
-    transform:rotate(11deg);
+.card2 {
+    transform: translateY(-40px);
 }
 
-
-
-/* =========================================================
-   17. CARD NUMBER
-========================================================= */
-
-.card h3{
-    font-size:3rem;
-    font-weight:bold;
-    margin-bottom:10px;
+.card3 {
+    transform: rotate(11deg);
 }
-
 
-
-/* =========================================================
-   18. CARD TEXT
-========================================================= */
-
-.card p{
-    font-size:1.2rem;
-    color:#555;
+.card h3 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
-/* =========================================================
-   19. WHAT'S INSIDE SECTION
-========================================================= */
 
-.features{
-    text-align:center;
-    padding:100px 8%;
+.card p {
+    font-size: 1.2rem;
+    color: #555;
 }
 
-/* Small text: What's Inside? */
-.section-tag{
-    font-size:18px;
-    color:#777;
-    font-weight:600;
+/* The "What's Inside?" features section. */
+.features {
+    text-align: center;
+    padding: 100px 8%;
 }
 
-/* Main heading */
-.features h2{
-    font-size:42px;
-    color:#2d2b63;
-    margin-top:15px;
-    margin-bottom:20px;
+.section-tag {
+    font-size: 18px;
+    color: #777;
+    font-weight: 600;
 }
 
-/* Description paragraph */
-.section-description{
-    max-width:700px;
-    margin:0 auto 50px;
-    color:#666;
-    line-height:1.8;
+.features h2 {
+    font-size: 42px;
+    color: #2d2b63;
+    margin-top: 15px;
+    margin-bottom: 20px;
 }
 
-/* =========================================================
-   20. FEATURE CARDS CONTAINER
-========================================================= */
-
-.feature-container{
-    display:flex;
-    justify-content:center;
-    gap:25px;
-    flex-wrap:wrap;
+.section-description {
+    max-width: 700px;
+    margin: 0 auto 50px;
+    color: #666;
+    line-height: 1.8;
 }
-
-/* =========================================================
-   21. SINGLE FEATURE CARD
-========================================================= */
 
-.feature-card{
-    width:250px;
-    background:white;
-    border-radius:15px;
-    padding:30px 20px;
-    text-align:center;
-    box-shadow:0 8px 20px rgba(0,0,0,0.1);
+.feature-container {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
 }
 
-/* =========================================================
-   22. FEATURE CARD ICON
-========================================================= */
-
-.feature-card img{
-    width:60px;
-    height:60px;
-    object-fit:contain;
-    margin-bottom:15px;
+.feature-card {
+    width: 250px;
+    background: white;
+    border-radius: 15px;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
-
-/* =========================================================
-   23. FEATURE CARD TITLE
-========================================================= */
 
-.feature-card h3{
-    font-size:22px;
-    color:#2d2b63;
-    margin-bottom:10px;
+.feature-card img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 15px;
 }
 
-/* =========================================================
-   24. FEATURE CARD DESCRIPTION
-========================================================= */
-
-.feature-card p{
-    font-size:16px;
-    color:#666;
-    line-height:1.6;
+.feature-card h3 {
+    font-size: 22px;
+    color: #2d2b63;
+    margin-bottom: 10px;
 }
-/* =========================================================
-   ABOUT SECTION
-========================================================= */
 
-.about-section{
-    max-width:1200px;
-    margin:100px auto;
-    padding:0 40px;
+.feature-card p {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.6;
 }
 
-.about-tag{
-    font-size:20px;
-    color:#383737;
+/* The "About Us" section. */
+.about-section {
+    max-width: 1200px;
+    margin: 100px auto;
+    padding: 0 40px;
 }
 
-.about-section h2{
-    font-size:42px;
-    color:#2d2b63;
-    margin-top:15px;
-    margin-bottom:25px;
+.about-tag {
+    font-size: 20px;
+    color: #383737;
 }
 
-.about-description{
-    max-width:700px;
-    color:#666;
-    line-height:1.8;
-    margin-bottom:40px;
+.about-section h2 {
+    font-size: 42px;
+    color: #2d2b63;
+    margin-top: 15px;
+    margin-bottom: 25px;
 }
-
-/* =====================================
-   Mission / Approach / Privacy
-===================================== */
 
-.about-item{
-    display:flex;
-    align-items:flex-start;
-    gap:15px;
-    margin-bottom:25px;
+.about-description {
+    max-width: 700px;
+    color: #666;
+    line-height: 1.8;
+    margin-bottom: 40px;
 }
 
-.about-item img{
-    width:50px;
-    height:50px;
-    object-fit:contain;
+/* The mission, approach, and privacy rows under About Us. */
+.about-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 25px;
 }
 
-.about-item h3{
-    margin-bottom:5px;
-    color:#2d2b63;
+.about-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
 }
 
-.about-item p{
-    color:#666;
-    line-height:1.6;
+.about-item h3 {
+    margin-bottom: 5px;
+    color: #2d2b63;
 }
 
-
-/* =========================================================
-   OUR TEAM SECTION
-========================================================= */
-
-.team-section{
-    max-width:1200px;
-    margin:60px auto 100px;
-    padding:0 30px;
+.about-item p {
+    color: #666;
+    line-height: 1.6;
 }
 
-/* White Card */
-
-.team-card{
-    background:white;
-    border-radius:25px;
-    padding:50px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:50px;
-    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+/* The "Our Team" section. */
+.team-section {
+    max-width: 1200px;
+    margin: 60px auto 100px;
+    padding: 0 30px;
 }
-
-/* Left Side */
 
-.team-left{
-    flex:1;
+.team-card {
+    background: white;
+    border-radius: 25px;
+    padding: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 50px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
 }
 
-.team-left h2{
-    color:#2d2b63;
-    margin-bottom:35px;
+.team-left {
+    flex: 1;
 }
 
-/* Team Member */
-
-.member{
-    display:flex;
-    align-items:center;
-    gap:15px;
-    margin-bottom:25px;
+.team-left h2 {
+    color: #2d2b63;
+    margin-bottom: 35px;
 }
 
-.member-icon{
-    width:45px;
-    height:45px;
-    border-radius:50%;
-    background:#f2f2f2;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:20px;
+.member {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
 }
 
-.member h3{
-    font-size:18px;
-    margin-bottom:4px;
+.member-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
 }
 
-.member p{
-    color:#666;
-    font-size:14px;
+.member h3 {
+    font-size: 18px;
+    margin-bottom: 4px;
 }
-
-/* Right Side */
 
-.team-right{
-    flex:1;
-    text-align:center;
+.member p {
+    color: #666;
+    font-size: 14px;
 }
 
-.team-right img{
-    width:100%;
-    max-width:500px;
+.team-right {
+    flex: 1;
+    text-align: center;
 }
-
-
-/* =========================================================
-   SPONSOR SECTION
-========================================================= */
 
-.sponsor-section{
-    display:flex;
-    justify-content:space-between;
-    gap:60px;
-    padding:80px 8%;
-    border-top:1px solid #ddd;
+.team-right img {
+    width: 100%;
+    max-width: 500px;
 }
 
-/* Left Side */
-
-.sponsor-left{
-    flex:1;
+/* The "Sponsor a Child" section. */
+.sponsor-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 60px;
+    padding: 80px 8%;
+    border-top: 1px solid #ddd;
 }
 
-.sponsor-tag{
-    font-size:18px;
-    color:#777;
+.sponsor-left {
+    flex: 1;
 }
 
-.sponsor-left h2{
-    margin-top:15px;
-    margin-bottom:20px;
-    font-size:42px;
-    color:#2d2b63;
+.sponsor-tag {
+    font-size: 18px;
+    color: #777;
 }
 
-.sponsor-text{
-    color:#666;
-    line-height:1.8;
-    margin-bottom:30px;
+.sponsor-left h2 {
+    margin-top: 15px;
+    margin-bottom: 20px;
+    font-size: 42px;
+    color: #2d2b63;
 }
-
-/* Donation Benefits */
 
-.donation-list{
-    display:flex;
-    flex-direction:column;
-    gap:15px;
+.sponsor-text {
+    color: #666;
+    line-height: 1.8;
+    margin-bottom: 30px;
 }
 
-.donation-item{
-    padding:18px 0;
-    border-bottom:1px solid #ddd;
-    color:#555;
+.donation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-/* Right Card */
-
-.sponsor-card{
-    width:420px;
-    background:white;
-    border-radius:20px;
-    padding:30px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+.donation-item {
+    padding: 18px 0;
+    border-bottom: 1px solid #ddd;
+    color: #555;
 }
 
-.sponsor-card h3{
-    text-align:center;
-    margin-bottom:25px;
+/* The white donation card on the right side of the sponsor section. */
+.sponsor-card {
+    width: 420px;
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
-
-/* Amount Buttons */
 
-.amount-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-    margin-bottom:20px;
+.sponsor-card h3 {
+    text-align: center;
+    margin-bottom: 25px;
 }
 
-.amount-grid button{
-    height:60px;
-    border:none;
-    border-radius:10px;
-    background:#f3f3f3;
-    cursor:pointer;
+.amount-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
-/* Custom Amount */
-
-.custom-amount{
-    display:flex;
-    align-items:center;
-    background:#f3f3f3;
-    border-radius:10px;
-    overflow:hidden;
-    margin-bottom:20px;
+.amount-grid button {
+    height: 60px;
+    border: none;
+    border-radius: 10px;
+    background: #f3f3f3;
+    cursor: pointer;
 }
 
-.custom-amount span{
-    padding:15px;
-    font-weight:bold;
+.custom-amount {
+    display: flex;
+    align-items: center;
+    background: #f3f3f3;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
 }
 
-.custom-amount input{
-    flex:1;
-    border:none;
-    padding:15px;
-    background:none;
-    outline:none;
+.custom-amount span {
+    padding: 15px;
+    font-weight: bold;
 }
-
-/* Payment */
 
-.sponsor-card h4{
-    margin-bottom:15px;
+.custom-amount input {
+    flex: 1;
+    border: none;
+    padding: 15px;
+    background: none;
+    outline: none;
 }
 
-.payment-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr 1fr;
-    gap:10px;
-    margin-bottom:20px;
+.sponsor-card h4 {
+    margin-bottom: 15px;
 }
 
-.payment-grid button{
-    height:55px;
-    border:none;
-    border-radius:10px;
-    background:#f3f3f3;
-    cursor:pointer;
+.payment-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
-/* Donate Button */
-
-.donate-btn{
-    width:100%;
-    height:55px;
-    border:none;
-    border-radius:10px;
-    background:#2d2b63;
-    color:white;
-    font-weight:bold;
-    cursor:pointer;
+.payment-grid button {
+    height: 55px;
+    border: none;
+    border-radius: 10px;
+    background: #f3f3f3;
+    cursor: pointer;
 }
-/* =========================================================
-   IMPACT STATS SECTION
-========================================================= */
-
-.impact-stats{
-
-    width:90%;
-
-    margin:50px auto;
-
-    background:rgb(138, 132, 132);
-
-    border-radius:15px;
 
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    overflow:hidden;
-
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+.donate-btn {
+    width: 100%;
+    height: 55px;
+    border: none;
+    border-radius: 10px;
+    background: #2d2b63;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
 }
-
-
-/* =========================================================
-   INDIVIDUAL STAT BOX
-========================================================= */
-
-.impact-box{
-
-    flex:1;
 
-    text-align:center;
-
-    padding:35px 20px;
-
-    border-right:2px solid #bbb5b5;
+/* The grey impact stats bar (children sponsored, donors, total raised). */
+.impact-stats {
+    width: 90%;
+    margin: 50px auto;
+    background: rgb(138, 132, 132);
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
-
-
-/* Remove last divider */
 
-.impact-box:last-child{
-
-    border-right:none;
+.impact-box {
+    flex: 1;
+    text-align: center;
+    padding: 35px 20px;
+    border-right: 2px solid #bbb5b5;
 }
-
-
-/* =========================================================
-   TEXT
-========================================================= */
-
-.impact-box p{
 
-    font-size:24px;
-
-    font-weight:600;
-
-    color:#222;
-
-    margin:0;
+/* Removes the divider line after the last box. */
+.impact-box:last-child {
+    border-right: none;
 }
-/* =========================================================
-   FREE ACCESS SECTION
-========================================================= */
-
-.free-access{
 
-    width:90%;
-
-    margin:40px auto 70px auto;
+.impact-box p {
+    font-size: 24px;
+    font-weight: 600;
+    color: #222;
+    margin: 0;
 }
-
-
-/* White Card */
-
-.free-access-content{
 
-    background:white;
-
-    padding:40px;
-
-    border-radius:15px;
-
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+/* The "Need sponsored access?" section. */
+.free-access {
+    width: 90%;
+    margin: 40px auto 70px auto;
 }
-
-
-/* Heading */
-
-.free-access-content h2{
-
-    font-size:32px;
-
-    color:#222;
 
-    margin-bottom:15px;
+.free-access-content {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-
-/* Paragraph */
-
-.free-access-content p{
-
-    max-width:800px;
-
-    color:#666;
-
-    line-height:1.8;
-
-    margin-bottom:25px;
+.free-access-content h2 {
+    font-size: 32px;
+    color: #222;
+    margin-bottom: 15px;
 }
-
-
-/* Button */
 
-.apply-btn{
-
-    background:#4a4a4a;
-
-    color:white;
-
-    border:none;
-
-    padding:14px 28px;
-
-    border-radius:10px;
-
-    font-size:16px;
-
-    cursor:pointer;
-
-    transition:0.3s;
+.free-access-content p {
+    max-width: 800px;
+    color: #666;
+    line-height: 1.8;
+    margin-bottom: 25px;
 }
 
-
-.apply-btn:hover{
-
-    background:#333;
+.apply-btn {
+    background: #4a4a4a;
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
 }
-/* =========================================================
-   FOOTER
-========================================================= */
-
-.footer{
-
-    background:#f8f8f8;
 
-    margin-top:80px;
-
-    padding-top:60px;
+.apply-btn:hover {
+    background: #333;
 }
-
-
-/* Main Footer Area */
-
-.footer-container{
 
-    width:90%;
-
-    margin:auto;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    gap:50px;
-
-    flex-wrap:wrap;
+/* The footer. */
+.footer {
+    background: #f8f8f8;
+    margin-top: 80px;
+    padding-top: 60px;
 }
-
-
-/* Logo Area */
-
-.footer-logo{
 
-    max-width:300px;
+.footer-container {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    flex-wrap: wrap;
 }
 
-.footer-logo img{
-
-    width:60px;
-
-    margin-bottom:10px;
+.footer-logo {
+    max-width: 300px;
 }
-
-.footer-logo h3{
-
-    margin-bottom:10px;
 
-    color:#2d2b63;
+.footer-logo img {
+    width: 60px;
+    margin-bottom: 10px;
 }
 
-.footer-logo p{
-
-    color:#666;
-
-    line-height:1.7;
+.footer-logo h3 {
+    margin-bottom: 10px;
+    color: #2d2b63;
 }
-
-
-/* Columns */
 
-.footer-column{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:12px;
+.footer-logo p {
+    color: #666;
+    line-height: 1.7;
 }
-
-.footer-column h4{
 
-    margin-bottom:10px;
-
-    color:#2d2b63;
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
-
-.footer-column a{
 
-    text-decoration:none;
-
-    color:#666;
+.footer-column h4 {
+    margin-bottom: 10px;
+    color: #2d2b63;
 }
-
-.footer-column a:hover{
 
-    color:#000;
+.footer-column a {
+    text-decoration: none;
+    color: #666;
 }
 
-
-/* Bottom Footer */
-
-.footer-bottom{
-
-    text-align:center;
-
-    padding:25px;
-
-    margin-top:40px;
-
-    border-top:1px solid #ddd;
-
-    color:#777;
+.footer-column a:hover {
+    color: #000;
 }
-/* ==========================
-ALL CLICKABLE ITEMS HOVER
-========================== */
 
-/* Smooth animation */
+.footer-bottom {
+    text-align: center;
+    padding: 25px;
+    margin-top: 40px;
+    border-top: 1px solid #ddd;
+    color: #777;
+}
 
-a,
-button,
+/* Smooth hover transitions, but only for the logo, nav links, buttons, and footer links. */
 .logo,
 .nav-links a,
 .dashboard-menu a,
-.language-btn,
-.signin-btn,
-.signup-btn,
-.hero-buttons button,
-.feature-card,
-.amount-grid button,
-.payment-grid button,
-.donate-btn,
-.apply-btn,
-.game-link,
-.game-card,
-.profile-icon,
-.member,
-.footer-column a{
-
-transition:0.3s ease;
-
+button,
+.footer-column a {
+    transition: transform 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
 }
 
-
-/* Lift effect */
-
-a:hover,
-button:hover,
+/* Lifts these items up a little when hovered. */
 .logo:hover,
 .nav-links a:hover,
 .dashboard-menu a:hover,
-.language-btn:hover,
-.signin-btn:hover,
-.signup-btn:hover,
-.hero-buttons button:hover,
-.amount-grid button:hover,
-.payment-grid button:hover,
-.donate-btn:hover,
-.apply-btn:hover,
-.game-link:hover,
-.profile-icon:hover,
-.footer-column a:hover{
-
-transform:translateY(-4px);
-
+button:hover,
+.footer-column a:hover {
+    transform: translateY(-4px);
 }
 
-
-/* Cards hover */
-
-.feature-card:hover,
-.game-card:hover{
-
-transform:translateY(-8px);
-
-box-shadow:0 12px 24px rgba(0,0,0,0.15);
-
+/* Adds a soft glow under buttons when hovered. */
+button:hover {
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
 }
 
-
-/* Navbar links */
-
+/* Changes link color on hover. */
 .nav-links a:hover,
-.dashboard-menu a:hover{
-
-color:#2d2b63;
-
+.dashboard-menu a:hover,
+.footer-column a:hover {
+    color: #2d2b63;
 }
 
-
-/* Logo hover */
-
-.logo:hover{
-
-opacity:0.9;
-
+/* Fades the logo slightly on hover. */
+.logo:hover {
+    opacity: 0.9;
 }
 
+/* Adjusts the layout for tablet screens. */
+@media (max-width: 992px) {
+    .navbar {
+        flex-wrap: wrap;
+        row-gap: 15px;
+    }
 
-/* Main buttons */
+    .hero-image {
+        width: 100%;
+        max-width: 500px;
+    }
 
-.language-btn:hover,
-.signin-btn:hover,
-.signup-btn:hover,
-.hero-buttons button:hover,
-.donate-btn:hover,
-.apply-btn:hover{
+    .hero h1 {
+        font-size: 2.4rem;
+    }
 
-box-shadow:0 8px 18px rgba(0,0,0,0.15);
+    .stats {
+        margin-top: 160px;
+        gap: 30px;
+    }
 
+    .features {
+        padding: 80px 6%;
+    }
+
+    .about-section {
+        margin: 70px auto;
+        padding: 0 25px;
+    }
+
+    .team-card {
+        flex-direction: column;
+        padding: 35px;
+    }
+
+    .team-right img {
+        max-width: 350px;
+    }
+
+    .sponsor-section {
+        flex-direction: column;
+        padding: 60px 6%;
+    }
+
+    .sponsor-card {
+        width: 100%;
+        max-width: 420px;
+        margin: 0 auto;
+    }
+
+    .impact-stats {
+        flex-wrap: wrap;
+    }
+
+    .impact-box {
+        flex: 1 1 50%;
+        border-right: none;
+        border-bottom: 2px solid #bbb5b5;
+    }
 }
 
+/* Adjusts the layout for small mobile screens. */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 20px 6%;
+    }
 
-/* Amount buttons */
+    .nav-links {
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 
-.amount-grid button:hover,
-.payment-grid button:hover{
+    .nav-buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 
-background:#e8e8e8;
+    .logo span {
+        font-size: 1.7rem;
+    }
 
-box-shadow:0 8px 18px rgba(0,0,0,0.15);
+    .logo-img {
+        width: 60px;
+        height: 60px;
+    }
 
+    .hero {
+        padding: 40px 20px;
+    }
+
+    .hero h1 {
+        font-size: 1.9rem;
+    }
+
+    .hero p {
+        font-size: 1.1rem;
+    }
+
+    .hero-buttons button {
+        width: 100%;
+    }
+
+    .stats {
+        margin-top: 140px;
+        margin-bottom: 70px;
+        gap: 60px 20px;
+    }
+
+    .card1,
+    .card2,
+    .card3 {
+        transform: none;
+    }
+
+    .features h2,
+    .sponsor-left h2,
+    .about-section h2 {
+        font-size: 30px;
+    }
+
+    .feature-card {
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .about-item {
+        flex-direction: column;
+    }
+
+    .donation-item {
+        font-size: 15px;
+    }
+
+    .impact-box {
+        flex: 1 1 100%;
+    }
+
+    .impact-box p {
+        font-size: 20px;
+    }
+
+    .free-access-content {
+        padding: 25px;
+    }
+
+    .free-access-content h2 {
+        font-size: 26px;
+    }
+
+    .footer-container {
+        text-align: center;
+        justify-content: center;
+    }
+
+    .footer-logo {
+        max-width: 100%;
+    }
 }
 
-
-/* Footer links */
-
-.footer-column a:hover{
-
-color:#2d2b63;
-
+/* The mobile menu button is hidden by default since it's only needed on small screens. */
+.menu-toggle {
+    display: none;
 }
 
-
-/* Team members */
-
-.member:hover{
-
-transform:translateX(8px);
-
-transition:0.3s;
-
-cursor:pointer;
-
+.nav-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 30px;
 }
 
+/* Shows the menu button and turns the menu into a dropdown on mobile. */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+        background: none;
+        border: none;
+        font-size: 35px;
+        cursor: pointer;
+    }
 
-/* =========================================================
-   RESPONSIVE — TABLET (max-width: 992px)
-   This file had no breakpoints at all, so on a phone or
-   tablet the navbar, hero image, sponsor card and impact
-   stats were overflowing the screen. Added to match the
-   breakpoints already used in dashboard.css / shop.css.
-========================================================= */
+    .navbar {
+        position: relative;
+    }
 
-@media(max-width:992px){
+    /* Hides the menu until the user taps the menu button. */
+    .nav-wrapper {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: white;
+        padding: 25px;
+        flex-direction: column;
+        z-index: 999;
+    }
 
-.navbar{
-    flex-wrap:wrap;
-    row-gap:15px;
-}
+    .nav-wrapper.show {
+        display: flex;
+    }
 
-.hero-image{
-    width:100%;
-    max-width:500px;
-}
+    .nav-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
 
-.hero h1{
-    font-size:2.4rem;
-}
-
-.stats{
-    margin-top:160px;
-    gap:30px;
-}
-
-.features{
-    padding:80px 6%;
-}
-
-.about-section{
-    margin:70px auto;
-    padding:0 25px;
-}
-
-.team-card{
-    flex-direction:column;
-    padding:35px;
-}
-
-.team-right img{
-    max-width:350px;
-}
-
-.sponsor-section{
-    flex-direction:column;
-    padding:60px 6%;
-}
-
-.sponsor-card{
-    width:100%;
-    max-width:420px;
-    margin:0 auto;
-}
-
-.impact-stats{
-    flex-wrap:wrap;
-}
-
-.impact-box{
-    flex:1 1 50%;
-    border-right:none;
-    border-bottom:2px solid #bbb5b5;
-}
-
-}
-
-
-/* =========================================================
-   RESPONSIVE — MOBILE (max-width: 768px)
-========================================================= */
-
-@media(max-width:768px){
-
-.navbar{
-    padding:20px 6%;
-}
-
-.nav-links{
-    gap:20px;
-    flex-wrap:wrap;
-    justify-content:center;
-}
-
-.nav-buttons{
-    flex-wrap:wrap;
-    justify-content:center;
-}
-
-.logo span{
-    font-size:1.7rem;
-}
-
-.logo-img{
-    width:60px;
-    height:60px;
-}
-
-.hero{
-    padding:40px 20px;
-}
-
-.hero h1{
-    font-size:1.9rem;
-}
-
-.hero p{
-    font-size:1.1rem;
-}
-
-.hero-buttons button{
-    width:100%;
-}
-
-.stats{
-    margin-top:140px;
-    margin-bottom:70px;
-    gap:60px 20px;
-}
-
-.card1,
-.card2,
-.card3{
-    transform:none;
-}
-
-.features h2,
-.sponsor-left h2,
-.about-section h2{
-    font-size:30px;
-}
-
-.feature-card{
-    width:100%;
-    max-width:320px;
-}
-
-.about-item{
-    flex-direction:column;
-}
-
-.donation-item{
-    font-size:15px;
-}
-
-.impact-box{
-    flex:1 1 100%;
-}
-
-.impact-box p{
-    font-size:20px;
-}
-
-.free-access-content{
-    padding:25px;
-}
-
-.free-access-content h2{
-    font-size:26px;
-}
-
-.footer-container{
-    text-align:center;
-    justify-content:center;
-}
-
-.footer-logo{
-    max-width:100%;
-}
-
+    .nav-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
 }

@@ -1,560 +1,408 @@
-/* ==========================
-RESET
-========================== */
-
-*{
-
-margin:0;
-
-padding:0;
-
-box-sizing:border-box;
-
+/* Removes the default spacing the browser adds to everything. */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body{
-
-font-family:Arial,sans-serif;
-
-background:#f7f7f7;
-
-min-height:100vh;
-
+body {
+    font-family: Arial, sans-serif;
+    background: #f7f7f7;
+    min-height: 100vh;
+    /* Stops the page from scrolling sideways. */
+    overflow-x: hidden;
+    width: 100%;
 }
 
-
-/* ==========================
-ALL CLICKABLE ITEMS
-========================== */
-
+/* Makes every clickable item change smoothly instead of snapping. */
 .logo,
 .dashboard-menu a,
 .language-btn,
 .profile-icon,
 .back-btn,
 .worksheet-card,
-.worksheet-card button{
-
-transition:0.3s ease;
-
+.worksheet-card button {
+    transition: 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
-
-
-/* ==========================
-NAVBAR
-========================== */
-
-.dashboard-navbar{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding:20px 6%;
-
-background:#c6d58f;
-
-flex-wrap:wrap;
-
-gap:20px;
-
+/* Some elements need their own layout, so we set those here. */
+.logo {
+    display: flex;
 }
 
-
-
-/* ==========================
-LOGO
-========================== */
-
-.logo{
-
-display:flex;
-
-align-items:center;
-
-gap:12px;
-
-text-decoration:none;
-
+.worksheet-card {
+    display: flex;
 }
 
-.logo:hover{
-
-transform:translateY(-4px);
-
+.worksheet-card button {
+    display: inline-block;
 }
 
-.logo-img{
-
-width:55px;
-
-height:55px;
-
-object-fit:contain;
-
+/* The top navigation bar. */
+.dashboard-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 6%;
+    background: #c6d58f;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-.logo h2{
-
-font-size:28px;
-
-color:#000000;
-
+/* The logo and site name. */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
 }
 
-
-
-/* ==========================
-MENU
-========================== */
-
-.dashboard-menu{
-
-display:flex;
-
-gap:40px;
-
-flex-wrap:wrap;
-
+.logo:hover {
+    transform: translateY(-4px);
 }
 
-.dashboard-menu a{
-
-text-decoration:none;
-
-color:black;
-
-font-weight:600;
-
-font-size:22px;
-
+.logo-img {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
 }
 
-.dashboard-menu a:hover{
-
-color:#2d2b63;
-
-transform:translateY(-4px);
-
+.logo h2 {
+    font-size: 28px;
+    color: #000000;
 }
 
-
-
-/* ==========================
-RIGHT SIDE
-========================== */
-
-.dashboard-right{
-
-display:flex;
-
-align-items:center;
-
-gap:20px;
-
+/* The main menu links. */
+.dashboard-menu {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
 }
 
-
-
-/* ==========================
-LANGUAGE
-========================== */
-
-.language-btn{
-
-padding:12px 22px;
-
-border:none;
-
-border-radius:10px;
-
-background:white;
-
-cursor:pointer;
-
-font-weight:bold;
-
-font-size:18px;
-
+.dashboard-menu a {
+    text-decoration: none;
+    color: black;
+    font-weight: 600;
+    font-size: 22px;
 }
 
-.language-btn:hover{
-
-transform:translateY(-4px);
-
-box-shadow:0 8px 18px rgba(0,0,0,0.15);
-
+.dashboard-menu a:hover {
+    color: #2d2b63;
+    transform: translateY(-4px);
 }
 
-
-
-/* ==========================
-PROFILE
-========================== */
-
-.profile-icon{
-
-width:50px;
-
-height:50px;
-
-border-radius:50%;
-
-background:white;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-font-size:24px;
-
-text-decoration:none;
-
-color:black;
-
+/* The language and profile buttons on the right. */
+.dashboard-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
-.profile-icon:hover{
-
-transform:translateY(-4px);
-
-box-shadow:0 8px 18px rgba(0,0,0,0.15);
-
+/* The language switch button. */
+.language-btn {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
 }
 
-
-
-/* ==========================
-TOP BAR
-========================== */
-
-.top-bar{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding:20px 6%;
-
-background:white;
-
-border-bottom:1px solid #ddd;
-
+.language-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
 }
 
-
-
-/* ==========================
-BACK BUTTON
-========================== */
-
-.back-btn{
-
-text-decoration:none;
-
-font-size:24px;
-
-font-weight:bold;
-
-color:black;
-
+/* The round profile icon. */
+.profile-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    text-decoration: none;
+    color: black;
 }
 
-.back-btn:hover{
-
-transform:translateY(-4px);
-
+.profile-icon:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
 }
 
-
-
-/* ==========================
-COIN DISPLAY
-========================== */
-
-.coin-display{
-
-display:flex;
-
-align-items:center;
-
-gap:10px;
-
-font-size:24px;
-
-font-weight:bold;
-
+/* The bar below the navbar with the back button and coin count. */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 6%;
+    background: white;
+    border-bottom: 1px solid #ddd;
 }
 
-.coin-display img{
-
-width:35px;
-
-height:35px;
-
-object-fit:contain;
-
+/* The back button. */
+.back-btn {
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
 }
 
-
-
-/* ==========================
-SHOP
-========================== */
-
-.shop-section{
-
-padding:60px 6%;
-
+.back-btn:hover {
+    transform: translateY(-4px);
 }
 
-.shop-section h2{
-
-font-size:48px;
-
-text-align:center;
-
-margin-bottom:50px;
-
-color:#2d2b63;
-
+/* Shows how many coins the user has. */
+.coin-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 24px;
+    font-weight: bold;
 }
 
-
-
-/* ==========================
-GRID
-========================== */
-
-.worksheet-grid{
-
-display:grid;
-
-grid-template-columns:repeat(4,1fr);
-
-gap:30px;
-
+.coin-display img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
 }
 
-
-
-/* ==========================
-CARD
-========================== */
-
-.worksheet-card{
-
-background:white;
-
-padding:25px;
-
-border-radius:20px;
-
-box-shadow:0 5px 15px rgba(0,0,0,0.08);
-
-text-align:center;
-
-position:relative;
-
+/* The shop section that holds all the worksheet cards. */
+.shop-section {
+    padding: 60px 6%;
 }
 
-.worksheet-card:hover{
-
-transform:translateY(-10px);
-
-box-shadow:0 12px 24px rgba(0,0,0,0.18);
-
+.shop-section h2 {
+    font-size: 48px;
+    text-align: center;
+    margin-bottom: 50px;
+    color: #2d2b63;
 }
 
-
-
-/* ==========================
-COIN ICON
-========================== */
-
-.coin-icon{
-
-position:absolute;
-
-top:20px;
-
-left:20px;
-
-display:flex;
-
-align-items:center;
-
-gap:6px;
-
-font-size:18px;
-
-font-weight:bold;
-
+/* Puts the worksheet cards in 4 columns. */
+.worksheet-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
 }
 
-.coin-icon img{
-
-width:28px;
-
-height:28px;
-
-object-fit:contain;
-
+/* One worksheet card. */
+.worksheet-card {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    text-align: center;
+    position: relative;
+    flex-direction: column;
 }
 
-
-
-/* ==========================
-IMAGE
-========================== */
-
-.worksheet-image{
-
-height:150px;
-
-background:#ececec;
-
-border-radius:10px;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-font-size:50px;
-
-margin-bottom:25px;
-
+.worksheet-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.18);
 }
 
-
-
-/* ==========================
-TEXT
-========================== */
-
-.worksheet-card p{
-
-font-size:28px;
-
-font-weight:bold;
-
-margin-bottom:25px;
-
+/* The small coin price tag in the corner of the card. */
+.coin-icon {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 18px;
+    font-weight: bold;
 }
 
-
-
-/* ==========================
-BUY BUTTON
-========================== */
-
-.worksheet-card button{
-
-width:130px;
-
-height:55px;
-
-border:none;
-
-border-radius:10px;
-
-background:#b6d34d;
-
-font-size:22px;
-
-font-weight:bold;
-
-cursor:pointer;
-
+.coin-icon img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
 }
 
-.worksheet-card button:hover{
-
-transform:translateY(-4px);
-
-box-shadow:0 8px 18px rgba(0,0,0,0.15);
-
+/* The picture area inside the card. */
+.worksheet-image {
+    width: 100%;
+    height: 150px;
+    background: #ececec;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    margin-bottom: 25px;
 }
 
-
-
-/* ==========================
-FOOTER
-========================== */
-
-.dashboard-footer{
-
-margin-top:70px;
-
-background:white;
-
-padding:25px;
-
-text-align:center;
-
-border-top:1px solid #ddd;
-
+/* The worksheet name text. */
+.worksheet-card p {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    width: 100%;
 }
 
-
-
-/* ==========================
-TABLET
-========================== */
-
-@media(max-width:992px){
-
-.dashboard-navbar{
-
-flex-direction:column;
-
+/* The buy button inside the card. */
+.worksheet-card button {
+    width: 130px;
+    height: 55px;
+    border: none;
+    border-radius: 10px;
+    background: #b6d34d;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
 }
 
-.worksheet-grid{
-
-grid-template-columns:1fr 1fr;
-
+.worksheet-card button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
 }
 
+/* The footer at the bottom of the page. */
+.dashboard-footer {
+    margin-top: 70px;
+    background: white;
+    padding: 25px;
+    text-align: center;
+    border-top: 1px solid #ddd;
 }
 
+/* Changes the layout a bit for tablet screens. */
+@media (max-width: 992px) and (min-width: 769px) {
+    .dashboard-navbar {
+        flex-direction: column;
+    }
 
-
-/* ==========================
-MOBILE
-========================== */
-
-@media(max-width:768px){
-
-.dashboard-menu{
-
-flex-direction:column;
-
-align-items:center;
-
+    .worksheet-grid {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
-.top-bar{
-
-flex-direction:column;
-
-gap:15px;
-
+/* The menu button is hidden by default and only shows on mobile. */
+.menu-toggle {
+    display: none;
 }
 
-.worksheet-grid{
-
-grid-template-columns:1fr;
-
+.nav-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 30px;
 }
 
+/* Changes the layout for small mobile screens. */
+@media (max-width: 768px) {
+    /* Keeps the navbar in a row but with smaller spacing. */
+    .dashboard-navbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 6%;
+        position: relative;
+        gap: 10px;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .logo h2 {
+        font-size: 24px;
+    }
+
+    .logo-img {
+        width: 45px;
+        height: 45px;
+    }
+
+    /* Shows the menu button so users can open the menu. */
+    .menu-toggle {
+        display: block;
+        background: none;
+        border: none;
+        font-size: 35px;
+        cursor: pointer;
+    }
+
+    /* Hides the menu until the user taps the menu button. */
+    .nav-wrapper {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: white;
+        padding: 25px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 25px;
+        z-index: 999;
+        box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+    }
+
+    /* Shows the menu once it's opened. */
+    .nav-wrapper.show {
+        display: flex;
+    }
+
+    /* Stacks the menu links on top of each other. */
+    .dashboard-menu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        width: 100%;
+    }
+
+    .dashboard-menu a {
+        font-size: 20px;
+    }
+
+    /* Stacks the right-side buttons on top of each other. */
+    .dashboard-right {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        width: 100%;
+    }
+
+    /* Keeps the top bar in a row but with smaller spacing. */
+    .top-bar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 6%;
+    }
+
+    .back-btn {
+        font-size: 20px;
+    }
+
+    .coin-display {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 22px;
+    }
+
+    /* Shows one worksheet card per row on small screens. */
+    .worksheet-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .shop-section h2 {
+        font-size: 40px;
+    }
 }

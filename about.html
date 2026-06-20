@@ -1,331 +1,172 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Gyan Setu - About Us</title>
-
-<link rel="stylesheet"
-href="css/style.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gyan Setu - About Us</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-<header class="navbar">
-
-<a href="index.html" class="logo">
-
-<img src="assets/images/logo.png"
-alt="logo"
-class="logo-img">
-
-<span>Gyan Setu</span>
-
-</a>
-
-<nav>
-
-<ul class="nav-links">
-
-<li>
-<a href="index.html">Home</a>
-</li>
-
-<li>
-<a href="#">How to Join</a>
-</li>
-
-<li>
-<a href="about.html" aria-current="page">About Us</a>
-</li>
-
-</ul>
-
-</nav>
-
-<div class="nav-buttons">
-
-<button class="language-btn" type="button">
-
-<img src="assets/images/language.png"
-alt="Language Icon"
-class="language-icon">
-
-Language
-
-</button>
-
-<button class="signin-btn" type="button">
-Sign In
-</button>
-
-<button class="signup-btn" type="button">
-Sign Up
-</button>
-
-</div>
-
-</header>
-
-
-
-<section class="about-section">
-
-<span class="about-tag">
-
-About Us
-
-</span>
-
-
-<h2>
-
-Bridging children to knowledge
-
-</h2>
-
-
-<p class="about-description">
-
-Gyan Setu means "bridge of knowledge" in Nepali.
-
-We are a small team of developers and designers from Nepal building educational tools for the next generation.
-
-</p>
-
-
-<div class="about-item">
-
-<img src="assets/images/mission.png"
-alt="Mission">
-
-<div>
-
-<h3>Our Mission</h3>
-
-<p>
-
-Make quality education accessible to every child in Nepal regardless of location or income.
-
-</p>
-
-</div>
-
-</div>
-
-
-<div class="about-item">
-
-<img src="assets/images/approach.png"
-alt="Approach">
-
-<div>
-
-<h3>Our Approach</h3>
-
-<p>
-
-Game-based bilingual learning that respects Nepal's culture and works on low-bandwidth networks.
-
-</p>
-
-</div>
-
-</div>
-
-
-<div class="about-item">
-
-<img src="assets/images/privacy.png"
-alt="Privacy">
-
-<div>
-
-<h3>Privacy First</h3>
-
-<p>
-
-No email required. No ads. Children's data is never shared.
-
-Parents stay in full control.
-
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-
-<section class="team-section">
-
-<div class="team-card">
-
-
-<div class="team-left">
-
-<h2>Our Team</h2>
-
-
-<div class="member">
-
-<div class="member-icon">👤</div>
-
-<div>
-
-<h3>Nikita Shrestha</h3>
-
-<p>Team Lead</p>
-
-</div>
-
-</div>
-
-
-<div class="member">
-
-<div class="member-icon">👤</div>
-
-<div>
-
-<h3>Anupa Pudasaini</h3>
-
-<p>Tester</p>
-
-</div>
-
-</div>
-
-
-<div class="member">
-
-<div class="member-icon">👤</div>
-
-<div>
-
-<h3>Archie Shrestha</h3>
-
-<p>Program Architect</p>
-
-</div>
-
-</div>
-
-
-<div class="member">
-
-<div class="member-icon">👤</div>
-
-<div>
-
-<h3>Jelshi Rai</h3>
-
-<p>Developer</p>
-
-</div>
-
-</div>
-
-
-<div class="member">
-
-<div class="member-icon">👤</div>
-
-<div>
-
-<h3>Surye Dahal</h3>
-
-<p>Business Analyst</p>
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="team-right">
-
-<img src="assets/images/team-characters.png"
-alt="Team Characters">
-
-</div>
-
-</div>
-
-</section>
-
-
-<footer class="footer">
-
-<div class="footer-container">
-
-<div class="footer-logo">
-
-<img src="assets/images/logo.png"
-alt="Gyan Setu Logo">
-
-<h3>Gyan Setu</h3>
-
-<p>
-
-A fun bilingual learning platform
-helping Nepal's children learn,
-play and grow together.
-
-</p>
-
-</div>
-
-<div class="footer-column">
-
-<h4>Quick Links</h4>
-
-<a href="index.html">Home</a>
-<a href="#">How to Join</a>
-<a href="about.html">About Us</a>
-
-</div>
-
-<div class="footer-column">
-
-<h4>Resources</h4>
-
-<a href="#">Privacy Policy</a>
-<a href="#">Terms &amp; Conditions</a>
-<a href="#">Contact</a>
-
-</div>
-
-<div class="footer-column">
-
-<h4>Connect</h4>
-
-<a href="#">Facebook</a>
-<a href="#">Instagram</a>
-<a href="#">Email</a>
-
-</div>
-
-</div>
-
-<div class="footer-bottom">
-
-© 2025 Gyan Setu. All rights reserved.
-
-</div>
-
-</footer>
-
+    <!-- navbar -->
+    <header class="navbar">
+        <a href="index.html" class="logo">
+            <img src="assets/images/logo.png" alt="Gyan Setu Logo" class="logo-img">
+            <span>Gyan Setu</span>
+        </a>
+
+        <!-- hamburger for mobile -->
+        <button class="menu-toggle" type="button">☰</button>
+
+        <div class="nav-wrapper">
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">How to Join</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-buttons">
+                <button class="language-btn">
+                    <img src="assets/images/language.png" alt="Language Icon" class="language-icon">
+                    Language
+                </button>
+                <button class="signin-btn">Sign In</button>
+                <button class="signup-btn">Sign Up</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- about us -->
+    <section class="about-section">
+        <span class="about-tag">About Us</span>
+        <h2>Bridging children to knowledge</h2>
+        <p class="about-description">
+            Gyan Setu means "bridge of knowledge" in Nepali.
+            We are a small team of developers and designers from Nepal building educational tools for the next generation.
+        </p>
+
+        <div class="about-item">
+            <img src="assets/images/mission.png" alt="Mission">
+            <div>
+                <h3>Our Mission</h3>
+                <p>Make quality education accessible to every child in Nepal regardless of location or income.</p>
+            </div>
+        </div>
+
+        <div class="about-item">
+            <img src="assets/images/approach.png" alt="Approach">
+            <div>
+                <h3>Our Approach</h3>
+                <p>Game-based bilingual learning that respects Nepal's culture and works on low-bandwidth networks.</p>
+            </div>
+        </div>
+
+        <div class="about-item">
+            <img src="assets/images/privacy.png" alt="Privacy">
+            <div>
+                <h3>Privacy First</h3>
+                <p>
+                    No email required. No ads. Children's data is never shared.
+                    Parents stay in full control.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- meet the team -->
+    <section class="team-section">
+        <div class="team-card">
+
+            <div class="team-left">
+                <h2>Our Team</h2>
+
+                <div class="member">
+                    <div class="member-icon">👥</div>
+                    <div>
+                        <h3>Nikita Shrestha</h3>
+                        <p>Team Lead</p>
+                    </div>
+                </div>
+
+                <div class="member">
+                    <div class="member-icon">👥</div>
+                    <div>
+                        <h3>Anupa Pudasaini</h3>
+                        <p>Tester</p>
+                    </div>
+                </div>
+
+                <div class="member">
+                    <div class="member-icon">👥</div>
+                    <div>
+                        <h3>Archie Shrestha</h3>
+                        <p>Program Architect</p>
+                    </div>
+                </div>
+
+                <div class="member">
+                    <div class="member-icon">👥</div>
+                    <div>
+                        <h3>Jelshi Rai</h3>
+                        <p>Developer</p>
+                    </div>
+                </div>
+
+                <div class="member">
+                    <div class="member-icon">👥</div>
+                    <div>
+                        <h3>Surye Dahal</h3>
+                        <p>Business Analyst</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-right">
+                <img src="assets/images/team-characters.png" alt="Team Characters">
+            </div>
+
+        </div>
+    </section>
+
+    <!-- footer -->
+    <footer class="footer">
+        <div class="footer-container">
+
+            <div class="footer-logo">
+                <img src="assets/images/logo.png" alt="Gyan Setu Logo">
+                <h3>Gyan Setu</h3>
+                <p>A fun bilingual learning platform helping Nepal's children learn, play and grow together.</p>
+            </div>
+
+            <div class="footer-column">
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="#">How to Join</a>
+                <a href="about.html">About Us</a>
+            </div>
+
+            <div class="footer-column">
+                <h4>Resources</h4>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms &amp; Conditions</a>
+                <a href="#">Contact</a>
+            </div>
+
+            <div class="footer-column">
+                <h4>Connect</h4>
+                <a href="#">Facebook</a>
+                <a href="#">Instagram</a>
+                <a href="#">Email</a>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">© 2025 Gyan Setu. All rights reserved.</div>
+    </footer>
+
+    <script src="js/script.js"></script>
 
 </body>
-
 </html>

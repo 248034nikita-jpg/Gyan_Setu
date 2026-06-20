@@ -1,608 +1,416 @@
-/* ==========================
-RESET
-========================== */
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
+/* Removes the default spacing the browser adds to everything. */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body{
-font-family:Arial,sans-serif;
-background:#f7f7f7;
-min-height:100vh;
-display:flex;
-flex-direction:column;
+body {
+    font-family: Arial, sans-serif;
+    background: #f7f7f7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden; /* stops the page from scrolling sideways */
+    width: 100%;
 }
 
-
-/* ==========================
-ALL CLICKABLE ITEMS
-========================== */
-
+/* Makes buttons, links, and cards change smoothly instead of snapping. */
 button,
 a,
 .game-card,
 .logo,
-.profile-icon{
-transition:0.3s ease;
-cursor:pointer;
+.profile-icon {
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+    cursor: pointer;
 }
 
-
-/* ==========================
-NAVBAR
-========================== */
-
-.dashboard-navbar{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding:20px 5%;
-
-background:#c6d58f;
-
-flex-wrap:wrap;
-
-gap:20px;
-
+/* The top navigation bar. */
+.dashboard-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    background: #c6d58f;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
 }
 
-
-/* ==========================
-LOGO
-========================== */
-
-.logo{
-
-display:flex;
-
-align-items:center;
-
-gap:12px;
-
-text-decoration:none;
-
+/* The logo and site name. */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
 }
 
-.logo:hover{
-
-transform:translateY(-4px);
-
+.logo:hover {
+    transform: translateY(-4px);
+    opacity: 0.9;
 }
 
-.logo-img{
-
-width:60px;
-
-height:60px;
-
-object-fit:contain;
-
+.logo-img {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
 }
 
-.logo h2{
-
-font-size:32px;
-
-color:#000000;
-
+.logo h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: black;
 }
 
-
-/* ==========================
-MENU
-========================== */
-
-.dashboard-menu{
-
-display:flex;
-
-gap:45px;
-
-flex-wrap:wrap;
-
+/* The main menu links. */
+.dashboard-menu {
+    display: flex;
+    gap: 40px;
 }
 
-.dashboard-menu a{
-
-text-decoration:none;
-
-color:black;
-
-font-size:22px;
-
-font-weight:700;
-
+.dashboard-menu a {
+    text-decoration: none;
+    font-size: 22px;
+    font-weight: bold;
+    color: black;
 }
 
-.dashboard-menu a:hover{
-
-color:#2d2b63;
-
-transform:translateY(-3px);
-
+.dashboard-menu a:hover {
+    color: #4a5c1d;
+    transform: translateY(-3px);
 }
 
-
-/* ==========================
-RIGHT SIDE
-========================== */
-
-.dashboard-right{
-
-display:flex;
-
-align-items:center;
-
-gap:20px;
-
+/* The language and profile buttons on the right. */
+.dashboard-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
 }
 
-
-/* ==========================
-LANGUAGE BUTTON
-========================== */
-
-.language-btn{
-
-padding:14px 24px;
-
-border:none;
-
-border-radius:12px;
-
-background:white;
-
-font-size:18px;
-
-font-weight:bold;
-
-cursor:pointer;
-
+.language-btn {
+    padding: 10px 20px;
+    background: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
 }
 
-.language-btn:hover{
-
-transform:translateY(-4px);
-
-box-shadow:0 8px 18px rgba(0,0,0,0.15);
-
+.language-btn:hover {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
-
-/* ==========================
-PROFILE ICON
-========================== */
-
-.profile-icon{
-
-width:60px;
-
-height:60px;
-
-border-radius:50%;
-
-background:white;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-font-size:28px;
-
-text-decoration:none;
-
-color:black;
-
+.profile-icon {
+    text-decoration: none;
+    font-size: 32px;
+    background: white;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.profile-icon:hover{
-
-transform:translateY(-4px);
-
-box-shadow:0 8px 18px rgba(0,0,0,0.15);
-
+.profile-icon:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
 }
 
-
-/* ==========================
-MAIN CONTAINER
-========================== */
-
-.dashboard-container{
-
-display:flex;
-
-padding:40px 5%;
-
-gap:40px;
-
-flex:1;
-
+/* The main area, split into a sidebar and the content next to it. */
+.dashboard-container {
+    display: flex;
+    flex: 1;
+    padding: 40px 6%;
+    gap: 50px;
+    max-width: 100%;
 }
 
-
-/* ==========================
-SUBJECTS
-========================== */
-
-.subjects{
-
-display:flex;
-
-flex-direction:column;
-
-width:260px;
-
-gap:25px;
-
+/* The subject list on the side. */
+.subjects {
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.subjects h2{
-
-font-size:22px;
-
-font-weight:700;
-
-color:#2d2b63;
-
-margin-bottom:15px;
-
+.subjects h2 {
+    font-size: 26px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
 }
 
-.subjects button{
-
-width:260px;
-
-height:90px;
-
-background:#efe8d2;
-
-border:1px solid #999;
-
-border-radius:18px;
-
-font-size:22px;
-
-font-weight:700;
-
-cursor:pointer;
-
-text-align:left;
-
-padding-left:30px;
-
+.subjects button {
+    width: 100%;
+    height: 75px;
+    border: none;
+    border-radius: 15px;
+    background: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+    padding-left: 25px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.06);
 }
 
-.subjects button:hover{
-
-transform:translateY(-4px);
-
-background:#e5dcc5;
-
-box-shadow:0 8px 18px rgba(0,0,0,0.15);
-
+.subjects button:hover {
+    transform: translateX(5px);
+    background: #fafafa;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    color: #b6d34d;
 }
 
-
-/* ==========================
-MAIN CONTENT
-========================== */
-
-.main-content{
-
-flex:1;
-
-position:relative;
-
-display:flex;
-
-flex-direction:column;
-
+/* The main area where the games show up. */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    max-width: 100%;
 }
 
-
-/* ==========================
-UNLOCK BUTTON
-========================== */
-
-.unlock-btn{
-
-position:absolute;
-
-top:0;
-
-right:0;
-
-padding:16px 28px;
-
-border:none;
-
-border-radius:12px;
-
-background:#d8dcc8;
-
-font-size:18px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-z-index:100;
-
+/* The button that unlocks all games. */
+.unlock-btn {
+    align-self: flex-end;
+    padding: 14px 28px;
+    background: #ffd15c;
+    border: none;
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: 0 6px 15px rgba(255,209,92,0.4);
 }
 
-.unlock-btn:hover{
-
-transform:translateY(-4px);
-
-box-shadow:0 8px 18px rgba(0,0,0,0.15);
-
+.unlock-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(255,209,92,0.6);
+    background: #ffc425;
 }
 
-
-/* ==========================
-GAMES GRID
-========================== */
-
-.games-grid{
-
-display:grid;
-
-grid-template-columns:1fr 1fr;
-
-gap:40px;
-
-padding:40px 5%;
-
-margin-top:70px;
-
+/* Puts the games in 2 columns. */
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    width: 100%;
 }
 
-
-/* ==========================
-GAME LINK
-========================== */
-
-.game-link{
-
-text-decoration:none;
-
-color:black;
-
+.game-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 100%;
 }
 
-.game-link:hover{
-
-text-decoration:none;
-
+/* One game card. */
+.game-card {
+    background: white;
+    border-radius: 20px;
+    padding: 35px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.06);
+    position: relative;
+    border: 3px solid transparent;
+    width: 100%;
+    min-height: 220px;
 }
 
-
-/* ==========================
-GAME CARD
-========================== */
-
-.game-card{
-
-width:500px;
-
-height:220px;
-
-background:#ddd;
-
-border-radius:20px;
-
-display:flex;
-
-flex-direction:column;
-
-justify-content:center;
-
-align-items:center;
-
-box-shadow:0 8px 20px rgba(0,0,0,0.08);
-
+.game-card.active {
+    border-color: #b6d34d;
+    background: #fdfef7;
 }
 
-.game-card:hover{
-
-transform:translateY(-8px);
-
-box-shadow:0 12px 24px rgba(0,0,0,0.18);
-
+.game-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
 }
 
-.active{
-
-background:#b6d34d;
-
+/* The round play button on each card. */
+.play-btn {
+    width: 75px;
+    height: 75px;
+    background: #ececec;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+    color: #777;
+    transition: 0.3s ease;
 }
 
-
-/* ==========================
-PLAY BUTTON
-========================== */
-
-.play-btn{
-
-width:85px;
-
-height:85px;
-
-border-radius:50%;
-
-background:#89dd31;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-font-size:42px;
-
-transition:0.3s ease;
-
+.game-card.active .play-btn {
+    background: #b6d34d;
+    color: white;
+    box-shadow: 0 6px 15px rgba(182,211,77,0.4);
 }
 
-.game-card:hover .play-btn{
-
-transform:scale(1.1);
-
+.game-card:hover .play-btn {
+    transform: scale(1.1);
 }
 
-
-/* ==========================
-GAME NAME
-========================== */
-
-.game-card p{
-
-margin-top:18px;
-
-font-size:20px;
-
-font-weight:700;
-
-text-align:center;
-
+.game-card p {
+    margin-top: 18px;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
 }
 
-
-/* ==========================
-FOOTER
-========================== */
-
-.dashboard-footer{
-
-background:white;
-
-padding:25px;
-
-text-align:center;
-
-border-top:1px solid #ddd;
-
+/* The footer at the bottom of the page. */
+.dashboard-footer {
+    background: white;
+    padding: 25px;
+    text-align: center;
+    border-top: 1px solid #ddd;
+    width: 100%;
 }
 
-
-/* ==========================
-PRESS EFFECT
-========================== */
-
+/* Makes things look slightly pressed in when clicked. */
 button:active,
 a:active,
-.game-card:active{
-
-transform:scale(0.98);
-
+.game-card:active {
+    transform: scale(0.98);
 }
 
+/* Changes the layout a bit for tablet screens. */
+@media (max-width: 992px) {
+    .dashboard-container {
+        flex-direction: column;
+        padding: 20px 4%;
+    }
 
-/* ==========================
-TABLET
-========================== */
+    .subjects {
+        flex-direction: row;
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
 
-@media(max-width:992px){
+    .subjects h2 {
+        width: 100%;
+        text-align: center;
+    }
 
-.dashboard-container{
+    .subjects button {
+        width: 220px;
+    }
 
-flex-direction:column;
+    .unlock-btn {
+        align-self: center;
+    }
 
+    .games-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
-.subjects{
-
-flex-direction:row;
-
-width:100%;
-
-justify-content:center;
-
-flex-wrap:wrap;
-
+/* The menu button is hidden by default and only shows on mobile. */
+.menu-toggle {
+    display: none;
 }
 
-.games-grid{
-
-grid-template-columns:1fr;
-
+.nav-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 30px;
 }
 
-}
+/* Changes the layout for small mobile screens. */
+@media (max-width: 768px) {
+    .dashboard-navbar {
+        position: relative;
+        justify-content: space-between;
+        padding: 20px;
+    }
 
+    /* The menu button that opens and closes the menu. */
+    .menu-toggle {
+        display: block;
+        background: none;
+        border: none;
+        font-size: 35px;
+        cursor: pointer;
+    }
 
-/* ==========================
-MOBILE
-========================== */
+    /* The dropdown menu, hidden until the user opens it. */
+    .nav-wrapper {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: white;
+        padding: 25px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 25px;
+        z-index: 999;
+        box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+    }
 
-@media(max-width:768px){
+    .nav-wrapper.show {
+        display: flex;
+    }
 
-.dashboard-navbar{
+    .dashboard-menu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        width: 100%;
+    }
 
-flex-direction:column;
+    .dashboard-right {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        width: 100%;
+    }
 
-}
+    .dashboard-container {
+        flex-direction: column;
+        padding: 20px;
+        gap: 30px;
+    }
 
-.dashboard-menu{
+    .subjects {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
 
-justify-content:center;
+    .subjects h2 {
+        width: 100%;
+        text-align: center;
+        font-size: 28px;
+    }
 
-gap:20px;
+    .subjects button {
+        width: 100%;
+        max-width: 350px;
+        height: 65px;
+        font-size: 18px;
+        text-align: center;
+        padding-left: 0;
+    }
 
-}
+    .unlock-btn {
+        align-self: center;
+    }
 
-.subjects{
-
-flex-direction:column;
-
-align-items:center;
-
-width:100%;
-
-}
-
-.subjects button{
-
-width:100%;
-
-max-width:300px;
-
-}
-
-.unlock-btn{
-
-position:static;
-
-align-self:flex-end;
-
-margin-bottom:30px;
-
-}
-
-.games-grid{
-
-grid-template-columns:1fr;
-
-padding:0;
-
-}
-
-.game-card{
-
-width:100%;
-
-max-width:500px;
-
-}
-
+    .games-grid {
+        grid-template-columns: 1fr;
+    }
 }

@@ -1,337 +1,97 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Gyan Setu Shop</title>
-
-<link rel="stylesheet" href="css/shop.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gyan Setu Shop</title>
+    <link rel="stylesheet" href="css/shop.css">
 </head>
-
 <body>
 
-<!-- ==========================
-NAVBAR
-========================== -->
-
-<header class="dashboard-navbar">
-
-<a href="index.html" class="logo">
-
-<img
-src="assets/images/logo.png"
-alt="Gyan Setu Logo"
-class="logo-img">
-
-<h2>Gyan Setu</h2>
-
-</a>
-
-
-<nav class="dashboard-menu">
-
-<a href="child-dashboard.html">
-
-🎮 Game Zone
-
-</a>
-
-
-<a href="#">
-
-📈 My Progress
-
-</a>
-
-
-<a href="shop.html">
-
-🏪 Store
-
-</a>
-
-
-<a href="#">
-
-💰 Coins
-
-</a>
-
-</nav>
-
-
-<div class="dashboard-right">
-
-<button class="language-btn" type="button">
-
-🌐 Language
-
-</button>
-
-
-<a href="profile.html" class="profile-icon">
-
-👤
-
-</a>
-
-</div>
-
-</header>
-
-
-
-<!-- ==========================
-TOP BAR
-========================== -->
-
-<div class="top-bar">
-
-
-<a href="child-dashboard.html" class="back-btn">
-
-⬅ Back
-
-</a>
-
-
-<div class="coin-display">
-
-<img
-src="assets/images/coin.png"
-alt="Coin">
-
-<span>
-
-250
-
-</span>
-
-</div>
-
-</div>
-
-
-
-<!-- ==========================
-SHOP
-========================== -->
-
-<section class="shop-section">
-
-<h2>
-
-Worksheets
-
-</h2>
-
-
-
-<div class="worksheet-grid">
-
-
-<!-- Worksheet 1 -->
-
-<div class="worksheet-card">
-
-
-<div class="coin-icon">
-
-<img
-src="assets/images/coin.png"
-alt="Coin">
-
-<span>
-
-50
-
-</span>
-
-</div>
-
-
-<div class="worksheet-image">
-
-📝
-
-</div>
-
-
-<p>
-
-Math Worksheet
-
-</p>
-
-
-<button type="button" aria-label="Buy Math Worksheet">
-
-BUY
-
-</button>
-
-</div>
-
-
-
-<!-- Worksheet 2 -->
-
-<div class="worksheet-card">
-
-
-<div class="coin-icon">
-
-<img
-src="assets/images/coin.png"
-alt="Coin">
-
-<span>
-
-50
-
-</span>
-
-</div>
-
-
-<div class="worksheet-image">
-
-📘
-
-</div>
-
-
-<p>
-
-English Worksheet
-
-</p>
-
-
-<button type="button" aria-label="Buy English Worksheet">
-
-BUY
-
-</button>
-
-</div>
-
-
-
-<!-- Worksheet 3 -->
-
-<div class="worksheet-card">
-
-
-<div class="coin-icon">
-
-<img
-src="assets/images/coin.png"
-alt="Coin">
-
-<span>
-
-50
-
-</span>
-
-</div>
-
-
-<div class="worksheet-image">
-
-📖
-
-</div>
-
-
-<p>
-
-Story Worksheet
-
-</p>
-
-
-<button type="button" aria-label="Buy Story Worksheet">
-
-BUY
-
-</button>
-
-</div>
-
-
-
-<!-- Worksheet 4 -->
-
-<div class="worksheet-card">
-
-
-<div class="coin-icon">
-
-<img
-src="assets/images/coin.png"
-alt="Coin">
-
-<span>
-
-50
-
-</span>
-
-</div>
-
-
-<div class="worksheet-image">
-
-✏️
-
-</div>
-
-
-<p>
-
-Puzzle Worksheet
-
-</p>
-
-
-<button type="button" aria-label="Buy Puzzle Worksheet">
-
-BUY
-
-</button>
-
-</div>
-
-
-</div>
-
-</section>
-
-
-
-<!-- ==========================
-FOOTER
-========================== -->
-
-<footer class="dashboard-footer">
-
-<p>
-
-© 2025 Gyan Setu. All rights reserved.
-
-</p>
-
-</footer>
-
+    <!-- Navbar  -->
+    <header class="dashboard-navbar">
+        <a href="index.html" class="logo">
+            <img src="assets/images/logo.png" alt="Gyan Setu Logo" class="logo-img">
+            <h2>Gyan Setu</h2>
+        </a>
+        <button class="menu-toggle" type="button">☰</button>
+        <div class="nav-wrapper">
+            <nav class="dashboard-menu">
+                <a href="child-dashboard.html">🎮 Game Zone</a>
+                <a href="#">📈 My Progress</a>
+                <a href="shop.html">🏪 Store</a>
+                <a href="#">💰 Coins</a>
+            </nav>
+            <div class="dashboard-right">
+                <button class="language-btn" type="button">🌐 Language</button>
+                <a href="profile.html" class="profile-icon">👤</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Top Bar (Back button + coin balance)-->
+    <div class="top-bar">
+        <a href="child-dashboard.html" class="back-btn">⬅ Back</a>
+        <div class="coin-display">
+            <img src="assets/images/coin.png" alt="Coin">
+            <span>250</span>
+        </div>
+    </div>
+
+    <!-- Shop Section (worksheets available for purchase) -->
+    <section class="shop-section">
+        <h2>Worksheets</h2>
+        <div class="worksheet-grid">
+
+            <div class="worksheet-card">
+                <div class="coin-icon">
+                    <img src="assets/images/coin.png" alt="Coin">
+                    <span>50</span>
+                </div>
+                <div class="worksheet-image">📝</div>
+                <p>Math Worksheet</p>
+                <button type="button">BUY</button>
+            </div>
+
+            <div class="worksheet-card">
+                <div class="coin-icon">
+                    <img src="assets/images/coin.png" alt="Coin">
+                    <span>50</span>
+                </div>
+                <div class="worksheet-image">📘</div>
+                <p>English Worksheet</p>
+                <button type="button">BUY</button>
+            </div>
+
+            <div class="worksheet-card">
+                <div class="coin-icon">
+                    <img src="assets/images/coin.png" alt="Coin">
+                    <span>50</span>
+                </div>
+                <div class="worksheet-image">📖</div>
+                <p>Story Worksheet</p>
+                <button type="button">BUY</button>
+            </div>
+
+            <div class="worksheet-card">
+                <div class="coin-icon">
+                    <img src="assets/images/coin.png" alt="Coin">
+                    <span>50</span>
+                </div>
+                <div class="worksheet-image">✏️</div>
+                <p>Puzzle Worksheet</p>
+                <button type="button">BUY</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer  -->
+    <footer class="dashboard-footer">
+        <p>© 2025 Gyan Setu. All rights reserved.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
 
 </body>
-
 </html>
