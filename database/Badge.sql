@@ -1,4 +1,4 @@
-USE USER;
+USE gyan_setu;
 CREATE TABLE coin (
     coin_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) UNIQUE NOT NULL,

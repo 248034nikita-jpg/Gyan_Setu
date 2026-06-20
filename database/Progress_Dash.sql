@@ -1,6 +1,6 @@
-USE USER;
+USE gyan_setu;
 
-CREATE VIEW progress_dashboard AS
+CREATE OR REPLACE VIEW progress_dashboard AS
 SELECT 
     c.child_id,
     c.username AS child_name,
@@ -13,6 +13,6 @@ SELECT
     (SELECT SUM(ps.points_spent) FROM purchases ps WHERE ps.child_id = c.child_id) AS total_points_spent
 FROM children c
 JOIN parents p ON c.parent_id = p.parent_id
-LEFT JOIN child_coins cb ON c.child_id = cb.child_id
+LEFT JOIN child_coin cb ON c.child_id = cb.child_id
 LEFT JOIN child_progress cp ON c.child_id = cp.child_id
 GROUP BY c.child_id;
