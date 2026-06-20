@@ -75,6 +75,8 @@
                     echo "Invalid email/username or password.";
                 } elseif ($err === 'empty_fields') {
                     echo "Please fill in all the required fields.";
+                } elseif ($err === 'invalid_email') {
+                    echo "Please enter a valid email address.";
                 } elseif ($err === 'registration_failed') {
                     echo "Registration failed. Please try again.";
                 } else {

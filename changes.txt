@@ -1,9 +1,25 @@
-Changes made:
+Changes made and Solutions to your problems:
 
-1. Fixed the Theme:
-   - I removed the dark/green background gradient from `index.php`. It will now use the original white/light-blue theme defined in your main `style.css` file, restoring the previous look as you requested.
+1. "Connection failed: Access denied for user 'root'@'localhost' (using password: NO)"
+   - Issue: This error means your XAMPP MySQL database requires a password for the 'root' user, or MySQL is not running correctly.
+   - Solution: Open the `database/includes/db_connect.php` file in your editor. Find the line `$password = '';` and change it to the actual password you set for your database (for example, `$password = '1234';`). If you didn't set a password, simply restart your XAMPP Apache and MySQL modules.
 
-2. Explained the Download Bug:
-   - Issue: When you click the interactive buttons (Sign In, Sign Up, etc.), the browser downloads `index.php` instead of opening the page.
-   - Reason: You are likely opening `index.html` directly from your computer folders (e.g., by double-clicking it, which shows a `file:///C:/xampp/...` URL). Browsers do not know how to process PHP files locally, so they download them.
-   - Fix: You MUST run the project through your XAMPP local server. Instead of double-clicking the file, open your browser and type: `http://localhost/jelshi-gyan/index.html` or `http://localhost/jelshi-gyan/index.php`. The buttons will then correctly redirect you without downloading the files!
+2. "How will admin (me) access the database?"
+   - Solution: Since you are using XAMPP, you already have an admin dashboard for your database! Open your browser and go to `http://localhost/phpmyadmin`. From there, you can view the `gyan_setu` database, edit tables, delete users, and manage everything visually without writing code.
+
+3. "Signup is taking rubbish gmail"
+   - Issue: The previous validation was too loose.
+   - Fix: I updated `register.php` with a strict validation rule (Regex) that forces the user to enter a proper email format with a valid domain (like `.com`, `.org`, `.net`). "Rubbish" emails like `test@a` or `user@domain` will now be rejected.
+
+4. "Another parent is able to see children from another parent"
+   - Issue: The database view was filtering children only by the parent's "Name". So if two parents were named "John", they saw each other's kids!
+   - Fix: I changed `parent-dashboard.php` to securely filter children by their unique `parent_id` number instead of their name.
+   - ACTION REQUIRED: Because of your database connection issue, I couldn't automatically update your database view. You MUST do this manually to fix the bug:
+     1. Open `http://localhost/phpmyadmin`
+     2. Click on the `gyan_setu` database on the left side.
+     3. Click the "SQL" tab at the top.
+     4. Paste this exact code and press "Go":
+        CREATE OR REPLACE VIEW progress_dashboard AS SELECT c.child_id, c.username AS child_name, p.parent_id, p.full_name AS parent_name, c.total_points, c.current_level, COUNT(DISTINCT cb.coin_id) AS coin_earned, AVG(cp.quiz_score) AS average_quiz_score, COUNT(CASE WHEN cp.status = 'completed' THEN 1 END) AS lessons_completed, (SELECT SUM(ps.points_spent) FROM purchases ps WHERE ps.child_id = c.child_id) AS total_points_spent FROM children c JOIN parents p ON c.parent_id = p.parent_id LEFT JOIN child_coin cb ON c.child_id = cb.child_id LEFT JOIN child_progress cp ON c.child_id = cp.child_id GROUP BY c.child_id;
+
+5. "While pressing home logo, it auto logouts"
+   - Issue: Pressing the Home logo on the landing page (`index.html`) or clicking Home in the navbar takes you to the public `index.html` page. Since `index.html` is a static page, it doesn't know you are logged in, so it just shows the public "Sign In" buttons. It *feels* like a logout, but you are technically still logged in in the background. If you click the logo inside your dashboard, it correctly takes you to the top of your dashboard without logging you out!

@@ -4,6 +4,7 @@ CREATE OR REPLACE VIEW progress_dashboard AS
 SELECT 
     c.child_id,
     c.username AS child_name,
+    p.parent_id,
     p.full_name AS parent_name,
     c.total_points,
     c.current_level,
