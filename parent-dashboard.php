@@ -24,8 +24,7 @@ if (isset($_POST['add_child'])) {
         $message_type = "error";
     } else {
         // Check if username already exists
-        $stmt = $conn->prepare("SELECT child_id FROM children WHERE username = ?");
-        $stmt->bind_param("s", $child_username);
+$stmt = $conn->prepare("SELECT * FROM progress_dashboard WHERE parent_id = ?");        $stmt->bind_param("s", $child_username);
         $stmt->execute();
         $stmt->store_result();
 
@@ -55,8 +54,7 @@ if (isset($_POST['add_child'])) {
 
 // Fetch Children from View
 $children_stats = [];
-$stmt = $conn->prepare("SELECT * FROM progress_dashboard WHERE parent_id = ?");
-$stmt->bind_param("i", $parent_id);
+$stmt = $conn->prepare("SELECT * FROM progress_dashboard WHERE parent_id = ?");$stmt->bind_param("i", $parent_id);
 $stmt->execute();
 $res = $stmt->get_result();
 while ($row = $res->fetch_assoc()) {
@@ -80,6 +78,7 @@ $res = $stmt->get_result();
 while ($row = $res->fetch_assoc()) {
     $purchases[] = $row;
 }
+
 $stmt->close();
 ?>
 <!DOCTYPE html>
