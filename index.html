@@ -44,13 +44,13 @@ class="logo-img">
         <!-- Right Side Buttons -->
         <div class="nav-buttons">
 
-            <div class="lang-toggle-container">
-                <span>EN</span>
-                <label class="lang-switch">
-                    <input type="checkbox" id="lang-toggle-checkbox">
-                    <span class="lang-slider"></span>
+            <div class="sliding-toggle">
+                <input type="checkbox" id="lang-toggle-checkbox">
+                <label for="lang-toggle-checkbox" class="sliding-toggle-label">
+                    <div class="sliding-pill"></div>
+                    <span class="toggle-text en">EN</span>
+                    <span class="toggle-text ne">NE</span>
                 </label>
-                <span>NE</span>
             </div>
 
             <button class="signin-btn" type="button" onclick="window.location.href='index.php#signIn'">
