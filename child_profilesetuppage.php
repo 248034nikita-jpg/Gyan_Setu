@@ -24,12 +24,12 @@ $first_name  = explode(' ', $parent_name)[0];
     body {
       font-family: 'Nunito', sans-serif;
       min-height: 100vh;
-      background: linear-gradient(135deg, #6b7fc4 0%, #1abcbf 100%);
+      background:  #6b7fc4;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
-      overflow: hidden;
+      overflow-y: auto;
       padding: 30px 16px;
     }
 

@@ -7,6 +7,12 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'parent') {
     header("Location: login.php");
     exit();
 }
+// Verify access token from child dashboard
+if (!isset($_GET['token']) || !isset($_SESSION['parent_access_token']) || $_GET['token'] !== $_SESSION['parent_access_token']) {
+    // Redirect to child dashboard if token missing or invalid
+    header("Location: child-dashboard.php");
+    exit();
+}
 
 $parent_id = $_SESSION['user_id'];
 $parent_name = $_SESSION['name'];
@@ -412,7 +418,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
 </a>
   <div class="header-right">
     <button class="btn-lang">🌐 Language</button>
-    <a href="logout.php" class="btn-close">✕</a>
+    <a href="child-dashboard.php" class="btn-close">✕</a>
   </div>
 </header>
 
@@ -479,7 +485,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
     <?php endif; ?>
 
     <!-- Add Child Card Button -->
-    <div class="add-child-card" onclick="document.getElementById('username').focus(); document.getElementById('add-child-form-panel').scrollIntoView({behavior: 'smooth'});">
+    <div class="add-child-card" onclick="location.href='child_profilesetuppage.php';">
       <div class="add-icon">＋</div>
       <span>Add Child</span>
     </div>

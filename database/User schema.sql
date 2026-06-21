@@ -11,7 +11,6 @@ CREATE TABLE parents (
 CREATE TABLE children (
     child_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
     parent_id INT NOT NULL,
     total_points INT DEFAULT 0,
     current_level INT DEFAULT 1,

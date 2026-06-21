@@ -8,13 +8,18 @@ if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['child', 'parent'
     exit();
 }
 
+// Generate a one‑time token for accessing the parent dashboard via profile management
+if (!isset($_SESSION['parent_access_token'])) {
+    $_SESSION['parent_access_token'] = bin2hex(random_bytes(16));
+}
+
 // --- Resolve which child to show ---
 if ($_SESSION['role'] === 'child') {
     // Child is directly logged in
     $child_id = $_SESSION['user_id'];
     $username = $_SESSION['username'];
 } else {
-    // Parent is logged in â€” show their first/most-recent child
+    // Parent is logged in — show their first/most-recent child
     $parent_id_lookup = $_SESSION['user_id'];
     $stmt = $conn->prepare(
         "SELECT child_id, username FROM children WHERE parent_id = ? ORDER BY created_at ASC LIMIT 1"
@@ -156,9 +161,9 @@ $total_coins = count($badges);
         <button class="menu-toggle" type="button">â˜°</button>
         <div class="nav-wrapper">
             <nav class="dashboard-menu">
-                <a href="child-dashboard.html">🎮 Game Zone</a>
+                <a href="child-dashboard.php">🎮 Game Zone</a>
                 <a href="progress.html">📈 My Progress</a>
-                <a href="shop.html">🏪 Store</a>
+                <a href="shop.php">🏪 Store</a>
             </nav>
             <div class="dashboard-right">
                 <button class="language-btn">🌐 Language</button>
@@ -182,8 +187,12 @@ $total_coins = count($badges);
                             <span class="di-icon">📈</span> My Progress
                         </a>
                         <div class="dropdown-divider"></div>
-                        <!-- Player Management â†’ direct link to parent dashboard -->
-                        <a href="parent-dashboard.php" class="dropdown-item" role="menuitem">
+                        <?php 
+                        $target_url = ($_SESSION['role'] === 'parent') 
+                            ? 'parent-dashboard.php?token=' . urlencode($_SESSION['parent_access_token']) 
+                            : 'parent-access.php?token=' . urlencode($_SESSION['parent_access_token']);
+                        ?>
+                        <a href="<?php echo $target_url; ?>" class="dropdown-item" role="menuitem">
                             <span class="di-icon">👨‍💼</span> Player Management
                         </a>
                         <div class="dropdown-divider"></div>
@@ -216,7 +225,7 @@ $total_coins = count($badges);
         ">
             <div>
                 <h1 style="font-size: 22px; margin-bottom: 5px; font-weight: 800;">Welcome Back, <?php echo htmlspecialchars($username); ?>👋</h1>
-                <p style="font-size: 14px; opacity: 0.9;">Select a subject on the left or play a game below to earn points!</p>
+            
             </div>
             <div style="display: flex; gap: 20px; align-items: center;">
                 <div style="text-align: center; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 8px;">
