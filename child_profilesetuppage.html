@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gyan Setu – Parent Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      background: #6b7fc4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 30px 16px;
+    }
+
+    .lily { position: absolute; pointer-events: none; }
+    .lily-tl { left: -30px; top: 80px;  width: 200px; }
+    .lily-br { right: -20px; bottom: 50px; width: 200px; }
+
+    /* Top-right profile icon */
+    .top-profile {
+      position: fixed; top: 16px; right: 16px;
+      width: 42px; height: 42px; border-radius: 50%;
+      background: #1a1a2e; display: flex; align-items: center;
+      justify-content: center; cursor: pointer; z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,.3);
+    }
+    .top-profile svg { width: 22px; height: 22px; fill: #fff; }
+
+    .card-wrap {
+      background: #fff;
+      border-radius: 20px;
+      padding: 38px 40px 36px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 8px 40px rgba(0,0,0,.18);
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Mascot avatar */
+    .mascot-wrap {
+      display: flex; justify-content: center; margin-bottom: 14px;
+    }
+    .mascot-img {
+      width: 80px; height: 80px;
+      border-radius: 50%; object-fit: cover;
+      border: 3px solid #1abcbf;
+    }
+    /* SVG owl mascot */
+    .mascot-svg { width: 80px; height: 80px; }
+
+    .card-title    { font-size: 1.5rem; font-weight: 800; color: #1a1a2e; text-align: center; margin-bottom: 4px; }
+    .card-subtitle { text-align: center; font-size: .88rem; color: #888; margin-bottom: 28px; }
+
+    .field-label { font-size: .72rem; font-weight: 700; letter-spacing: .06em; color: #888; margin-bottom: 5px; }
+
+    .input-wrap {
+      display: flex; align-items: center;
+      border: 1.5px solid #d6daf0; border-radius: 10px;
+      padding: 0 14px; margin-bottom: 16px;
+      background: #f9faff; transition: border-color .2s;
+    }
+    .input-wrap:focus-within { border-color: #1abcbf; background: #fff; }
+    .input-wrap .icon { font-size: 1rem; color: #aab; margin-right: 10px; flex-shrink: 0; }
+    .input-wrap input, .input-wrap select {
+      border: none; background: transparent; width: 100%;
+      padding: 12px 0; font-family: 'Nunito', sans-serif;
+      font-size: .95rem; color: #333; outline: none; appearance: none;
+    }
+    .input-wrap input::placeholder { color: #bbb; }
+
+    /* Two-column row */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    /* Avatar grid */
+    .avatar-label { font-size: .72rem; font-weight: 700; letter-spacing: .06em; color: #888; margin-bottom: 8px; }
+    .avatar-grid  { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+    .avatar-option {
+      aspect-ratio: 1; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; cursor: pointer;
+      border: 2.5px solid transparent; background: #f0f4ff;
+      transition: border-color .2s, transform .15s;
+    }
+    .avatar-option:hover { transform: scale(1.08); }
+    .avatar-option.selected { border-color: #1abcbf; background: #e6fafa; }
+
+    /* Selected mascot display */
+    .selected-mascot-box {
+      border: 1.5px solid #d6daf0; border-radius: 12px;
+      padding: 16px; text-align: center; margin-bottom: 20px;
+      background: #f9faff;
+    }
+    .selected-mascot-label {
+      font-size: .72rem; font-weight: 700; letter-spacing: .06em;
+      color: #888; margin-bottom: 10px;
+    }
+    .selected-mascot-circle {
+      width: 54px; height: 54px; border-radius: 50%;
+      background: #6b7fc4; margin: 0 auto;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; border: 2.5px solid #1abcbf;
+      transition: background .3s;
+    }
+
+    .btn-primary-gs {
+      display: block; width: 100%; background: #1abcbf;
+      color: #fff; border: none; border-radius: 10px; padding: 14px;
+      font-family: 'Nunito', sans-serif; font-weight: 800;
+      font-size: 1rem; letter-spacing: .04em; cursor: pointer;
+      transition: background .2s, transform .1s;
+    }
+    .btn-primary-gs:hover { background: #14a5a8; transform: translateY(-1px); }
+    .btn-primary-gs:active { transform: translateY(0); }
+
+    .error-msg {
+      background: #fff0f0; border: 1px solid #fca5a5;
+      border-radius: 8px; padding: 8px 12px;
+      font-size: .83rem; color: #dc2626; margin-bottom: 12px; display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top-right profile button -->
+  <div class="top-profile" title="Account">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+    </svg>
+  </div>
+
+  <!-- Lily TL -->
+  <div class="lily lily-tl">
+    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="70" cy="110" rx="70" ry="40" fill="#3a9c4e" opacity=".85"/>
+      <ellipse cx="130" cy="125" rx="55" ry="28" fill="#2d7d3e" opacity=".7"/>
+      <circle cx="80" cy="75" r="14" fill="#f78fb3"/>
+      <circle cx="80" cy="75" r="6"  fill="#ffe4b5"/>
+      <circle cx="140" cy="95" r="10" fill="#f78fb3" opacity=".8"/>
+      <circle cx="140" cy="95" r="4"  fill="#ffe4b5"/>
+    </svg>
+  </div>
+  <!-- Lily BR -->
+  <div class="lily lily-br">
+    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="120" cy="90" rx="70" ry="38" fill="#3a9c4e" opacity=".85"/>
+      <ellipse cx="60"  cy="110" rx="52" ry="26" fill="#2d7d3e" opacity=".7"/>
+      <circle cx="115" cy="55" r="13" fill="#f78fb3"/>
+      <circle cx="115" cy="55" r="5"  fill="#ffe4b5"/>
+    </svg>
+  </div>
+
+  <div class="card-wrap">
+
+    <!-- Owl mascot SVG -->
+    <div class="mascot-wrap">
+      <svg class="mascot-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <!-- Body -->
+        <ellipse cx="50" cy="62" rx="28" ry="30" fill="#4caf50"/>
+        <!-- Head -->
+        <circle cx="50" cy="32" r="22" fill="#66bb6a"/>
+        <!-- Ears/tuft -->
+        <polygon points="34,14 29,2 39,10" fill="#388e3c"/>
+        <polygon points="66,14 71,2 61,10" fill="#388e3c"/>
+        <!-- Eyes bg -->
+        <circle cx="40" cy="31" r="9" fill="#fff"/>
+        <circle cx="60" cy="31" r="9" fill="#fff"/>
+        <!-- Glasses rim -->
+        <circle cx="40" cy="31" r="9" fill="none" stroke="#fbc02d" stroke-width="2.5"/>
+        <circle cx="60" cy="31" r="9" fill="none" stroke="#fbc02d" stroke-width="2.5"/>
+        <line x1="49" y1="31" x2="51" y2="31" stroke="#fbc02d" stroke-width="2"/>
+        <!-- Pupils -->
+        <circle cx="40" cy="31" r="5" fill="#1a1a2e"/>
+        <circle cx="60" cy="31" r="5" fill="#1a1a2e"/>
+        <circle cx="42" cy="29" r="1.5" fill="#fff"/>
+        <circle cx="62" cy="29" r="1.5" fill="#fff"/>
+        <!-- Beak -->
+        <polygon points="50,38 46,43 54,43" fill="#fbc02d"/>
+        <!-- Wing hints -->
+        <ellipse cx="26" cy="65" rx="9" ry="16" fill="#388e3c" transform="rotate(-10,26,65)"/>
+        <ellipse cx="74" cy="65" rx="9" ry="16" fill="#388e3c" transform="rotate(10,74,65)"/>
+        <!-- Belly -->
+        <ellipse cx="50" cy="68" rx="16" ry="18" fill="#a5d6a7"/>
+        <!-- Feet -->
+        <ellipse cx="40" cy="91" rx="8" ry="4" fill="#fbc02d" transform="rotate(-10,40,91)"/>
+        <ellipse cx="60" cy="91" rx="8" ry="4" fill="#fbc02d" transform="rotate(10,60,91)"/>
+      </svg>
+    </div>
+
+    <h1 class="card-title">Welcome, Parent!</h1>
+    <p class="card-subtitle">Let's create your first child's workspace to unlock age-appropriate<br>educational games and trackers</p>
+
+    <div class="error-msg" id="profileError"></div>
+
+    <!-- Child name -->
+    <p class="field-label">CHILD'S FIRST NAME</p>
+    <div class="input-wrap">
+      <input type="text" id="childName" placeholder="Eg. Ram or Angel"/>
+    </div>
+
+    <!-- Age + Avatar select -->
+    <div class="two-col">
+      <div>
+        <p class="field-label">AGE</p>
+        <div class="input-wrap">
+          <select id="childAge">
+            <option value="" disabled selected>Select</option>
+            <option>3</option><option>4</option><option>5</option>
+            <option>6</option><option>7</option><option>8</option>
+            <option>9</option><option>10</option><option>11</option>
+            <option>12</option><option>13</option><option>14</option>
+            <option>15</option><option>16</option><option>17</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <p class="field-label">MASCOT AVATAR</p>
+        <div class="input-wrap" style="cursor:pointer" onclick="document.getElementById('avatarSection').scrollIntoView({behavior:'smooth'})">
+          <input type="text" id="avatarDisplay" placeholder="Pick below ↓" readonly style="cursor:pointer"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- Avatar picker -->
+    <div id="avatarSection">
+      <p class="avatar-label">PICK AN EXPLORER MASCOT</p>
+      <div class="avatar-grid" id="avatarGrid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- Selected display -->
+    <div class="selected-mascot-box">
+      <p class="selected-mascot-label">SELECTED EXPLORER MASCOT</p>
+      <div class="selected-mascot-circle" id="selectedCircle">
+        <span id="selectedEmoji" style="font-size:0"></span>
+      </div>
+    </div>
+
+    <button class="btn-primary-gs" onclick="handleLaunch()">Launch Learning Platform!</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const AVATARS = [
+      { emoji: '🦉', name: 'Wise Owl' },
+      { emoji: '🦊', name: 'Clever Fox' },
+      { emoji: '🐬', name: 'Dolphin' },
+      { emoji: '🦁', name: 'Lion' },
+      { emoji: '🐢', name: 'Turtle' },
+      { emoji: '🦋', name: 'Butterfly' },
+      { emoji: '🐸', name: 'Frog' },
+      { emoji: '🦄', name: 'Unicorn' },
+    ];
+
+    let selectedAvatar = null;
+
+    function buildGrid() {
+      const grid = document.getElementById('avatarGrid');
+      AVATARS.forEach((a, i) => {
+        const div = document.createElement('div');
+        div.className = 'avatar-option';
+        div.textContent = a.emoji;
+        div.title = a.name;
+        div.onclick = () => selectAvatar(i, div, a);
+        grid.appendChild(div);
+      });
+    }
+
+    function selectAvatar(i, el, a) {
+      document.querySelectorAll('.avatar-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedAvatar = a;
+
+      document.getElementById('avatarDisplay').value = a.name;
+      const circle = document.getElementById('selectedCircle');
+      const emojiEl = document.getElementById('selectedEmoji');
+      emojiEl.textContent = a.emoji;
+      emojiEl.style.fontSize = '2rem';
+      circle.style.background = '#e6fafa';
+    }
+
+    function handleLaunch() {
+      const name = document.getElementById('childName').value.trim();
+      const age  = document.getElementById('childAge').value;
+
+      document.getElementById('profileError').style.display = 'none';
+
+      if (!name)           { showError("Please enter your child's name."); return; }
+      if (!age)            { showError("Please select your child's age."); return; }
+      if (!selectedAvatar) { showError('Please pick a mascot avatar.'); return; }
+
+      const profile = { childName: name, childAge: age, mascot: selectedAvatar };
+      localStorage.setItem('gs_child_profile', JSON.stringify(profile));
+
+      alert(`🎉 Welcome, ${name}! Your ${selectedAvatar.name} mascot is ready. Let the learning begin!`);
+      // window.location.href = 'dashboard.html'; // uncomment when dashboard is ready
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('profileError');
+      el.textContent = msg; el.style.display = 'block';
+    }
+
+    buildGrid();
+  </script>
+</body>
+</html>
