@@ -149,6 +149,11 @@ const langTranslations = {
     "Terms & Conditions": "नियम र सर्तहरू",
     "Contact": "सम्पर्क",
     "Connect": "जडान गर्नुहोस्",
+    "eSewa": "ईसेवा",
+    "Khalti": "खल्ती",
+    "Card": "कार्ड",
+    "Facebook": "फेसबुक",
+    "Instagram": "इन्स्टाग्राम",
     "Email": "इमेल",
     "© 2025 Gyan Setu. All rights reserved.": "© २०२५ ज्ञान सेतु। सबै अधिकार सुरक्षित।"
 };
@@ -162,9 +167,11 @@ let currentLang = localStorage.getItem('gyansetu_lang') || 'en';
 
 function translateNode(node, dict) {
     if (node.nodeType === Node.TEXT_NODE) {
-        let text = node.nodeValue.trim();
-        if (text && dict[text]) {
-            node.nodeValue = node.nodeValue.replace(text, dict[text]);
+        let originalText = node.nodeValue;
+        let trimmedText = originalText.trim();
+        let normalizedText = trimmedText.replace(/\s+/g, ' ');
+        if (normalizedText && dict[normalizedText]) {
+            node.nodeValue = originalText.replace(trimmedText, dict[normalizedText]);
         }
     } else if (node.nodeType === Node.ELEMENT_NODE) {
         if (node.tagName === 'SCRIPT' || node.tagName === 'STYLE') return;
