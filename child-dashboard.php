@@ -183,7 +183,7 @@ $total_coins = count($badges);
                         </a>
                         <div class="dropdown-divider"></div>
                         <!-- Player Management â†’ direct link to parent dashboard -->
-                        <a href="parent-access.php" class="dropdown-item" role="menuitem">
+                        <a href="parent-dashboard.php" class="dropdown-item" role="menuitem">
                             <span class="di-icon">👨‍💼</span> Player Management
                         </a>
                         <div class="dropdown-divider"></div>

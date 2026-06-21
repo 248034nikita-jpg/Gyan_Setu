@@ -83,10 +83,9 @@ $first_name  = explode(' ', $parent_name)[0];
       margin-bottom: 16px;
     }
 
-    /* ── Mascot SVG ── */
+    /* ── logo ── */
     .mascot-wrap { display: flex; justify-content: center; margin-bottom: 14px; }
-    .mascot-svg  { width: 72px; height: 72px; }
-
+  
     /* ── Titles ── */
     .card-title    { font-size: 1.45rem; font-weight: 900; color: #1a1a2e; text-align: center; margin-bottom: 5px; }
     .card-subtitle { text-align: center; font-size: .87rem; color: #888; margin-bottom: 28px; line-height: 1.5; }
@@ -243,34 +242,10 @@ $first_name  = explode(' ', $parent_name)[0];
   <!-- Card -->
   <div class="card-wrap">
 
-    <!-- Step badge -->
-    <div style="text-align:center; margin-bottom: 4px;">
-      <span class="step-badge">✦ STEP 2 OF 2</span>
-    </div>
 
     <!-- Owl mascot -->
     <div class="mascot-wrap">
-      <svg class="mascot-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <ellipse cx="50" cy="62" rx="28" ry="30" fill="#4caf50"/>
-        <circle cx="50" cy="32" r="22" fill="#66bb6a"/>
-        <polygon points="34,14 29,2 39,10" fill="#388e3c"/>
-        <polygon points="66,14 71,2 61,10" fill="#388e3c"/>
-        <circle cx="40" cy="31" r="9" fill="#fff"/>
-        <circle cx="60" cy="31" r="9" fill="#fff"/>
-        <circle cx="40" cy="31" r="9" fill="none" stroke="#fbc02d" stroke-width="2.5"/>
-        <circle cx="60" cy="31" r="9" fill="none" stroke="#fbc02d" stroke-width="2.5"/>
-        <line x1="49" y1="31" x2="51" y2="31" stroke="#fbc02d" stroke-width="2"/>
-        <circle cx="40" cy="31" r="5" fill="#1a1a2e"/>
-        <circle cx="60" cy="31" r="5" fill="#1a1a2e"/>
-        <circle cx="42" cy="29" r="1.5" fill="#fff"/>
-        <circle cx="62" cy="29" r="1.5" fill="#fff"/>
-        <polygon points="50,38 46,43 54,43" fill="#fbc02d"/>
-        <ellipse cx="26" cy="65" rx="9" ry="16" fill="#388e3c" transform="rotate(-10,26,65)"/>
-        <ellipse cx="74" cy="65" rx="9" ry="16" fill="#388e3c" transform="rotate(10,74,65)"/>
-        <ellipse cx="50" cy="68" rx="16" ry="18" fill="#a5d6a7"/>
-        <ellipse cx="40" cy="91" rx="8" ry="4" fill="#fbc02d" transform="rotate(-10,40,91)"/>
-        <ellipse cx="60" cy="91" rx="8" ry="4" fill="#fbc02d" transform="rotate(10,60,91)"/>
-      </svg>
+      <img src = "assets/images/logo.png" alt="Gyan Setu Logo" style="width:72px; height:90px;"/>
     </div>
 
     <!-- Progress bar -->
@@ -302,11 +277,9 @@ $first_name  = explode(' ', $parent_name)[0];
           <span class="icon">🎂</span>
           <select id="childAge" onchange="updateProgress()">
             <option value="" disabled selected>Select</option>
-            <option>3</option><option>4</option><option>5</option>
+            4</option><option>5</option>
             <option>6</option><option>7</option><option>8</option>
-            <option>9</option><option>10</option><option>11</option>
-            <option>12</option><option>13</option><option>14</option>
-            <option>15</option><option>16</option><option>17</option>
+            <option>9</option><option>10</option>
           </select>
         </div>
       </div>
@@ -338,7 +311,7 @@ $first_name  = explode(' ', $parent_name)[0];
 
     <!-- Submit -->
     <button class="btn-launch" id="launchBtn" onclick="handleLaunch()">
-      🚀 Launch Learning Platform!
+      Launch Learning Platform!
     </button>
 
   </div><!-- end card-wrap -->
