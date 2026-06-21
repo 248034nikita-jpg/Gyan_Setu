@@ -4,7 +4,7 @@ include 'database/includes/db_connect.php';
 
 // Route Protection: Check if logged in as Parent
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'parent') {
-    header("Location: login.html");
+    header("Location: login.php");
     exit();
 }
 
@@ -148,19 +148,46 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
   /* ── HEADER ── */
   header {
     background: #8BAD46;
-    padding: 0 28px;
-    height: 62px;
+    padding: 0 60px;
+    height: 68px;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
-  .logo-wrap { display: flex; align-items: center; gap: 10px; text-decoration: none;}
-  .logo-badge {
-    width: 42px; height: 42px; border-radius: 50%;
-    background: #fff; display: flex; align-items: center; justify-content: center;
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo:visited {
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo:active {
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo-img {
+    width: 85px;
+    height: 85px;
+    object-fit: contain;
+}
+
+.logo span {
     font-size: 20px;
-  }
-  .logo-name { color: #fff; font-weight: 800; font-size: 20px; letter-spacing: 1px; }
+    font-weight: 700;
+    color: #000000;
+}
   .header-right { display: flex; gap: 10px; align-items: center; }
   .btn-lang {
     background: rgba(255,255,255,0.22); border: none; border-radius: 20px;
@@ -185,12 +212,6 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
     font-size: 13px; color: var(--muted); font-weight: 600;
   }
   .plan-badge a { color: var(--green-dark); text-decoration: none; font-weight: 800; }
-  .motivational {
-    background: linear-gradient(135deg, #7CBF3F 0%, #4A90D9 100%);
-    color: #fff; border-radius: var(--radius); padding: 12px 20px;
-    font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 10px;
-    box-shadow: var(--shadow);
-  }
   .motivational .emoji { font-size: 22px; }
 
   /* ── SECTION TITLE ── */
@@ -290,6 +311,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
   }
   .add-child-card span { font-size: 14px; font-weight: 800; color: #9A7700; }
 
+  
   /* ── TWO-COL LAYOUT ── */
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 28px; }
   @media(max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
@@ -314,6 +336,16 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
   .badge-item .badge-icon { font-size: 28px; }
   .badge-item.locked { opacity: 0.4; filter: grayscale(1); }
 
+  .premium-features {
+    font-size: 20px; font-weight: 700;
+    color: var(--muted); margin-bottom: 28px;
+    border: 3px dashed #F5C84260; border-radius: var(--radius); padding: 18px;
+  }
+  .premium-feature-text { 
+    color: var(--muted); 
+    margin-bottom: 28px; 
+  border: 3px solid #F5C84260; border-radius: var(--radius); padding: 18px;
+  }
   /* ── STREAK ── */
   .streak-row { display: flex; gap: 8px; justify-content: center; }
   .streak-day {
@@ -329,24 +361,6 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
   .streak-dot.today { background: var(--yellow); border-color: #D4A800; animation: pulse 1.4s infinite; }
 
   @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(245,200,66,0.5); } 50% { box-shadow: 0 0 0 8px rgba(245,200,66,0); } }
-
-  /* ── UPCOMING QUIZZES ── */
-  .quiz-list { display: flex; flex-direction: column; gap: 10px; }
-  .quiz-item {
-    display: flex; align-items: center; gap: 12px; padding: 10px 14px;
-    border-radius: var(--radius-sm); border: 1.5px solid var(--border);
-    background: var(--bg); transition: border-color 0.15s, background 0.15s;
-  }
-  .quiz-item:hover { border-color: var(--blue); background: var(--blue-light); }
-  .quiz-icon { font-size: 24px; }
-  .quiz-info { flex: 1; }
-  .quiz-name { font-size: 13px; font-weight: 800; }
-  .quiz-meta { font-size: 11px; color: var(--muted); font-weight: 600; }
-  .quiz-badge {
-    font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 20px;
-  }
-  .quiz-badge.soon { background: var(--orange-light); color: #B85000; }
-  .quiz-badge.upcoming { background: var(--blue-light); color: #1A5A9A; }
 
   /* ── SCREENTIME ── */
   .screentime-dropdown {
@@ -391,10 +405,11 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
 
 <!-- HEADER -->
 <header>
-  <a href="parent-dashboard.php" class="logo-wrap">
-    <div class="logo-badge">🏛️</div>
-    <span class="logo-name">SETU</span>
-  </a>
+   <a href="index.html" class="logo">
+    <img src="assets/images/logo.png" alt="Gyan Setu Logo" class="logo-img">
+    <span>Gyan Setu</span>
+
+</a>
   <div class="header-right">
     <button class="btn-lang">🌐 Language</button>
     <a href="logout.php" class="btn-close">✕</a>
@@ -409,59 +424,27 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
       <h1>Welcome Back, <?php echo htmlspecialchars($parent_name); ?>! 👋</h1>
       <div class="plan-badge">⭐ Free Plan · <a href="#">Upgrade</a></div>
     </div>
-    <div class="motivational">
-      <span class="emoji">🚀</span>
-      <span>Great job! Your kids are on a roll — keep the momentum going!</span>
-    </div>
+  </div>
+  
+ <!-- SCREENTIME -->
+  <p class="section-title">⏰ Safe Screentime Mode</p>
+  <div class="panel" style="margin-bottom:28px;">
+    <select class="screentime-dropdown">
+      <option>⏱️ Time Limit – 1 hour/day</option>
+      <option>⏱️ Time Limit – 2 hours/day</option>
+      <option>🔓 Unlimited Mode</option>
+      <option>🌙 Bedtime Lock – 9 PM</option>
+    </select>
+    <p style="margin-top:10px;font-size:13px;font-weight:600;color:var(--muted);">
+      <?php if ($total_children > 0): ?>
+        ✅ Screentime protection is active for <?php echo $total_children; ?> children.
+      <?php else: ?>
+        Screentime protection is ready. Add a child profile to activate.
+      <?php endif; ?>
+    </p>
   </div>
 
-  <!-- STATS ROW -->
-  <p class="section-title">📊 Overall Learning Progress</p>
-  <div class="stats-grid">
-
-    <!-- Circular Progress -->
-    <div class="stat-card">
-      <div class="circular-progress">
-        <svg width="72" height="72" viewBox="0 0 72 72">
-          <circle class="track" cx="36" cy="36" r="28"/>
-          <circle class="fill" id="cp-fill" cx="36" cy="36" r="28"
-            stroke="#7CBF3F"
-            stroke-dasharray="175.9"
-            stroke-dashoffset="175.9"/>
-        </svg>
-        <div class="cp-label"><?php echo $overall_progress; ?>%</div>
-      </div>
-      <div class="stat-value" style="color:var(--green)"><?php echo $overall_progress; ?>%</div>
-      <div class="stat-label">Overall Progress</div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon" style="background:var(--blue-light); font-size:26px;">⏱️</div>
-      <div class="stat-value" style="color:var(--blue)"><?php echo $weekly_study_hours; ?>h</div>
-      <div class="stat-label">Weekly Study Hours</div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon" style="background:var(--orange-light); font-size:26px;">🔥</div>
-      <div class="stat-value" style="color:var(--orange)"><?php echo $streak; ?></div>
-      <div class="stat-label">Day Streak</div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon" style="background:var(--yellow-light); font-size:26px;">🏅</div>
-      <div class="stat-value" style="color:#B07800"><?php echo $total_coins_sum; ?></div>
-      <div class="stat-label">Badges Earned</div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon" style="background:var(--purple-light); font-size:26px;">🪙</div>
-      <div class="stat-value" style="color:var(--purple)"><?php echo $total_points_sum; ?></div>
-      <div class="stat-label">Total Coins/Points</div>
-    </div>
-
-  </div>
-
-  <!-- MY CHILDREN -->
+<!-- MY CHILDREN -->
   <p class="section-title">👨‍👩‍👧 My Children</p>
   <div class="children-grid">
 
@@ -503,35 +486,42 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
 
   </div>
 
-  <!-- Register Child Account Panel -->
-  <div class="panel" id="add-child-form-panel" style="margin-bottom: 28px;">
-     <div class="panel-title" style="color: var(--green-dark);">👤 Add New Child Profile</div>
-     
-     <?php if ($message !== ''): ?>
-         <div style="padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; font-weight: 700; 
-                     background: <?php echo $message_type === 'success' ? '#e6f4ea' : '#fce8e6'; ?>; 
-                     color: <?php echo $message_type === 'success' ? '#137333' : '#c5221f'; ?>;">
-             <?php echo htmlspecialchars($message); ?>
-         </div>
-     <?php endif; ?>
+  <!-- STATS ROW -->
+  <p class="section-title">📊 Overall Learning Progress</p>
+  <div class="stats-grid">
 
-     <form action="parent-dashboard.php" method="post" style="display: flex; flex-direction: column; gap: 12px;">
-       <div>
-         <label for="username" style="font-size: 12px; font-weight: 700; color: var(--muted); display: block; margin-bottom: 4px;">CHILD'S USERNAME</label>
-         <input type="text" name="username" id="username" placeholder="Enter username (e.g., child123)" required
-                style="width: 100%; padding: 10px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: inherit; font-size: 14px; outline: none;"/>
-       </div>
-       <div>
-         <label for="password" style="font-size: 12px; font-weight: 700; color: var(--muted); display: block; margin-bottom: 4px;">LOGIN PASSWORD</label>
-         <input type="password" name="password" id="password" placeholder="Create child password" required
-                style="width: 100%; padding: 10px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: inherit; font-size: 14px; outline: none;"/>
-       </div>
-       <button type="submit" name="add_child" class="btn-play" style="padding: 12px; font-size: 14px; width: 100%; border: none;">
-         Create Child Account
-       </button>
-     </form>
+    <!-- Circular Progress -->
+    <div class="stat-card">
+      <div class="circular-progress">
+        <svg width="72" height="72" viewBox="0 0 72 72">
+          <circle class="track" cx="36" cy="36" r="28"/>
+          <circle class="fill" id="cp-fill" cx="36" cy="36" r="28"
+            stroke="#7CBF3F"
+            stroke-dasharray="175.9"
+            stroke-dashoffset="175.9"/>
+        </svg>
+        <div class="cp-label"><?php echo $overall_progress; ?>%</div>
+      </div>
+      <div class="stat-value" style="color:var(--green)"><?php echo $overall_progress; ?>%</div>
+      <div class="stat-label">Overall Progress</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon" style="background:var(--blue-light); font-size:26px;">⏱️</div>
+      <div class="stat-value" style="color:var(--blue)"><?php echo $weekly_study_hours; ?>h</div>
+      <div class="stat-label">Weekly Study Hours</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon" style="background:var(--purple-light); font-size:26px;">🪙</div>
+      <div class="stat-value" style="color:var(--purple)"><?php echo $total_points_sum; ?></div>
+      <div class="stat-label">Total Coins/Points</div>
+    </div>
+
   </div>
 
+  <div class="premium-features">
+  <div  class="premium-feature-text" style="margin-bottom:28px;"> Premium features coming soon!</div>
   <!-- TWO-COL: Streak + Badges -->
   <div class="two-col">
 
@@ -550,7 +540,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
       </div>
       <p style="text-align:center;margin-top:14px;font-size:13px;font-weight:700;color:var(--orange)">Keep it up! 2 more days for a bonus reward! 🎁</p>
     </div>
-
+  </div>
     <!-- Badges -->
     <div class="panel">
       <div class="panel-title">🏅 Badges Earned</div>
@@ -566,107 +556,8 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
     </div>
 
   </div>
-
-  <!-- TWO-COL: Weekly Hours + Upcoming Quizzes -->
-  <div class="two-col">
-
-    <!-- Weekly Study Hours -->
-    <div class="panel">
-      <div class="panel-title">📅 Weekly Study Hours</div>
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:16px;">
-        <span style="font-size:28px;font-weight:900;color:var(--blue)"><?php echo $weekly_study_hours; ?></span>
-        <span style="font-size:13px;color:var(--muted);font-weight:700;">hours this week</span>
-      </div>
-      <div class="weekly-bars">
-        <div class="week-bar-wrap">
-          <div class="week-val">1.5h</div>
-          <div class="week-bar-bg"><div class="week-bar-fill" style="height:60%;"></div></div>
-          <div class="week-day">Mon</div>
-        </div>
-        <div class="week-bar-wrap">
-          <div class="week-val">2h</div>
-          <div class="week-bar-bg"><div class="week-bar-fill" style="height:80%;"></div></div>
-          <div class="week-day">Tue</div>
-        </div>
-        <div class="week-bar-wrap">
-          <div class="week-val">1h</div>
-          <div class="week-bar-bg"><div class="week-bar-fill" style="height:40%;"></div></div>
-          <div class="week-day">Wed</div>
-        </div>
-        <div class="week-bar-wrap">
-          <div class="week-val">2.5h</div>
-          <div class="week-bar-bg"><div class="week-bar-fill" style="height:100%;"></div></div>
-          <div class="week-day">Thu</div>
-        </div>
-        <div class="week-bar-wrap">
-          <div class="week-val">1.5h</div>
-          <div class="week-bar-bg"><div class="week-bar-fill" style="height:60%;"></div></div>
-          <div class="week-day">Fri</div>
-        </div>
-        <div class="week-bar-wrap">
-          <div class="week-val">2h</div>
-          <div class="week-bar-bg"><div class="week-bar-fill" style="height:80%;"></div></div>
-          <div class="week-day">Sat</div>
-        </div>
-        <div class="week-bar-wrap">
-          <div class="week-val">2h</div>
-          <div class="week-bar-bg"><div class="week-bar-fill today-bar" style="height:80%;"></div></div>
-          <div class="week-day" style="color:var(--blue);font-weight:800">Sun</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Upcoming Quizzes -->
-    <div class="panel">
-      <div class="panel-title">📝 Upcoming Quizzes</div>
-      <div class="quiz-list">
-        <div class="quiz-item">
-          <div class="quiz-icon">🔢</div>
-          <div class="quiz-info">
-            <div class="quiz-name">Multiplication Tables</div>
-            <div class="quiz-meta">Math · Grade 4</div>
-          </div>
-          <span class="quiz-badge soon">Tomorrow</span>
-        </div>
-        <div class="quiz-item">
-          <div class="quiz-icon">🔤</div>
-          <div class="quiz-info">
-            <div class="quiz-name">English Spelling Bee</div>
-            <div class="quiz-meta">English · Grade 2</div>
-          </div>
-          <span class="quiz-badge upcoming">In 3 days</span>
-        </div>
-        <div class="quiz-item">
-          <div class="quiz-icon">🌿</div>
-          <div class="quiz-info">
-            <div class="quiz-name">Plants & Animals</div>
-            <div class="quiz-meta">Science · Grade 4</div>
-          </div>
-          <span class="quiz-badge upcoming">In 5 days</span>
-        </div>
-      </div>
-    </div>
-
   </div>
-
-  <!-- SCREENTIME -->
-  <p class="section-title">⏰ Safe Screentime Mode</p>
-  <div class="panel" style="margin-bottom:28px;">
-    <select class="screentime-dropdown">
-      <option>⏱️ Time Limit – 1 hour/day</option>
-      <option>⏱️ Time Limit – 2 hours/day</option>
-      <option>🔓 Unlimited Mode</option>
-      <option>🌙 Bedtime Lock – 9 PM</option>
-    </select>
-    <p style="margin-top:10px;font-size:13px;font-weight:600;color:var(--muted);">
-      <?php if ($total_children > 0): ?>
-        ✅ Screentime protection is active for <?php echo $total_children; ?> children.
-      <?php else: ?>
-        Screentime protection is ready. Add a child profile to activate.
-      <?php endif; ?>
-    </p>
-  </div>
-
+ 
   <!-- PURCHASE HISTORY -->
   <div class="purchase-panel">
     <div class="panel-title" style="color:#7A5A00;">🛒 Children Store Transactions</div>
@@ -700,7 +591,9 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
 
 </main>
 
-<footer>Made with ❤️ for SETU · Helping every child shine ✨</footer>
+ <footer>
+        © 2025 Gyan Setu. All rights reserved.
+  </footer>
 
 <script>
   // Animate circular progress on load

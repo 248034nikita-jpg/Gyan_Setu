@@ -44,20 +44,23 @@ class="logo-img">
         <!-- Right Side Buttons -->
         <div class="nav-buttons">
 
-            <div class="sliding-toggle">
+            <div class="sliding-toggle-container">
                 <input type="checkbox" id="lang-toggle-checkbox">
+                <span class="toggle-label en">EN</span>
                 <label for="lang-toggle-checkbox" class="sliding-toggle-label">
-                    <div class="sliding-pill"></div>
-                    <span class="toggle-text en">EN</span>
-                    <span class="toggle-text ne">NE</span>
+                    <span class="sliding-knob">
+                        <span class="flag flag-uk"></span>
+                        <span class="flag flag-np"></span>
+                    </span>
                 </label>
+                <span class="toggle-label ne">NE</span>
             </div>
 
-            <button class="signin-btn" type="button" onclick="window.location.href='login.html'">
+            <button class="signin-btn" type="button" onclick="window.location.href='login.php'">
                 Sign In
             </button>
 
-            <button class="signup-btn" type="button" onclick="window.location.href='signup.html'">
+            <button class="signup-btn" type="button" onclick="window.location.href='signup.php'">
                 Sign Up
             </button>
 
@@ -77,11 +80,11 @@ class="logo-img">
         </p>
         <div class="hero-buttons">
 
-            <button type="button" onclick="window.location.href='login.html'">
+            <button type="button" onclick="window.location.href='login.php'">
                 Play for Free 🎮
             </button>
 
-            <button type="button" onclick="window.location.href='signup.html'">
+            <button type="button" onclick="window.location.href='signup.php'">
                 Create Family Account 👨‍👩‍👧
             </button>
 

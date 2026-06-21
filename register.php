@@ -80,7 +80,7 @@ if (isset($_POST['signUp'])) {
         $_SESSION['email'] = $email;
 
         $stmt->close();
-        sendResponse('success', 'Account created successfully!', 'parent-dashboard.php');
+        sendResponse('success', 'Account created successfully!', 'child_profilesetuppage.php');
     } else {
         $stmt->close();
         sendResponse('error', 'Registration failed. Please try again.');
@@ -112,7 +112,7 @@ if (isset($_POST['signIn'])) {
                 $_SESSION['email'] = $row['email'];
 
                 $stmt->close();
-                sendResponse('success', 'Logged in successfully!', 'parent-dashboard.php');
+                sendResponse('success', 'Logged in successfully!', 'child-dashboard.php');
             }
         }
         $stmt->close();

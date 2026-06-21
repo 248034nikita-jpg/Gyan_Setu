@@ -4,7 +4,7 @@ include 'database/includes/db_connect.php';
 
 // Route Protection: Check if logged in as Child
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'child') {
-    header("Location: login.html");
+    header("Location: login.php");
     exit();
 }
 
@@ -91,7 +91,7 @@ while ($row = $res->fetch_assoc()) {
     <!-- Navbar  -->
     <header class="dashboard-navbar">
         <!-- Logo -->
-        <a href="child-dashboard.php" class="logo">
+        <a href="index.html" class="logo">
             <img src="assets/images/logo.png" alt="Gyan Setu Logo" class="logo-img">
             <h2>Gyan Setu</h2>
         </a>
