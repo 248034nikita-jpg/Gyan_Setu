@@ -102,23 +102,344 @@ a,
     box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
-.profile-icon {
-    text-decoration: none;
-    font-size: 32px;
-    background: white;
-    width: 55px;
-    height: 55px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+/* ── Profile Dropdown Wrapper ── */
+.profile-dropdown-wrapper {
+    position: relative;
+    display: inline-block;
 }
 
-.profile-icon:hover {
-    transform: scale(1.08);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+.profile-avatar-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1abcbf, #6b7fc4);
+    border: 3px solid rgba(255,255,255,0.7);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    position: relative;
+    font-family: 'Nunito', Arial, sans-serif;
 }
+
+.profile-avatar-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.22);
+}
+
+/* Online dot */
+.profile-avatar-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 9px;
+    height: 9px;
+    background: #34d399;
+    border-radius: 50%;
+    border: 2px solid #fff;
+}
+
+/* ── Dropdown Menu ── */
+.profile-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 210px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+    overflow: hidden;
+    z-index: 1000;
+    animation: dropdownFade 0.2s ease;
+    border: 1px solid rgba(0,0,0,0.06);
+}
+
+.profile-dropdown-menu.open {
+    display: block;
+}
+
+@keyframes dropdownFade {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Dropdown header */
+.dropdown-header {
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.dropdown-header .dh-name {
+    font-size: 13px;
+    font-weight: 800;
+    color: #1a1a2e;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dropdown-header .dh-role {
+    font-size: 11px;
+    color: #1abcbf;
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+/* Dropdown items */
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 16px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    text-decoration: none;
+    width: 100%;
+    border: none;
+    background: none;
+    text-align: left;
+    font-family: Arial, sans-serif;
+}
+
+.dropdown-item:hover {
+    background: #f5f7ff;
+    color: #1abcbf;
+}
+
+.dropdown-item.danger {
+    color: #dc2626;
+}
+
+.dropdown-item.danger:hover {
+    background: #fff0f0;
+    color: #dc2626;
+}
+
+.dropdown-item .di-icon {
+    font-size: 16px;
+    width: 22px;
+    text-align: center;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: #f0f0f0;
+    margin: 2px 0;
+}
+
+/* ── Math Quiz Modal Overlay ── */
+.math-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 15, 40, 0.65);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+}
+
+.math-modal-overlay.active {
+    display: flex;
+    animation: overlayIn 0.25s ease;
+}
+
+@keyframes overlayIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* ── Math Quiz Modal Card ── */
+.math-modal {
+    background: #fff;
+    border-radius: 24px;
+    padding: 40px 36px 34px;
+    max-width: 420px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.22);
+    animation: modalPop 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    text-align: center;
+}
+
+@keyframes modalPop {
+    from { opacity: 0; transform: scale(0.82) translateY(30px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.math-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #aaa;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.math-modal-close:hover { color: #555; }
+
+.math-modal-icon {
+    font-size: 52px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.math-modal-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #1a1a2e;
+    margin-bottom: 4px;
+}
+
+.math-modal-subtitle {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 24px;
+}
+
+.math-question-box {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e8f5e9 100%);
+    border: 2px dashed #1abcbf;
+    border-radius: 16px;
+    padding: 22px 20px;
+    margin-bottom: 22px;
+}
+
+.math-question-text {
+    font-size: 32px;
+    font-weight: 900;
+    color: #1a1a2e;
+    letter-spacing: 0.04em;
+}
+
+.math-answer-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.math-answer-input {
+    flex: 1;
+    padding: 13px 16px;
+    border: 2px solid #d6daf0;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 800;
+    text-align: center;
+    color: #1a1a2e;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: Arial, sans-serif;
+}
+
+.math-answer-input:focus {
+    border-color: #1abcbf;
+    box-shadow: 0 0 0 3px rgba(26,188,191,0.15);
+}
+
+.math-submit-btn {
+    background: linear-gradient(135deg, #1abcbf, #6b7fc4);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 13px 22px;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+    font-family: Arial, sans-serif;
+    white-space: nowrap;
+}
+
+.math-submit-btn:hover {
+    opacity: 0.88;
+    transform: translateY(-1px);
+}
+
+.math-feedback {
+    min-height: 22px;
+    font-size: 13.5px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    transition: color 0.2s;
+}
+
+.math-feedback.error   { color: #dc2626; }
+.math-feedback.success { color: #16a34a; }
+
+.math-attempts {
+    font-size: 11.5px;
+    color: #bbb;
+    margin-top: 6px;
+}
+
+/* Shake animation on wrong answer */
+@keyframes shake {
+    0%,100% { transform: translateX(0); }
+    15%     { transform: translateX(-8px); }
+    30%     { transform: translateX(8px); }
+    45%     { transform: translateX(-6px); }
+    60%     { transform: translateX(6px); }
+    75%     { transform: translateX(-3px); }
+    90%     { transform: translateX(3px); }
+}
+
+.math-modal.shake {
+    animation: shake 0.45s ease;
+}
+
+/* Success glow on correct answer */
+@keyframes successPulse {
+    0%   { box-shadow: 0 24px 60px rgba(0,0,0,0.22); }
+    50%  { box-shadow: 0 0 0 12px rgba(26,188,191,0.25), 0 24px 60px rgba(26,188,191,0.3); }
+    100% { box-shadow: 0 24px 60px rgba(0,0,0,0.22); }
+}
+
+.math-modal.success-glow {
+    animation: successPulse 0.6s ease;
+}
+
+.math-modal-badge {
+    display: inline-block;
+    background: linear-gradient(135deg,#1abcbf,#6b7fc4);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.08em;
+    margin-bottom: 20px;
+}
+
+/* Regenerate button */
+.math-regenerate-btn {
+    background: none;
+    border: none;
+    font-size: 12px;
+    color: #1abcbf;
+    cursor: pointer;
+    font-weight: 700;
+    margin-top: 2px;
+    font-family: Arial, sans-serif;
+}
+
+.math-regenerate-btn:hover { text-decoration: underline; }
 
 /* The main area, split into a sidebar and the content next to it. */
 .dashboard-container {
@@ -412,5 +733,19 @@ a:active,
 
     .games-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* ── Responsive: dropdown + modal on mobile ── */
+@media (max-width: 768px) {
+    .profile-dropdown-menu {
+        right: -10px;
+        width: 190px;
+    }
+    .math-modal {
+        padding: 30px 22px 26px;
+    }
+    .math-question-text {
+        font-size: 26px;
     }
 }

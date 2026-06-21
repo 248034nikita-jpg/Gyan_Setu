@@ -4,7 +4,7 @@ include 'database/includes/db_connect.php';
 
 // Route Protection: Check if logged in as Parent
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'parent') {
-    header("Location: login.html");
+    header("Location: login.php");
     exit();
 }
 

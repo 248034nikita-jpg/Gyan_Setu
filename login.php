@@ -1,9 +1,81 @@
+<?php
+session_start();
+include 'database/includes/db_connect.php';
+
+// ─── Handle Sign-In POST (AJAX or standard form) ────────────────────────────
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signIn'])) {
+
+    $is_ajax = isset($_POST['ajax']) ||
+               (isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+                strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
+
+    function sendJson($status, $message, $redirect = null) {
+        header('Content-Type: application/json');
+        echo json_encode(['status' => $status, 'message' => $message, 'redirect' => $redirect]);
+        exit();
+    }
+
+    $identifier = isset($_POST['email_or_username']) ? trim($_POST['email_or_username']) : '';
+    $password   = $_POST['password'] ?? '';
+
+    if (empty($identifier) || empty($password)) {
+        sendJson('error', 'Please fill in all required fields.');
+    }
+
+    // ── Parent login (contains @) ──────────────────────────────────────────
+    if (strpos($identifier, '@') !== false) {
+        $stmt = $conn->prepare(
+            "SELECT parent_id, full_name, email, password_hash FROM parents WHERE email = ?"
+        );
+        $stmt->bind_param("s", $identifier);
+        $stmt->execute();
+        $row = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+
+        if ($row && password_verify($password, $row['password_hash'])) {
+            $_SESSION['role']    = 'parent';
+            $_SESSION['user_id'] = $row['parent_id'];
+            $_SESSION['name']    = $row['full_name'];
+            $_SESSION['email']   = $row['email'];
+            sendJson('success', 'Logged in successfully!', 'child-dashboard.php');
+        }
+
+    } else {
+        // ── Child login (username, no @) ───────────────────────────────────
+        $stmt = $conn->prepare(
+            "SELECT child_id, username, password_hash, parent_id FROM children WHERE username = ?"
+        );
+        $stmt->bind_param("s", $identifier);
+        $stmt->execute();
+        $row = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+
+        if ($row && password_verify($password, $row['password_hash'])) {
+            $_SESSION['role']      = 'child';
+            $_SESSION['user_id']   = $row['child_id'];
+            $_SESSION['username']  = $row['username'];
+            $_SESSION['parent_id'] = $row['parent_id'];
+            sendJson('success', 'Logged in successfully!', 'child-dashboard.php');
+        }
+    }
+
+    // If we reach here, credentials were invalid
+    sendJson('error', 'Invalid email/username or password.');
+}
+
+// ─── Redirect already-logged-in users ────────────────────────────────────────
+if (isset($_SESSION['role'])) {
+    header('Location: child-dashboard.php');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Gyan Setu – Sign In</title>
+  <meta name="description" content="Sign in to your Gyan Setu account as a parent or student to access the learning dashboard."/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
   <style>
@@ -24,11 +96,6 @@
     .lily { position: absolute; pointer-events: none; }
     .lily-tl { left: -30px; top: 100px; width: 200px; }
     .lily-br { right: -20px; bottom: 60px; width: 200px; }
-
-    .lily svg ellipse.pad   { fill: #3a9c4e; }
-    .lily svg ellipse.pad2  { fill: #2d7d3e; }
-    .lily svg circle.flower { fill: #f78fb3; }
-    .lily svg circle.center { fill: #ffe4b5; }
 
     /* ── Card ── */
     .card-wrap {
@@ -59,52 +126,32 @@
       margin-bottom: 24px;
     }
     .role-tabs button {
-      flex: 1;
-      border: none;
-      background: transparent;
-      padding: 9px 0;
-      font-family: 'Nunito', sans-serif;
-      font-weight: 700;
-      font-size: .9rem;
-      color: #666;
-      cursor: pointer;
-      transition: background .2s, color .2s;
+      flex: 1; border: none; background: transparent;
+      padding: 9px 0; font-family: 'Nunito', sans-serif;
+      font-weight: 700; font-size: .9rem; color: #666;
+      cursor: pointer; transition: background .2s, color .2s;
     }
     .role-tabs button.active {
-      background: #1abcbf;
-      color: #fff;
-      border-radius: 28px;
+      background: #1abcbf; color: #fff; border-radius: 28px;
     }
 
     /* ── Form Fields ── */
     .field-label {
-      font-size: .72rem;
-      font-weight: 700;
-      letter-spacing: .06em;
-      color: #888;
-      margin-bottom: 5px;
+      font-size: .72rem; font-weight: 700;
+      letter-spacing: .06em; color: #888; margin-bottom: 5px;
     }
     .input-wrap {
-      display: flex;
-      align-items: center;
-      border: 1.5px solid #d6daf0;
-      border-radius: 10px;
-      padding: 0 14px;
-      margin-bottom: 16px;
-      background: #f9faff;
-      transition: border-color .2s;
+      display: flex; align-items: center;
+      border: 1.5px solid #d6daf0; border-radius: 10px;
+      padding: 0 14px; margin-bottom: 16px;
+      background: #f9faff; transition: border-color .2s;
     }
     .input-wrap:focus-within { border-color: #1abcbf; background: #fff; }
     .input-wrap .icon { font-size: 1rem; color: #aab; margin-right: 10px; flex-shrink: 0; }
     .input-wrap input {
-      border: none;
-      background: transparent;
-      width: 100%;
-      padding: 12px 0;
-      font-family: 'Nunito', sans-serif;
-      font-size: .95rem;
-      color: #333;
-      outline: none;
+      border: none; background: transparent; width: 100%;
+      padding: 12px 0; font-family: 'Nunito', sans-serif;
+      font-size: .95rem; color: #333; outline: none;
     }
     .input-wrap input::placeholder { color: #bbb; }
     .eye-btn {
@@ -115,17 +162,11 @@
     /* ── Primary Button ── */
     .btn-primary-gs {
       display: block; width: 100%;
-      background: #1abcbf;
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 13px;
-      font-family: 'Nunito', sans-serif;
-      font-weight: 800;
-      font-size: 1rem;
-      letter-spacing: .05em;
-      cursor: pointer;
-      transition: background .2s, transform .1s;
+      background: #1abcbf; color: #fff;
+      border: none; border-radius: 10px; padding: 13px;
+      font-family: 'Nunito', sans-serif; font-weight: 800;
+      font-size: 1rem; letter-spacing: .05em;
+      cursor: pointer; transition: background .2s, transform .1s;
       margin-bottom: 20px;
     }
     .btn-primary-gs:hover { background: #14a5a8; transform: translateY(-1px); }
@@ -134,39 +175,32 @@
     /* ── Divider ── */
     .divider {
       display: flex; align-items: center;
-      gap: 12px; color: #bbb; font-size: .82rem;
-      margin-bottom: 16px;
+      gap: 12px; color: #bbb; font-size: .82rem; margin-bottom: 16px;
     }
     .divider::before, .divider::after {
-      content: ''; flex: 1;
-      height: 1px; background: #e0e4f0;
+      content: ''; flex: 1; height: 1px; background: #e0e4f0;
     }
 
     /* ── Social Buttons ── */
     .social-row { display: flex; gap: 12px; margin-bottom: 22px; }
     .btn-social {
       flex: 1; display: flex; align-items: center; justify-content: center;
-      gap: 8px; border: 1.5px solid #d6daf0;
-      border-radius: 10px; padding: 10px 0;
-      background: #fff; font-family: 'Nunito', sans-serif;
+      gap: 8px; border: 1.5px solid #d6daf0; border-radius: 10px;
+      padding: 10px 0; background: #fff; font-family: 'Nunito', sans-serif;
       font-weight: 700; font-size: .88rem; color: #333;
       cursor: pointer; transition: border-color .2s, background .2s;
     }
     .btn-social:hover { border-color: #aab; background: #f5f6ff; }
 
-    /* ── Footer ── */
-    .card-footer-text {
-      text-align: center; font-size: .85rem; color: #777;
-    }
+    /* ── Footer text ── */
+    .card-footer-text { text-align: center; font-size: .85rem; color: #777; }
     .card-footer-text a { color: #1abcbf; font-weight: 700; text-decoration: none; }
     .card-footer-text a:hover { text-decoration: underline; }
-    .terms-row {
-      text-align: center; font-size: .75rem; color: #aaa; margin-top: 10px;
-    }
+    .terms-row { text-align: center; font-size: .75rem; color: #aaa; margin-top: 10px; }
     .terms-row a { color: #aaa; text-decoration: none; }
     .terms-row a:hover { color: #1abcbf; }
 
-    /* ── Error message ── */
+    /* ── Error / success messages ── */
     .error-msg {
       background: #fff0f0; border: 1px solid #fca5a5;
       border-radius: 8px; padding: 8px 12px;
@@ -201,7 +235,7 @@
 
   <!-- Card -->
   <div class="card-wrap">
-    <h1 class="card-title">Sign in for Gyan Setu</h1>
+    <h1 class="card-title">Sign in to Gyan Setu</h1>
 
     <!-- Role Tabs -->
     <div class="role-tabs" id="roleTabs">
@@ -213,7 +247,7 @@
     <!-- Error -->
     <div class="error-msg" id="loginError"></div>
 
-    <!-- Email -->
+    <!-- Email / Username -->
     <p class="field-label" id="loginLabel">EMAIL ADDRESS</p>
     <div class="input-wrap">
       <span class="icon" id="loginIcon">✉️</span>
@@ -238,16 +272,16 @@
     <div class="social-row">
       <button class="btn-social">
         <svg width="18" height="18" viewBox="0 0 814 1000"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76.5 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.3 135.3-317.5 269.1-317.5 70.5 0 129.4 46.4 172.5 46.4 41.3 0 106.1-49 184.6-49 29.5 0 108.2 2.6 168 64.1zm-126.8-174.6c31.5-37 54.8-88.4 54.8-139.4 0-7.1-.6-14.3-1.9-20.1-52.1 2-113.3 34.7-149.6 75.3-28.3 31.5-55.4 83.5-55.4 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 46.4 0 105.7-30.9 136.6-70.7z" fill="#1a1a2e"/></svg>
-        Sign Up with Apple
+        Sign in with Apple
       </button>
       <button class="btn-social">
-        <svg width="18" height="18" viewBox="0 0 186.69 190.5"><g transform="translate(1184.583 765.171)"><path clip-path="none" mask="none" d="M-1089.333-687.239v36.888h51.262c-2.251 11.863-9.006 21.908-19.137 28.662l30.913 23.986c18.011-16.625 28.402-41.044 28.402-70.052 0-6.754-.606-13.249-1.732-19.483z" fill="#4285f4"/><path clip-path="none" mask="none" d="M-1142.714-651.791l-6.972 5.337-24.679 19.223c15.673 31.086 47.796 52.561 85.03 52.561 25.717 0 47.278-8.486 63.038-23.033l-30.913-23.986c-8.486 5.715-19.31 9.179-32.125 9.179-24.765 0-45.806-16.712-53.379-39.281z" fill="#34a853"/><path clip-path="none" mask="none" d="M-1174.365-712.61c-6.494 12.815-10.217 27.276-10.217 42.689s3.723 29.874 10.217 42.689c0 .086 31.693-24.592 31.693-24.592-1.905-5.715-3.031-11.776-3.031-18.098s1.126-12.383 3.031-18.098z" fill="#fbbc05"/><path d="M-1089.333-727.244c14.028 0 26.497 4.849 36.455 14.201l27.276-27.276c-16.539-15.413-38.013-24.852-63.731-24.852-37.234 0-69.359 21.388-85.032 52.561l31.692 24.592c7.574-22.569 28.615-39.226 53.34-39.226z" fill="#ea4335" clip-path="none" mask="none"/></g></svg>
-        Sign up with Google
+        <svg width="18" height="18" viewBox="0 0 186.69 190.5"><g transform="translate(1184.583 765.171)"><path d="M-1089.333-687.239v36.888h51.262c-2.251 11.863-9.006 21.908-19.137 28.662l30.913 23.986c18.011-16.625 28.402-41.044 28.402-70.052 0-6.754-.606-13.249-1.732-19.483z" fill="#4285f4"/><path d="M-1142.714-651.791l-6.972 5.337-24.679 19.223c15.673 31.086 47.796 52.561 85.03 52.561 25.717 0 47.278-8.486 63.038-23.033l-30.913-23.986c-8.486 5.715-19.31 9.179-32.125 9.179-24.765 0-45.806-16.712-53.379-39.281z" fill="#34a853"/><path d="M-1174.365-712.61c-6.494 12.815-10.217 27.276-10.217 42.689s3.723 29.874 10.217 42.689c0 .086 31.693-24.592 31.693-24.592-1.905-5.715-3.031-11.776-3.031-18.098s1.126-12.383 3.031-18.098z" fill="#fbbc05"/><path d="M-1089.333-727.244c14.028 0 26.497 4.849 36.455 14.201l27.276-27.276c-16.539-15.413-38.013-24.852-63.731-24.852-37.234 0-69.359 21.388-85.032 52.561l31.692 24.592c7.574-22.569 28.615-39.226 53.34-39.226z" fill="#ea4335"/></g></svg>
+        Sign in with Google
       </button>
     </div>
 
     <p class="card-footer-text">Don't have an account? <a href="signup.php">Sign up</a></p>
-    <p class="card-footer-text" style="margin-top: 15px;"><a href="index.html">← Back to Home</a></p>
+    <p class="card-footer-text" style="margin-top:15px;"><a href="index.html">← Back to Home</a></p>
     <p class="terms-row"><a href="#">Terms and Conditions</a> | <a href="#">Policy</a> | <a href="#">Help</a></p>
   </div>
 
@@ -260,83 +294,93 @@
       document.querySelectorAll('.role-tabs button').forEach(b => b.classList.remove('active'));
       document.getElementById('tab-' + role).classList.add('active');
 
-      const labels = { student: 'LOG IN AS A STUDENT', teacher: 'LOG IN AS A TEACHER', home: 'LOG IN AS A PARENT' };
+      const labels = {
+        student: 'LOG IN AS A STUDENT',
+        teacher: 'LOG IN AS A TEACHER',
+        home:    'LOG IN AS A PARENT'
+      };
       document.getElementById('loginBtn').textContent = labels[role];
 
       const input = document.getElementById('loginEmail');
       const label = document.getElementById('loginLabel');
-      const icon = document.getElementById('loginIcon');
+      const icon  = document.getElementById('loginIcon');
 
       if (role === 'student') {
-        label.textContent = 'USERNAME';
-        input.placeholder = 'Enter child username';
-        input.type = 'text';
-        icon.textContent = '👤';
+        label.textContent    = 'USERNAME';
+        input.placeholder    = 'Enter child username';
+        input.type           = 'text';
+        icon.textContent     = '👤';
       } else {
-        label.textContent = 'EMAIL ADDRESS';
-        input.placeholder = 'Enter email address';
-        input.type = 'email';
-        icon.textContent = '✉️';
+        label.textContent    = 'EMAIL ADDRESS';
+        input.placeholder    = 'Enter email address';
+        input.type           = 'email';
+        icon.textContent     = '✉️';
       }
     }
 
     function togglePwd(id, btn) {
       const inp = document.getElementById(id);
-      inp.type = inp.type === 'password' ? 'text' : 'password';
+      inp.type       = inp.type === 'password' ? 'text' : 'password';
       btn.textContent = inp.type === 'password' ? '👁' : '🙈';
     }
 
     function showError(msg) {
       const el = document.getElementById('loginError');
-      el.textContent = msg;
+      el.textContent   = msg;
       el.style.display = 'block';
     }
 
     function handleLogin() {
-      const email_or_username = document.getElementById('loginEmail').value.trim();
-      const password          = document.getElementById('loginPassword').value;
+      const identifier = document.getElementById('loginEmail').value.trim();
+      const password   = document.getElementById('loginPassword').value;
       document.getElementById('loginError').style.display = 'none';
 
-      if (!email_or_username) { 
-        showError(currentRole === 'student' ? 'Please enter your username.' : 'Please enter your email address.'); 
-        return; 
+      if (!identifier) {
+        showError(currentRole === 'student' ? 'Please enter your username.' : 'Please enter your email address.');
+        return;
       }
       if (!password) { showError('Please enter your password.'); return; }
-
-      if (currentRole !== 'student') {
-        const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRe.test(email_or_username)) { showError('Please enter a valid email address.'); return; }
-      }
 
       if (currentRole === 'teacher') {
         showError('Teacher authentication is not supported yet.');
         return;
       }
 
+      if (currentRole !== 'student') {
+        const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRe.test(identifier)) { showError('Please enter a valid email address.'); return; }
+      }
+
+      const btn = document.getElementById('loginBtn');
+      btn.disabled    = true;
+      btn.textContent = 'Signing in…';
+
       const formData = new URLSearchParams();
       formData.append('signIn', '1');
-      formData.append('email_or_username', email_or_username);
+      formData.append('email_or_username', identifier);
       formData.append('password', password);
       formData.append('ajax', '1');
 
-      fetch('register.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: formData.toString()
+      fetch('login.php', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body:    formData.toString()
       })
-      .then(response => response.json())
+      .then(r => r.json())
       .then(data => {
         if (data.status === 'success') {
           window.location.href = data.redirect;
         } else {
           showError(data.message);
+          btn.disabled    = false;
+          btn.textContent = currentRole === 'student' ? 'LOG IN AS A STUDENT' :
+                            currentRole === 'teacher' ? 'LOG IN AS A TEACHER' : 'LOG IN AS A PARENT';
         }
       })
-      .catch(error => {
-        console.error('Error:', error);
+      .catch(() => {
         showError('An unexpected error occurred. Please try again.');
+        btn.disabled    = false;
+        btn.textContent = 'LOG IN AS A PARENT';
       });
     }
   </script>

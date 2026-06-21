@@ -2,14 +2,37 @@
 session_start();
 include 'database/includes/db_connect.php';
 
-// Route Protection: Check if logged in as Child
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'child') {
-    header("Location: login.html");
+// Route Protection: Accept both 'child' and 'parent' sessions
+if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['child', 'parent'])) {
+    header("Location: login.php");
     exit();
 }
 
-$child_id = $_SESSION['user_id'];
-$username = $_SESSION['username'];
+// --- Resolve which child to show ---
+if ($_SESSION['role'] === 'child') {
+    // Child is directly logged in
+    $child_id = $_SESSION['user_id'];
+    $username = $_SESSION['username'];
+} else {
+    // Parent is logged in â€” show their first/most-recent child
+    $parent_id_lookup = $_SESSION['user_id'];
+    $stmt = $conn->prepare(
+        "SELECT child_id, username FROM children WHERE parent_id = ? ORDER BY created_at ASC LIMIT 1"
+    );
+    $stmt->bind_param("i", $parent_id_lookup);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $child_row = $res->fetch_assoc();
+    $stmt->close();
+
+    if (!$child_row) {
+        // Parent has no child yet â€” redirect to create one
+        header("Location: child_profilesetuppage.php");
+        exit();
+    }
+    $child_id = $child_row['child_id'];
+    $username = $_SESSION['username'] ?? $child_row['username'];
+}
 
 // Handle Game Play Simulation
 if (isset($_GET['play_game'])) {
@@ -72,11 +95,11 @@ if (isset($_GET['play_game'])) {
             $stmt->execute();
             $stmt->close();
             
-            $new_badge_msg = "🏆 Congratulations! You earned the '" . $coin['name'] . "' badge!";
+            $new_badge_msg = "ðŸ† Congratulations! You earned the '" . $coin['name'] . "' badge!";
         }
     }
 
-    $_SESSION['game_alert'] = "🎉 Played '$game_name'! You earned +$points_to_add points!";
+    $_SESSION['game_alert'] = "ðŸŽ‰ Played '$game_name'! You earned +$points_to_add points!";
     if (!empty($new_badge_msg)) {
         $_SESSION['badge_alert'] = $new_badge_msg;
     }
@@ -125,21 +148,50 @@ $stmt->close();
     <!-- Navbar -->
     <header class="dashboard-navbar">
         <!-- Logo -->
-        <a href="child-dashboard.php" class="logo">
+        <a href="index.html" class="logo">
             <img src="assets/images/logo.png" alt="Gyan Setu Logo" class="logo-img">
             <h2>Gyan Setu</h2>
         </a>
-        <button class="menu-toggle" type="button">☰</button>
+        <button class="menu-toggle" type="button">â˜°</button>
         <div class="nav-wrapper">
             <nav class="dashboard-menu">
-                <a href="child-dashboard.php">🎮 Game Zone</a>
-                <a href="#">📈 My Progress</a>
-                <a href="shop.php">🏪 Store</a>
-                <a href="#">💰 Coins</a>
+                <a href="child-dashboard.html">🎮 Game Zone</a>
+                <a href="progress.html">📈 My Progress</a>
+                <a href="shop.html">🏪 Store</a>
+                <a href="coins.html">💰 Coins</a>
             </nav>
             <div class="dashboard-right">
                 <button class="language-btn">🌐 Language</button>
-                <a href="logout.php" class="profile-icon" title="Logout" style="text-decoration: none; font-size: 14px; font-weight: 700; color: #fff; background: rgba(255,255,255,0.22); padding: 6px 12px; border-radius: 20px;">Logout</a>
+
+                <!-- Profile Avatar + Dropdown -->
+                <div class="profile-dropdown-wrapper" id="profileDropdownWrapper">
+                    <button class="profile-avatar-btn" id="profileAvatarBtn" onclick="toggleDropdown()" title="Profile Menu" aria-haspopup="true" aria-expanded="false">
+                        <?php echo strtoupper(substr($username, 0, 1)); ?>
+                    </button>
+                    <div class="profile-dropdown-menu" id="profileDropdownMenu" role="menu">
+                        <!-- Header -->
+                        <div class="dropdown-header">
+                            <div class="dh-name"><?php echo htmlspecialchars($username); ?></div>
+                            <div class="dh-role"> Child Account</div>
+                        </div>
+                        <!-- Items -->
+                        <a href="#" class="dropdown-item" role="menuitem">
+                            <span class="di-icon">👤</span> My Profile
+                        </a>
+                        <a href="#" class="dropdown-item" role="menuitem">
+                            <span class="di-icon">📈</span> My Progress
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <!-- Player Management â†’ direct link to parent dashboard -->
+                        <a href="parent-access.php" class="dropdown-item" role="menuitem">
+                            <span class="di-icon">👨‍💼</span> Player Management
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="logout.php" class="dropdown-item danger" role="menuitem">
+                            <span class="di-icon">🚪</span> Logout
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -163,7 +215,7 @@ $stmt->close();
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         ">
             <div>
-                <h1 style="font-size: 22px; margin-bottom: 5px; font-weight: 800;">Welcome Back, <?php echo htmlspecialchars($username); ?>! 👋</h1>
+                <h1 style="font-size: 22px; margin-bottom: 5px; font-weight: 800;">Welcome Back, <?php echo htmlspecialchars($username); ?>👋</h1>
                 <p style="font-size: 14px; opacity: 0.9;">Select a subject on the left or play a game below to earn points!</p>
             </div>
             <div style="display: flex; gap: 20px; align-items: center;">
@@ -206,7 +258,7 @@ $stmt->close();
         <aside class="subjects">
             <h2>Select Subject</h2>
             <button type="button">🧮 MATHS</button>
-            <button type="button">📘 ENGLISH</button>
+            <button type="button">📚 ENGLISH</button>
             <button type="button">📖 STORY BOOKS</button>
         </aside>
 
@@ -251,7 +303,7 @@ $stmt->close();
 
             <!-- Badges Section -->
             <div class="badges-section" style="background: #fff; padding: 20px; border-radius: 12px; border: 1.5px solid #d6daf0;">
-                <h3 style="font-size: 16px; margin-bottom: 15px; color: #2D3A1E; font-weight: 800; border-bottom: 2px solid #1abcbf; padding-bottom: 6px;">🏅 My Badges</h3>
+                <h3 style="font-size: 16px; margin-bottom: 15px; color: #2D3A1E; font-weight: 800; border-bottom: 2px solid #1abcbf; padding-bottom: 6px;">ðŸ… My Badges</h3>
                 <div class="badges-grid" style="display: flex; flex-wrap: wrap; gap: 15px;">
                     <?php if (empty($badges)): ?>
                         <p style="color: #888; font-style: italic; font-size: 14px;">No badges earned yet. Keep playing games to earn points and unlock badges!</p>
@@ -286,6 +338,25 @@ $stmt->close();
     </footer>
 
     <script src="js/script.js"></script>
+
+    <script>
+    // â”€â”€ Profile Dropdown Toggle â”€â”€
+    function toggleDropdown() {
+        const menu = document.getElementById('profileDropdownMenu');
+        const btn  = document.getElementById('profileAvatarBtn');
+        const isOpen = menu.classList.toggle('open');
+        btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        const wrapper = document.getElementById('profileDropdownWrapper');
+        if (wrapper && !wrapper.contains(e.target)) {
+            document.getElementById('profileDropdownMenu').classList.remove('open');
+            document.getElementById('profileAvatarBtn').setAttribute('aria-expanded', 'false');
+        }
+    });
+    </script>
 
 </body>
 </html>
