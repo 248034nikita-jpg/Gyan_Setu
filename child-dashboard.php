@@ -182,8 +182,8 @@ $stmt->close();
                             <span class="di-icon">📈</span> My Progress
                         </a>
                         <div class="dropdown-divider"></div>
-                        <!-- Player Management â†’ direct link to parent dashboard -->
-                        <a href="parent-access.php" class="dropdown-item" role="menuitem">
+                        <!-- Player Management direct link to parent dashboard -->
+                        <a href="parent-dashboard.php" class="dropdown-item" role="menuitem">
                             <span class="di-icon">👨‍💼</span> Player Management
                         </a>
                         <div class="dropdown-divider"></div>
@@ -340,7 +340,7 @@ $stmt->close();
     <script src="js/script.js"></script>
 
     <script>
-    // â”€â”€ Profile Dropdown Toggle â”€â”€
+    // Profile Dropdown Toggle 
     function toggleDropdown() {
         const menu = document.getElementById('profileDropdownMenu');
         const btn  = document.getElementById('profileAvatarBtn');
