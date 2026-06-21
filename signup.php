@@ -63,7 +63,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signUp'])) {
 
 // ─── Redirect already-logged-in users ────────────────────────────────────────
 if (isset($_SESSION['role'])) {
-    header('Location: child-dashboard.php');
+    if ($_SESSION['role'] === 'parent') {
+        header('Location: parent-dashboard.php');
+    } else {
+        header('Location: child-dashboard.php');
+    }
     exit();
 }
 ?>
@@ -90,10 +94,6 @@ if (isset($_SESSION['role'])) {
       overflow: hidden;
       padding: 30px 16px;
     }
-
-    .lily { position: absolute; pointer-events: none; }
-    .lily-tl { left: -30px; top: 80px;  width: 200px; }
-    .lily-br { right: -20px; bottom: 50px; width: 200px; }
 
     .card-wrap {
       background: #fff;
@@ -180,25 +180,6 @@ if (isset($_SESSION['role'])) {
   </style>
 </head>
 <body>
-
-  <div class="lily lily-tl">
-    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="70" cy="110" rx="70" ry="40" fill="#3a9c4e" opacity=".85"/>
-      <ellipse cx="130" cy="125" rx="55" ry="28" fill="#2d7d3e" opacity=".7"/>
-      <circle cx="80" cy="75" r="14" fill="#f78fb3"/>
-      <circle cx="80" cy="75" r="6"  fill="#ffe4b5"/>
-      <circle cx="140" cy="95" r="10" fill="#f78fb3" opacity=".8"/>
-      <circle cx="140" cy="95" r="4"  fill="#ffe4b5"/>
-    </svg>
-  </div>
-  <div class="lily lily-br">
-    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="120" cy="90" rx="70" ry="38" fill="#3a9c4e" opacity=".85"/>
-      <ellipse cx="60"  cy="110" rx="52" ry="26" fill="#2d7d3e" opacity=".7"/>
-      <circle cx="115" cy="55" r="13" fill="#f78fb3"/>
-      <circle cx="115" cy="55" r="5"  fill="#ffe4b5"/>
-    </svg>
-  </div>
 
   <div class="card-wrap">
     <h1 class="card-title">Sign up for Gyan Setu</h1>
@@ -314,68 +295,72 @@ if (isset($_SESSION['role'])) {
     }
 
     function handleSignup() {
-      const name     = document.getElementById('signupName').value.trim();
-      const email    = document.getElementById('signupEmail').value.trim();
-      const password = document.getElementById('signupPassword').value;
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  const btn = document.getElementById('signupBtn');
 
-      document.getElementById('signupError').style.display   = 'none';
-      document.getElementById('signupSuccess').style.display = 'none';
+  document.getElementById('signupError').style.display = 'none';
+  document.getElementById('signupSuccess').style.display = 'none';
 
-      if (currentRole === 'student') {
-        showError('Student accounts are created by a parent from the Parent Dashboard.');
-        return;
-      }
-      if (currentRole === 'teacher') {
-        showError('Teacher registration is not supported yet.');
-        return;
-      }
+  // Role restrictions
+  if (currentRole === 'student')
+    return showError('Student accounts are created by a parent from the Parent Dashboard.');
 
-      if (!name)     { showError('Please enter your full name.'); return; }
-      if (!email)    { showError('Please enter your email address.'); return; }
-      if (!password) { showError('Please enter a password.'); return; }
-      if (password.length < 6) { showError('Password must be at least 6 characters.'); return; }
+  if (currentRole === 'teacher')
+    return showError('Teacher registration is not supported yet.');
 
-      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRe.test(email)) { showError('Please enter a valid email address.'); return; }
+  // Validation
+  if (!name) return showError('Please enter your full name.');
+  if (!email) return showError('Please enter your email address.');
+  if (!password) return showError('Please enter a password.');
+  if (password.length < 6 || password.length > 20)
+    return showError('Password must be between 6 and 20 characters.');
 
-      const nameParts = name.split(' ');
-      const fname     = nameParts[0] || '';
-      const lname     = nameParts.slice(1).join(' ') || '';
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRe.test(email))
+    return showError('Please enter a valid email address.');
 
-      const btn = document.getElementById('signupBtn');
-      btn.disabled    = true;
-      btn.textContent = 'Creating account…';
+  // Split name
+  const [fname, ...rest] = name.split(' ');
+  const lname = rest.join(' ');
 
-      const formData = new URLSearchParams();
-      formData.append('signUp', '1');
-      formData.append('fname',  fname);
-      formData.append('lname',  lname);
-      formData.append('email',  email);
-      formData.append('password', password);
-      formData.append('ajax',   '1');
+  // Disable button
+  btn.disabled = true;
+  btn.textContent = 'Creating account…';
 
-      fetch('signup.php', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body:    formData.toString()
-      })
-      .then(r => r.json())
-      .then(data => {
-        if (data.status === 'success') {
-          showSuccess('🎉 ' + data.message + ' Redirecting…');
-          setTimeout(() => { window.location.href = data.redirect; }, 1200);
-        } else {
-          showError(data.message);
-          btn.disabled    = false;
-          btn.textContent = roleLabels[currentRole].btn;
-        }
-      })
-      .catch(() => {
-        showError('An unexpected error occurred. Please try again.');
-        btn.disabled    = false;
-        btn.textContent = roleLabels[currentRole].btn;
-      });
+  // Prepare data
+  const formData = new URLSearchParams({
+    signUp: '1',
+    fname,
+    lname,
+    email,
+    password,
+    ajax: '1'
+  });
+
+  fetch('signup.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: formData
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.status === 'success') {
+      showSuccess('🎉 ' + data.message + ' Redirecting…');
+      setTimeout(() => window.location.href = data.redirect, 1200);
+    } else {
+      showError(data.message);
+      btn.disabled = false;
+      btn.textContent = roleLabels[currentRole].btn;
     }
+  })
+  .catch(() => {
+    showError('An unexpected error occurred. Please try again.');
+    btn.disabled = false;
+    btn.textContent = roleLabels[currentRole].btn;
+  });
+}
   </script>
 </body>
 </html>

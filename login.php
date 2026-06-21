@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signIn'])) {
             $_SESSION['user_id'] = $row['parent_id'];
             $_SESSION['name']    = $row['full_name'];
             $_SESSION['email']   = $row['email'];
-            sendJson('success', 'Logged in successfully!', 'child-dashboard.php');
+            sendJson('success', 'Logged in successfully!', 'parent-dashboard.php');
         }
 
     } else {
@@ -65,7 +65,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signIn'])) {
 
 // ─── Redirect already-logged-in users ────────────────────────────────────────
 if (isset($_SESSION['role'])) {
-    header('Location: child-dashboard.php');
+    if ($_SESSION['role'] === 'parent') {
+        header('Location: parent-dashboard.php');
+    } else {
+        header('Location: child-dashboard.php');
+    }
     exit();
 }
 ?>
@@ -91,12 +95,6 @@ if (isset($_SESSION['role'])) {
       position: relative;
       overflow: hidden;
     }
-
-    /* ── Lily pad decorations ── */
-    .lily { position: absolute; pointer-events: none; }
-    .lily-tl { left: -30px; top: 100px; width: 200px; }
-    .lily-br { right: -20px; bottom: 60px; width: 200px; }
-
     /* ── Card ── */
     .card-wrap {
       background: #ffffff;
@@ -210,28 +208,6 @@ if (isset($_SESSION['role'])) {
   </style>
 </head>
 <body>
-
-  <!-- Lily pad TL -->
-  <div class="lily lily-tl">
-    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="70" cy="110" rx="70" ry="40" fill="#3a9c4e" opacity=".85"/>
-      <ellipse cx="130" cy="125" rx="55" ry="28" fill="#2d7d3e" opacity=".7"/>
-      <circle cx="80" cy="75" r="14" fill="#f78fb3"/>
-      <circle cx="80" cy="75" r="6"  fill="#ffe4b5"/>
-      <circle cx="140" cy="95" r="10" fill="#f78fb3" opacity=".8"/>
-      <circle cx="140" cy="95" r="4"  fill="#ffe4b5"/>
-    </svg>
-  </div>
-
-  <!-- Lily pad BR -->
-  <div class="lily lily-br">
-    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="120" cy="90" rx="70" ry="38" fill="#3a9c4e" opacity=".85"/>
-      <ellipse cx="60"  cy="110" rx="52" ry="26" fill="#2d7d3e" opacity=".7"/>
-      <circle cx="115" cy="55" r="13" fill="#f78fb3"/>
-      <circle cx="115" cy="55" r="5"  fill="#ffe4b5"/>
-    </svg>
-  </div>
 
   <!-- Card -->
   <div class="card-wrap">

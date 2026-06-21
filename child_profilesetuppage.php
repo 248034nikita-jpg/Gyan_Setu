@@ -45,11 +45,6 @@ $first_name  = explode(' ', $parent_name)[0];
     .blob-2 { width: 300px; height: 300px; background: #ffe4b5; bottom: -80px; right: -80px; }
     .blob-3 { width: 200px; height: 200px; background: #f78fb3; top: 50%; right: 60px; }
 
-    /* ── Lily pads ── */
-    .lily { position: absolute; pointer-events: none; }
-    .lily-tl { left: -30px; top: 80px;  width: 180px; }
-    .lily-br { right: -20px; bottom: 50px; width: 180px; }
-
     /* ── Card ── */
     .card-wrap {
       background: #fff;
@@ -221,24 +216,6 @@ $first_name  = explode(' ', $parent_name)[0];
   <div class="blob blob-2"></div>
   <div class="blob blob-3"></div>
 
-  <!-- Lily pads -->
-  <div class="lily lily-tl">
-    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="70" cy="110" rx="70" ry="40" fill="#3a9c4e" opacity=".8"/>
-      <ellipse cx="130" cy="125" rx="55" ry="28" fill="#2d7d3e" opacity=".65"/>
-      <circle cx="80" cy="75" r="14" fill="#f78fb3"/>
-      <circle cx="80" cy="75" r="6"  fill="#ffe4b5"/>
-    </svg>
-  </div>
-  <div class="lily lily-br">
-    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="120" cy="90" rx="70" ry="38" fill="#3a9c4e" opacity=".8"/>
-      <ellipse cx="60"  cy="110" rx="52" ry="26" fill="#2d7d3e" opacity=".65"/>
-      <circle cx="115" cy="55" r="13" fill="#f78fb3"/>
-      <circle cx="115" cy="55" r="5"  fill="#ffe4b5"/>
-    </svg>
-  </div>
-
   <!-- Card -->
   <div class="card-wrap">
 
@@ -309,10 +286,19 @@ $first_name  = explode(' ', $parent_name)[0];
       </div>
     </div>
 
-    <!-- Submit -->
+    <!-- Back + Submit -->
     <button class="btn-launch" id="launchBtn" onclick="handleLaunch()">
       Launch Learning Platform!
     </button>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
+      <a href="parent-dashboard.php" style="font-size:.85rem; color:#1abcbf; font-weight:700; text-decoration:none;">
+        ← Back to Dashboard
+      </a>
+      <a href="parent-dashboard.php" style="font-size:.82rem; color:#999; text-decoration:none;">
+        Skip for now →
+      </a>
+    </div>
 
   </div><!-- end card-wrap -->
 
