@@ -1,11 +1,6 @@
-/* ==========================================
-   GYAN SETU JAVASCRIPT
-========================================== */
 
 
-/* ==========================================
-   MOBILE NAVIGATION MENU
-========================================== */
+/* MOBILE NAVIGATION MENU*/
 
 const menuToggle = document.querySelector(".menu-toggle");
 
@@ -23,9 +18,7 @@ navWrapper.classList.toggle("show");
 }
 
 
-/* ==========================================
-   CLOSE MENU WHEN NAV LINK IS CLICKED
-========================================== */
+/*CLOSE MENU WHEN NAV LINK IS CLICKED */
 
 const dashboardLinks = document.querySelectorAll(".dashboard-menu a");
 
@@ -44,9 +37,7 @@ navWrapper.classList.remove("show");
 });
 
 
-/* ==========================================
-   CLOSE MENU WHEN HOME PAGE LINKS ARE CLICKED
-========================================== */
+/*CLOSE MENU WHEN HOME PAGE LINKS ARE CLICKED */
 
 const homeLinks = document.querySelectorAll(".nav-links a");
 
@@ -65,9 +56,7 @@ navWrapper.classList.remove("show");
 });
 
 
-/* ==========================================
-   CLOSE MENU WHEN WINDOW IS RESIZED
-========================================== */
+/* CLOSE MENU WHEN WINDOW IS RESIZED */
 
 window.addEventListener("resize", function(){
 

@@ -155,7 +155,7 @@ input:checked + .lang-slider:before {
 }
 
 .signup-btn {
-    background: black;
+    background: #2d2b63;
     color: white;
 }
 
@@ -499,7 +499,7 @@ input:checked + .lang-slider:before {
 .donation-item {
     padding: 18px 0;
     border-bottom: 1px solid #ddd;
-    color: #555;
+    color:  #2d2b63;
 }
 
 /* The white donation card on the right side of the sponsor section. */
@@ -642,7 +642,7 @@ input:checked + .lang-slider:before {
 }
 
 .apply-btn {
-    background: #4a4a4a;
+    background:#2d2b63;
     color: white;
     border: none;
     padding: 14px 28px;
@@ -653,7 +653,7 @@ input:checked + .lang-slider:before {
 }
 
 .apply-btn:hover {
-    background: #333;
+    background:#2d2b63;
 }
 
 /* The footer. */
