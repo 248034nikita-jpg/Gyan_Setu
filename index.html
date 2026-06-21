@@ -44,15 +44,14 @@ class="logo-img">
         <!-- Right Side Buttons -->
         <div class="nav-buttons">
 
-            <button class="language-btn" type="button">
-
-    <img src="assets/images/language.png"
-         alt="Language Icon"
-         class="language-icon">
-
-    Language
-
-</button>
+            <div class="lang-toggle-container">
+                <span>EN</span>
+                <label class="lang-switch">
+                    <input type="checkbox" id="lang-toggle-checkbox">
+                    <span class="lang-slider"></span>
+                </label>
+                <span>NE</span>
+            </div>
 
             <button class="signin-btn" type="button" onclick="window.location.href='index.php#signIn'">
                 Sign In

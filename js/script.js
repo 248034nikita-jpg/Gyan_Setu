@@ -191,11 +191,14 @@ function updateLanguage(lang) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const langBtn = document.querySelector('.language-btn');
-    if (langBtn) {
-        langBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            currentLang = currentLang === 'en' ? 'ne' : 'en';
+    const langCheckbox = document.getElementById('lang-toggle-checkbox');
+    if (langCheckbox) {
+        // Set initial state
+        langCheckbox.checked = currentLang === 'ne';
+
+        // Add change listener
+        langCheckbox.addEventListener('change', function() {
+            currentLang = this.checked ? 'ne' : 'en';
             updateLanguage(currentLang);
         });
     }
