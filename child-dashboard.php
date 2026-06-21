@@ -134,6 +134,7 @@ while ($row = $res->fetch_assoc()) {
     $badges[] = $row;
 }
 $stmt->close();
+$total_coins = count($badges);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -158,7 +159,6 @@ $stmt->close();
                 <a href="child-dashboard.html">🎮 Game Zone</a>
                 <a href="progress.html">📈 My Progress</a>
                 <a href="shop.html">🏪 Store</a>
-                <a href="coins.html">💰 Coins</a>
             </nav>
             <div class="dashboard-right">
                 <button class="language-btn">🌐 Language</button>
@@ -202,7 +202,7 @@ $stmt->close();
         <!-- Child Welcome & Stats Banner -->
         <div class="child-stats-banner" style="
             grid-column: 1 / -1;
-            background: linear-gradient(135deg, #1abcbf 0%, #6b7fc4 100%);
+            background: linear-gradient(135deg, #7997cb 0%);
             color: white;
             padding: 20px;
             border-radius: 12px;
@@ -256,7 +256,7 @@ $stmt->close();
 
         <!-- Subject filter sidebar -->
         <aside class="subjects">
-            <h2>Select Subject</h2>
+            <h3>Select Subject</h3>
             <button type="button">🧮 MATHS</button>
             <button type="button">📚 ENGLISH</button>
             <button type="button">📖 STORY BOOKS</button>
@@ -264,17 +264,16 @@ $stmt->close();
 
         <!-- Games list, locked games can be opened via Unlock All -->
         <section class="main-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <h2 style="font-size: 18px; color: #2D3A1E; font-weight: 800;">🎮 Game Zone</h2>
+            <div class="game-zone-header" style="display: flex; align-items: center; justify-content: space-between;">
+                <h3>🎮 Game Zone</h3>
                 <button class="unlock-btn" type="button" style="margin: 0;">🔓 Unlock All</button>
             </div>
 
-            <div class="games-grid" style="margin-bottom: 30px;">
-
-                <a href="child-dashboard.php?play_game=Defend+The+Tower" class="game-link">
+            <div class="games-grid" style="margin-bottom: 30px;" style="display: flex; flex-wrap: wrap; gap: 20px;">
+                <a href="child-dashboard.php?play_game=Earth+Defense" class="game-link">
                     <div class="game-card active">
                         <div class="play-btn">▶</div>
-                        <p>Defend The Tower</p>
+                        <p>Earth Defense</p>
                     </div>
                 </a>
 
@@ -302,33 +301,7 @@ $stmt->close();
             </div>
 
             <!-- Badges Section -->
-            <div class="badges-section" style="background: #fff; padding: 20px; border-radius: 12px; border: 1.5px solid #d6daf0;">
-                <h3 style="font-size: 16px; margin-bottom: 15px; color: #2D3A1E; font-weight: 800; border-bottom: 2px solid #1abcbf; padding-bottom: 6px;">ðŸ… My Badges</h3>
-                <div class="badges-grid" style="display: flex; flex-wrap: wrap; gap: 15px;">
-                    <?php if (empty($badges)): ?>
-                        <p style="color: #888; font-style: italic; font-size: 14px;">No badges earned yet. Keep playing games to earn points and unlock badges!</p>
-                    <?php else: ?>
-                        <?php foreach ($badges as $badge): ?>
-                            <div class="badge-item" style="
-                                display: flex;
-                                flex-direction: column;
-                                align-items: center;
-                                gap: 6px;
-                                background: #fdf6e2;
-                                border-radius: 10px;
-                                padding: 12px;
-                                border: 1px solid #ffe4b5;
-                                text-align: center;
-                                min-width: 90px;
-                            ">
-                                <span class="badge-icon" style="font-size: 28px;"><?php echo htmlspecialchars($badge['icon_url']); ?></span>
-                                <span style="font-size: 12px; font-weight: 800; color: #b07800;"><?php echo htmlspecialchars($badge['name']); ?></span>
-                                <span style="font-size: 10px; color: #999;"><?php echo htmlspecialchars($badge['description']); ?></span>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </div>
-            </div>
+            
         </section>
     </main>
 
