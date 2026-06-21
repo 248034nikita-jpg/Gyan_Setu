@@ -2,6 +2,13 @@
 session_start();
 session_unset();
 session_destroy();
-header("Location: index.html");
+
+// Allow a safe redirect target (whitelist only known pages)
+$allowed = ['signup', 'login', 'index'];
+$target = $_GET['redirect'] ?? 'index';
+if (!in_array($target, $allowed)) $target = 'index';
+
+$dest = ($target === 'index') ? 'index.html' : $target . '.php';
+header("Location: $dest");
 exit();
 ?>

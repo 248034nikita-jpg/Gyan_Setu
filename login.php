@@ -63,10 +63,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signIn'])) {
     sendJson('error', 'Invalid email/username or password.');
 }
 
-// ─── Redirect already-logged-in users ────────────────────────────────────────
+// ─── If a logged-in user visits login.php, clear their session so they can
+// ─── log in as a different account (avoids redirect loops).
 if (isset($_SESSION['role'])) {
-    header('Location: child-dashboard.php');
-    exit();
+    session_unset();
+    session_destroy();
+    session_start(); // restart a clean session
 }
 ?>
 <!DOCTYPE html>

@@ -292,10 +292,10 @@ $first_name  = explode(' ', $parent_name)[0];
     </button>
 
     <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
-      <a href="parent-dashboard.php" style="font-size:.85rem; color:#1abcbf; font-weight:700; text-decoration:none;">
-        ← Back to Dashboard
+      <a href="logout.php?redirect=signup" style="font-size:.85rem; color:#1abcbf; font-weight:700; text-decoration:none;">
+        ← Back to Sign Up
       </a>
-      <a href="parent-dashboard.php" style="font-size:.82rem; color:#999; text-decoration:none;">
+      <a href="child-dashboard.php" style="font-size:.82rem; color:#999; text-decoration:none;">
         Skip for now →
       </a>
     </div>

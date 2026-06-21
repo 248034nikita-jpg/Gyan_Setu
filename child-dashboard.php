@@ -158,7 +158,7 @@ $total_coins = count($badges);
             <img src="assets/images/logo.png" alt="Gyan Setu Logo" class="logo-img">
             <h2>Gyan Setu</h2>
         </a>
-        <button class="menu-toggle" type="button">â˜°</button>
+        <button class="menu-toggle" type="button" id="menuToggleBtn" aria-label="Open menu" aria-expanded="false">&#9776;</button>
         <div class="nav-wrapper">
             <nav class="dashboard-menu">
                 <a href="child-dashboard.php">🎮 Game Zone</a>
@@ -322,7 +322,7 @@ $total_coins = count($badges);
     <script src="js/script.js"></script>
 
     <script>
-    // â”€â”€ Profile Dropdown Toggle â”€â”€
+    // ── Profile Dropdown Toggle ──
     function toggleDropdown() {
         const menu = document.getElementById('profileDropdownMenu');
         const btn  = document.getElementById('profileAvatarBtn');
@@ -330,7 +330,7 @@ $total_coins = count($badges);
         btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     }
 
-    // Close dropdown when clicking outside
+    // Close profile dropdown when clicking outside
     document.addEventListener('click', function(e) {
         const wrapper = document.getElementById('profileDropdownWrapper');
         if (wrapper && !wrapper.contains(e.target)) {
@@ -338,6 +338,47 @@ $total_coins = count($badges);
             document.getElementById('profileAvatarBtn').setAttribute('aria-expanded', 'false');
         }
     });
+
+    // ── Mobile Nav Menu Toggle ──
+    (function() {
+        const toggleBtn = document.getElementById('menuToggleBtn');
+        const navWrapper = document.querySelector('.nav-wrapper');
+        if (toggleBtn && navWrapper) {
+            toggleBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const isOpen = navWrapper.classList.toggle('show');
+                toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                toggleBtn.innerHTML = isOpen ? '&#10005;' : '&#9776;';
+            });
+
+            // Close menu when a nav link is clicked
+            navWrapper.querySelectorAll('a').forEach(function(link) {
+                link.addEventListener('click', function() {
+                    navWrapper.classList.remove('show');
+                    toggleBtn.setAttribute('aria-expanded', 'false');
+                    toggleBtn.innerHTML = '&#9776;';
+                });
+            });
+
+            // Close menu on outside click
+            document.addEventListener('click', function(e) {
+                if (!navWrapper.contains(e.target) && !toggleBtn.contains(e.target)) {
+                    navWrapper.classList.remove('show');
+                    toggleBtn.setAttribute('aria-expanded', 'false');
+                    toggleBtn.innerHTML = '&#9776;';
+                }
+            });
+
+            // Close menu on resize above breakpoint
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    navWrapper.classList.remove('show');
+                    toggleBtn.setAttribute('aria-expanded', 'false');
+                    toggleBtn.innerHTML = '&#9776;';
+                }
+            });
+        }
+    })();
     </script>
 
 </body>

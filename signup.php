@@ -53,18 +53,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signUp'])) {
         $_SESSION['name']    = $fullname;
         $_SESSION['email']   = $email;
         $stmt->close();
-        // After signup → child profile setup
-        sendJson('success', 'Account created successfully!', 'child-dashboard.php');
+        // After creating a parent account, guide the user to set up their first child profile.
+        sendJson('success', 'Account created successfully!', 'child_profilesetuppage.php');
     } else {
         $stmt->close();
         sendJson('error', 'Registration failed. Please try again.');
     }
 }
 
-// ─── Redirect already-logged-in users ────────────────────────────────────────
+// ─── If a logged-in user visits signup.php, clear their session so they can
+// ─── sign up as a different account (avoids redirect loops).
 if (isset($_SESSION['role'])) {
-    header('Location: child-dashboard.php');
-    exit();
+    session_unset();
+    session_destroy();
+    session_start(); // restart a clean session
 }
 ?>
 <!DOCTYPE html>
