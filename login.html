@@ -214,9 +214,9 @@
     <div class="error-msg" id="loginError"></div>
 
     <!-- Email -->
-    <p class="field-label">EMAIL ADDRESS</p>
+    <p class="field-label" id="loginLabel">EMAIL ADDRESS</p>
     <div class="input-wrap">
-      <span class="icon">✉️</span>
+      <span class="icon" id="loginIcon">✉️</span>
       <input type="email" id="loginEmail" placeholder="Enter email address" autocomplete="email"/>
     </div>
 
@@ -247,6 +247,7 @@
     </div>
 
     <p class="card-footer-text">Don't have an account? <a href="signup.html">Sign up</a></p>
+    <p class="card-footer-text" style="margin-top: 15px;"><a href="index.html">← Back to Home</a></p>
     <p class="terms-row"><a href="#">Terms and Conditions</a> | <a href="#">Policy</a> | <a href="#">Help</a></p>
   </div>
 
@@ -261,6 +262,22 @@
 
       const labels = { student: 'LOG IN AS A STUDENT', teacher: 'LOG IN AS A TEACHER', home: 'LOG IN AS A PARENT' };
       document.getElementById('loginBtn').textContent = labels[role];
+
+      const input = document.getElementById('loginEmail');
+      const label = document.getElementById('loginLabel');
+      const icon = document.getElementById('loginIcon');
+
+      if (role === 'student') {
+        label.textContent = 'USERNAME';
+        input.placeholder = 'Enter child username';
+        input.type = 'text';
+        icon.textContent = '👤';
+      } else {
+        label.textContent = 'EMAIL ADDRESS';
+        input.placeholder = 'Enter email address';
+        input.type = 'email';
+        icon.textContent = '✉️';
+      }
     }
 
     function togglePwd(id, btn) {
@@ -276,32 +293,51 @@
     }
 
     function handleLogin() {
-      const email    = document.getElementById('loginEmail').value.trim();
-      const password = document.getElementById('loginPassword').value;
+      const email_or_username = document.getElementById('loginEmail').value.trim();
+      const password          = document.getElementById('loginPassword').value;
       document.getElementById('loginError').style.display = 'none';
 
-      if (!email)    { showError('Please enter your email address.'); return; }
+      if (!email_or_username) { 
+        showError(currentRole === 'student' ? 'Please enter your username.' : 'Please enter your email address.'); 
+        return; 
+      }
       if (!password) { showError('Please enter your password.'); return; }
 
-      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRe.test(email)) { showError('Please enter a valid email address.'); return; }
+      if (currentRole !== 'student') {
+        const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRe.test(email_or_username)) { showError('Please enter a valid email address.'); return; }
+      }
 
-      // Check stored users (from signup)
-      const users = JSON.parse(localStorage.getItem('gs_users') || '[]');
-      const user  = users.find(u => u.email === email && u.password === password && u.role === currentRole);
-
-      if (!user) {
-        showError('Invalid credentials. Please check your email and password.');
+      if (currentRole === 'teacher') {
+        showError('Teacher authentication is not supported yet.');
         return;
       }
 
-      localStorage.setItem('gs_current_user', JSON.stringify(user));
-      // Redirect to parent profile if home role
-      if (currentRole === 'home') {
-        window.location.href = 'parent_profile.html';
-      } else {
-        alert(`Welcome back, ${user.name}! (${currentRole} dashboard coming soon)`);
-      }
+      const formData = new URLSearchParams();
+      formData.append('signIn', '1');
+      formData.append('email_or_username', email_or_username);
+      formData.append('password', password);
+      formData.append('ajax', '1');
+
+      fetch('register.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData.toString()
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          window.location.href = data.redirect;
+        } else {
+          showError(data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showError('An unexpected error occurred. Please try again.');
+      });
     }
   </script>
 </body>

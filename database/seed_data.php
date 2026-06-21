@@ -26,7 +26,7 @@ $sci_id = $first_course_id + 2;
 // Math lessons
 $conn->query("INSERT INTO lessons (course_id, title, content, order_number) VALUES 
 ($math_id, 'Counting Fun', 'Learn to count from 1 to 20 with friendly characters.', 1),
-($math_id, 'Simple Addition', 'Adding objects together: 1 apple + 2 apples = 3 apples.', 2)");
+($math_id, 'Simple Addition', 'Adding objects toget  her: 1 apple + 2 apples = 3 apples.', 2)");
 
 $first_math_lesson_id = $conn->insert_id;
 $math_l1 = $first_math_lesson_id;

@@ -4,7 +4,7 @@ include 'database/includes/db_connect.php';
 
 // Route Protection: Check if logged in as Child
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'child') {
-    header("Location: index.php");
+    header("Location: login.html");
     exit();
 }
 
@@ -98,21 +98,21 @@ while ($row = $res->fetch_assoc()) {
         <button class="menu-toggle" type="button">☰</button>
         <div class="nav-wrapper">
             <nav class="dashboard-menu">
-                <a href="child-dashboard.html">🎮 Game Zone</a>
+                <a href="child-dashboard.php">🎮 Game Zone</a>
                 <a href="#">📈 My Progress</a>
-                <a href="shop.html">🏪 Store</a>
+                <a href="shop.php">🏪 Store</a>
                 <a href="#">💰 Coins</a>
             </nav>
             <div class="dashboard-right">
                 <button class="language-btn" type="button">🌐 Language</button>
-                <a href="profile.html" class="profile-icon">👤</a>
+                <a href="logout.php" class="profile-icon" title="Logout" style="text-decoration: none; font-size: 14px; font-weight: 700; color: #fff; background: rgba(255,255,255,0.22); padding: 6px 12px; border-radius: 20px;">Logout</a>
             </div>
         </div>
     </header>
 
     <!-- Top Bar (Back button + coin balance)-->
     <div class="top-bar">
-        <a href="child-dashboard.html" class="back-btn">⬅ Back</a>
+        <a href="child-dashboard.php" class="back-btn">⬅ Back</a>
         <div class="coin-display">
             <img src="assets/images/coin.png" alt="Coin">
             <span><?php echo $total_points; ?></span>
@@ -121,48 +121,43 @@ while ($row = $res->fetch_assoc()) {
 
     <!-- Shop Section (worksheets available for purchase) -->
     <section class="shop-section">
+        <?php if (isset($_SESSION['shop_alert'])): ?>
+            <div class="shop-alert <?php echo $_SESSION['shop_alert_type']; ?>" style="
+                padding: 12px 16px; 
+                margin-bottom: 20px; 
+                border-radius: 8px; 
+                font-weight: 700;
+                text-align: center;
+                background: <?php echo $_SESSION['shop_alert_type'] === 'success' ? '#e6f4ea' : '#fce8e6'; ?>;
+                color: <?php echo $_SESSION['shop_alert_type'] === 'success' ? '#137333' : '#c5221f'; ?>;
+                border: 1px solid <?php echo $_SESSION['shop_alert_type'] === 'success' ? '#13733350' : '#c5221f50'; ?>;
+            ">
+                <?php 
+                echo $_SESSION['shop_alert']; 
+                unset($_SESSION['shop_alert']);
+                unset($_SESSION['shop_alert_type']);
+                ?>
+            </div>
+        <?php endif; ?>
+
         <h2>Worksheets</h2>
         <div class="worksheet-grid">
 
-            <div class="worksheet-card">
-                <div class="coin-icon">
-                    <img src="assets/images/coin.png" alt="Coin">
-                    <span>50</span>
-                </div>
-                <div class="worksheet-image">📝</div>
-                <p>Math Worksheet</p>
-                <button type="button">BUY</button>
-            </div>
-
-            <div class="worksheet-card">
-                <div class="coin-icon">
-                    <img src="assets/images/coin.png" alt="Coin">
-                    <span>50</span>
-                </div>
-                <div class="worksheet-image">📘</div>
-                <p>English Worksheet</p>
-                <button type="button">BUY</button>
-            </div>
-
-            <div class="worksheet-card">
-                <div class="coin-icon">
-                    <img src="assets/images/coin.png" alt="Coin">
-                    <span>50</span>
-                </div>
-                <div class="worksheet-image">📖</div>
-                <p>Story Worksheet</p>
-                <button type="button">BUY</button>
-            </div>
-
-            <div class="worksheet-card">
-                <div class="coin-icon">
-                    <img src="assets/images/coin.png" alt="Coin">
-                    <span>50</span>
-                </div>
-                <div class="worksheet-image">✏️</div>
-                <p>Puzzle Worksheet</p>
-                <button type="button">BUY</button>
-            </div>
+            <?php if (empty($shop_items)): ?>
+                <p style="grid-column: 1 / -1; text-align: center; color: #666; font-style: italic;">No worksheets available in the shop.</p>
+            <?php else: ?>
+                <?php foreach ($shop_items as $item): ?>
+                    <div class="worksheet-card">
+                        <div class="coin-icon">
+                            <img src="assets/images/coin.png" alt="Coin">
+                            <span><?php echo htmlspecialchars($item['price_points']); ?></span>
+                        </div>
+                        <div class="worksheet-image"><?php echo htmlspecialchars($item['icon_url']); ?></div>
+                        <p><?php echo htmlspecialchars($item['item_name']); ?></p>
+                        <button type="button" onclick="window.location.href='shop.php?buy_item=<?php echo $item['item_id']; ?>'">BUY</button>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
 
         </div>
     </section>

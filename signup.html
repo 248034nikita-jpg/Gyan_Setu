@@ -183,6 +183,7 @@
     </div>
  
     <p class="card-footer-text">Already have an account? <a href="login.html">Sign in</a></p>
+    <p class="card-footer-text" style="margin-top: 15px;"><a href="index.html">← Back to Home</a></p>
   </div>
  
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -250,6 +251,15 @@
       document.getElementById('signupError').style.display   = 'none';
       document.getElementById('signupSuccess').style.display = 'none';
  
+      if (currentRole === 'student') {
+        showError('Student accounts must be created by a parent from the Parent Dashboard.');
+        return;
+      }
+      if (currentRole === 'teacher') {
+        showError('Teacher registration is not supported yet.');
+        return;
+      }
+ 
       if (!name)     { showError('Please enter your full name.'); return; }
       if (!email)    { showError('Please enter your email address.'); return; }
       if (!password) { showError('Please enter a password.'); return; }
@@ -258,21 +268,41 @@
       const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRe.test(email)) { showError('Please enter a valid email address.'); return; }
  
-      const users = JSON.parse(localStorage.getItem('gs_users') || '[]');
-      if (users.find(u => u.email === email && u.role === currentRole)) {
-        showError('An account with this email already exists for this role.'); return;
-      }
+      // Split full name into fname and lname
+      const nameParts = name.split(' ');
+      const fname = nameParts[0] || '';
+      const lname = nameParts.slice(1).join(' ') || '';
  
-      const newUser = { name, email, password, role: currentRole };
-      users.push(newUser);
-      localStorage.setItem('gs_users', JSON.stringify(users));
-      localStorage.setItem('gs_current_user', JSON.stringify(newUser));
+      const formData = new URLSearchParams();
+      formData.append('signUp', '1');
+      formData.append('fname', fname);
+      formData.append('lname', lname);
+      formData.append('email', email);
+      formData.append('password', password);
+      formData.append('ajax', '1');
  
-      showSuccess('Account created! Redirecting…');
-      setTimeout(() => {
-        if (currentRole === 'home') window.location.href = 'parent_profile.html';
-        else window.location.href = 'login.html';
-      }, 1200);
+      fetch('register.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData.toString()
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          showSuccess(data.message + ' Redirecting…');
+          setTimeout(() => {
+            window.location.href = data.redirect;
+          }, 1200);
+        } else {
+          showError(data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showError('An unexpected error occurred. Please try again.');
+      });
     }
   </script>
 </body>

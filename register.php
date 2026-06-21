@@ -6,6 +6,37 @@ include 'database/includes/db_connect.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+// Helper function to return response
+function sendResponse($status, $message, $redirect = null) {
+    // If request is AJAX, send JSON
+    $is_ajax = isset($_POST['ajax']) || (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest');
+    if ($is_ajax) {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => $status,
+            'message' => $message,
+            'redirect' => $redirect
+        ]);
+        exit();
+    } else {
+        // Fallback for standard forms (like index.php)
+        if ($status === 'success') {
+            header("Location: " . $redirect);
+        } else {
+            // Determine parameter name/hash based on scenario
+            $hash = (strpos($message, 'registered') !== false || strpos($message, 'exists') !== false || strpos($message, 'failed') !== false) ? '#signup' : '#signIn';
+            $error_code = 'registration_failed';
+            if (strpos($message, 'fields') !== false) $error_code = 'empty_fields';
+            elseif (strpos($message, 'email') !== false) $error_code = 'invalid_email';
+            elseif (strpos($message, 'exists') !== false) $error_code = 'email_exists';
+            elseif (strpos($message, 'credentials') !== false) $error_code = 'invalid_credentials';
+            
+            header("Location: index.php?error=" . $error_code . $hash);
+        }
+        exit();
+    }
+}
+
 if (isset($_POST['signUp'])) {
     $fname = trim($_POST['fname']);
     $lname = trim($_POST['lname']);
@@ -13,13 +44,11 @@ if (isset($_POST['signUp'])) {
     $password = $_POST['password'];
 
     if (empty($fname) || empty($lname) || empty($email) || empty($password)) {
-        header("Location: index.php?error=empty_fields#signup");
-        exit();
+        sendResponse('error', 'Please fill in all the required fields.');
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL) || !preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $email)) {
-        header("Location: index.php?error=invalid_email#signup");
-        exit();
+        sendResponse('error', 'Please enter a valid email address.');
     }
 
     // Combine names
@@ -33,8 +62,7 @@ if (isset($_POST['signUp'])) {
 
     if ($stmt->num_rows > 0) {
         $stmt->close();
-        header("Location: index.php?error=email_exists#signup");
-        exit();
+        sendResponse('error', 'Email is already registered. Please sign in.');
     }
     $stmt->close();
 
@@ -52,12 +80,10 @@ if (isset($_POST['signUp'])) {
         $_SESSION['email'] = $email;
 
         $stmt->close();
-        header("Location: parent-dashboard.php");
-        exit();
+        sendResponse('success', 'Account created successfully!', 'parent-dashboard.php');
     } else {
         $stmt->close();
-        header("Location: index.php?error=registration_failed#signup");
-        exit();
+        sendResponse('error', 'Registration failed. Please try again.');
     }
 }
 
@@ -67,8 +93,7 @@ if (isset($_POST['signIn'])) {
     $password = $_POST['password'];
 
     if (empty($email_or_username) || empty($password)) {
-        header("Location: index.php?error=empty_fields#signIn");
-        exit();
+        sendResponse('error', 'Please fill in all the required fields.');
     }
 
     // Detect if logging in as Parent (contains @) or Child (does not contain @)
@@ -87,8 +112,7 @@ if (isset($_POST['signIn'])) {
                 $_SESSION['email'] = $row['email'];
 
                 $stmt->close();
-                header("Location: parent-dashboard.php");
-                exit();
+                sendResponse('success', 'Logged in successfully!', 'parent-dashboard.php');
             }
         }
         $stmt->close();
@@ -107,19 +131,17 @@ if (isset($_POST['signIn'])) {
                 $_SESSION['parent_id'] = $row['parent_id'];
 
                 $stmt->close();
-                header("Location: child-dashboard.php");
-                exit();
+                sendResponse('success', 'Logged in successfully!', 'child-dashboard.php');
             }
         }
         $stmt->close();
     }
 
     // If we reach here, authentication failed
-    header("Location: index.php?error=invalid_credentials#signIn");
-    exit();
+    sendResponse('error', 'Invalid email/username or password.');
 }
 
 // Redirect back to index if accessed directly without POST
-header("Location: index.php");
+header("Location: index.html");
 exit();
 ?>
