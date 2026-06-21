@@ -28,10 +28,17 @@
             </nav>
 
             <div class="nav-buttons">
-                <button class="language-btn">
-                    <img src="assets/images/language.png" alt="Language Icon" class="language-icon">
-                    Language
-                </button>
+                <div class="sliding-toggle-container">
+                    <input type="checkbox" id="lang-toggle-checkbox">
+                    <span class="toggle-label en">EN</span>
+                    <label for="lang-toggle-checkbox" class="sliding-toggle-label">
+                        <span class="sliding-knob">
+                            <span class="flag flag-uk"></span>
+                            <span class="flag flag-np"></span>
+                        </span>
+                    </label>
+                    <span class="toggle-label ne">NE</span>
+                </div>
                 <button class="signin-btn">Sign In</button>
                 <button class="signup-btn">Sign Up</button>
             </div>

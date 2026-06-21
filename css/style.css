@@ -93,56 +93,106 @@ body {
 }
 
 /* Language Toggle Switch */
-.lang-toggle-container {
+.sliding-toggle-container {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-weight: 600;
-    font-size: 14px;
-    color: #333;
+    gap: 10px;
+    user-select: none;
 }
 
-.lang-switch {
-    position: relative;
-    display: inline-block;
-    width: 44px;
-    height: 24px;
+/* Hide actual checkbox input */
+#lang-toggle-checkbox {
+    display: none;
 }
 
-.lang-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.lang-slider {
-    position: absolute;
+/* Language labels on either side */
+.toggle-label {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #a3acb9; /* Faded inactive color */
+    transition: color 0.3s ease;
     cursor: pointer;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: #ccc;
-    transition: .3s;
-    border-radius: 24px;
 }
 
-.lang-slider:before {
+/* Active states for labels */
+#lang-toggle-checkbox:not(:checked) ~ .toggle-label.en {
+    color: #2d2b63; /* Active color matching primary theme */
+}
+
+#lang-toggle-checkbox:checked ~ .toggle-label.ne {
+    color: #2d2b63; /* Active color matching primary theme */
+}
+
+/* Toggle track capsule */
+.sliding-toggle-label {
+    position: relative;
+    display: block;
+    width: 64px;
+    height: 34px;
+    background: #f0f1f4;
+    border: 1px solid #e3e8ee;
+    border-radius: 17px;
+    cursor: pointer;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(255, 255, 255, 0.8);
+    transition: background-color 0.3s ease;
+}
+
+/* Sliding knob (circular container) */
+.sliding-knob {
     position: absolute;
-    content: "";
-    height: 18px;
-    width: 18px;
+    top: 3px;
     left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: .3s;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-input:checked + .lang-slider {
-    background-color: #85b035;
+/* Move the knob to the right when checked */
+#lang-toggle-checkbox:checked ~ .sliding-toggle-label .sliding-knob {
+    transform: translateX(30px); /* 64px width - 26px knob - 3px left padding - 3px right padding = 32px. Let's make it 30px so it fits perfectly. */
 }
 
-input:checked + .lang-slider:before {
-    transform: translateX(20px);
+/* Flag representations inside the knob */
+.flag {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    transition: opacity 0.3s ease;
 }
+
+/* UK Flag SVG */
+.flag-uk {
+    opacity: 1;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30"><rect width="60" height="30" fill="%23012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="%23fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="%23c8102e" stroke-width="4"/><path d="M0,15 H60 M30,0 V30" stroke="%23fff" stroke-width="10"/><path d="M0,15 H60 M30,0 V30" stroke="%23c8102e" stroke-width="6"/></svg>');
+}
+
+/* Nepal Flag SVG (within a white circular background for beautiful rendering) */
+.flag-np {
+    opacity: 0;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%23ffffff"/><g transform="translate(18, 8) scale(0.9)"><path d="M 12,5 L 68,48 L 26,48 L 68,91 L 12,91 Z" fill="%23003893"/><path d="M 16,10 L 59,44 L 22,44 L 59,86 L 16,86 Z" fill="%23dc143c"/><path d="M 23,28 A 5.5,5.5 0 0,0 34,28 A 4.5,4.5 0 0,1 23,28" fill="%23ffffff"/><circle cx="28.5" cy="27" r="1.5" fill="%23ffffff"/><path d="M 28.5,58 L 29.5,60.5 L 32,59.5 L 31,62 L 33.5,63 L 31,64 L 32,66.5 L 29.5,65.5 L 28.5,68 L 27.5,65.5 L 25,66.5 L 26,64 L 23.5,63 L 26,62 L 25,59.5 L 27.5,60.5 Z" fill="%23ffffff"/></g></svg>');
+}
+
+/* Cross-fade the flags based on checkbox state */
+#lang-toggle-checkbox:checked ~ .sliding-toggle-label .flag-uk {
+    opacity: 0;
+}
+
+#lang-toggle-checkbox:checked ~ .sliding-toggle-label .flag-np {
+    opacity: 1;
+}
+
 
 .language-icon {
     width: 18px;
