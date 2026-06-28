@@ -25,9 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signUp'])) {
         sendJson('error', 'Please enter a valid email address.');
     }
 
-  if (strlen($password) < 6 || strlen($password) > 20) {
-    sendJson('error', 'Password must be between 6 and 20 characters.');
-}
+    if (strlen($password) < 6) {
+        sendJson('error', 'Password must be at least 6 characters.');
+    }
 
     $fullname = trim($fname . ' ' . $lname);
 
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signUp'])) {
         $_SESSION['name']    = $fullname;
         $_SESSION['email']   = $email;
         $stmt->close();
-        // After creating a parent account, guide the user to set up their first child profile.
+        // After signup → child profile setup
         sendJson('success', 'Account created successfully!', 'child_profilesetuppage.php');
     } else {
         $stmt->close();
@@ -61,12 +61,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signUp'])) {
     }
 }
 
-// ─── If a logged-in user visits signup.php, clear their session so they can
-// ─── sign up as a different account (avoids redirect loops).
+// ─── Redirect already-logged-in users ────────────────────────────────────────
 if (isset($_SESSION['role'])) {
-    session_unset();
-    session_destroy();
-    session_start(); // restart a clean session
+    header('Location: child-dashboard.php');
+    exit();
 }
 ?>
 <!DOCTYPE html>
@@ -92,6 +90,10 @@ if (isset($_SESSION['role'])) {
       overflow: hidden;
       padding: 30px 16px;
     }
+
+    .lily { position: absolute; pointer-events: none; }
+    .lily-tl { left: -30px; top: 80px;  width: 200px; }
+    .lily-br { right: -20px; bottom: 50px; width: 200px; }
 
     .card-wrap {
       background: #fff;
@@ -179,6 +181,25 @@ if (isset($_SESSION['role'])) {
 </head>
 <body>
 
+  <div class="lily lily-tl">
+    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="70" cy="110" rx="70" ry="40" fill="#3a9c4e" opacity=".85"/>
+      <ellipse cx="130" cy="125" rx="55" ry="28" fill="#2d7d3e" opacity=".7"/>
+      <circle cx="80" cy="75" r="14" fill="#f78fb3"/>
+      <circle cx="80" cy="75" r="6"  fill="#ffe4b5"/>
+      <circle cx="140" cy="95" r="10" fill="#f78fb3" opacity=".8"/>
+      <circle cx="140" cy="95" r="4"  fill="#ffe4b5"/>
+    </svg>
+  </div>
+  <div class="lily lily-br">
+    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="120" cy="90" rx="70" ry="38" fill="#3a9c4e" opacity=".85"/>
+      <ellipse cx="60"  cy="110" rx="52" ry="26" fill="#2d7d3e" opacity=".7"/>
+      <circle cx="115" cy="55" r="13" fill="#f78fb3"/>
+      <circle cx="115" cy="55" r="5"  fill="#ffe4b5"/>
+    </svg>
+  </div>
+
   <div class="card-wrap">
     <h1 class="card-title">Sign up for Gyan Setu</h1>
     <p class="card-subtitle">Create an account to start earning and learning!</p>
@@ -221,40 +242,14 @@ if (isset($_SESSION['role'])) {
     <div class="divider">OR CONTINUE WITH</div>
 
     <div class="social-row">
-<<<<<<< HEAD
       <button class="btn-social">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2">
-    <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.017 4.388 11.006 10.125 11.927v-8.437H7.078v-3.49h3.047V9.413c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.079 24 18.09 24 12.073z"/>
-  </svg>
-  Sign in with Facebook
-</button>
-
-<button class="btn-social">
-  <svg width="18" height="18" viewBox="0 0 186.69 190.5">
-    <g transform="translate(1184.583 765.171)">
-      <path d="M-1089.333-687.239v36.888h51.262c-2.251 11.863-9.006 21.908-19.137 28.662l30.913 23.986c18.011-16.625 28.402-41.044 28.402-70.052 0-6.754-.606-13.249-1.732-19.483z" fill="#4285f4"/>
-      <path d="M-1142.714-651.791l-6.972 5.337-24.679 19.223c15.673 31.086 47.796 52.561 85.03 52.561 25.717 0 47.278-8.486 63.038-23.033l-30.913-23.986c-8.486 5.715-19.31 9.179-32.125 9.179-24.765 0-45.806-16.712-53.379-39.281z" fill="#34a853"/>
-      <path d="M-1174.365-712.61c-6.494 12.815-10.217 27.276-10.217 42.689s3.723 29.874 10.217 42.689c0 .086 31.693-24.592 31.693-24.592-1.905-5.715-3.031-11.776-3.031-18.098s1.126-12.383 3.031-18.098z" fill="#fbbc05"/>
-      <path d="M-1089.333-727.244c14.028 0 26.497 4.849 36.455 14.201l27.276-27.276c-16.539-15.413-38.013-24.852-63.731-24.852-37.234 0-69.359 21.388-85.032 52.561l31.692 24.592c7.574-22.569 28.615-39.226 53.34-39.226z" fill="#ea4335"/>
-    </g>
-  </svg>
-  Sign in with Google
-</button>
-=======
-<button class="btn-social">
-  <svg width="18" height="18" viewBox="0 0 24 24">
-    <path
-      d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.019 4.388 11.009 10.125 11.927v-8.437H7.078v-3.49h3.047V9.413c0-3.017 1.792-4.686 4.533-4.686 1.313 0 2.686.235 2.686.235v2.963h-1.514c-1.491 0-1.956.928-1.956 1.88v2.268h3.328l-.532 3.49h-2.796V24C19.612 23.082 24 18.092 24 12.073z"
-      fill="#1877F2"
-    />
-  </svg>
-  Sign in with Facebook
-</button>
+        <svg width="18" height="18" viewBox="0 0 814 1000"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76.5 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.3 135.3-317.5 269.1-317.5 70.5 0 129.4 46.4 172.5 46.4 41.3 0 106.1-49 184.6-49 29.5 0 108.2 2.6 168 64.1zm-126.8-174.6c31.5-37 54.8-88.4 54.8-139.4 0-7.1-.6-14.3-1.9-20.1-52.1 2-113.3 34.7-149.6 75.3-28.3 31.5-55.4 83.5-55.4 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 46.4 0 105.7-30.9 136.6-70.7z" fill="#1a1a2e"/></svg>
+        Sign Up with Apple
+      </button>
       <button class="btn-social">
         <svg width="18" height="18" viewBox="0 0 186.69 190.5"><g transform="translate(1184.583 765.171)"><path d="M-1089.333-687.239v36.888h51.262c-2.251 11.863-9.006 21.908-19.137 28.662l30.913 23.986c18.011-16.625 28.402-41.044 28.402-70.052 0-6.754-.606-13.249-1.732-19.483z" fill="#4285f4"/><path d="M-1142.714-651.791l-6.972 5.337-24.679 19.223c15.673 31.086 47.796 52.561 85.03 52.561 25.717 0 47.278-8.486 63.038-23.033l-30.913-23.986c-8.486 5.715-19.31 9.179-32.125 9.179-24.765 0-45.806-16.712-53.379-39.281z" fill="#34a853"/><path d="M-1174.365-712.61c-6.494 12.815-10.217 27.276-10.217 42.689s3.723 29.874 10.217 42.689c0 .086 31.693-24.592 31.693-24.592-1.905-5.715-3.031-11.776-3.031-18.098s1.126-12.383 3.031-18.098z" fill="#fbbc05"/><path d="M-1089.333-727.244c14.028 0 26.497 4.849 36.455 14.201l27.276-27.276c-16.539-15.413-38.013-24.852-63.731-24.852-37.234 0-69.359 21.388-85.032 52.561l31.692 24.592c7.574-22.569 28.615-39.226 53.34-39.226z" fill="#ea4335"/></g></svg>
         Sign Up with Google
       </button>
->>>>>>> 149b3ff1140fdcf84b3c9945fb64f245a68e13c3
     </div>
 
     <p class="card-footer-text">Already have an account? <a href="login.php">Sign in</a></p>
@@ -319,72 +314,68 @@ if (isset($_SESSION['role'])) {
     }
 
     function handleSignup() {
-  const name = document.getElementById('signupName').value.trim();
-  const email = document.getElementById('signupEmail').value.trim();
-  const password = document.getElementById('signupPassword').value;
-  const btn = document.getElementById('signupBtn');
+      const name     = document.getElementById('signupName').value.trim();
+      const email    = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value;
 
-  document.getElementById('signupError').style.display = 'none';
-  document.getElementById('signupSuccess').style.display = 'none';
+      document.getElementById('signupError').style.display   = 'none';
+      document.getElementById('signupSuccess').style.display = 'none';
 
-  // Role restrictions
-  if (currentRole === 'student')
-    return showError('Student accounts are created by a parent from the Parent Dashboard.');
+      if (currentRole === 'student') {
+        showError('Student accounts are created by a parent from the Parent Dashboard.');
+        return;
+      }
+      if (currentRole === 'teacher') {
+        showError('Teacher registration is not supported yet.');
+        return;
+      }
 
-  if (currentRole === 'teacher')
-    return showError('Teacher registration is not supported yet.');
+      if (!name)     { showError('Please enter your full name.'); return; }
+      if (!email)    { showError('Please enter your email address.'); return; }
+      if (!password) { showError('Please enter a password.'); return; }
+      if (password.length < 6) { showError('Password must be at least 6 characters.'); return; }
 
-  // Validation
-  if (!name) return showError('Please enter your full name.');
-  if (!email) return showError('Please enter your email address.');
-  if (!password) return showError('Please enter a password.');
-  if (password.length < 6 || password.length > 20)
-    return showError('Password must be between 6 and 20 characters.');
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRe.test(email)) { showError('Please enter a valid email address.'); return; }
 
-  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRe.test(email))
-    return showError('Please enter a valid email address.');
+      const nameParts = name.split(' ');
+      const fname     = nameParts[0] || '';
+      const lname     = nameParts.slice(1).join(' ') || '';
 
-  // Split name
-  const [fname, ...rest] = name.split(' ');
-  const lname = rest.join(' ');
+      const btn = document.getElementById('signupBtn');
+      btn.disabled    = true;
+      btn.textContent = 'Creating account…';
 
-  // Disable button
-  btn.disabled = true;
-  btn.textContent = 'Creating account…';
+      const formData = new URLSearchParams();
+      formData.append('signUp', '1');
+      formData.append('fname',  fname);
+      formData.append('lname',  lname);
+      formData.append('email',  email);
+      formData.append('password', password);
+      formData.append('ajax',   '1');
 
-  // Prepare data
-  const formData = new URLSearchParams({
-    signUp: '1',
-    fname,
-    lname,
-    email,
-    password,
-    ajax: '1'
-  });
-
-  fetch('signup.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: formData
-  })
-  .then(r => r.json())
-  .then(data => {
-    if (data.status === 'success') {
-      showSuccess('🎉 ' + data.message + ' Redirecting…');
-      setTimeout(() => window.location.href = data.redirect, 1200);
-    } else {
-      showError(data.message);
-      btn.disabled = false;
-      btn.textContent = roleLabels[currentRole].btn;
+      fetch('signup.php', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body:    formData.toString()
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (data.status === 'success') {
+          showSuccess('🎉 ' + data.message + ' Redirecting…');
+          setTimeout(() => { window.location.href = data.redirect; }, 1200);
+        } else {
+          showError(data.message);
+          btn.disabled    = false;
+          btn.textContent = roleLabels[currentRole].btn;
+        }
+      })
+      .catch(() => {
+        showError('An unexpected error occurred. Please try again.');
+        btn.disabled    = false;
+        btn.textContent = roleLabels[currentRole].btn;
+      });
     }
-  })
-  .catch(() => {
-    showError('An unexpected error occurred. Please try again.');
-    btn.disabled = false;
-    btn.textContent = roleLabels[currentRole].btn;
-  });
-}
   </script>
 </body>
 </html>

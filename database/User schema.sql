@@ -17,6 +17,9 @@ CREATE TABLE children (
     FOREIGN KEY (parent_id) REFERENCES parents(parent_id) ON DELETE CASCADE
 );
 
+ALTER TABLE children
+    ADD COLUMN age INT NOT NULL;
+
 CREATE TABLE child_progress (
     progress_id INT AUTO_INCREMENT PRIMARY KEY,
     child_id INT NOT NULL,

@@ -2,14 +2,55 @@
 session_start();
 include 'database/includes/db_connect.php';
 
-// Route Protection: Check if logged in as Child
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'child') {
+// Route Protection: Check if logged in as Parent
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'parent') {
     header("Location: login.php");
     exit();
 }
 
-$child_id = $_SESSION['user_id'];
-$username = $_SESSION['username'];
+// Get parent ID from session
+$parent_id = $_SESSION['user_id'];
+$parent_name = $_SESSION['name'];
+
+// Get child_id from URL
+if (!isset($_GET['child_id']) || empty($_GET['child_id'])) {
+    // No child_id in URL - get the first child for this parent
+    $query = "SELECT child_id FROM children WHERE parent_id = ? LIMIT 1";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $parent_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $child = $result->fetch_assoc();
+    $stmt->close();
+    
+    if ($child) {
+        $child_id = $child['child_id'];
+    } else {
+        // No children found - redirect to child dashboard
+        header("Location: child-dashboard.php");
+        exit();
+    }
+} else {
+    // child_id exists in URL - use it
+    $child_id = intval($_GET['child_id']);
+}
+
+// Verify this child belongs to this parent
+$verify_query = "SELECT username, total_points FROM children WHERE child_id = ? AND parent_id = ?";
+$stmt = $conn->prepare($verify_query);
+$stmt->bind_param("ii", $child_id, $parent_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows === 0) {
+    header("Location: child-dashboard.php?error=invalid_child");
+    exit();
+}
+
+$child_data = $result->fetch_assoc();
+$child_username = $child_data['username'];
+$total_points = $child_data['total_points'];
+$stmt->close();
 
 // Handle Purchase Request
 if (isset($_GET['buy_item'])) {
@@ -57,7 +98,7 @@ if (isset($_GET['buy_item'])) {
             $_SESSION['shop_alert_type'] = "error";
         }
     }
-    header("Location: shop.php");
+    header("Location: shop.php?child_id=" . $child_id);
     exit();
 }
 
@@ -77,6 +118,7 @@ while ($row = $res->fetch_assoc()) {
     $shop_items[] = $row;
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -100,7 +142,7 @@ while ($row = $res->fetch_assoc()) {
             <nav class="dashboard-menu">
                 <a href="child-dashboard.php">🎮 Game Zone</a>
                 <a href="#">📈 My Progress</a>
-                <a href="shop.php">🏪 Store</a>
+               <a href="shop.php?child_id=<?php echo $child_id; ?>">🏪 Store</a>
                 <a href="#">💰 Coins</a>
             </nav>
             <div class="dashboard-right">
