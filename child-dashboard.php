@@ -187,12 +187,8 @@ $total_coins = count($badges);
                             <span class="di-icon">📈</span> My Progress
                         </a>
                         <div class="dropdown-divider"></div>
-                        <?php 
-                        $target_url = ($_SESSION['role'] === 'parent') 
-                            ? 'parent-dashboard.php?token=' . urlencode($_SESSION['parent_access_token']) 
-                            : 'parent-access.php?token=' . urlencode($_SESSION['parent_access_token']);
-                        ?>
-                        <a href="<?php echo $target_url; ?>" class="dropdown-item" role="menuitem">
+                        <!-- Player Management direct link to parent dashboard -->
+                        <a href="parent-dashboard.php" class="dropdown-item" role="menuitem">
                             <span class="di-icon">👨‍💼</span> Player Management
                         </a>
                         <div class="dropdown-divider"></div>
@@ -322,7 +318,7 @@ $total_coins = count($badges);
     <script src="js/script.js"></script>
 
     <script>
-    // ── Profile Dropdown Toggle ──
+    // Profile Dropdown Toggle 
     function toggleDropdown() {
         const menu = document.getElementById('profileDropdownMenu');
         const btn  = document.getElementById('profileAvatarBtn');

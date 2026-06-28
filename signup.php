@@ -25,9 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signUp'])) {
         sendJson('error', 'Please enter a valid email address.');
     }
 
-    if (strlen($password) < 6) {
-        sendJson('error', 'Password must be at least 6 characters.');
-    }
+  if (strlen($password) < 6 || strlen($password) > 20) {
+    sendJson('error', 'Password must be between 6 and 20 characters.');
+}
 
     $fullname = trim($fname . ' ' . $lname);
 
@@ -221,6 +221,7 @@ if (isset($_SESSION['role'])) {
     <div class="divider">OR CONTINUE WITH</div>
 
     <div class="social-row">
+<<<<<<< HEAD
       <button class="btn-social">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2">
     <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.017 4.388 11.006 10.125 11.927v-8.437H7.078v-3.49h3.047V9.413c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.079 24 18.09 24 12.073z"/>
@@ -239,6 +240,21 @@ if (isset($_SESSION['role'])) {
   </svg>
   Sign in with Google
 </button>
+=======
+<button class="btn-social">
+  <svg width="18" height="18" viewBox="0 0 24 24">
+    <path
+      d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.019 4.388 11.009 10.125 11.927v-8.437H7.078v-3.49h3.047V9.413c0-3.017 1.792-4.686 4.533-4.686 1.313 0 2.686.235 2.686.235v2.963h-1.514c-1.491 0-1.956.928-1.956 1.88v2.268h3.328l-.532 3.49h-2.796V24C19.612 23.082 24 18.092 24 12.073z"
+      fill="#1877F2"
+    />
+  </svg>
+  Sign in with Facebook
+</button>
+      <button class="btn-social">
+        <svg width="18" height="18" viewBox="0 0 186.69 190.5"><g transform="translate(1184.583 765.171)"><path d="M-1089.333-687.239v36.888h51.262c-2.251 11.863-9.006 21.908-19.137 28.662l30.913 23.986c18.011-16.625 28.402-41.044 28.402-70.052 0-6.754-.606-13.249-1.732-19.483z" fill="#4285f4"/><path d="M-1142.714-651.791l-6.972 5.337-24.679 19.223c15.673 31.086 47.796 52.561 85.03 52.561 25.717 0 47.278-8.486 63.038-23.033l-30.913-23.986c-8.486 5.715-19.31 9.179-32.125 9.179-24.765 0-45.806-16.712-53.379-39.281z" fill="#34a853"/><path d="M-1174.365-712.61c-6.494 12.815-10.217 27.276-10.217 42.689s3.723 29.874 10.217 42.689c0 .086 31.693-24.592 31.693-24.592-1.905-5.715-3.031-11.776-3.031-18.098s1.126-12.383 3.031-18.098z" fill="#fbbc05"/><path d="M-1089.333-727.244c14.028 0 26.497 4.849 36.455 14.201l27.276-27.276c-16.539-15.413-38.013-24.852-63.731-24.852-37.234 0-69.359 21.388-85.032 52.561l31.692 24.592c7.574-22.569 28.615-39.226 53.34-39.226z" fill="#ea4335"/></g></svg>
+        Sign Up with Google
+      </button>
+>>>>>>> 149b3ff1140fdcf84b3c9945fb64f245a68e13c3
     </div>
 
     <p class="card-footer-text">Already have an account? <a href="login.php">Sign in</a></p>
