@@ -365,6 +365,11 @@ foreach ($questions as $q) {
             <div class="nav-item" onclick="switchTab('setup', this)">
                 <span class="nav-icon">⚙️</span> PHP & MySQL Setup
             </div>
+                        <div class="sidebar-footer">
+                <a href="logout.php">
+                    <span>Logout</span>
+                </a>
+            </div>
         </aside>
 
         <!-- Main Content Area -->

@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['adminSignIn'])) {
                 $_SESSION['role']          = 'admin';
                 $_SESSION['admin_id']      = $admin['admin_id'];
                 $_SESSION['admin_username'] = $admin['username'];
-                header('Location: admin.php');
+                header('Location: admin/dashboard.php');
                 exit();
             } else {
                 $error_msg = 'Invalid Admin username/email or password.';
