@@ -19,7 +19,7 @@ if ($_SESSION['role'] === 'child') {
     $child_id = $_SESSION['user_id'];
     $username = $_SESSION['username'];
 } else {
-    // Parent is logged in — show their first/most-recent child
+    // Parent is logged in show their first/most-recent child
     $parent_id_lookup = $_SESSION['user_id'];
     $stmt = $conn->prepare(
         "SELECT child_id, username FROM children WHERE parent_id = ? ORDER BY created_at ASC LIMIT 1"
@@ -31,7 +31,7 @@ if ($_SESSION['role'] === 'child') {
     $stmt->close();
 
     if (!$child_row) {
-        // Parent has no child yet â€” redirect to create one
+        // Parent has no child yet  redirect to create one
         header("Location: child_profilesetuppage.php");
         exit();
     }
@@ -187,8 +187,8 @@ $total_coins = count($badges);
                             <span class="di-icon">📈</span> My Progress
                         </a>
                         <div class="dropdown-divider"></div>
-                        <!-- Player Management direct link to parent dashboard -->
-                        <a href="parent-dashboard.php" class="dropdown-item" role="menuitem">
+                        <!-- Player Management link through the grownup gate -->
+                        <a href="grownup-gate.php" class="dropdown-item" role="menuitem">
                             <span class="di-icon">👨‍💼</span> Player Management
                         </a>
                         <div class="dropdown-divider"></div>

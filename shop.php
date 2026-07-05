@@ -10,7 +10,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'parent') {
 
 // Get parent ID from session
 $parent_id = $_SESSION['user_id'];
-$parent_name = $_SESSION['name'];
+$parent_name = $_SESSION['name'];  // ← FIXED: Changed from 'username' to 'name'
 
 // Get child_id from URL
 if (!isset($_GET['child_id']) || empty($_GET['child_id'])) {
@@ -26,12 +26,10 @@ if (!isset($_GET['child_id']) || empty($_GET['child_id'])) {
     if ($child) {
         $child_id = $child['child_id'];
     } else {
-        // No children found - redirect to child dashboard
         header("Location: child-dashboard.php");
         exit();
     }
 } else {
-    // child_id exists in URL - use it
     $child_id = intval($_GET['child_id']);
 }
 
@@ -91,10 +89,10 @@ if (isset($_GET['buy_item'])) {
             $stmt->execute();
             $stmt->close();
 
-            $_SESSION['shop_alert'] = "🎉 Successfully bought '$name'!";
+            $_SESSION['shop_alert'] = "Successfully bought '$name'!";
             $_SESSION['shop_alert_type'] = "success";
         } else {
-            $_SESSION['shop_alert'] = "❌ Not enough points for '$name'!";
+            $_SESSION['shop_alert'] = "Not enough points for '$name'!";
             $_SESSION['shop_alert_type'] = "error";
         }
     }
@@ -142,7 +140,7 @@ while ($row = $res->fetch_assoc()) {
             <nav class="dashboard-menu">
                 <a href="child-dashboard.php">🎮 Game Zone</a>
                 <a href="#">📈 My Progress</a>
-               <a href="shop.php?child_id=<?php echo $child_id; ?>">🏪 Store</a>
+                  <a href="shop.php?child_id=<?php echo $child_id; ?>">🏪 Store</a>
                 <a href="#">💰 Coins</a>
             </nav>
             <div class="dashboard-right">

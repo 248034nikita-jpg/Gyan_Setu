@@ -8,8 +8,8 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'child') {
     exit();
 }
 
-// Verify access token from child dashboard
-if (!isset($_GET['token']) || !isset($_SESSION['parent_access_token']) || $_GET['token'] !== $_SESSION['parent_access_token']) {
+// Security: Must have passed the math gate verification
+if (!isset($_SESSION['grownup_verified']) || $_SESSION['grownup_verified'] !== true) {
     header("Location: child-dashboard.php");
     exit();
 }
@@ -60,7 +60,10 @@ $_SESSION['user_id'] = $parent['parent_id'];
 $_SESSION['name']    = $parent['full_name'];
 $_SESSION['email']   = $parent['email'];
 
-// Redirect to the real parent dashboard with token
-header("Location: parent-dashboard.php?token=" . urlencode($_SESSION['parent_access_token']));
+// Clear math gate verification flag
+unset($_SESSION['grownup_verified']);
+
+// Redirect to the real parent dashboard
+header("Location: parent-dashboard.php");
 exit();
 ?>
