@@ -22,6 +22,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signIn'])) {
         sendJson('error', 'Please fill in all required fields.');
     }
 
+    // ── Admin login check (email or username) ───────────────────────────────
+    /*$stmt = $conn->prepare("SELECT admin_id, username, email, password_hash FROM admins WHERE email = ? OR username = ?");
+    if ($stmt) {
+        $stmt->bind_param("ss", $identifier, $identifier);
+        $stmt->execute();
+        $adminRow = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+
+        if ($adminRow && password_verify($password, $adminRow['password_hash'])) {
+            session_regenerate_id(true); // Prevent session fixation
+            $_SESSION['role']           = 'admin';
+            $_SESSION['admin_id']       = $adminRow['admin_id'];
+            $_SESSION['admin_username']  = $adminRow['username'];
+            sendJson('success', 'Logged in as Admin successfully!', 'admin.php');
+        }
+    }*/
+
     // ── Parent login (contains @) ──────────────────────────────────────────
     if (strpos($identifier, '@') !== false) {
         $stmt = $conn->prepare(
@@ -65,7 +82,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signIn'])) {
 
 // ─── Redirect already-logged-in users ────────────────────────────────────────
 if (isset($_SESSION['role'])) {
-    header('Location: child-dashboard.php');
+    if ($_SESSION['role'] === 'admin') {
+        header('Location: admin.php');
+    } else {
+        header('Location: child-dashboard.php');
+    }
     exit();
 }
 ?>
@@ -288,7 +309,7 @@ if (isset($_SESSION['role'])) {
 
     <p class="card-footer-text">Don't have an account? <a href="signup.php">Sign up</a></p>
     <p class="card-footer-text" style="margin-top:15px;"><a href="index.html">← Back to Home</a></p>
-    <p class="terms-row"><a href="#">Terms and Conditions</a> | <a href="#">Policy</a> | <a href="#">Help</a></p>
+    <p class="terms-row"><a href="#">Terms and Conditions</a> | <a href="#">Policy</a> | <a href="admin-login.php">Educator / Admin Portal</a></p>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

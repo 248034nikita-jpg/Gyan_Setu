@@ -14,7 +14,7 @@ if ($_SESSION['role'] === 'child') {
     $child_id = $_SESSION['user_id'];
     $username = $_SESSION['username'];
 } else {
-    // Parent is logged in â€” show their first/most-recent child
+    // Parent is logged in show their first/most-recent child
     $parent_id_lookup = $_SESSION['user_id'];
     $stmt = $conn->prepare(
         "SELECT child_id, username FROM children WHERE parent_id = ? ORDER BY created_at ASC LIMIT 1"
@@ -26,7 +26,7 @@ if ($_SESSION['role'] === 'child') {
     $stmt->close();
 
     if (!$child_row) {
-        // Parent has no child yet â€” redirect to create one
+        // Parent has no child yet  redirect to create one
         header("Location: child_profilesetuppage.php");
         exit();
     }
@@ -156,9 +156,9 @@ $total_coins = count($badges);
         <button class="menu-toggle" type="button">â˜°</button>
         <div class="nav-wrapper">
             <nav class="dashboard-menu">
-                <a href="child-dashboard.html">🎮 Game Zone</a>
+                <a href="child-dashboard.php">🎮 Game Zone</a>
                 <a href="progress.html">📈 My Progress</a>
-                <a href="shop.html">🏪 Store</a>
+                <a href="shop.php">🏪 Store</a>
             </nav>
             <div class="dashboard-right">
                 <button class="language-btn">🌐 Language</button>
@@ -182,8 +182,8 @@ $total_coins = count($badges);
                             <span class="di-icon">📈</span> My Progress
                         </a>
                         <div class="dropdown-divider"></div>
-                        <!-- Player Management direct link to parent dashboard -->
-                        <a href="parent-dashboard.php" class="dropdown-item" role="menuitem">
+                        <!-- Player Management link through the grownup gate -->
+                        <a href="grownup-gate.php" class="dropdown-item" role="menuitem">
                             <span class="di-icon">👨‍💼</span> Player Management
                         </a>
                         <div class="dropdown-divider"></div>

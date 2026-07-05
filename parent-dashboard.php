@@ -412,7 +412,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
 </a>
   <div class="header-right">
     <button class="btn-lang">🌐 Language</button>
-    <a href="logout.php" class="btn-close">✕</a>
+    <a href="child-dashboard.php" class="btn-close">✕</a>
   </div>
 </header>
 

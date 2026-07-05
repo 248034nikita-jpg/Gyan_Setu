@@ -96,18 +96,18 @@ $conn->query("INSERT INTO options (question_id, option_text, is_correct) VALUES
 ($qe1_q1, 'D', 0)");
 
 // 5. Seed Coins (Badges)
-$conn->query("INSERT INTO coin (name, description, icon_url, points_required) VALUES 
+/*$conn->query("INSERT INTO coin (name, description, icon_url, points_required) VALUES 
 ('First Step', 'Earned for your first score!', 'assets/images/coin.png', 10),
 ('Math Genius', 'Answered a math quiz perfectly!', 'assets/images/coin.png', 50),
 ('English Scholar', 'Completed all English lessons!', 'assets/images/coin.png', 100),
 ('Super Star', 'Earned 200 total points!', 'assets/images/coin.png', 200)");
-
+*/
 // 6. Seed Shop Items
-$conn->query("INSERT INTO shop_items (item_name, description, price_points, icon_url) VALUES 
+/*$conn->query("INSERT INTO shop_items (item_name, description, price_points, icon_url) VALUES 
 ('Rocket Avatar Skin', 'Fly high with a shiny rocket space avatar!', 50, '🚀'),
 ('Math Explorer E-Book', 'An interactive math puzzle book with over 50 challenges.', 100, '📚'),
 ('Adventure Game Pass', 'Unlock a secret bonus level in the Game Zone!', 150, '🎮'),
 ('Golden Crown Badge', 'Wear the royal gold crown in your profile!', 200, '👑')");
-
+*/
 echo "Seeding completed successfully!\n";
 ?>

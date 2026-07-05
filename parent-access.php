@@ -8,6 +8,12 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'child') {
     exit();
 }
 
+// Security: Must have passed the math gate verification
+if (!isset($_SESSION['grownup_verified']) || $_SESSION['grownup_verified'] !== true) {
+    header("Location: child-dashboard.php");
+    exit();
+}
+
 // The child must have a parent_id stored in the session
 if (!isset($_SESSION['parent_id']) || empty($_SESSION['parent_id'])) {
     // Fallback: try to fetch parent_id from DB using child_id
@@ -53,6 +59,9 @@ $_SESSION['role']    = 'parent';
 $_SESSION['user_id'] = $parent['parent_id'];
 $_SESSION['name']    = $parent['full_name'];
 $_SESSION['email']   = $parent['email'];
+
+// Clear math gate verification flag
+unset($_SESSION['grownup_verified']);
 
 // Redirect to the real parent dashboard
 header("Location: parent-dashboard.php");
