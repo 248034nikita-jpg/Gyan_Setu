@@ -1,10 +1,10 @@
 <?php
 session_start();
-include 'database/includes/db_connect.php';
+include 'database\includes\db_connect.php';
 
 // If already logged in as admin, redirect to admin.php
 if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
-    header('Location: admin.php');
+    header('Location: dashboard.php');
     exit();
 }
 
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['adminSignIn'])) {
         $error_msg = 'Please fill in all required fields.';
     } else {
         // Prepare query checking admins table for email or username
-        $stmt = $conn->prepare("SELECT admin_id, username, email, password_hash FROM admins WHERE email = ? OR username = ?");
+        $stmt = $conn->prepare("SELECT admin_id, username, email, password FROM admins WHERE email = ? OR username = ?");
         if ($stmt) {
             $stmt->bind_param("ss", $identifier, $identifier);
             $stmt->execute();
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['adminSignIn'])) {
             $stmt->close();
 
             // Verify password using standard PHP password_verify function
-            if ($admin && password_verify($password, $admin['password_hash'])) {
+            if ($admin && password_verify($password, $admin['password'])) {
                 session_regenerate_id(true); // Prevent session fixation
                 $_SESSION['role']          = 'admin';
                 $_SESSION['admin_id']      = $admin['admin_id'];

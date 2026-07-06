@@ -270,7 +270,7 @@ $_SESSION['grownup_math_ans'] = $ans;
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="submit-btn" id="submit-btn">Continue</button>
+            <button type="submit" class="submit-btn" id="submit-btn">Continue To Parent Dashboard</button>
         </form>
     </div>
 
