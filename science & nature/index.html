@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gyan_Setu - Kids E-Learning</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <div class="top-green-line"></div>
+
+    <header>
+        <div class="logo" onclick="showTab('games')">
+            <span>💡</span> <span>Gyan_Setu</span>
+        </div>
+        <nav>
+            <a href="#" id="nav-games" class="active" onclick="showTab('games')">
+                <span class="en">Game Zone</span>
+                <span class="np"> गेम जोन </span>
+            </a>
+            <a href="#" id="nav-progress" onclick="showTab('progress')">
+                <span class="en">My Progress</span>
+                <span class="np">मेरो प्रगति</span>
+            </a>
+            <a href="#" id="nav-store" onclick="showTab('store')">
+                <span class="en">Parent Shop</span>
+                <span class="np">अभिभावक पसल</span>
+            </a>
+        </nav>
+        <div class="nav-controls">
+            <div class="coin-counter"><span>🪙</span> <span id="headerCoins">1000</span></div>
+            <button class="btn-control lang-btn" onclick="toggleLanguage()">
+                <span>🌐</span> <span id="langBtnText">नेपाली</span>
+            </button>
+            <button class="btn-control" id="btnSoundToggle" onclick="toggleSound()" title="Toggle Sound">
+                <span>🔊</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- SOUND NOTIFICATION -->
+    <div class="sound-notification" id="soundNotification">
+        <span id="snIcon">🔊</span> <span id="snText">Sound On</span>
+    </div>
+
+    <!-- FLOATING CHECKOUT -->
+    <button class="floating-checkout" id="floatingCheckout" onclick="openCheckoutModal()">
+        <span>🛒</span>
+        <span class="en">Checkout</span>
+        <span class="np">चेकआउट</span>
+        <span class="fc-badge" id="fcBadge">Rs. 0</span>
+    </button>
+
+    <div class="container">
+
+        <div class="header-section">
+            <h1 id="pageTitle">
+                <span class="icon">🎮</span>
+                <span class="en">Play &amp; Learn</span>
+                <span class="np">खेलौं र सिकौं</span>
+            </h1>
+            <div class="age-selector-wrapper">
+                <button class="age-selector" id="ageSelectorBtn" onclick="toggleAgeSelector()">
+                    <span>📅</span>
+                    <span id="ageSelectorVal" data-age="7-8">
+                        <span class="en">Age</span>
+                        <span class="np">उमेर</span>
+                        7-8
+                    </span>
+                </button>
+                <div class="age-dropdown" id="ageDropdown">
+                    <div class="age-option" onclick="selectAge('5-6')">
+                        <span class="en">Age</span>
+                        <span class="np">उमेर</span>
+                        5-6
+                    </div>
+                    <div class="age-option selected" onclick="selectAge('7-8')">
+                        <span class="en">Age</span>
+                        <span class="np">उमेर</span>
+                        7-8
+                    </div>
+                    <div class="age-option" onclick="selectAge('9-10')">
+                        <span class="en">Age</span>
+                        <span class="np">उमेर</span>
+                        9-10
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GAMES TAB -->
+        <div id="game-tab" class="tab-content active">
+            <div class="dashboard-layout">
+                <div class="subjects-sidebar">
+                    <h3><span class="en">Subjects</span><span class="np">विषयहरू</span></h3>
+                    <button class="subject-btn active math" onclick="filterSubject('all',this)">
+                        <span>📚</span>
+                        <span class="en">Show All</span>
+                        <span class="np">सबै देखाउनुहोस्</span>
+                    </button>
+                    <button class="subject-btn math" onclick="filterSubject('math',this)">
+                        <span>🔢</span>
+                        <span class="en">Basic Math</span>
+                        <span class="np">आधारभूत गणित</span>
+                    </button>
+                    <button class="subject-btn reading" onclick="filterSubject('reading',this)">
+                        <span>📖</span>
+                        <span class="en">Reading Comp.</span>
+                        <span class="np">पठन बुझाइ</span>
+                    </button>
+                    <button class="subject-btn science" onclick="filterSubject('science',this)">
+                        <span>🌿</span>
+                        <span class="en">Science &amp; Nature</span>
+                        <span class="np">विज्ञान र प्रकृति</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROGRESS TAB -->
+        <div id="progress-tab" class="tab-content">
+            <div class="progress-container">
+                <div class="progress-header-cards">
+                    <div class="progress-stat-card">
+                        <div class="icon">🪙</div>
+                        <div class="progress-stat-value" id="statCoins">200</div>
+                        <div class="progress-stat-label"><span class="en">Coins Balance</span><span class="np">सिक्का ब्यालेन्स</span></div>
+                    </div>
+                    <div class="progress-stat-card">
+                        <div class="icon">✅</div>
+                        <div class="progress-stat-value" id="statGame">4</div>
+                        <div class="progress-stat-label"><span class="en">Game Solved</span><span class="np">समाधान गरिएका खेल</span></div>
+                    </div>
+                    <div class="progress-stat-card">
+                        <div class="icon">📓</div>
+                        <div class="progress-stat-value" id="statBooks">1</div>
+                        <div class="progress-stat-label"><span class="en">Books Read</span><span class="np">पढेका पुस्तकहरू</span></div>
+                    </div>
+                </div>
+                <div class="badges-section">
+                    <div class="section-title"><span>🏅</span> <span class="en">Achievement Badges</span><span class="np">उपलब्धि ब्याजहरू</span></div>
+                    <div class="badges-grid">
+                        <div class="badge-card"><span class="icon">⭐</span><span class="badge-card-name"><span class="en">First Step</span><span class="np">पहिलो कदम</span></span></div>
+                        <div class="badge-card"><span class="icon">🧠</span><span class="badge-card-name"><span class="en">Math Genius</span><span class="np">गणित जिनियस</span></span></div>
+                        <div class="badge-card"><span class="icon">📚</span><span class="badge-card-name"><span class="en">Bookworm</span><span class="np">किताबे कीरा</span></span></div>
+                    </div>
+                </div>
+                <div class="inventory-section">
+                    <div class="section-title"><span>🎒</span> <span class="en">My Purchased Items</span><span class="np">मेरा किनेका सामानहरू</span></div>
+                    <div class="inventory-grid">
+                        <div class="inventory-card"><span class="icon">✏️</span><span class="inventory-card-name"><span class="en">Pencil Set</span><span class="np">कलम सेट</span></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STORE TAB -->
+        <div id="store-tab" class="tab-content">
+            <div class="store-container">
+                <div class="store-catalog-wrapper">
+                    <!-- Math -->
+                    <div class="store-category">
+                        <div class="store-category-title"><span>🔢</span> <span class="en">Digital Math Resources</span><span class="np">डिजिटल गणित स्रोतहरू</span></div>
+                        <div class="store-grid">
+                            <div class="store-item">
+                                <div>
+                                    <div class="icon">📄</div>
+                                    <div class="store-item-name"><span class="en">Math Worksheets PDF</span><span class="np">गणित कार्यपत्र PDF</span></div>
+                                    <div class="store-item-desc"><span class="en">50+ pages of addition, subtraction &amp; patterns.</span><span class="np">जोड, घटाउ र ढाँचाका ५०+ पृष्ठहरू।</span></div>
+                                </div>
+                                <div>
+                                    <div class="store-item-price">Rs. 50</div>
+                                    <button class="buy-btn" onclick="addToCart('Math Worksheets PDF',50)"><span class="en">Add</span><span class="np">थप्नुहोस्</span></button>
+                                </div>
+                            </div>
+                            <div class="store-item">
+                                <div>
+                                    <div class="icon">📱</div>
+                                    <div class="store-item-name"><span class="en">Math Quiz App</span><span class="np">गणित क्विज एप</span></div>
+                                    <div class="store-item-desc"><span class="en">500+ problems with rewards &amp; tracking.</span><span class="np">पुरस्कार र ट्र्याकिङसहित ५००+ समस्याहरू।</span></div>
+                                </div>
+                                <div>
+                                    <div class="store-item-price">Rs. 150</div>
+                                    <button class="buy-btn" onclick="addToCart('Math Quiz App',150)"><span class="en">Add</span><span class="np">थप्नुहोस्</span></button>
+                                </div>
+                            </div>
+                            <div class="store-item">
+                                <div>
+                                    <div class="icon">📖</div>
+                                    <div class="store-item-name"><span class="en">"Numbers are Fun" eBook</span><span class="np">"नम्बर रमाइलो छ" ईबुक</span></div>
+                                    <div class="store-item-desc"><span class="en">Illustrated story‑based math book (PDF+EPUB).</span><span class="np">चित्रित कथा‑आधारित गणित पुस्तक (PDF+EPUB)।</span></div>
+                                </div>
+                                <div>
+                                    <div class="store-item-price">Rs. 200</div>
+                                    <button class="buy-btn" onclick="addToCart('Numbers are Fun eBook',200)"><span class="en">Add</span><span class="np">थप्नुहोस्</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Reading -->
+                    <div class="store-category">
+                        <div class="store-category-title"><span>📖</span> <span class="en">Digital Reading &amp; Phonics</span><span class="np">डिजिटल पठन र फोनिक्स</span></div>
+                        <div class="store-grid">
+                            <div class="store-item">
+                                <div>
+                                    <div class="icon">🔤</div>
+                                    <div class="store-item-name"><span class="en">Alphabet Printables</span><span class="np">वर्णमाला प्रिन्ट सामग्री</span></div>
+                                    <div class="store-item-desc"><span class="en">Coloring, tracing &amp; spelling worksheets.</span><span class="np">रंग भर्ने, ट्रेस गर्ने र हिज्जे कार्यपत्रहरू।</span></div>
+                                </div>
+                                <div>
+                                    <div class="store-item-price">Rs. 50</div>
+                                    <button class="buy-btn" onclick="addToCart('Alphabet Printables',50)"><span class="en">Add</span><span class="np">थप्नुहोस्</span></button>
+                                </div>
+                            </div>
+                            <div class="store-item">
+                                <div>
+                                    <div class="icon">📒</div>
+                                    <div class="store-item-name"><span class="en">Cursive Writing Course</span><span class="np">कर्सिव लेखन पाठ्यक्रम</span></div>
+                                    <div class="store-item-desc"><span class="en">10 video lessons + practice sheets.</span><span class="np">१० भिडियो पाठ + अभ्यास पानाहरू।</span></div>
+                                </div>
+                                <div>
+                                    <div class="store-item-price">Rs. 120</div>
+                                    <button class="buy-btn" onclick="addToCart('Cursive Writing Course',120)"><span class="en">Add</span><span class="np">थप्नुहोस्</span></button>
+                                </div>
+                            </div>
+                            <div class="store-item">
+                                <div>
+                                    <div class="icon">📚</div>
+                                    <div class="store-item-name"><span class="en">Moral Story eBook Boxset</span><span class="np">नैतिक कथा ईबुक सेट</span></div>
+                                    <div class="store-item-desc"><span class="en">15 classic tales + read‑aloud audio.</span><span class="np">१५ क्लासिक कथाहरू + अडियो।</span></div>
+                                </div>
+                                <div>
+                                    <div class="store-item-price">Rs. 250</div>
+                                    <button class="buy-btn" onclick="addToCart('Story eBook Boxset',250)"><span class="en">Add</span><span class="np">थप्नुहोस्</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Science -->
+                    <div class="store-category">
+                        <div class="store-category-title"><span>🌿</span> <span class="en">Digital Science &amp; Nature</span><span class="np">डिजिटल विज्ञान र प्रकृति</span></div>
+                        <div class="store-grid">
+                            <div class="store-item">
+                                <div>
+                                    <div class="icon">🧪</div>
+                                    <div class="store-item-name"><span class="en">Plant Growth Worksheets</span><span class="np">बिरुवा वृद्धि कार्यपत्र</span></div>
+                                    <div class="store-item-desc"><span class="en">Diagrams, seed logs &amp; observation sheets.</span><span class="np">रेखाचित्र, बीउ लग र अवलोकन पानाहरू।</span></div>
+                                </div>
+                                <div>
+                                    <div class="store-item-price">Rs. 75</div>
+                                    <button class="buy-btn" onclick="addToCart('Plant Growth Worksheets',75)"><span class="en">Add</span><span class="np">थप्नुहोस्</span></button>
+                                </div>
+                            </div>
+                            <div class="store-item">
+                                <div>
+                                    <div class="icon">🗺️</div>
+                                    <div class="store-item-name"><span class="en">Solar System VR</span><span class="np">सौर्यमण्डल VR</span></div>
+                                    <div class="store-item-desc"><span class="en">360° interactive tour of planets.</span><span class="np">ग्रहहरूको ३६०° अन्तरक्रियात्मक भ्रमण।</span></div>
+                                </div>
+                                <div>
+                                    <div class="store-item-price">Rs. 100</div>
+                                    <button class="buy-btn" onclick="addToCart('Solar System VR',100)"><span class="en">Add</span><span class="np">थप्नुहोस्</span></button>
+                                </div>
+                            </div>
+                            <div class="store-item">
+                                <div>
+                                    <div class="icon">🌱</div>
+                                    <div class="store-item-name"><span class="en">Science Experiment Videos</span><span class="np">विज्ञान प्रयोग भिडियोहरू</span></div>
+                                    <div class="store-item-desc"><span class="en">15 fun, safe experiments with tutorials.</span><span class="np">ट्यूटोरियलसहित १५ रमाइलो, सुरक्षित प्रयोगहरू।</span></div>
+                                </div>
+                                <div>
+                                    <div class="store-item-price">Rs. 300</div>
+                                    <button class="buy-btn" onclick="addToCart('Science Experiment Videos',300)"><span class="en">Add</span><span class="np">थप्नुहोस्</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cart Panel -->
+                <div class="cart-panel">
+                    <h3 class="cart-title"><span>🛒</span> <span class="en">Your Cart</span><span class="np">तपाईंको कार्ट</span></h3>
+                    <div class="cart-items-list" id="cartItemsList">
+                        <div class="cart-empty-text"><span class="en">Your cart is empty!</span><span class="np">तपाईंको कार्ट खाली छ!</span></div>
+                    </div>
+                    <div class="cart-total-box">
+                        <span class="en">Total:</span><span class="np">कुल:</span>
+                        <span class="cart-total-val" id="cartTotalVal">Rs. 0</span>
+                    </div>
+                    <button class="clear-cart-btn" onclick="clearCart()"><span class="en">Clear Cart</span><span class="np">कार्ट खाली गर्नुहोस्</span></button>
+                    <p style="font-size:0.75rem;color:#94a3b8;text-align:center;margin-top:10px;">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ─── PAYMENT MODAL ─── -->
+    <div class="modal-overlay" id="paymentModal" onclick="if(event.target===this) closePaymentModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div id="formSection">
+                <div class="modal-header">
+                    <div class="modal-title"><span class="icon">🛡️</span> <span class="en">Secure Checkout</span><span class="np">सुरक्षित चेकआउट</span></div>
+                    <div class="secure-badge"><span>🔒</span> Secure </div>
+                    <button class="btn-close" onclick="closePaymentModal()">✕</button>
+                </div>
+                <div class="grand-total">
+                    <span class="en">Grand Total:</span><span class="np">कुल रकम:</span>
+                    <span id="modalPayAmount">Rs. 0</span>
+                </div>
+                <label style="font-weight:900;display:block;margin-bottom:10px;"><span class="en">Payment Gateway</span><span class="np">भुक्तान गेटवे</span></label>
+                <div class="payment-methods">
+                    <div class="pay-method esewa active" id="m-esewa" onclick="selectMethod('esewa')">
+                        <span class="icon">💳</span> eSewa
+                    </div>
+                    <div class="pay-method khalti" id="m-khalti" onclick="selectMethod('khalti')">
+                        <span class="icon">📱</span> Khalti
+                    </div>
+                    <div class="pay-method banking" id="m-banking" onclick="selectMethod('banking')">
+                        <span class="icon">🏦</span> <span class="en">Bank App</span><span class="np">बैंक एप</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label id="idLabel"><span class="en">eSewa Mobile Number</span><span class="np">eSewa मोबाइल नम्बर</span></label>
+                    <input type="text" class="form-control" placeholder="e.g. 98XXXXXXXX" id="payId" />
+                </div>
+                <div class="terms-group">
+                    <input type="checkbox" id="termsCheck" onchange="toggleProceed()" />
+                    <label for="termsCheck">
+                        <span class="en">I agree to the <strong>Terms of Service</strong> and <strong>Privacy Policy</strong>.</span>
+                        <span class="np">म <strong>सेवा सर्तहरू</strong> र <strong>गोपनीयता नीति</strong> मा सहमत छु।</span>
+                    </label>
+                </div>
+                <button class="btn-primary" id="proceedBtn" onclick="goToOTP()" disabled>
+                    <span class="en">Proceed with Payment</span>
+                    <span class="np">भुक्तानसाथ अगाडि बढ्नुहोस्</span>
+                </button>
+                <button class="btn-secondary" onclick="closePaymentModal()"><span class="en">Cancel</span><span class="np">रद्द गर्नुहोस्</span></button>
+            </div>
+
+            <div id="otpSection">
+                <div class="modal-header">
+                    <div class="modal-title"><span class="icon">🔑</span> <span class="en">OTP Verification</span><span class="np">OTP प्रमाणीकरण</span></div>
+                    <button class="btn-close" onclick="closePaymentModal()">✕</button>
+                </div>
+                <div class="otp-message">
+                    <span>💬</span> <span class="en">We sent a code to</span><span class="np">हामीले कोड पठायौं:</span>
+                    <strong id="otpMasked">98******XX</strong>
+                </div>
+                <div class="otp-input-wrap">
+                    <input type="text" class="form-control" maxlength="4" id="otpInput" placeholder="1234" />
+                    <div class="otp-hint"><span class="en">Demo OTP:</span><span class="np">डेमो OTP:</span> <strong>1234</strong></div>
+                </div>
+                <br />
+                <button class="btn-primary" onclick="verifyOTP()"><span class="en">Authorize &amp; Purchase</span><span class="np">स्वीकृत गर्नुहोस् र किन्नुहोस्</span></button>
+                <button class="btn-secondary" onclick="closePaymentModal()"><span class="en">Cancel</span><span class="np">रद्द गर्नुहोस्</span></button>
+            </div>
+
+            <div id="processingSection">
+                <div class="spinner"></div>
+                <div class="processing-text">
+                    <h3><span class="en">Processing Transaction...</span><span class="np">कारोबार प्रक्रिया गरिँदै...</span></h3>
+                    <p>🔒 <span class="en">Establishing SSL tunnel with gateway.</span><span class="np">गेटवेसँग SSL सुरुङ स्थापना गरिँदै।</span></p>
+                </div>
+            </div>
+
+            <div id="successSection">
+                <div class="success-wrap">
+                    <div class="check">✅</div>
+                    <h2><span class="en">Payment Successful!</span><span class="np">भुक्तान सफल भयो!</span></h2>
+                    <p><span class="en">Your digital items are ready.</span><span class="np">तपाईंका डिजिटल वस्तुहरू तयार छन्।</span></p>
+                    <div class="txn-id" id="txnId">TXN-2026-XXXX</div>
+                    <p style="font-size:0.8rem;color:#94a3b8;"><span class="en">Receipt sent to your email.</span><span class="np">रसिद तपाईंको इमेलमा पठाइयो।</span></p>
+                    <br />
+                    <button class="btn-primary" onclick="closePaymentModal()"><span class="en">Continue</span><span class="np">जारी राख्नुहोस्</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- DECOR -->
+    <div class="bg-decor d1">☁️</div>
+    <div class="bg-decor d2">🌟</div>
+    <div class="bg-decor d3">🎈</div>
+    <div class="bg-decor d4">✨</div>
+
+    <script src="index.js"></script>
+</body>
+</html>
