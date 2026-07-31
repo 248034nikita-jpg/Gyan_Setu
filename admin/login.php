@@ -1,8 +1,8 @@
 <?php
 session_start();
-include 'database\includes\db_connect.php';
+include '..\database\includes\db_connect.php';
 
-// If already logged in as admin, redirect to admin.php
+// If already logged in as admin, redirect to dashboard.php
 if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
     header('Location: dashboard.php');
     exit();
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['adminSignIn'])) {
                 $_SESSION['role']          = 'admin';
                 $_SESSION['admin_id']      = $admin['admin_id'];
                 $_SESSION['admin_username'] = $admin['username'];
-                header('Location: admin/dashboard.php');
+                header('Location: dashboard.php');
                 exit();
             } else {
                 $error_msg = 'Invalid Admin username/email or password.';

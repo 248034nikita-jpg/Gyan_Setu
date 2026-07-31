@@ -8,11 +8,11 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'parent') {
     exit();
 }
 // Verify access token from child dashboard
-if (!isset($_GET['token']) || !isset($_SESSION['parent_access_token']) || $_GET['token'] !== $_SESSION['parent_access_token']) {
+/*if (!isset($_GET['token']) || !isset($_SESSION['parent_access_token']) || $_GET['token'] !== $_SESSION['parent_access_token']) {
     // Redirect to child dashboard if token missing or invalid
     header("Location: child-dashboard.php");
     exit();
-}
+}*/
 
 $parent_id = $_SESSION['user_id'];
 $parent_name = $_SESSION['name'];
