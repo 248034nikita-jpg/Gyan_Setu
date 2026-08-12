@@ -222,7 +222,7 @@ $first_name  = explode(' ', $parent_name)[0];
 
     <!-- Owl mascot -->
     <div class="mascot-wrap">
-      <img src = "assets/images/logo.png" alt="Gyan Setu Logo" style="width:72px; height:90px;"/>
+      <img src = "assets/images/website/logo.png" alt="Gyan Setu Logo" style="width:72px; height:90px;"/>
     </div>
 
     <!-- Progress bar -->

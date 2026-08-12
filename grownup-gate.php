@@ -239,7 +239,7 @@ $_SESSION['grownup_math_ans'] = $ans;
     <!-- Back Button at the top-left -->
     <div class="back-button-container">
         <a href="child-dashboard.php" id="back-link">
-            <img src="assets/images/back_button.png" alt="Go Back" class="back-btn-img" id="back-btn-img">
+            <img src="assets/images/website/back_button.png" alt="Go Back" class="back-btn-img" id="back-btn-img">
         </a>
     </div>
 

@@ -52,12 +52,20 @@ if ($stmt->num_rows > 0) {
 }
 $stmt->close();
 
+// Look up mascot_id from database
+$stmt = $conn->prepare("SELECT mascot_id FROM mascots WHERE name = ?");
+$stmt->bind_param("s", $mascot_name);
+$stmt->execute();
+$m_row = $stmt->get_result()->fetch_assoc();
+$mascot_id = $m_row ? intval($m_row['mascot_id']) : 1;
+$stmt->close();
+
 // Insert child — no password_hash column in the children table
 $stmt = $conn->prepare(
-    "INSERT INTO children (username, parent_id, total_points, current_level)
-     VALUES (?, ?, 0, 1)"
+    "INSERT INTO children (username, parent_id, age, mascot_id, total_coins, current_level)
+     VALUES (?, ?, ?, ?, 0, 1)"
 );
-$stmt->bind_param("si", $username, $parent_id);
+$stmt->bind_param("siii", $username, $parent_id, $child_age, $mascot_id);
 
 if ($stmt->execute()) {
     $child_id = $stmt->insert_id;

@@ -45,18 +45,18 @@ if (isset($_GET['play_game'])) {
     $points_to_add = 20;
 
     // 1. Update points in children
-    $stmt = $conn->prepare("UPDATE children SET total_points = total_points + ? WHERE child_id = ?");
+    $stmt = $conn->prepare("UPDATE children SET total_coins = total_coins + ? WHERE child_id = ?");
     $stmt->bind_param("ii", $points_to_add, $child_id);
     $stmt->execute();
     $stmt->close();
 
     // Fetch updated total points
-    $stmt = $conn->prepare("SELECT total_points FROM children WHERE child_id = ?");
+    $stmt = $conn->prepare("SELECT total_coins FROM children WHERE child_id = ?");
     $stmt->bind_param("i", $child_id);
     $stmt->execute();
     $res = $stmt->get_result();
     $child_data = $res->fetch_assoc();
-    $new_points = $child_data['total_points'];
+    $new_points = $child_data['total_coins'];
     $stmt->close();
 
     // Calculate level: 1 level per 100 points (minimum Level 1)
@@ -72,39 +72,78 @@ if (isset($_GET['play_game'])) {
     $stmt->execute();
     $stmt->close();
 
-    // 3. Check and award coins/badges
-    $stmt = $conn->prepare("SELECT coin_id, name, points_required FROM coin WHERE points_required <= ?");
-    $stmt->bind_param("i", $new_points);
+    // Check and award badges
+    $stmt = $conn->prepare("
+        SELECT b.badge_id, b.title 
+        FROM badges b
+        WHERE b.badge_id NOT IN (
+            SELECT cb.badge_id FROM child_badges cb WHERE cb.child_id = ?
+        )
+    ");
+    $stmt->bind_param("i", $child_id);
     $stmt->execute();
     $res = $stmt->get_result();
-    $eligible_coins = [];
+    $unearned_badges = [];
     while ($row = $res->fetch_assoc()) {
-        $eligible_coins[] = $row;
+        $unearned_badges[] = $row;
     }
     $stmt->close();
 
     $new_badge_msg = '';
-    foreach ($eligible_coins as $coin) {
-        // Check if already earned
-        $stmt = $conn->prepare("SELECT child_coin_id FROM child_coin WHERE child_id = ? AND coin_id = ?");
-        $stmt->bind_param("ii", $child_id, $coin['coin_id']);
-        $stmt->execute();
-        $stmt->store_result();
-        $already_earned = $stmt->num_rows > 0;
-        $stmt->close();
+    foreach ($unearned_badges as $badge) {
+        $qualifies = false;
+        $badge_id = $badge['badge_id'];
+        
+        switch ($badge_id) {
+            case 1: // First Steps
+            case 2: // Thinker
+            case 3: // Solver
+            case 5: // Knowledge Seeker
+            case 7: // Perfect Score
+            case 8: // Streak Master
+                $qualifies = true;
+                break;
+            case 4: // Level Explorer
+                if ($new_level >= 2) $qualifies = true;
+                break;
+            case 6: // Mountain Climber
+                if ($new_level >= 3) $qualifies = true;
+                break;
+            case 9: // Coin Collector
+                if ($new_points >= 100) $qualifies = true;
+                break;
+            case 10: // Nepal Explorer
+                if ($new_level >= 9) $qualifies = true;
+                break;
+        }
 
-        if (!$already_earned) {
-            // Award the coin!
-            $stmt = $conn->prepare("INSERT INTO child_coin (child_id, coin_id) VALUES (?, ?)");
-            $stmt->bind_param("ii", $child_id, $coin['coin_id']);
+        if ($qualifies) {
+            $stmt = $conn->prepare("INSERT INTO child_badges (child_id, badge_id) VALUES (?, ?)");
+            $stmt->bind_param("ii", $child_id, $badge_id);
             $stmt->execute();
             $stmt->close();
             
-            $new_badge_msg = "ðŸ† Congratulations! You earned the '" . $coin['name'] . "' badge!";
+            // Award the coins_reward if any
+            $stmt = $conn->prepare("SELECT coins_reward FROM badges WHERE badge_id = ?");
+            $stmt->bind_param("i", $badge_id);
+            $stmt->execute();
+            $bres = $stmt->get_result()->fetch_assoc();
+            $stmt->close();
+            
+            if ($bres && $bres['coins_reward'] > 0) {
+                $reward = $bres['coins_reward'];
+                $stmt = $conn->prepare("UPDATE children SET total_coins = total_coins + ? WHERE child_id = ?");
+                $stmt->bind_param("ii", $reward, $child_id);
+                $stmt->execute();
+                $stmt->close();
+                $new_points += $reward;
+            }
+
+            $new_badge_msg = "🏆 Congratulations! You earned the '" . $badge['title'] . "' badge!";
         }
     }
 
-    $_SESSION['game_alert'] = "ðŸŽ‰ Played '$game_name'! You earned +$points_to_add points!";
+    $_SESSION['game_alert'] = "🎉 Played '$game_name'! You earned +$points_to_add points!";
     if (!empty($new_badge_msg)) {
         $_SESSION['badge_alert'] = $new_badge_msg;
     }
@@ -114,23 +153,23 @@ if (isset($_GET['play_game'])) {
 }
 
 // Fetch Fresh Child Data
-$stmt = $conn->prepare("SELECT total_points, current_level FROM children WHERE child_id = ?");
+$stmt = $conn->prepare("SELECT total_coins, current_level FROM children WHERE child_id = ?");
 $stmt->bind_param("i", $child_id);
 $stmt->execute();
 $res = $stmt->get_result();
 $child_info = $res->fetch_assoc();
 $stmt->close();
 
-$total_points = $child_info['total_points'];
+$total_points = $child_info['total_coins'];
 $current_level = $child_info['current_level'];
 
-// Fetch Earned Coins (Badges)
+// Fetch Earned Badges
 $badges = [];
 $stmt = $conn->prepare("
-    SELECT c.name, c.description, c.icon_url, cc.date_earned 
-    FROM child_coin cc
-    JOIN coin c ON cc.coin_id = c.coin_id
-    WHERE cc.child_id = ?
+    SELECT b.title AS name, b.description, b.icon_url, cb.date_earned 
+    FROM child_badges cb
+    JOIN badges b ON cb.badge_id = b.badge_id
+    WHERE cb.child_id = ?
 ");
 $stmt->bind_param("i", $child_id);
 $stmt->execute();
@@ -155,7 +194,7 @@ $total_coins = count($badges);
     <header class="dashboard-navbar">
         <!-- Logo -->
         <a href="index.html" class="logo">
-            <img src="assets/images/logo.png" alt="Gyan Setu Logo" class="logo-img">
+            <img src="assets/images/website/logo.png" alt="Gyan Setu Logo" class="logo-img">
             <h2>Gyan Setu</h2>
         </a>
         <button class="menu-toggle" type="button" id="menuToggleBtn" aria-label="Open menu" aria-expanded="false">&#9776;</button>

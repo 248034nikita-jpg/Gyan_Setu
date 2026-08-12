@@ -72,7 +72,7 @@ async function loadTopExplorers() {
             <li class="d-flex align-items-center justify-content-between p-2 mb-2 rounded"
                 style="border-left: 4px solid ${index === 0 ? '#f0ad4e' : '#ced4da'}; background:#f8f9fa;">
                 <div class="d-flex align-items-center gap-2">
-                    <img src="${e.avatar}" width="32" height="32" class="rounded-circle">
+                    <span class="fs-3 me-1">${e.avatar || '🧒'}</span>
                     <div>
                         <div class="fw-bold">${e.name}</div>
                         <small class="text-muted">Age ${e.age}</small>

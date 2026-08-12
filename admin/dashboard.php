@@ -250,7 +250,7 @@
                                     <h5 class="fw-bold fs-4 my-3 text-success">
                                         <i class='bx bx-book-content'></i> Parent Store Purchase Log
                                     </h5>
-                                    <table class="table" id="purchase-log">
+                                    <table class="table" id="parent-purchase-log">
                                         <thead>
                                             <tr class="text-muted">
                                             <th scope="col">Parent Name</th>

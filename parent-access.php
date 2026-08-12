@@ -36,7 +36,7 @@ if (!isset($_SESSION['parent_id']) || empty($_SESSION['parent_id'])) {
 }
 
 // Fetch the parent's details
-$stmt = $conn->prepare("SELECT parent_id, full_name, email FROM parents WHERE parent_id = ?");
+$stmt = $conn->prepare("SELECT parent_id, first_name, last_name, email FROM parents WHERE parent_id = ?");
 $stmt->bind_param("i", $parent_id);
 $stmt->execute();
 $res = $stmt->get_result();
@@ -57,7 +57,7 @@ $_SESSION['prev_child_parent_id']= $_SESSION['parent_id'] ?? null;
 // Elevate session to parent
 $_SESSION['role']    = 'parent';
 $_SESSION['user_id'] = $parent['parent_id'];
-$_SESSION['name']    = $parent['full_name'];
+$_SESSION['name']    = trim($parent['first_name'] . ' ' . $parent['last_name']);
 $_SESSION['email']   = $parent['email'];
 
 // Clear math gate verification flag

@@ -41,11 +41,8 @@ if (isset($_POST['add_child'])) {
             $stmt->close();
         } else {
             $stmt->close();
-            // Hash password securely
-            $hashed_password = password_hash($child_password, PASSWORD_DEFAULT);
-
-            $stmt = $conn->prepare("INSERT INTO children (username, password_hash, parent_id, total_points, current_level) VALUES (?, ?, ?, 0, 1)");
-            $stmt->bind_param("ssi", $child_username, $hashed_password, $parent_id);
+            $stmt = $conn->prepare("INSERT INTO children (username, parent_id, total_coins, current_level) VALUES (?, ?, 0, 1)");
+            $stmt->bind_param("si", $child_username, $parent_id);
 
             if ($stmt->execute()) {
                 $message = "Child account created successfully!";
@@ -73,7 +70,7 @@ $stmt->close();
 // Fetch Purchase History
 $purchases = [];
 $stmt = $conn->prepare("
-    SELECT p.purchase_date, p.points_spent, c.username AS child_name, s.item_name, s.icon_url 
+    SELECT p.purchase_date, p.coins_spent, c.username AS child_name, s.item_name, s.icon_url 
     FROM purchases p
     JOIN children c ON p.child_id = c.child_id
     JOIN shop_items s ON p.item_id = s.item_id
@@ -95,13 +92,13 @@ $total_coins_sum = 0;
 $total_lessons_completed = 0;
 $total_points_sum = 0;
 foreach ($children_stats as $child) {
-    if ($child['average_quiz_score'] !== null) {
-        $total_quiz_score += $child['average_quiz_score'];
+    if ($child['average_course_score'] !== null) {
+        $total_quiz_score += $child['average_course_score'];
         $child_count_with_scores++;
     }
-    $total_coins_sum += $child['coin_earned'];
-    $total_lessons_completed += $child['lessons_completed'];
-    $total_points_sum += $child['total_points'];
+    $total_coins_sum += $child['badges_earned'];
+    $total_lessons_completed += $child['courses_completed'];
+    $total_points_sum += $child['total_coins'];
 }
 $overall_progress = $child_count_with_scores > 0 ? round($total_quiz_score / $child_count_with_scores) : 0;
 $total_children = count($children_stats);
@@ -412,11 +409,12 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
 <!-- HEADER -->
 <header>
    <a href="index.html" class="logo">
-    <img src="assets/images/logo.png" alt="Gyan Setu Logo" class="logo-img">
+    <img src="assets/images/website/logo.png" alt="Gyan Setu Logo" class="logo-img">
     <span>Gyan Setu</span>
 
 </a>
   <div class="header-right">
+    <a href="shop/parentshop.html" class="btn-play" style="padding: 6px 16px; font-size: 13px; text-decoration: none; background: var(--orange); color: #fff; margin-right: 10px;">🏪 Parent Shop</a>
     <button class="btn-lang">🌐 Language</button>
     <a href="child-dashboard.php" class="btn-close">✕</a>
   </div>
@@ -450,6 +448,18 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
     </p>
   </div>
 
+  <!-- PARENT RESOURCES SHOP -->
+  <p class="section-title">🏪 Parent Resources Shop</p>
+  <div class="panel" style="margin-bottom:28px; background: var(--orange-light); border-color: var(--orange);">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+      <div>
+        <h3 style="color:var(--orange); font-size:16px; font-weight:800;">Get worksheets, reading materials, and science activities for your children!</h3>
+        <p style="font-size:13px; color:var(--text); font-weight:600; margin-top:4px;">Enhance your child's learning journey with high-quality digital resources.</p>
+      </div>
+      <a href="shop/parentshop.html" class="btn-play" style="background:var(--orange); max-width:200px; padding:10px 20px; text-decoration:none;">Go to Parent Shop ➔</a>
+    </div>
+  </div>
+
 <!-- MY CHILDREN -->
   <p class="section-title">👨‍👩‍👧 My Children</p>
   <div class="children-grid">
@@ -467,13 +477,13 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
           ['bg' => '#FEF0E4', 'border' => '#F5832A', 'bar' => 'var(--orange)']
         ];
         $theme = $themes[$child['child_id'] % count($themes)];
-        $progress = $child['average_quiz_score'] !== null ? round($child['average_quiz_score']) : 0;
+        $progress = $child['average_course_score'] !== null ? round($child['average_course_score']) : 0;
       ?>
         <div class="child-card">
           <div class="child-avatar" style="background:<?php echo $theme['bg']; ?>; border-color:<?php echo $theme['border']; ?>;">🧒</div>
           <div class="child-name"><?php echo htmlspecialchars($child['child_name']); ?></div>
           <div class="child-meta">Level <?php echo htmlspecialchars($child['current_level']); ?></div>
-          <div class="coins-row"><span class="coin-icon">🪙</span> <?php echo htmlspecialchars($child['total_points']); ?> pts</div>
+          <div class="coins-row"><span class="coin-icon">🪙</span> <?php echo htmlspecialchars($child['total_coins']); ?> pts</div>
           <div class="mini-progress-label"><span>Quiz Score</span><span><?php echo $progress; ?>%</span></div>
           <div class="mini-bar-bg"><div class="mini-bar-fill" style="width:<?php echo $progress; ?>%; background:<?php echo $theme['bar']; ?>"></div></div>
           <div class="child-btns">
@@ -587,7 +597,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
               <td><strong><?php echo htmlspecialchars($p['child_name']); ?></strong></td>
               <td><?php echo htmlspecialchars($p['icon_url'] . ' ' . $p['item_name']); ?></td>
               <td><?php echo htmlspecialchars(date("M d, Y", strtotime($p['purchase_date']))); ?></td>
-              <td class="coins-val" style="text-align:right;">-<?php echo htmlspecialchars($p['points_spent']); ?></td>
+              <td class="coins-val" style="text-align:right;">-<?php echo htmlspecialchars($p['coins_spent']); ?></td>
             </tr>
           <?php endforeach; ?>
         <?php endif; ?>

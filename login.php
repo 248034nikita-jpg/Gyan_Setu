@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signIn'])) {
     // ── Parent login (contains @) ──────────────────────────────────────────
     if (strpos($identifier, '@') !== false) {
         $stmt = $conn->prepare(
-            "SELECT parent_id, full_name, email, password_hash FROM parents WHERE email = ?"
+            "SELECT parent_id, first_name, last_name, email, password_hash FROM parents WHERE email = ?"
         );
         $stmt->bind_param("s", $identifier);
         $stmt->execute();
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signIn'])) {
         if ($row && password_verify($password, $row['password_hash'])) {
             $_SESSION['role']    = 'parent';
             $_SESSION['user_id'] = $row['parent_id'];
-            $_SESSION['name']    = $row['full_name'];
+            $_SESSION['name']    = trim($row['first_name'] . ' ' . $row['last_name']);
             $_SESSION['email']   = $row['email'];
             sendJson('success', 'Logged in successfully!', 'child-dashboard.php');
         }
@@ -60,7 +60,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signIn'])) {
     } else {
         // ── Child login (username, no @) ───────────────────────────────────
         $stmt = $conn->prepare(
-            "SELECT child_id, username,  parent_id FROM children WHERE username = ?"
+            "SELECT c.child_id, c.username, c.parent_id, p.password_hash 
+             FROM children c 
+             JOIN parents p ON c.parent_id = p.parent_id 
+             WHERE c.username = ?"
         );
         $stmt->bind_param("s", $identifier);
         $stmt->execute();
