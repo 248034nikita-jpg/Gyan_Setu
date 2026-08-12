@@ -1,0 +1,75 @@
+<?php
+session_start();
+$child_id = isset($_SESSION['user_id']) && $_SESSION['role'] === 'child' ? (int)$_SESSION['user_id'] : 0;
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Word Whack – Gyan Setu's fun vocabulary & grammar whack-a-mole learning game!">
+    <title>Word Whack – Gyan Setu</title>
+
+    <!-- child_id passed from PHP session so scores are saved to the database -->
+    <meta name="child_id" content="<?php echo $child_id; ?>">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0d0f18;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+        }
+        #game-container {
+            box-shadow: 0 12px 40px rgba(78, 84, 200, 0.45);
+            border-radius: 14px;
+            overflow: hidden;
+            border: 4px solid #4e54c8;
+        }
+        #error-overlay {
+            display: none;
+            position: fixed;
+            top: 10px; left: 10px; right: 10px;
+            background: rgba(200, 0, 0, 0.92);
+            color: white;
+            padding: 14px;
+            border-radius: 10px;
+            font-family: monospace;
+            z-index: 10000;
+            font-size: 13px;
+            white-space: pre-wrap;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.6);
+        }
+    </style>
+
+    <!-- Phaser 3 -->
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+</head>
+<body>
+    <div id="error-overlay">
+        <strong>⚠️ Game Error</strong>
+        <div id="error-message"></div>
+    </div>
+
+    <div id="game-container"></div>
+
+    <script>
+        window.addEventListener('error', function(e) {
+            const overlay = document.getElementById('error-overlay');
+            const msg     = document.getElementById('error-message');
+            overlay.style.display = 'block';
+            msg.textContent += '\n• ' + e.message + '\n  at ' + e.filename + ':' + e.lineno;
+        });
+    </script>
+
+    <!-- Game script -->
+    <script src="game.js"></script>
+</body>
+</html>

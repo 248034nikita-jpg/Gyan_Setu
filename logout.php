@@ -8,7 +8,8 @@ $allowed = ['signup', 'login', 'index'];
 $target = $_GET['redirect'] ?? 'index';
 if (!in_array($target, $allowed)) $target = 'index';
 
-$dest = ($target === 'index') ? 'index.html' : $target . '.html';
+$dest = ($target === 'index') ? 'index.html' : $target . '.php';
+
 header("Location: $dest");
 exit();
 ?>

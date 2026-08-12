@@ -38,12 +38,12 @@ if ($_SESSION['role'] === 'child') {
     $child_id = $child_row['child_id'];
     $username = $_SESSION['username'] ?? $child_row['username'];
 }
-
 // Handle Game Play Simulation
 if (isset($_GET['play_game'])) {
     $game_name = trim($_GET['play_game']);
-    $points_to_add = 20;
+    $coins_to_add = 20;
 
+<<<<<<< HEAD
     // 1. Update points in children
     $stmt = $conn->prepare("UPDATE children SET total_coins = total_coins + ? WHERE child_id = ?");
     $stmt->bind_param("ii", $points_to_add, $child_id);
@@ -51,27 +51,41 @@ if (isset($_GET['play_game'])) {
     $stmt->close();
 
     // Fetch updated total points
+=======
+    // 1. Update coins in children
+    $stmt = $conn->prepare("UPDATE children SET total_coins = total_coins + ? WHERE child_id = ?");
+    $stmt->bind_param("ii", $coins_to_add, $child_id);
+    $stmt->execute();
+    $stmt->close();
+
+    // Fetch updated total coins
+>>>>>>> 402a674c734938de5405c079aa085ae0188f07b8
     $stmt = $conn->prepare("SELECT total_coins FROM children WHERE child_id = ?");
     $stmt->bind_param("i", $child_id);
     $stmt->execute();
     $res = $stmt->get_result();
     $child_data = $res->fetch_assoc();
+<<<<<<< HEAD
     $new_points = $child_data['total_coins'];
+=======
+    $new_coins = $child_data['total_coins'];
+>>>>>>> 402a674c734938de5405c079aa085ae0188f07b8
     $stmt->close();
 
-    // Calculate level: 1 level per 100 points (minimum Level 1)
-    $new_level = max(1, floor($new_points / 100) + 1);
+    // Calculate level: 1 level per 100 coins (minimum Level 1)
+    $new_level = max(1, floor($new_coins / 100) + 1);
     $stmt = $conn->prepare("UPDATE children SET current_level = ? WHERE child_id = ?");
     $stmt->bind_param("ii", $new_level, $child_id);
     $stmt->execute();
     $stmt->close();
 
     // 2. Record score in scores table
-    $stmt = $conn->prepare("INSERT INTO scores (child_id, game_name, score_value) VALUES (?, ?, ?)");
-    $stmt->bind_param("isi", $child_id, $game_name, $points_to_add);
+    $stmt = $conn->prepare("INSERT INTO scores (child_id, game_id, difficulty_tier_played, score_value, accuracy_percentage, streak_achieved, coins_earned) VALUES (?, 1, 1, ?, 100.00, 1, ?)");
+    $stmt->bind_param("iii", $child_id, $coins_to_add, $coins_to_add);
     $stmt->execute();
     $stmt->close();
 
+<<<<<<< HEAD
     // Check and award badges
     $stmt = $conn->prepare("
         SELECT b.badge_id, b.title 
@@ -140,10 +154,33 @@ if (isset($_GET['play_game'])) {
             }
 
             $new_badge_msg = "🏆 Congratulations! You earned the '" . $badge['title'] . "' badge!";
+=======
+    // 3. Check and award badges
+    include_once 'scores_coin.php';
+    $newlyEarnedBadges = checkAndAwardBadges($conn, $child_id, 1);
+
+    $new_badge_msg = '';
+    if (!empty($newlyEarnedBadges)) {
+        // Fetch titles of newly earned badges
+        $badgeIdsPlaceholder = implode(',', array_fill(0, count($newlyEarnedBadges), '?'));
+        $stmt = $conn->prepare("SELECT title FROM badges WHERE badge_id IN ($badgeIdsPlaceholder)");
+        $stmt->bind_param(str_repeat('i', count($newlyEarnedBadges)), ...$newlyEarnedBadges);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $badgeTitles = [];
+        while ($row = $res->fetch_assoc()) {
+            $badgeTitles[] = $row['title'];
+>>>>>>> 402a674c734938de5405c079aa085ae0188f07b8
         }
+        $stmt->close();
+        $new_badge_msg = "🏆 Congratulations! You earned: " . implode(', ', $badgeTitles) . " badge(s)!";
     }
 
+<<<<<<< HEAD
     $_SESSION['game_alert'] = "🎉 Played '$game_name'! You earned +$points_to_add points!";
+=======
+    $_SESSION['game_alert'] = "🎉 Played '$game_name'! You earned +$coins_to_add coins!";
+>>>>>>> 402a674c734938de5405c079aa085ae0188f07b8
     if (!empty($new_badge_msg)) {
         $_SESSION['badge_alert'] = $new_badge_msg;
     }
@@ -160,7 +197,12 @@ $res = $stmt->get_result();
 $child_info = $res->fetch_assoc();
 $stmt->close();
 
+<<<<<<< HEAD
 $total_points = $child_info['total_coins'];
+=======
+$total_coins_balance = $child_info['total_coins'];
+$total_points = $total_coins_balance; // for compatibility
+>>>>>>> 402a674c734938de5405c079aa085ae0188f07b8
 $current_level = $child_info['current_level'];
 
 // Fetch Earned Badges
@@ -314,8 +356,15 @@ $total_coins = count($badges);
             </div>
 
             <div class="games-grid" style="margin-bottom: 30px;" style="display: flex; flex-wrap: wrap; gap: 20px;">
-                <a href="child-dashboard.php?play_game=Earth+Defense" class="game-link">
+                <a href="wack-a-mole/index.php" class="game-link">
                     <div class="game-card active">
+                        <div class="play-btn">▶</div>
+                        <p>Word Whack</p>
+                    </div>
+                </a>
+
+                <a href="child-dashboard.php?play_game=Earth+Defense" class="game-link">
+                    <div class="game-card">
                         <div class="play-btn">▶</div>
                         <p>Earth Defense</p>
                     </div>
