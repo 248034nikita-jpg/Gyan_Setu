@@ -41,14 +41,7 @@ if (isset($_POST['add_child'])) {
             $stmt->close();
         } else {
             $stmt->close();
-<<<<<<< HEAD
             $stmt = $conn->prepare("INSERT INTO children (username, parent_id, total_coins, current_level) VALUES (?, ?, 0, 1)");
-=======
-            // Hash password securely
-            $hashed_password = password_hash($child_password, PASSWORD_DEFAULT);
-
-            $stmt = $conn->prepare("INSERT INTO children (username, parent_id, age, total_coins, current_level) VALUES (?, ?, 5, 0, 1)");
->>>>>>> 402a674c734938de5405c079aa085ae0188f07b8
             $stmt->bind_param("si", $child_username, $parent_id);
 
             if ($stmt->execute()) {
@@ -77,11 +70,7 @@ $stmt->close();
 // Fetch Purchase History
 $purchases = [];
 $stmt = $conn->prepare("
-<<<<<<< HEAD
     SELECT p.purchase_date, p.coins_spent, c.username AS child_name, s.item_name, s.icon_url 
-=======
-    SELECT p.purchase_date, p.coins_spent AS points_spent, c.username AS child_name, s.item_name, s.icon_url 
->>>>>>> 402a674c734938de5405c079aa085ae0188f07b8
     FROM purchases p
     JOIN children c ON p.child_id = c.child_id
     JOIN shop_items s ON p.item_id = s.item_id
@@ -107,11 +96,7 @@ foreach ($children_stats as $child) {
         $total_quiz_score += $child['average_course_score'];
         $child_count_with_scores++;
     }
-<<<<<<< HEAD
     $total_coins_sum += $child['badges_earned'];
-=======
-    $total_coins_sum += $child['total_coins_spent'];
->>>>>>> 402a674c734938de5405c079aa085ae0188f07b8
     $total_lessons_completed += $child['courses_completed'];
     $total_points_sum += $child['total_coins'];
 }

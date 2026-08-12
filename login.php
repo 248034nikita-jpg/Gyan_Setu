@@ -312,7 +312,7 @@ if (isset($_SESSION['role'])) {
 
     <p class="card-footer-text">Don't have an account? <a href="signup.php">Sign up</a></p>
     <p class="card-footer-text" style="margin-top:15px;"><a href="index.html">← Back to Home</a></p>
-    <p class="terms-row"><a href="#">Terms and Conditions</a> | <a href="#">Policy</a> | <a href="admin/admin-login.php">Educator / Admin Portal</a></p>
+    <p class="terms-row"><a href="#">Terms and Conditions</a> | <a href="#">Policy</a> | <a href="admin/login.php">Educator / Admin Portal</a></p>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

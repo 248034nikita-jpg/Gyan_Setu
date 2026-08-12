@@ -47,22 +47,14 @@ if ($result->num_rows === 0) {
 
 $child_data = $result->fetch_assoc();
 $child_username = $child_data['username'];
-<<<<<<< HEAD
 $total_points = $child_data['total_coins'];
-=======
-$total_coins = $child_data['total_coins'];
->>>>>>> 402a674c734938de5405c079aa085ae0188f07b8
 $stmt->close();
 
 // Handle Purchase Request
 if (isset($_GET['buy_item'])) {
     $item_id = intval($_GET['buy_item']);
 
-<<<<<<< HEAD
     // 1. Fetch item details
-=======
-    // 1. Fetch item details (price_coins in new schema)
->>>>>>> 402a674c734938de5405c079aa085ae0188f07b8
     $stmt = $conn->prepare("SELECT price_coins, item_name FROM shop_items WHERE item_id = ?");
     $stmt->bind_param("i", $item_id);
     $stmt->execute();
@@ -82,26 +74,16 @@ if (isset($_GET['buy_item'])) {
         $child_data = $res->fetch_assoc();
         $stmt->close();
 
-<<<<<<< HEAD
         $points = $child_data['total_coins'];
 
         if ($points >= $price) {
-=======
-        $coins = $child_data['total_coins'];
-
-        if ($coins >= $price) {
->>>>>>> 402a674c734938de5405c079aa085ae0188f07b8
             // 3. Deduct coins
             $stmt = $conn->prepare("UPDATE children SET total_coins = total_coins - ? WHERE child_id = ?");
             $stmt->bind_param("ii", $price, $child_id);
             $stmt->execute();
             $stmt->close();
 
-<<<<<<< HEAD
             // 4. Record purchase
-=======
-            // 4. Record purchase (coins_spent in new schema)
->>>>>>> 402a674c734938de5405c079aa085ae0188f07b8
             $stmt = $conn->prepare("INSERT INTO purchases (child_id, item_id, coins_spent) VALUES (?, ?, ?)");
             $stmt->bind_param("iii", $child_id, $item_id, $price);
             $stmt->execute();
@@ -125,11 +107,7 @@ $stmt->execute();
 $res = $stmt->get_result();
 $child_info = $res->fetch_assoc();
 $stmt->close();
-<<<<<<< HEAD
 $total_points = $child_info['total_coins'];
-=======
-$total_coins = $child_info['total_coins'];
->>>>>>> 402a674c734938de5405c079aa085ae0188f07b8
 
 // Fetch Items from Database
 $shop_items = [];
@@ -176,13 +154,8 @@ while ($row = $res->fetch_assoc()) {
     <div class="top-bar">
         <a href="child-dashboard.php" class="back-btn">⬅ Back</a>
         <div class="coin-display">
-<<<<<<< HEAD
             <img src="assets/images/website/coin.png" alt="Coin">
             <span><?php echo $total_points; ?></span>
-=======
-            <img src="assets/images/coin.png" alt="Coin">
-            <span><?php echo $total_coins; ?></span>
->>>>>>> 402a674c734938de5405c079aa085ae0188f07b8
         </div>
     </div>
 
@@ -216,11 +189,7 @@ while ($row = $res->fetch_assoc()) {
                 <?php foreach ($shop_items as $item): ?>
                     <div class="worksheet-card">
                         <div class="coin-icon">
-<<<<<<< HEAD
                             <img src="assets/images/website/coin.png" alt="Coin">
-=======
-                            <img src="assets/images/coin.png" alt="Coin">
->>>>>>> 402a674c734938de5405c079aa085ae0188f07b8
                             <span><?php echo htmlspecialchars($item['price_coins']); ?></span>
                         </div>
                         <div class="worksheet-image"><?php echo htmlspecialchars($item['icon_url']); ?></div>
