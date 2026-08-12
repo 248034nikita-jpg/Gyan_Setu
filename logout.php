@@ -9,6 +9,7 @@ $target = $_GET['redirect'] ?? 'index';
 if (!in_array($target, $allowed)) $target = 'index';
 
 $dest = ($target === 'index') ? 'index.html' : $target . '.php';
+
 header("Location: $dest");
 exit();
 ?>

@@ -6,7 +6,7 @@
     <title>Admin Dashboard</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="adminstyles.css">
+    <link rel="stylesheet" href="../css/admin.css">
 </head>
 <body>
     <div class="wrapper">
@@ -66,7 +66,7 @@
                 </li>
             </ul>
             <div class="sidebar-footer">
-                <a href="logout.php" class="sidebar-link">
+                <a href="../logout.php" class="sidebar-link">
                     <i class='bx bx-log-out' ></i>
                     <span>Logout</span>
                 </a>
@@ -92,7 +92,7 @@
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item dropdown">
                             <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-med-0">
-                                <img src="avatar/avatar.png" class="avatar img-fluid" alt="User">
+                                <img src="../assets/images/avatar/avatar.png" class="avatar img-fluid" alt="User">
                             </a>
                             <div class="dropdown-menu dropdown-menu-end rounded-0 boarder-0 shadow mt-3">
                                 <a href="#" class="dropdown-item">
@@ -402,7 +402,7 @@
   </div>
 </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <script src="script.js"></script>
+    <script src="../js/admin.js"></script>
     
 </body>
 </html>

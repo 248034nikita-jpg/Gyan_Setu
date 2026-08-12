@@ -633,11 +633,11 @@ body {
     cursor: pointer;
 }
 
-/* The grey impact stats bar (children sponsored, donors, total raised). */
+/* The impact stats bar (children sponsored, donors, total raised). */
 .impact-stats {
     width: 90%;
     margin: 50px auto;
-    background: rgb(138, 132, 132);
+    background: #2d2b63;
     border-radius: 15px;
     display: flex;
     justify-content: space-between;
@@ -650,7 +650,7 @@ body {
     flex: 1;
     text-align: center;
     padding: 35px 20px;
-    border-right: 2px solid #bbb5b5;
+    border-right: 2px solid #2d2b63;
 }
 
 /* Removes the divider line after the last box. */
@@ -661,7 +661,7 @@ body {
 .impact-box p {
     font-size: 24px;
     font-weight: 600;
-    color: #222;
+    color: #2d2b63;
     margin: 0;
 }
 
