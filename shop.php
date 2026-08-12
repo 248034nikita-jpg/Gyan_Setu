@@ -34,7 +34,7 @@ if (!isset($_GET['child_id']) || empty($_GET['child_id'])) {
 }
 
 // Verify this child belongs to this parent
-$verify_query = "SELECT username, total_points FROM children WHERE child_id = ? AND parent_id = ?";
+$verify_query = "SELECT username, total_coins FROM children WHERE child_id = ? AND parent_id = ?";
 $stmt = $conn->prepare($verify_query);
 $stmt->bind_param("ii", $child_id, $parent_id);
 $stmt->execute();
@@ -47,15 +47,15 @@ if ($result->num_rows === 0) {
 
 $child_data = $result->fetch_assoc();
 $child_username = $child_data['username'];
-$total_points = $child_data['total_points'];
+$total_coins = $child_data['total_coins'];
 $stmt->close();
 
 // Handle Purchase Request
 if (isset($_GET['buy_item'])) {
     $item_id = intval($_GET['buy_item']);
 
-    // 1. Fetch item details
-    $stmt = $conn->prepare("SELECT price_points, item_name FROM shop_items WHERE item_id = ?");
+    // 1. Fetch item details (price_coins in new schema)
+    $stmt = $conn->prepare("SELECT price_coins, item_name FROM shop_items WHERE item_id = ?");
     $stmt->bind_param("i", $item_id);
     $stmt->execute();
     $res = $stmt->get_result();
@@ -63,28 +63,28 @@ if (isset($_GET['buy_item'])) {
     $stmt->close();
 
     if ($item) {
-        $price = $item['price_points'];
+        $price = $item['price_coins'];
         $name = $item['item_name'];
 
-        // 2. Fetch child's current points
-        $stmt = $conn->prepare("SELECT total_points FROM children WHERE child_id = ?");
+        // 2. Fetch child's current coins
+        $stmt = $conn->prepare("SELECT total_coins FROM children WHERE child_id = ?");
         $stmt->bind_param("i", $child_id);
         $stmt->execute();
         $res = $stmt->get_result();
         $child_data = $res->fetch_assoc();
         $stmt->close();
 
-        $points = $child_data['total_points'];
+        $coins = $child_data['total_coins'];
 
-        if ($points >= $price) {
-            // 3. Deduct points
-            $stmt = $conn->prepare("UPDATE children SET total_points = total_points - ? WHERE child_id = ?");
+        if ($coins >= $price) {
+            // 3. Deduct coins
+            $stmt = $conn->prepare("UPDATE children SET total_coins = total_coins - ? WHERE child_id = ?");
             $stmt->bind_param("ii", $price, $child_id);
             $stmt->execute();
             $stmt->close();
 
-            // 4. Record purchase
-            $stmt = $conn->prepare("INSERT INTO purchases (child_id, item_id, points_spent) VALUES (?, ?, ?)");
+            // 4. Record purchase (coins_spent in new schema)
+            $stmt = $conn->prepare("INSERT INTO purchases (child_id, item_id, coins_spent) VALUES (?, ?, ?)");
             $stmt->bind_param("iii", $child_id, $item_id, $price);
             $stmt->execute();
             $stmt->close();
@@ -92,7 +92,7 @@ if (isset($_GET['buy_item'])) {
             $_SESSION['shop_alert'] = "Successfully bought '$name'!";
             $_SESSION['shop_alert_type'] = "success";
         } else {
-            $_SESSION['shop_alert'] = "Not enough points for '$name'!";
+            $_SESSION['shop_alert'] = "Not enough coins for '$name'!";
             $_SESSION['shop_alert_type'] = "error";
         }
     }
@@ -100,14 +100,14 @@ if (isset($_GET['buy_item'])) {
     exit();
 }
 
-// Fetch Child Points
-$stmt = $conn->prepare("SELECT total_points FROM children WHERE child_id = ?");
+// Fetch Child Coins
+$stmt = $conn->prepare("SELECT total_coins FROM children WHERE child_id = ?");
 $stmt->bind_param("i", $child_id);
 $stmt->execute();
 $res = $stmt->get_result();
 $child_info = $res->fetch_assoc();
 $stmt->close();
-$total_points = $child_info['total_points'];
+$total_coins = $child_info['total_coins'];
 
 // Fetch Items from Database
 $shop_items = [];
@@ -140,7 +140,7 @@ while ($row = $res->fetch_assoc()) {
             <nav class="dashboard-menu">
                 <a href="child-dashboard.php">🎮 Game Zone</a>
                 <a href="#">📈 My Progress</a>
-                  <a href="shop.php?child_id=<?php echo $child_id; ?>">🏪 Store</a>
+                <a href="shop.php?child_id=<?php echo $child_id; ?>">🏪 Store</a>
                 <a href="#">💰 Coins</a>
             </nav>
             <div class="dashboard-right">
@@ -155,7 +155,7 @@ while ($row = $res->fetch_assoc()) {
         <a href="child-dashboard.php" class="back-btn">⬅ Back</a>
         <div class="coin-display">
             <img src="assets/images/coin.png" alt="Coin">
-            <span><?php echo $total_points; ?></span>
+            <span><?php echo $total_coins; ?></span>
         </div>
     </div>
 
@@ -190,7 +190,7 @@ while ($row = $res->fetch_assoc()) {
                     <div class="worksheet-card">
                         <div class="coin-icon">
                             <img src="assets/images/coin.png" alt="Coin">
-                            <span><?php echo htmlspecialchars($item['price_points']); ?></span>
+                            <span><?php echo htmlspecialchars($item['price_coins']); ?></span>
                         </div>
                         <div class="worksheet-image"><?php echo htmlspecialchars($item['icon_url']); ?></div>
                         <p><?php echo htmlspecialchars($item['item_name']); ?></p>

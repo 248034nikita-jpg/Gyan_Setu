@@ -52,12 +52,12 @@ if ($stmt->num_rows > 0) {
 }
 $stmt->close();
 
-// Insert child — no password_hash column in the children table
+// Insert child — match new schema with age and total_coins columns
 $stmt = $conn->prepare(
-    "INSERT INTO children (username, parent_id, total_points, current_level)
-     VALUES (?, ?, 0, 1)"
+    "INSERT INTO children (username, parent_id, age, total_coins, current_level)
+     VALUES (?, ?, ?, 0, 1)"
 );
-$stmt->bind_param("si", $username, $parent_id);
+$stmt->bind_param("sii", $username, $parent_id, $child_age);
 
 if ($stmt->execute()) {
     $child_id = $stmt->insert_id;

@@ -2,7 +2,7 @@
     $host = 'localhost'; // Database host
     $user= 'root'; // Database username
     $password = ''; // Database password
-    $db = 'gyan_setu'; // Database name
+    $db = 'gyansetudb'; // Database name
 
     try {
         $conn = new mysqli($host, $user, $password, $db); // Create a new MySQLi connection

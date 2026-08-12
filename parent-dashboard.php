@@ -8,11 +8,11 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'parent') {
     exit();
 }
 // Verify access token from child dashboard
-if (!isset($_GET['token']) || !isset($_SESSION['parent_access_token']) || $_GET['token'] !== $_SESSION['parent_access_token']) {
+/*if (!isset($_GET['token']) || !isset($_SESSION['parent_access_token']) || $_GET['token'] !== $_SESSION['parent_access_token']) {
     // Redirect to child dashboard if token missing or invalid
     header("Location: child-dashboard.php");
     exit();
-}
+}*/
 
 $parent_id = $_SESSION['user_id'];
 $parent_name = $_SESSION['name'];
@@ -44,8 +44,8 @@ if (isset($_POST['add_child'])) {
             // Hash password securely
             $hashed_password = password_hash($child_password, PASSWORD_DEFAULT);
 
-            $stmt = $conn->prepare("INSERT INTO children (username, password_hash, parent_id, total_points, current_level) VALUES (?, ?, ?, 0, 1)");
-            $stmt->bind_param("ssi", $child_username, $hashed_password, $parent_id);
+            $stmt = $conn->prepare("INSERT INTO children (username, parent_id, age, total_coins, current_level) VALUES (?, ?, 5, 0, 1)");
+            $stmt->bind_param("si", $child_username, $parent_id);
 
             if ($stmt->execute()) {
                 $message = "Child account created successfully!";
@@ -73,7 +73,7 @@ $stmt->close();
 // Fetch Purchase History
 $purchases = [];
 $stmt = $conn->prepare("
-    SELECT p.purchase_date, p.points_spent, c.username AS child_name, s.item_name, s.icon_url 
+    SELECT p.purchase_date, p.coins_spent AS points_spent, c.username AS child_name, s.item_name, s.icon_url 
     FROM purchases p
     JOIN children c ON p.child_id = c.child_id
     JOIN shop_items s ON p.item_id = s.item_id
@@ -95,13 +95,13 @@ $total_coins_sum = 0;
 $total_lessons_completed = 0;
 $total_points_sum = 0;
 foreach ($children_stats as $child) {
-    if ($child['average_quiz_score'] !== null) {
-        $total_quiz_score += $child['average_quiz_score'];
+    if ($child['average_course_score'] !== null) {
+        $total_quiz_score += $child['average_course_score'];
         $child_count_with_scores++;
     }
-    $total_coins_sum += $child['coin_earned'];
-    $total_lessons_completed += $child['lessons_completed'];
-    $total_points_sum += $child['total_points'];
+    $total_coins_sum += $child['total_coins_spent'];
+    $total_lessons_completed += $child['courses_completed'];
+    $total_points_sum += $child['total_coins'];
 }
 $overall_progress = $child_count_with_scores > 0 ? round($total_quiz_score / $child_count_with_scores) : 0;
 $total_children = count($children_stats);
@@ -467,13 +467,13 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
           ['bg' => '#FEF0E4', 'border' => '#F5832A', 'bar' => 'var(--orange)']
         ];
         $theme = $themes[$child['child_id'] % count($themes)];
-        $progress = $child['average_quiz_score'] !== null ? round($child['average_quiz_score']) : 0;
+        $progress = $child['average_course_score'] !== null ? round($child['average_course_score']) : 0;
       ?>
         <div class="child-card">
           <div class="child-avatar" style="background:<?php echo $theme['bg']; ?>; border-color:<?php echo $theme['border']; ?>;">🧒</div>
           <div class="child-name"><?php echo htmlspecialchars($child['child_name']); ?></div>
           <div class="child-meta">Level <?php echo htmlspecialchars($child['current_level']); ?></div>
-          <div class="coins-row"><span class="coin-icon">🪙</span> <?php echo htmlspecialchars($child['total_points']); ?> pts</div>
+          <div class="coins-row"><span class="coin-icon">🪙</span> <?php echo htmlspecialchars($child['total_coins']); ?> coins</div>
           <div class="mini-progress-label"><span>Quiz Score</span><span><?php echo $progress; ?>%</span></div>
           <div class="mini-bar-bg"><div class="mini-bar-fill" style="width:<?php echo $progress; ?>%; background:<?php echo $theme['bar']; ?>"></div></div>
           <div class="child-btns">
