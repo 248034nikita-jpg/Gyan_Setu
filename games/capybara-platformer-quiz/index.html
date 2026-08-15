@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>🐾 Capybara Nepal Adventure</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700;900&family=Lilita+One&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const TOTAL_LEVELS = 9;
+    </script>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('gameUI', function() {
+                return {
+                    mode: 'start',
+                    level: 1,
+                    levelName: 'Kathmandu Valley',
+                    levelCoins: 0,
+                    requiredCoins: 0,
+                    totalCoins: 0,
+                    lives: 6,
+                    msg: '',
+                    currentQuestion: null,
+                    feedbackGood: false,
+                    feedbackText: '',
+                    feedbackTitle: '',
+                    dialogActive: false,
+                    dialogTitle: '',
+                    dialogText: '',
+                    levelSelectPage: 0,
+                    totalLevelPages: 1,
+                    levelStats: [],
+                    showNextButton: false,
+                    levelCompleteData: null,
+                    bgmMuted: localStorage.getItem('capybara_bgm_muted') === 'true',
+
+                    init() {
+                        window.alpineGame = this;
+                        for (let i = 1; i <= TOTAL_LEVELS; i++) {
+                            this.levelStats[i - 1] = { completed: false, oranges: 0 };
+                        }
+                        
+                        // ✅ FORCE RESET on page load
+                        if (window.gameInstance) {
+                            window.gameInstance.mode = 'start';
+                            window.gameInstance.levelCompleteData = null;
+                            window.gameInstance.updateAlpine();
+                        }
+                        
+                        document.addEventListener('keydown', (e) => {
+                            if (e.key.toLowerCase() === 'f' && !e.ctrlKey && !e.metaKey) {
+                                this.toggleFullscreen();
+                            }
+                        });
+                        this.totalLevelPages = Math.ceil(TOTAL_LEVELS / 15);
+                        this.loadProgressFromStorage();
+                        this.syncBGM();
+                    },
+
+                    toggleBGM() {
+                        this.bgmMuted = !this.bgmMuted;
+                        localStorage.setItem('capybara_bgm_muted', this.bgmMuted ? 'true' : 'false');
+                        this.syncBGM();
+                    },
+
+                    syncBGM() {
+                        const bgm = document.getElementById('bgm');
+                        if (bgm) {
+                            if (this.bgmMuted) {
+                                bgm.pause();
+                            } else {
+                                bgm.play().catch(e => console.warn('BGM play waiting for user interaction'));
+                            }
+                        }
+                    },
+
+                    loadProgressFromStorage() {
+                        const saved = localStorage.getItem('capybara_game_progress');
+                        if (saved) {
+                            try {
+                                const data = JSON.parse(saved);
+                                this.totalCoins = data.totalCoins || 0;
+                                const completed = data.completedLevels || [];
+                                for (let i = 0; i < this.levelStats.length; i++) {
+                                    this.levelStats[i].completed = completed.includes(i);
+                                }
+                            } catch (e) {}
+                        }
+                    },
+
+                    startGame() {
+                        const g = window.gameInstance;
+                        if (!g) return;
+                        if (typeof ensureAudio === 'function') ensureAudio();
+                        g.mode = 'play';
+                        g.levelCompleteData = null;
+                        g.updateAlpine();
+                    },
+
+                    answerQuestion(index) {
+                        const g = window.gameInstance;
+                        if (!g) return;
+                        g.answerQuestion(index);
+                        g.updateAlpine();
+                    },
+
+                    goToNextPhase() {
+                        const g = window.gameInstance;
+                        if (!g) return;
+                        g.showThinkPhase();
+                        g.updateAlpine();
+                    },
+
+                    async goToNextLevel() {
+                        const g = window.gameInstance;
+                        if (!g) return;
+                        g.levelCompleteData = null;
+                        g.mode = 'play';
+                        g.updateAlpine();
+                        await g.advanceLevel();
+                        g.updateAlpine();
+                    },
+
+                    async replayCurrentLevel() {
+                        const g = window.gameInstance;
+                        if (!g) return;
+                        g.levelCompleteData = null;
+                        g.mode = 'play';
+                        g.updateAlpine();
+                        await g.selectLevelByIndex(g.levelIndex);
+                        g.updateAlpine();
+                    },
+
+                    goToLevelSelect() {
+                        const g = window.gameInstance;
+                        if (!g) return;
+                        g.mode = 'level_select';
+                        g.levelCompleteData = null;
+                        g.updateAlpine();
+                    },
+
+                    closeLevelComplete() {
+                        const g = window.gameInstance;
+                        if (!g) return;
+                        g.mode = 'play';
+                        g.levelCompleteData = null;
+                        g.updateAlpine();
+                    },
+
+                    restartGame() {
+                        const g = window.gameInstance;
+                        if (!g) return;
+                        g.resetWholeGame();
+                        g.updateAlpine();
+                    },
+
+                    showProgress() {
+                        const g = window.gameInstance;
+                        if (!g) return;
+                        const lvl = g.levelIndex + 1;
+                        this.dialogTitle = '📊 Progress';
+                        this.dialogText = `Level ${lvl}: ${this.levelName}\n\nCoins: ${g.totalCoins}\nLives: ${g.lives}`;
+                        this.dialogActive = true;
+                    },
+
+                    prevLevelPage() {
+                        if (this.levelSelectPage > 0) this.levelSelectPage--;
+                    },
+
+                    nextLevelPage() {
+                        if (this.levelSelectPage < this.totalLevelPages - 1) this.levelSelectPage++;
+                    },
+
+                    isLevelLocked(levelNumber) {
+                        if (levelNumber === 1) return false;
+                        const completed = JSON.parse(localStorage.getItem('capybara_completed_levels') || '[]');
+                        const previousLevel = levelNumber - 1;
+                        return !completed.includes(previousLevel - 1);
+                    },
+
+                    getLevelOranges(levelNumber) {
+                        const saved = localStorage.getItem('capybara_level_oranges');
+                        if (saved) {
+                            try {
+                                const data = JSON.parse(saved);
+                                return data[levelNumber] || 0;
+                            } catch (e) {}
+                        }
+                        return 0;
+                    },
+
+                    getLevelTileClass(levelNumber) {
+                        if (this.isLevelLocked(levelNumber)) return 'tile-locked';
+                        if (this.getLevelOranges(levelNumber) >= 6) return 'tile-completed';
+                        return '';
+                    },
+
+                    selectLevel(levelNumber) {
+                        const g = window.gameInstance;
+                        if (!g) return;
+                        if (this.isLevelLocked(levelNumber)) {
+                            this.showMessage('🔒 Complete the previous level first!');
+                            return;
+                        }
+                        g.levelCompleteData = null;
+                        g.selectLevelByIndex(levelNumber - 1);
+                    },
+
+                    showMessage(text) {
+                        this.msg = text;
+                        setTimeout(() => { this.msg = ''; }, 3000);
+                    },
+
+                    toggleFullscreen() {
+                        const el = document.getElementById('game-container');
+                        if (!document.fullscreenElement) {
+                            el.requestFullscreen().catch(err => {
+                                console.warn('Fullscreen not supported:', err);
+                            });
+                        } else {
+                            document.exitFullscreen();
+                        }
+                    }
+                };
+            });
+        });
+    </script>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="game.js"></script>
+</head>
+<body>
+
+    <div class="hint">
+        <span class="tag desktop">Desktop</span>
+        A/D or ←/→ move • Space/W/↑ jump • 1/2/3/4 answer • Enter start • Esc quit
+        <br />
+        <span class="tag mobile">Mobile</span>
+        Tap to start • Touch left/right to move • Bottom-right jump • Tap answers
+    </div>
+
+    <div id="wrap">
+        <div id="game-container" x-data="gameUI()">
+
+            <canvas id="game"></canvas>
+
+            <!-- BGM SOUND TOGGLE BUTTON -->
+            <button class="btn-sound-toggle" @click="toggleBGM()" :title="bgmMuted ? 'Unmute Sound' : 'Mute Sound'">
+                <img :src="bgmMuted ? 'assets/ui/mute.png' : 'assets/ui/sound.png'" 
+                     :alt="bgmMuted ? 'Sound Muted' : 'Sound Playing'" class="sound-icon-img">
+            </button>
+
+            <!-- HUD -->
+            <div class="game-hud d-flex justify-content-between align-items-center" x-cloak
+                 x-show="mode !== 'start' && mode !== 'win' && mode !== 'game_over' && mode !== 'level_complete' && mode !== 'level_select'">
+                <div class="hud-item" x-text="'Level ' + level + ': ' + levelName"></div>
+                <div class="hud-item" x-text="'Fruits: ' + levelCoins + '/' + requiredCoins"></div>
+                <div class="hud-item" x-text="'Coins: ' + totalCoins"></div>
+                <div class="hud-item" x-text="'Lives: ' + lives"></div>
+            </div>
+
+            <div class="hud-msg" x-show="msg" x-transition x-text="msg"></div>
+
+            <!-- ============ START SCREEN ============ -->
+            <div class="game-overlay start-screen" x-cloak x-show="mode === 'start'" x-transition.opacity.duration.300ms>
+                <div class="title-container text-center">
+                    <h1 class="game-title">CAPYBARA</h1>
+                    <h2 class="game-subtitle">NEPAL ADVENTURE</h2>
+                </div>
+                <div class="profile-avatar">
+                    <img src="assets/capy.png" alt="Avatar">
+                </div>
+                <div class="menu-buttons d-flex flex-column align-items-center">
+                    <button class="btn btn-clay btn-lg mb-3" @click="startGame()">▶ START GAME</button>
+                    <div class="d-flex justify-content-center gap-3 mb-2">
+                        <button class="btn btn-clay btn-md" @click="goToLevelSelect()">🗺 SELECT LEVEL</button>
+                        <button class="btn btn-clay btn-md" @click="showProgress()">📊 PROGRESS</button>
+                        <button class="btn btn-clay btn-sm" @click="toggleFullscreen()">⛶ FULLSCREEN</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============ LEVEL SELECT ============ -->
+            <div class="game-overlay level-select-screen" x-cloak x-show="mode === 'level_select'" x-transition.opacity.duration.300ms>
+                <button class="btn-level-select-back" @click="mode = 'start'" title="Back to Main Menu">
+                    ⬅ BACK
+                </button>
+                <div class="ls-avatar">
+                    <img src="assets/capy.png" alt="Avatar">
+                </div>
+                <div class="paw-badge">🐾</div>
+                <h2 class="level-select-title">SELECT LEVEL</h2>
+                <div class="d-flex align-items-center justify-content-center w-100" style="gap:1.8cqw">
+                    <button class="page-nav-btn" @click="prevLevelPage()" :disabled="levelSelectPage === 0">&#8592;</button>
+                    <div>
+                        <div class="paw-row" aria-hidden="true">
+                            <span>🐾</span><span>🐾</span><span>🐾</span><span>🐾</span>
+                        </div>
+                        <div class="level-grid">
+                            <template x-for="slot in 15" :key="slot">
+                                <div>
+                                    <div class="level-tile"
+                                         :class="getLevelTileClass(levelSelectPage * 15 + slot)"
+                                         @click="selectLevel(levelSelectPage * 15 + slot)">
+                                        <div class="tile-number" x-show="!isLevelLocked(levelSelectPage * 15 + slot)"
+                                             x-text="levelSelectPage * 15 + slot"></div>
+                                        <div class="tile-number-locked" x-show="isLevelLocked(levelSelectPage * 15 + slot)"
+                                             x-text="levelSelectPage * 15 + slot"></div>
+                                        <div class="tile-oranges" x-show="!isLevelLocked(levelSelectPage * 15 + slot)">
+                                            <span class="tile-oranges-text" x-text="getLevelOranges(levelSelectPage * 15 + slot) + '/6'"></span>
+                                            <div class="tile-orange-icons d-flex">
+                                                <template x-for="dot in 6" :key="dot">
+                                                    <div class="o-dot" :class="dot <= getLevelOranges(levelSelectPage * 15 + slot) ? '' : 'empty'"></div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                        <div class="tile-lock-icon" x-show="isLevelLocked(levelSelectPage * 15 + slot)">🔒</div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                        <div class="paw-row" aria-hidden="true" style="margin-top:0.4cqh">
+                            <span>🐾</span><span>🐾</span><span>🐾</span><span>🐾</span>
+                        </div>
+                    </div>
+                    <button class="page-nav-btn" @click="nextLevelPage()" :disabled="levelSelectPage >= totalLevelPages - 1">&#8594;</button>
+                </div>
+                <div class="page-indicator mt-1" x-text="'PAGE ' + (levelSelectPage + 1) + '/' + totalLevelPages"></div>
+            </div>
+
+            <!-- ============ QUIZ SCREEN ============ -->
+            <div class="game-overlay quiz-screen" x-cloak x-show="mode === 'question'" x-transition.opacity.duration.250ms>
+                
+                <!-- PHASE LABEL - WITH NULL CHECK -->
+                <div class="phase-label" x-show="currentQuestion && currentQuestion.phaseLabel">
+                    <span x-text="currentQuestion ? currentQuestion.phaseLabel : ''"></span>
+                </div>
+
+                <!-- QUESTION CARD -->
+                <div class="question-card p-3 mb-3 d-flex align-items-center justify-content-between">
+                    <div class="question-text text-start" x-text="currentQuestion ? currentQuestion.question : ''"></div>
+                </div>
+
+                <!-- NEXT BUTTON (only for See phase) -->
+                <div x-show="currentQuestion && currentQuestion.learningPhase === 'see' && showNextButton"
+                     x-transition.duration.300ms
+                     class="mb-3 text-center">
+                    <button class="btn-next-see" @click="goToNextPhase()">➜ NEXT</button>
+                </div>
+
+                <!-- OPTIONS - WITH NULL CHECK -->
+                <div class="options-container" x-show="currentQuestion && currentQuestion.options && currentQuestion.options.length > 0">
+                    <template x-for="(option, index) in (currentQuestion ? currentQuestion.options : [])" :key="index">
+                        <div class="option-card" @click="answerQuestion(index)">
+                            <div class="option-number" x-text="index + 1"></div>
+                            <div class="option-text" x-text="option || ''"></div>
+                        </div>
+                    </template>
+                </div>
+
+                <div class="peering-capy"></div>
+            </div>
+
+            <!-- ============ FEEDBACK SCREEN ============ -->
+            <div class="game-overlay feedback-screen" x-cloak x-show="mode === 'feedback'" x-transition.opacity.duration.200ms>
+                <h1 class="feedback-title" :class="feedbackGood ? 'text-success' : 'text-danger'"
+                    x-text="feedbackTitle"></h1>
+                <div class="feedback-text text-center px-4 mt-3" x-text="feedbackText"></div>
+            </div>
+
+            <!-- ============ LEVEL COMPLETE SCREEN ============ -->
+            <div class="game-overlay level-complete-screen" x-cloak 
+                x-show="mode === 'level_complete' && levelCompleteData" 
+                x-transition.opacity.duration.400ms>
+                <div class="level-complete-card">
+                    <button class="btn-close-level" @click="closeLevelComplete()" type="button" aria-label="Close">✕</button>
+                    
+                    <div class="complete-avatar-wrap">
+                        <img src="assets/capy.png" alt="Capybara Avatar" class="complete-avatar">
+                    </div>
+                    <h1 class="complete-title">🎉 LEVEL COMPLETE!</h1>
+                    <p class="complete-subtitle" x-text="levelCompleteData ? (levelCompleteData.levelName || ('Level ' + levelCompleteData.levelNumber)) : 'Level Completed'"></p>
+                    
+                    <div class="complete-stats">
+                        <div class="stat-card">
+                            <span class="stat-icon">🍊</span>
+                            <span class="stat-label">Fruits</span>
+                            <span class="stat-value" x-text="levelCompleteData ? levelCompleteData.coinsEarned : 0"></span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-icon">⭐</span>
+                            <span class="stat-label">Bonus</span>
+                            <span class="stat-value" x-text="levelCompleteData ? '+' + levelCompleteData.bonusCoins : 0"></span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-icon">🪙</span>
+                            <span class="stat-label">Total Coins</span>
+                            <span class="stat-value" x-text="levelCompleteData ? levelCompleteData.totalCoins : 0"></span>
+                        </div>
+                    </div>
+
+                    <div class="complete-actions d-flex flex-column align-items-center gap-2">
+                        <!-- Top Row: NEXT LEVEL and PLAY AGAIN in the same line with UI assets -->
+                        <div class="d-flex justify-content-center align-items-center gap-2 w-100">
+                            <button class="btn-ui-icon flex-fill" @click="goToNextLevel()" 
+                                    x-show="levelCompleteData && !levelCompleteData.isLastLevel"
+                                    title="Next Level">
+                                <img src="assets/ui/next.png" alt="Next Level" class="ui-icon-img">
+                                <span>NEXT LEVEL</span>
+                            </button>
+                            <button class="btn-ui-icon flex-fill" @click="goToLevelSelect()"
+                                    x-show="levelCompleteData && levelCompleteData.isLastLevel"
+                                    title="View All Levels">
+                                <img src="assets/ui/next.png" alt="All Levels" class="ui-icon-img">
+                                <span>ALL LEVELS</span>
+                            </button>
+                            <button class="btn-ui-icon flex-fill" @click="replayCurrentLevel()"
+                                    title="Play Again">
+                                <img src="assets/ui/replay.png" alt="Play Again" class="ui-icon-img">
+                                <span>PLAY AGAIN</span>
+                            </button>
+                        </div>
+                        <!-- Bottom Row: SELECT LEVEL option below -->
+                        <div class="d-flex justify-content-center w-100">
+                            <button class="btn-select-level" @click="goToLevelSelect()">
+                                🗺 SELECT LEVEL
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============ DIALOG ============ -->
+            <div class="game-overlay dialog-overlay" x-cloak x-show="dialogActive" x-transition.opacity.duration.200ms @click="dialogActive = false">
+                <div class="dialog-card p-4 text-center" @click.stop>
+                    <h3 class="dialog-title mb-3" x-text="dialogTitle"></h3>
+                    <div class="dialog-body mb-4" x-html="dialogText.replace(/\n/g, '<br>')"></div>
+                    <button class="btn btn-clay btn-sm" @click="dialogActive = false">Close</button>
+                </div>
+            </div>
+
+            <!-- ============ WIN SCREEN ============ -->
+            <div class="game-overlay win-screen" x-cloak x-show="mode === 'win'" x-transition.opacity.duration.400ms">
+                <h1 class="win-title">🏆 YOU WIN!</h1>
+                <p class="win-text mt-3" x-text="'Total Coins: ' + totalCoins"></p>
+                <p class="win-sub">You completed the Nepal Adventure!</p>
+                <div class="d-flex gap-3 mt-3">
+                    <button class="btn btn-clay btn-lg" @click="goToLevelSelect()">🗺 LEVEL SELECT</button>
+                    <button class="btn btn-clay btn-lg" @click="restartGame()">🔄 PLAY AGAIN</button>
+                </div>
+            </div>
+
+            <!-- ============ GAME OVER SCREEN ============ -->
+            <div class="game-overlay gameover-screen" x-cloak x-show="mode === 'game_over'" x-transition.opacity.duration.400ms @click="restartGame()">
+                <h1 class="gameover-title">💔 GAME OVER</h1>
+                <p class="gameover-text mt-3">You ran out of lives. Try again!</p>
+                <button class="btn btn-clay btn-lg mt-3">Restart</button>
+            </div>
+
+        </div>
+    </div>
+
+    <audio id="bgm" loop preload="auto">
+        <source src="assets/audio/bgm/rom_hack.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const bgm = document.getElementById('bgm');
+        if (bgm) {
+            bgm.volume = 0.35;
+        }
+
+        function tryPlayBGM() {
+            const bgm = document.getElementById('bgm');
+            if (bgm && bgm.paused && (!window.alpineGame || !window.alpineGame.bgmMuted)) {
+                bgm.play().catch(e => {});
+            }
+        }
+
+        window.addEventListener('pointerdown', tryPlayBGM);
+        window.addEventListener('keydown', tryPlayBGM);
+    </script>
+
+</body>
+</html>

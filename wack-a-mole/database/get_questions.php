@@ -8,21 +8,32 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
 // Allow relative include from wack-a-mole subfolder
-$db_path = __DIR__ . '/../../database/includes/db_connect.php';
-if (!file_exists($db_path)) {
-    // Try one level up
-    $db_path = __DIR__ . '/../database/includes/db_connect.php';
-}
-if (!file_exists($db_path)) {
-    $db_path = realpath(__DIR__ . '/../../') . '/database/includes/db_connect.php';
+$db_candidates = [
+    __DIR__ . '../../database/includes/db_connect.php',
+    __DIR__ . '../../database/includes/db_connect.php',
+    realpath(__DIR__ . '/../../') . '../database/includes/db_connect.php',
+    realpath(__DIR__ . '/../') . '../database/includes/db_connect.php'
+];
+
+$db_path = null;
+foreach ($db_candidates as $candidate) {
+    if ($candidate && file_exists($candidate)) {
+        $db_path = $candidate;
+        break;
+    }
 }
 
-if (!file_exists($db_path)) {
-    echo json_encode(['error' => 'DB config not found at: ' . $db_path]);
+if ($db_path === null) {
+    echo json_encode(['error' => 'DB config not found.']);
     exit;
 }
 
-include $db_path;
+require $db_path;
+
+if (!isset($conn) || !($conn instanceof mysqli)) {
+    echo json_encode(['error' => 'Database connection is unavailable.']);
+    exit;
+}
 
 $topic = strtolower(trim($_GET['topic'] ?? 'grammar'));
 $tier  = intval($_GET['tier'] ?? 1);
