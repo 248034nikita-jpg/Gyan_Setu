@@ -65,6 +65,7 @@ body {
 
 /* ---------- GAME CONTAINER ---------- */
 #wrap {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -73,6 +74,39 @@ body {
     width: 100vw;
     height: 100vh;
     min-height: 100dvh;
+}
+
+/* ---------- PAGE BACK BUTTON (OUTSIDE CANVAS) ---------- */
+.btn-page-back {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    z-index: 999999;
+    display: inline-block;
+    width: 68px;
+    height: 74px;
+    cursor: pointer;
+    transition: transform 0.15s ease, filter 0.15s ease;
+    text-decoration: none;
+}
+
+.btn-page-back:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
+}
+
+.btn-page-back:active {
+    transform: scale(0.94);
+}
+
+.page-back-icon {
+    width: 68px;
+    height: 74px;
+    max-width: 68px;
+    max-height: 74px;
+    display: block;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.25));
 }
 
 #game-container {

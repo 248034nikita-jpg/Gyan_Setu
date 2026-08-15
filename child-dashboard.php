@@ -154,7 +154,7 @@ if (isset($_GET['play_game'])) {
 }
 
 // Fetch Fresh Child Data
-$stmt = $conn->prepare("SELECT total_coins, current_level FROM children WHERE child_id = ?");
+$stmt = $conn->prepare("SELECT total_coins, current_level, age FROM children WHERE child_id = ?");
 $stmt->bind_param("i", $child_id);
 $stmt->execute();
 $res = $stmt->get_result();
@@ -163,6 +163,7 @@ $stmt->close();
 
 $total_points = $child_info['total_coins'];
 $current_level = $child_info['current_level'];
+$child_age = isset($child_info['age']) ? (int)$child_info['age'] : 8;
 
 // Fetch Earned Badges
 $badges = [];
@@ -315,6 +316,45 @@ $total_coins = count($badges);
             </div>
 
             <div class="games-grid" style="margin-bottom: 30px;" style="display: flex; flex-wrap: wrap; gap: 20px;">
+                <!-- Capybara Nepal Adventure (Featured Platformer Quiz for Ages 8-9) -->
+                <a href="games/capybara-platformer-quiz/index.html" class="game-link" title="Play Capybara Nepal Adventure">
+                    <div class="game-card active" style="
+                        background: url('games/capybara-platformer-quiz/assets/cover.png') no-repeat center / 100% 100%;
+                        position: relative;
+                        border: 3.5px solid #ff9800;
+                        border-radius: 16px;
+                        box-shadow: 0 6px 18px rgba(255, 152, 0, 0.4);
+                        overflow: hidden;
+                    ">
+                        <span style="
+                            position: absolute;
+                            top: 8px;
+                            right: 8px;
+                            background: #ff9800;
+                            color: #ffffff;
+                            font-size: 10px;
+                            font-weight: 800;
+                            padding: 3px 8px;
+                            border-radius: 12px;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+                            z-index: 2;
+                        ">Ages 8-9</span>
+                        <div class="play-btn" style="
+                            position: absolute;
+                            bottom: 12px;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            background: rgba(255, 152, 0, 0.95);
+                            color: white;
+                            z-index: 2;
+                            width: 50px;
+                            height: 50px;
+                            font-size: 22px;
+                            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+                        ">▶</div>
+                    </div>
+                </a>
+
                 <a href="wack-a-mole/index.php" class="game-link">
                     <div class="game-card active">
                         <div class="play-btn">▶</div>
