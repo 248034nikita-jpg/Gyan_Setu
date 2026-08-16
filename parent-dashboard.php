@@ -414,7 +414,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
 
 </a>
   <div class="header-right">
-    <a href="shop/parentshop.html" class="btn-play" style="padding: 6px 16px; font-size: 13px; text-decoration: none; background: var(--orange); color: #fff; margin-right: 10px;">🏪 Parent Shop</a>
+    <a href="shop/shop.html" class="btn-play" style="padding: 6px 16px; font-size: 13px; text-decoration: none; background: var(--orange); color: #fff; margin-right: 10px;">🏪 Parent Shop</a>
     <button class="btn-lang">🌐 Language</button>
     <a href="child-dashboard.php" class="btn-close">✕</a>
   </div>
@@ -456,7 +456,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
         <h3 style="color:var(--orange); font-size:16px; font-weight:800;">Get worksheets, reading materials, and science activities for your children!</h3>
         <p style="font-size:13px; color:var(--text); font-weight:600; margin-top:4px;">Enhance your child's learning journey with high-quality digital resources.</p>
       </div>
-      <a href="shop/parentshop.html" class="btn-play" style="background:var(--orange); max-width:200px; padding:10px 20px; text-decoration:none;">Go to Parent Shop ➔</a>
+      <a href="shop/shop.html" class="btn-play" style="background:var(--orange); max-width:200px; padding:10px 20px; text-decoration:none;">Go to Parent Shop ➔</a>
     </div>
   </div>
 
