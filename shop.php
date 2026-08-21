@@ -47,14 +47,14 @@ if ($result->num_rows === 0) {
 
 $child_data = $result->fetch_assoc();
 $child_username = $child_data['username'];
-$total_coins = $child_data['total_coins'];
+$total_points = $child_data['total_coins'];
 $stmt->close();
 
 // Handle Purchase Request
 if (isset($_GET['buy_item'])) {
     $item_id = intval($_GET['buy_item']);
 
-    // 1. Fetch item details (price_coins in new schema)
+    // 1. Fetch item details
     $stmt = $conn->prepare("SELECT price_coins, item_name FROM shop_items WHERE item_id = ?");
     $stmt->bind_param("i", $item_id);
     $stmt->execute();
@@ -74,16 +74,16 @@ if (isset($_GET['buy_item'])) {
         $child_data = $res->fetch_assoc();
         $stmt->close();
 
-        $coins = $child_data['total_coins'];
+        $points = $child_data['total_coins'];
 
-        if ($coins >= $price) {
+        if ($points >= $price) {
             // 3. Deduct coins
             $stmt = $conn->prepare("UPDATE children SET total_coins = total_coins - ? WHERE child_id = ?");
             $stmt->bind_param("ii", $price, $child_id);
             $stmt->execute();
             $stmt->close();
 
-            // 4. Record purchase (coins_spent in new schema)
+            // 4. Record purchase
             $stmt = $conn->prepare("INSERT INTO purchases (child_id, item_id, coins_spent) VALUES (?, ?, ?)");
             $stmt->bind_param("iii", $child_id, $item_id, $price);
             $stmt->execute();
@@ -107,7 +107,7 @@ $stmt->execute();
 $res = $stmt->get_result();
 $child_info = $res->fetch_assoc();
 $stmt->close();
-$total_coins = $child_info['total_coins'];
+$total_points = $child_info['total_coins'];
 
 // Fetch Items from Database
 $shop_items = [];
@@ -132,7 +132,7 @@ while ($row = $res->fetch_assoc()) {
     <header class="dashboard-navbar">
         <!-- Logo -->
         <a href="index.html" class="logo">
-            <img src="assets/images/logo.png" alt="Gyan Setu Logo" class="logo-img">
+            <img src="assets/images/website/logo.png" alt="Gyan Setu Logo" class="logo-img">
             <h2>Gyan Setu</h2>
         </a>
         <button class="menu-toggle" type="button">☰</button>
@@ -154,8 +154,8 @@ while ($row = $res->fetch_assoc()) {
     <div class="top-bar">
         <a href="child-dashboard.php" class="back-btn">⬅ Back</a>
         <div class="coin-display">
-            <img src="assets/images/coin.png" alt="Coin">
-            <span><?php echo $total_coins; ?></span>
+            <img src="assets/images/website/coin.png" alt="Coin">
+            <span><?php echo $total_points; ?></span>
         </div>
     </div>
 
@@ -189,12 +189,12 @@ while ($row = $res->fetch_assoc()) {
                 <?php foreach ($shop_items as $item): ?>
                     <div class="worksheet-card">
                         <div class="coin-icon">
-                            <img src="assets/images/coin.png" alt="Coin">
+                            <img src="assets/images/website/coin.png" alt="Coin">
                             <span><?php echo htmlspecialchars($item['price_coins']); ?></span>
                         </div>
                         <div class="worksheet-image"><?php echo htmlspecialchars($item['icon_url']); ?></div>
                         <p><?php echo htmlspecialchars($item['item_name']); ?></p>
-                        <button type="button" onclick="window.location.href='shop.php?buy_item=<?php echo $item['item_id']; ?>'">BUY</button>
+                        <button type="button" onclick="window.location.href='shop.php?child_id=<?php echo $child_id; ?>&buy_item=<?php echo $item['item_id']; ?>'">BUY</button>
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>

@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['adminSignIn'])) {
         $error_msg = 'Please fill in all required fields.';
     } else {
         // Prepare query checking admins table for email or username
-        $stmt = $conn->prepare("SELECT admin_id, username, email, password FROM admins WHERE email = ? OR username = ?");
+        $stmt = $conn->prepare("SELECT admin_id, username, email, password_hash FROM admins WHERE email = ? OR username = ?");
         if ($stmt) {
             $stmt->bind_param("ss", $identifier, $identifier);
             $stmt->execute();
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['adminSignIn'])) {
             $stmt->close();
 
             // Verify password using standard PHP password_verify function
-            if ($admin && password_verify($password, $admin['password'])) {
+            if ($admin && password_verify($password, $admin['password_hash'])) {
                 session_regenerate_id(true); // Prevent session fixation
                 $_SESSION['role']          = 'admin';
                 $_SESSION['admin_id']      = $admin['admin_id'];
@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['adminSignIn'])) {
 <body>
 
     <div class="admin-card">
-        <div class="admin-logo-badge"><img src="assets/images/logo.png" alt="logo"></div>
+        <div class="admin-logo-badge"><img src="../assets/images/website/logo.png" alt="logo"></div>
         <h1>Admin Portal</h1>
         <p class="subtitle">Gyan Setu System Management Control Center</p>
 
@@ -137,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['adminSignIn'])) {
             <div class="error-alert">⚠️ <?php echo htmlspecialchars($error_msg); ?></div>
         <?php endif; ?>
 
-        <form method="POST" action="admin-login.php">
+        <form method="POST" action="login.php">
             <input type="hidden" name="adminSignIn" value="1">
 
             <div class="form-group">

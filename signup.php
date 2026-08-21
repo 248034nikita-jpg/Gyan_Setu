@@ -44,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signUp'])) {
 
     // Insert parent
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $conn->prepare("INSERT INTO parents (full_name, email, password_hash) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $fullname, $email, $password_hash);
+    $stmt = $conn->prepare("INSERT INTO parents (first_name, last_name, email, password_hash) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $fname, $lname, $email, $password_hash);
 
     if ($stmt->execute()) {
         $_SESSION['role']    = 'parent';
@@ -213,10 +213,21 @@ if (isset($_SESSION['role'])) {
     <div class="error-msg"   id="signupError"></div>
     <div class="success-msg" id="signupSuccess"></div>
 
-    <p class="field-label" id="nameLabel">PARENT'S FULL NAME</p>
-    <div class="input-wrap">
-      <span class="icon">👤</span>
-      <input type="text" id="signupName" placeholder="Enter full name" autocomplete="name"/>
+    <div class="row">
+      <div class="col-md-6">
+        <p class="field-label" id="fnameLabel">PARENT'S FIRST NAME</p>
+        <div class="input-wrap">
+          <span class="icon">👤</span>
+          <input type="text" id="signupFname" placeholder="First name" autocomplete="given-name"/>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <p class="field-label" id="lnameLabel">PARENT'S LAST NAME</p>
+        <div class="input-wrap">
+          <span class="icon">👤</span>
+          <input type="text" id="signupLname" placeholder="Last name" autocomplete="family-name"/>
+        </div>
+      </div>
     </div>
 
     <p class="field-label">EMAIL ADDRESS</p>
@@ -261,16 +272,17 @@ if (isset($_SESSION['role'])) {
     let currentRole = 'home';
 
     const roleLabels = {
-      student: { name: "STUDENT'S FULL NAME", btn: 'CREATE ACCOUNT AS STUDENT' },
-      teacher: { name: "TEACHER'S FULL NAME", btn: 'CREATE ACCOUNT AS TEACHER' },
-      home:    { name: "PARENT'S FULL NAME",  btn: 'CREATE ACCOUNT AS PARENT'  }
+      student: { fname: "STUDENT'S FIRST NAME", lname: "STUDENT'S LAST NAME", btn: 'CREATE ACCOUNT AS STUDENT' },
+      teacher: { fname: "TEACHER'S FIRST NAME", lname: "TEACHER'S LAST NAME", btn: 'CREATE ACCOUNT AS TEACHER' },
+      home:    { fname: "PARENT'S FIRST NAME",  lname: "PARENT'S LAST NAME",  btn: 'CREATE ACCOUNT AS PARENT'  }
     };
 
     function setRole(role) {
       currentRole = role;
       document.querySelectorAll('.role-tabs button').forEach(b => b.classList.remove('active'));
       document.getElementById('tab-' + role).classList.add('active');
-      document.getElementById('nameLabel').textContent = roleLabels[role].name;
+      document.getElementById('fnameLabel').textContent = roleLabels[role].fname;
+      document.getElementById('lnameLabel').textContent = roleLabels[role].lname;
       document.getElementById('signupBtn').textContent = roleLabels[role].btn;
     }
 
@@ -314,7 +326,8 @@ if (isset($_SESSION['role'])) {
     }
 
     function handleSignup() {
-      const name     = document.getElementById('signupName').value.trim();
+      const fname    = document.getElementById('signupFname').value.trim();
+      const lname    = document.getElementById('signupLname').value.trim();
       const email    = document.getElementById('signupEmail').value.trim();
       const password = document.getElementById('signupPassword').value;
 
@@ -330,17 +343,14 @@ if (isset($_SESSION['role'])) {
         return;
       }
 
-      if (!name)     { showError('Please enter your full name.'); return; }
+      if (!fname)    { showError('Please enter your first name.'); return; }
+      if (!lname)    { showError('Please enter your last name.'); return; }
       if (!email)    { showError('Please enter your email address.'); return; }
       if (!password) { showError('Please enter a password.'); return; }
       if (password.length < 6) { showError('Password must be at least 6 characters.'); return; }
 
       const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRe.test(email)) { showError('Please enter a valid email address.'); return; }
-
-      const nameParts = name.split(' ');
-      const fname     = nameParts[0] || '';
-      const lname     = nameParts.slice(1).join(' ') || '';
 
       const btn = document.getElementById('signupBtn');
       btn.disabled    = true;

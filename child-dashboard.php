@@ -43,19 +43,19 @@ if (isset($_GET['play_game'])) {
     $game_name = trim($_GET['play_game']);
     $coins_to_add = 20;
 
-    // 1. Update coins in children
+    // 1. Update points in children
     $stmt = $conn->prepare("UPDATE children SET total_coins = total_coins + ? WHERE child_id = ?");
-    $stmt->bind_param("ii", $coins_to_add, $child_id);
+    $stmt->bind_param("ii", $points_to_add, $child_id);
     $stmt->execute();
     $stmt->close();
 
-    // Fetch updated total coins
+    // Fetch updated total points
     $stmt = $conn->prepare("SELECT total_coins FROM children WHERE child_id = ?");
     $stmt->bind_param("i", $child_id);
     $stmt->execute();
     $res = $stmt->get_result();
     $child_data = $res->fetch_assoc();
-    $new_coins = $child_data['total_coins'];
+    $new_points = $child_data['total_coins'];
     $stmt->close();
 
     // Calculate level: 1 level per 100 coins (minimum Level 1)
@@ -71,27 +71,80 @@ if (isset($_GET['play_game'])) {
     $stmt->execute();
     $stmt->close();
 
-    // 3. Check and award badges
-    include_once 'scores_coin.php';
-    $newlyEarnedBadges = checkAndAwardBadges($conn, $child_id, 1);
+    // Check and award badges
+    $stmt = $conn->prepare("
+        SELECT b.badge_id, b.title 
+        FROM badges b
+        WHERE b.badge_id NOT IN (
+            SELECT cb.badge_id FROM child_badges cb WHERE cb.child_id = ?
+        )
+    ");
+    $stmt->bind_param("i", $child_id);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $unearned_badges = [];
+    while ($row = $res->fetch_assoc()) {
+        $unearned_badges[] = $row;
+    }
+    $stmt->close();
 
     $new_badge_msg = '';
-    if (!empty($newlyEarnedBadges)) {
-        // Fetch titles of newly earned badges
-        $badgeIdsPlaceholder = implode(',', array_fill(0, count($newlyEarnedBadges), '?'));
-        $stmt = $conn->prepare("SELECT title FROM badges WHERE badge_id IN ($badgeIdsPlaceholder)");
-        $stmt->bind_param(str_repeat('i', count($newlyEarnedBadges)), ...$newlyEarnedBadges);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        $badgeTitles = [];
-        while ($row = $res->fetch_assoc()) {
-            $badgeTitles[] = $row['title'];
+    foreach ($unearned_badges as $badge) {
+        $qualifies = false;
+        $badge_id = $badge['badge_id'];
+        
+        switch ($badge_id) {
+            case 1: // First Steps
+            case 2: // Thinker
+            case 3: // Solver
+            case 5: // Knowledge Seeker
+            case 7: // Perfect Score
+            case 8: // Streak Master
+                $qualifies = true;
+                break;
+            case 4: // Level Explorer
+                if ($new_level >= 2) $qualifies = true;
+                break;
+            case 6: // Mountain Climber
+                if ($new_level >= 3) $qualifies = true;
+                break;
+            case 9: // Coin Collector
+                if ($new_points >= 100) $qualifies = true;
+                break;
+            case 10: // Nepal Explorer
+                if ($new_level >= 9) $qualifies = true;
+                break;
+        }
+
+        if ($qualifies) {
+            $stmt = $conn->prepare("INSERT INTO child_badges (child_id, badge_id) VALUES (?, ?)");
+            $stmt->bind_param("ii", $child_id, $badge_id);
+            $stmt->execute();
+            $stmt->close();
+            
+            // Award the coins_reward if any
+            $stmt = $conn->prepare("SELECT coins_reward FROM badges WHERE badge_id = ?");
+            $stmt->bind_param("i", $badge_id);
+            $stmt->execute();
+            $bres = $stmt->get_result()->fetch_assoc();
+            $stmt->close();
+            
+            if ($bres && $bres['coins_reward'] > 0) {
+                $reward = $bres['coins_reward'];
+                $stmt = $conn->prepare("UPDATE children SET total_coins = total_coins + ? WHERE child_id = ?");
+                $stmt->bind_param("ii", $reward, $child_id);
+                $stmt->execute();
+                $stmt->close();
+                $new_points += $reward;
+            }
+
+            $new_badge_msg = "🏆 Congratulations! You earned the '" . $badge['title'] . "' badge!";
         }
         $stmt->close();
         $new_badge_msg = "🏆 Congratulations! You earned: " . implode(', ', $badgeTitles) . " badge(s)!";
     }
 
-    $_SESSION['game_alert'] = "🎉 Played '$game_name'! You earned +$coins_to_add coins!";
+    $_SESSION['game_alert'] = "🎉 Played '$game_name'! You earned +$points_to_add points!";
     if (!empty($new_badge_msg)) {
         $_SESSION['badge_alert'] = $new_badge_msg;
     }
@@ -101,16 +154,16 @@ if (isset($_GET['play_game'])) {
 }
 
 // Fetch Fresh Child Data
-$stmt = $conn->prepare("SELECT total_coins, current_level FROM children WHERE child_id = ?");
+$stmt = $conn->prepare("SELECT total_coins, current_level, age FROM children WHERE child_id = ?");
 $stmt->bind_param("i", $child_id);
 $stmt->execute();
 $res = $stmt->get_result();
 $child_info = $res->fetch_assoc();
 $stmt->close();
 
-$total_coins_balance = $child_info['total_coins'];
-$total_points = $total_coins_balance; // for compatibility
+$total_points = $child_info['total_coins'];
 $current_level = $child_info['current_level'];
+$child_age = isset($child_info['age']) ? (int)$child_info['age'] : 8;
 
 // Fetch Earned Badges
 $badges = [];
@@ -143,7 +196,7 @@ $total_coins = count($badges);
     <header class="dashboard-navbar">
         <!-- Logo -->
         <a href="index.html" class="logo">
-            <img src="assets/images/logo.png" alt="Gyan Setu Logo" class="logo-img">
+            <img src="assets/images/website/logo.png" alt="Gyan Setu Logo" class="logo-img">
             <h2>Gyan Setu</h2>
         </a>
         <button class="menu-toggle" type="button" id="menuToggleBtn" aria-label="Open menu" aria-expanded="false">&#9776;</button>
@@ -263,6 +316,45 @@ $total_coins = count($badges);
             </div>
 
             <div class="games-grid" style="margin-bottom: 30px;" style="display: flex; flex-wrap: wrap; gap: 20px;">
+                <!-- Capybara Nepal Adventure (Featured Platformer Quiz for Ages 8-9) -->
+                <a href="games/capybara-platformer-quiz/index.html" class="game-link" title="Play Capybara Nepal Adventure">
+                    <div class="game-card active" style="
+                        background: url('games/capybara-platformer-quiz/assets/cover.png') no-repeat center / 100% 100%;
+                        position: relative;
+                        border: 3.5px solid #ff9800;
+                        border-radius: 16px;
+                        box-shadow: 0 6px 18px rgba(255, 152, 0, 0.4);
+                        overflow: hidden;
+                    ">
+                        <span style="
+                            position: absolute;
+                            top: 8px;
+                            right: 8px;
+                            background: #ff9800;
+                            color: #ffffff;
+                            font-size: 10px;
+                            font-weight: 800;
+                            padding: 3px 8px;
+                            border-radius: 12px;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+                            z-index: 2;
+                        ">Ages 8-9</span>
+                        <div class="play-btn" style="
+                            position: absolute;
+                            bottom: 12px;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            background: rgba(255, 152, 0, 0.95);
+                            color: white;
+                            z-index: 2;
+                            width: 50px;
+                            height: 50px;
+                            font-size: 22px;
+                            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+                        ">▶</div>
+                    </div>
+                </a>
+
                 <a href="wack-a-mole/index.php" class="game-link">
                     <div class="game-card active">
                         <div class="play-btn">▶</div>

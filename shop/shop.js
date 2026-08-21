@@ -1,372 +1,294 @@
-
-        // ─── DATA ───
+        /* ─── STATE ─── */
         let cart = [];
-        let currentLanguage = 'en';
-        let soundEnabled = true;
-        let currentMethod = 'esewa';
-        let audioCtx = null;
+        let currentLang = 'en'; // 'en' or 'np'
+        let soundOn = true;
+        let selectedMethod = 'esewa';
+        let otpCode = '1234'; // demo
 
-        // ─── SOUND ENGINE ───
-        function playBeep(freq = 600, duration = 100, type = 'sine') {
-            if (!soundEnabled) return;
-            try {
-                if (!audioCtx) {
-                    audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-                }
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = type;
-                osc.frequency.value = freq;
-                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration / 1000);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + duration / 1000);
-            } catch (e) { /* silently fail */ }
+        /* ─── DOM REFS ─── */
+        const cartItemsList = document.getElementById('cartItemsList');
+        const cartTotalVal = document.getElementById('cartTotalVal');
+        const fcBadge = document.getElementById('fcBadge');
+        const checkoutItemsList = document.getElementById('checkoutItemsList');
+        const checkoutTotalVal = document.getElementById('checkoutTotalVal');
+        const checkoutProceedBtn = document.getElementById('checkoutProceedBtn');
+        const checkoutEmpty = document.getElementById('checkoutEmpty');
+        const modalPayAmount = document.getElementById('modalPayAmount');
+        const termsCheck = document.getElementById('termsCheck');
+        const proceedBtn = document.getElementById('proceedBtn');
+        const payId = document.getElementById('payId');
+        const otpInput = document.getElementById('otpInput');
+
+        /* ─── LANGUAGE TOGGLE ─── */
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'np' : 'en';
+            const btnText = document.getElementById('langBtnText');
+            btnText.textContent = currentLang === 'en' ? 'नेपाली' : 'English';
+
+            document.querySelectorAll('.en').forEach(el => el.style.display = currentLang === 'en' ? '' : 'none');
+            document.querySelectorAll('.np').forEach(el => el.style.display = currentLang === 'np' ? '' : 'none');
         }
 
-        function clickSound() { playBeep(800, 60); }
+        // initial: hide nepali
+        document.querySelectorAll('.np').forEach(el => el.style.display = 'none');
 
-        function removeSound() { playBeep(500, 80, 'triangle'); }
-
-        function successSound() {
-            playBeep(880, 120);
-            setTimeout(() => playBeep(1100, 120), 150);
-        }
-
-        // ─── CART HELPERS ───
-        function getCartTotal() {
-            return cart.reduce((sum, item) => sum + item.price, 0);
-        }
-
-        function updateCartUI() {
-            const list = document.getElementById('cartItemsList');
-            const totalVal = document.getElementById('cartTotalVal');
-            const total = getCartTotal();
-            totalVal.textContent = 'Rs. ' + total;
-
-            if (cart.length === 0) {
-                list.innerHTML =
-                    '<div class="cart-empty-text"><span class="en">Your cart is empty!</span><span class="np">तपाईंको कार्ट खाली छ!</span></div>';
+        /* ─── SOUND TOGGLE ─── */
+        function toggleSound() {
+            soundOn = !soundOn;
+            const btn = document.getElementById('btnSoundToggle');
+            const notif = document.getElementById('soundNotification');
+            const icon = document.getElementById('snIcon');
+            const text = document.getElementById('snText');
+            if (soundOn) {
+                btn.innerHTML = '<span>🔊</span>';
+                icon.textContent = '🔊';
+                text.textContent = currentLang === 'en' ? 'Sound On' : 'ध्वनि चालू';
             } else {
-                list.innerHTML = cart.map((item, idx) =>
-                    `<div class="cart-item-row">
-                                <span class="name">${item.name}</span>
-                                <span class="price">Rs. ${item.price}</span>
-                                <button class="remove-btn" onclick="removeFromCart(${idx})">✕</button>
-                            </div>`
-                ).join('');
+                btn.innerHTML = '<span>🔇</span>';
+                icon.textContent = '🔇';
+                text.textContent = currentLang === 'en' ? 'Sound Off' : 'ध्वनि बन्द';
             }
-
-            document.getElementById('fcBadge').textContent = 'Rs. ' + total;
-            renderCheckoutPopup();
+            notif.classList.add('show');
+            clearTimeout(window._soundNotifTimer);
+            window._soundNotifTimer = setTimeout(() => notif.classList.remove('show'), 1500);
         }
 
+        /* ─── CART HELPERS ─── */
         function addToCart(name, price) {
-            cart.push({ name, price });
-            updateCartUI();
-            applyLanguage();
-            clickSound();
-            showSoundNotif('🛒', 'Added: ' + name);
+            const existing = cart.find(item => item.name === name);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ name, price, qty: 1 });
+            }
+            renderAll();
+            showFloatingFeedback('Added: ' + name);
         }
 
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCartUI();
-            applyLanguage();
-            removeSound();
-            showSoundNotif('🗑️', 'Removed item');
+        function removeFromCart(name) {
+            cart = cart.filter(item => item.name !== name);
+            renderAll();
         }
 
         function clearCart() {
-            if (cart.length === 0) return;
             cart = [];
-            updateCartUI();
-            applyLanguage();
-            renderCheckoutPopup();
-            removeSound();
-            showSoundNotif('🧹', 'Cart cleared');
+            renderAll();
         }
 
         function clearCartFromCheckout() {
-            clearCart();
-            renderCheckoutPopup();
+            cart = [];
+            renderAll();
+            closeCheckoutPopup();
         }
 
-        // ─── CHECKOUT POPUP ───
-        function renderCheckoutPopup() {
-            const container = document.getElementById('checkoutItemsList');
-            const totalSpan = document.getElementById('checkoutTotalVal');
-            const proceedBtn = document.getElementById('checkoutProceedBtn');
-            const total = getCartTotal();
-            totalSpan.textContent = 'Rs. ' + total;
+        function getTotal() {
+            return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+        }
 
+        function renderAll() {
+            renderCartPanel();
+            renderCheckoutPopup();
+            updateFloatingBadge();
+        }
+
+        function renderCartPanel() {
             if (cart.length === 0) {
-                container.innerHTML = `
-                            <div class="checkout-empty">
-                                <span class="en">Your cart is empty!</span>
-                                <span class="np">तपाईंको कार्ट खाली छ!</span>
-                            </div>
-                        `;
-                proceedBtn.disabled = true;
+                cartItemsList.innerHTML =
+                    `<div class="cart-empty-text"><span class="en">Your cart is empty!</span><span class="np">तपाईंको कार्ट खाली छ!</span></div>`;
+                cartTotalVal.textContent = 'Rs. 0';
                 return;
             }
-
-            container.innerHTML = cart.map((item, idx) =>
-                `<div class="checkout-item-row">
-                            <span class="item-name">${item.name}</span>
-                            <span class="item-price">Rs. ${item.price}</span>
-                            <button class="item-remove" onclick="removeFromCheckout(${idx})" title="Remove">✕</button>
-                        </div>`
-            ).join('');
-            proceedBtn.disabled = false;
-            applyLanguage();
+            let html = '';
+            cart.forEach(item => {
+                const nameEn = item.name;
+                const nameNp = getNepaliName(item.name);
+                html += `
+                    <div class="cart-item-row">
+                        <span>
+                            <span class="en">${nameEn}</span>
+                            <span class="np">${nameNp}</span>
+                            <span class="qty">×${item.qty}</span>
+                        </span>
+                        <span>
+                            <span class="price">Rs. ${item.price * item.qty}</span>
+                            <button class="remove-btn" onclick="removeFromCart('${item.name}')">✕</button>
+                        </span>
+                    </div>
+                `;
+            });
+            cartItemsList.innerHTML = html;
+            cartTotalVal.textContent = 'Rs. ' + getTotal();
         }
 
-        function removeFromCheckout(index) {
-            removeFromCart(index);
-            renderCheckoutPopup();
-            updateCartUI();
+        function renderCheckoutPopup() {
+            const list = document.getElementById('checkoutItemsList');
+            const empty = document.getElementById('checkoutEmpty');
+            const total = document.getElementById('checkoutTotalVal');
+            const btn = document.getElementById('checkoutProceedBtn');
+
+            if (cart.length === 0) {
+                list.innerHTML =
+                    `<div class="checkout-empty"><span class="en">Your cart is empty!</span><span class="np">तपाईंको कार्ट खाली छ!</span></div>`;
+                total.textContent = 'Rs. 0';
+                btn.disabled = true;
+                return;
+            }
+            let html = '';
+            cart.forEach(item => {
+                const nameEn = item.name;
+                const nameNp = getNepaliName(item.name);
+                html += `
+                    <div class="checkout-item-row">
+                        <span>
+                            <span class="en">${nameEn}</span>
+                            <span class="np">${nameNp}</span>
+                            <span class="qty">×${item.qty}</span>
+                        </span>
+                        <span>
+                            <span class="price">Rs. ${item.price * item.qty}</span>
+                            <button class="remove-btn" onclick="removeFromCart('${item.name}'); renderAll();">✕</button>
+                        </span>
+                    </div>
+                `;
+            });
+            list.innerHTML = html;
+            total.textContent = 'Rs. ' + getTotal();
+            btn.disabled = false;
         }
 
+        function updateFloatingBadge() {
+            fcBadge.textContent = 'Rs. ' + getTotal();
+        }
+
+        function showFloatingFeedback(msg) {
+            console.log(msg);
+        }
+
+        function getNepaliName(enName) {
+            const map = {
+                'Math Worksheets PDF': 'गणित कार्यपत्र PDF',
+                'Math Quiz App': 'गणित क्विज एप',
+                'Numbers are Fun eBook': '"नम्बर रमाइलो छ" ईबुक',
+                'Alphabet Printables': 'वर्णमाला प्रिन्ट सामग्री',
+                'Cursive Writing Course': 'कर्सिव लेखन पाठ्यक्रम',
+                'Story eBook Boxset': 'नैतिक कथा ईबुक सेट',
+                'Plant Growth Worksheets': 'बिरुवा वृद्धि कार्यपत्र',
+                'Solar System VR': 'सौर्यमण्डल VR',
+                'Science Experiment Videos': 'विज्ञान प्रयोग भिडियोहरू'
+            };
+            return map[enName] || enName;
+        }
+
+        /* ─── CHECKOUT POPUP ─── */
         function openCheckoutPopup() {
-            renderCheckoutPopup();
             document.getElementById('checkoutOverlay').classList.add('open');
-            document.body.style.overflow = 'hidden';
-            applyLanguage();
-            clickSound();
+            renderCheckoutPopup();
         }
 
         function closeCheckoutPopup() {
             document.getElementById('checkoutOverlay').classList.remove('open');
-            document.body.style.overflow = '';
-            clickSound();
         }
 
         function proceedFromCheckout() {
             if (cart.length === 0) return;
             closeCheckoutPopup();
-            clickSound();
-            openCheckoutModal();
+            openPaymentModal();
         }
 
-        // ─── PAYMENT MODAL ───
-        function openCheckoutModal() {
-            const total = getCartTotal();
-            document.getElementById('modalPayAmount').textContent = 'Rs. ' + total;
+        /* ─── PAYMENT MODAL ─── */
+        function openPaymentModal() {
+            const total = getTotal();
+            if (total === 0) return;
             document.getElementById('paymentModal').classList.add('open');
-            document.body.style.overflow = 'hidden';
+            modalPayAmount.textContent = 'Rs. ' + total;
             document.getElementById('formSection').style.display = 'block';
-            document.getElementById('otpSection').style.display = 'none';
-            document.getElementById('processingSection').style.display = 'none';
-            document.getElementById('successSection').style.display = 'none';
-            document.getElementById('termsCheck').checked = false;
-            document.getElementById('proceedBtn').disabled = true;
-            document.getElementById('payId').value = '';
-            document.getElementById('otpInput').value = '';
-            applyLanguage();
-            clickSound();
+            document.getElementById('otpSection').classList.remove('active');
+            document.getElementById('processingSection').classList.remove('active');
+            document.getElementById('successSection').classList.remove('active');
+            termsCheck.checked = false;
+            proceedBtn.disabled = true;
+            payId.value = '';
+            otpInput.value = '';
+            selectMethod('esewa');
         }
 
         function closePaymentModal() {
             document.getElementById('paymentModal').classList.remove('open');
-            document.body.style.overflow = '';
-            clickSound();
+            document.getElementById('formSection').style.display = 'block';
+            document.getElementById('otpSection').classList.remove('active');
+            document.getElementById('processingSection').classList.remove('active');
+            document.getElementById('successSection').classList.remove('active');
         }
 
         function selectMethod(method) {
-            currentMethod = method;
+            selectedMethod = method;
             document.querySelectorAll('.pay-method').forEach(el => el.classList.remove('active'));
-            const el = document.getElementById('m-' + method);
+            const map = { esewa: 'm-esewa', khalti: 'm-khalti', banking: 'm-banking' };
+            const el = document.getElementById(map[method]);
             if (el) el.classList.add('active');
+
             const label = document.getElementById('idLabel');
+            const input = document.getElementById('payId');
             if (method === 'esewa') {
                 label.innerHTML =
                     '<span class="en">eSewa Mobile Number</span><span class="np">eSewa मोबाइल नम्बर</span>';
-                document.getElementById('payId').placeholder = 'e.g. 98XXXXXXXX';
+                input.placeholder = 'e.g. 98XXXXXXXX';
             } else if (method === 'khalti') {
                 label.innerHTML =
                     '<span class="en">Khalti Mobile Number</span><span class="np">Khalti मोबाइल नम्बर</span>';
-                document.getElementById('payId').placeholder = 'e.g. 98XXXXXXXX';
+                input.placeholder = 'e.g. 98XXXXXXXX';
             } else {
                 label.innerHTML =
-                    '<span class="en">Bank Account / Customer ID</span><span class="np">बैंक खाता / ग्राहक ID</span>';
-                document.getElementById('payId').placeholder = 'e.g. 01-XXXX-XX';
+                    '<span class="en">Bank Account Number</span><span class="np">बैंक खाता नम्बर</span>';
+                input.placeholder = 'e.g. 01-XXXX-XX';
             }
-            applyLanguage();
-            clickSound();
         }
 
         function toggleProceed() {
-            const checked = document.getElementById('termsCheck').checked;
-            document.getElementById('proceedBtn').disabled = !checked;
+            proceedBtn.disabled = !termsCheck.checked;
         }
 
         function goToOTP() {
-            const id = document.getElementById('payId').value.trim();
-            if (!id) {
-                alert('Please enter your ' + (currentMethod === 'banking' ? 'bank ID' : 'mobile number') + '.');
+            if (!termsCheck.checked) return;
+            const idVal = payId.value.trim();
+            if (!idVal) {
+                alert(currentLang === 'en' ? 'Please enter your payment ID.' : 'कृपया तपाईंको भुक्तान आईडी प्रविष्ट गर्नुहोस्।');
                 return;
             }
-            let masked = id;
-            if (id.length >= 4) {
-                masked = id.slice(0, 2) + '******' + id.slice(-2);
-            }
+            const masked = idVal.length > 4 ? idVal.slice(0, 2) + '******' + idVal.slice(-2) : '98******XX';
             document.getElementById('otpMasked').textContent = masked;
+
             document.getElementById('formSection').style.display = 'none';
-            document.getElementById('otpSection').style.display = 'block';
-            document.getElementById('otpInput').value = '';
-            applyLanguage();
-            clickSound();
+            document.getElementById('otpSection').classList.add('active');
+            otpInput.value = '';
+            otpInput.focus();
         }
 
-        // ─── UPDATED: accept any 4-digit code ───
         function verifyOTP() {
-            const otp = document.getElementById('otpInput').value.trim();
-            // Accept any 4-digit numeric code (or any 4 characters for flexibility)
-            if (otp.length !== 4 || isNaN(otp)) {
-                alert('Please enter a valid 4-digit code.');
+            const code = otpInput.value.trim();
+            if (code.length !== 4) {
+                alert(currentLang === 'en' ? 'Please enter a 4-digit OTP.' : 'कृपया ४-अंक OTP प्रविष्ट गर्नुहोस्।');
                 return;
             }
-            // Proceed with payment
-            document.getElementById('otpSection').style.display = 'none';
-            document.getElementById('processingSection').style.display = 'block';
+            document.getElementById('otpSection').classList.remove('active');
+            document.getElementById('processingSection').classList.add('active');
 
             setTimeout(() => {
-                document.getElementById('processingSection').style.display = 'none';
-                document.getElementById('successSection').style.display = 'block';
-                const txn = 'TXN-' + Date.now().toString().slice(-6);
+                document.getElementById('processingSection').classList.remove('active');
+                document.getElementById('successSection').classList.add('active');
+                const txn = 'TXN-' + String(Math.floor(100000 + Math.random() * 900000));
                 document.getElementById('txnId').textContent = txn;
                 cart = [];
-                updateCartUI();
-                renderCheckoutPopup();
-                applyLanguage();
-                successSound();
-                showSoundNotif('✅', 'Payment Successful!');
-            }, 2200);
+                renderAll();
+            }, 2000);
         }
 
-        // ─── LANGUAGE ───
-        function toggleLanguage() {
-            currentLanguage = currentLanguage === 'en' ? 'np' : 'en';
-            document.getElementById('langBtnText').textContent = currentLanguage === 'en' ? 'नेपाली' : 'English';
-            applyLanguage();
-            clickSound();
-        }
-
-        function applyLanguage() {
-            const isEn = currentLanguage === 'en';
-            document.querySelectorAll('.en').forEach(el => el.style.display = isEn ? '' : 'none');
-            document.querySelectorAll('.np').forEach(el => el.style.display = isEn ? 'none' : '');
-
-            // handle all dynamic parts (we do a broad pass)
-            const allEn = document.querySelectorAll('.en');
-            const allNp = document.querySelectorAll('.np');
-            allEn.forEach(el => el.style.display = isEn ? '' : 'none');
-            allNp.forEach(el => el.style.display = isEn ? 'none' : '');
-
-            // special for age selector
-            const ageVal = document.getElementById('ageSelectorVal');
-            if (ageVal) {
-                const en = ageVal.querySelector('.en');
-                const np = ageVal.querySelector('.np');
-                if (en) en.style.display = isEn ? '' : 'none';
-                if (np) np.style.display = isEn ? 'none' : '';
-            }
-        }
-
-        // ─── TABS ───
-        function showTab(tab) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('nav a').forEach(el => el.classList.remove('active'));
-
-            const map = { 'games': 'game-tab', 'progress': 'progress-tab', 'store': 'store-tab' };
-            const el = document.getElementById(map[tab]);
-            if (el) el.classList.add('active');
-
-            const navMap = { 'games': 'nav-games', 'progress': 'nav-progress', 'store': 'nav-store' };
-            const navEl = document.getElementById(navMap[tab]);
-            if (navEl) navEl.classList.add('active');
-
-            applyLanguage();
-            clickSound();
-        }
-
-        // ─── AGE ───
-        function toggleAgeSelector() {
-            document.getElementById('ageDropdown').classList.toggle('open');
-            clickSound();
-        }
-
-        function selectAge(age) {
-            document.getElementById('ageSelectorVal').setAttribute('data-age', age);
-            document.getElementById('ageSelectorVal').innerHTML =
-                `<span class="en">Age</span><span class="np">उमेर</span> ${age}`;
-            document.querySelectorAll('.age-option').forEach(el => el.classList.remove('selected'));
-            document.querySelectorAll('.age-option').forEach(el => {
-                if (el.textContent.includes(age)) el.classList.add('selected');
-            });
-            document.getElementById('ageDropdown').classList.remove('open');
-            applyLanguage();
-            clickSound();
-        }
-
-        // ─── SUBJECT FILTER ───
-        function filterSubject(subject, btn) {
-            document.querySelectorAll('.subject-btn').forEach(el => el.classList.remove('active'));
-            if (btn) btn.classList.add('active');
-            showSoundNotif('🔍', 'Filter: ' + (subject === 'all' ? 'All' : subject));
-            clickSound();
-        }
-
-        // ─── SOUND TOGGLE ───
-        function toggleSound() {
-            soundEnabled = !soundEnabled;
-            const btn = document.getElementById('btnSoundToggle');
-            btn.innerHTML = soundEnabled ? '<span>🔊</span>' : '<span>🔇</span>';
-            showSoundNotif(soundEnabled ? '🔊' : '🔇', soundEnabled ? 'Sound On' : 'Sound Off');
-            if (soundEnabled) {
-                playBeep(1000, 80);
-            }
-        }
-
-        let notifTimer;
-
-        function showSoundNotif(icon, text) {
-            const el = document.getElementById('soundNotification');
-            document.getElementById('snIcon').textContent = icon;
-            document.getElementById('snText').textContent = text;
-            el.classList.add('show');
-            clearTimeout(notifTimer);
-            notifTimer = setTimeout(() => el.classList.remove('show'), 2000);
-        }
-
-        // ─── INIT ───
-        document.addEventListener('DOMContentLoaded', function() {
-            applyLanguage();
-            updateCartUI();
-            document.addEventListener('click', function(e) {
-                const wrapper = document.querySelector('.age-selector-wrapper');
-                if (wrapper && !wrapper.contains(e.target)) {
-                    document.getElementById('ageDropdown').classList.remove('open');
-                }
-            });
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    if (document.getElementById('checkoutOverlay').classList.contains('open')) {
-                        closeCheckoutPopup();
-                    }
-                    if (document.getElementById('paymentModal').classList.contains('open')) {
-                        closePaymentModal();
-                    }
-                }
-            });
-            // init audio context on first user gesture
-            document.addEventListener('click', function initAudio() {
-                if (!audioCtx) {
-                    audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-                }
-                document.removeEventListener('click', initAudio);
-            }, { once: true });
+        /* ─── KEYBOARD: Enter on OTP ─── */
+        document.getElementById('otpInput')?.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') verifyOTP();
         });
+
+        /* ─── INIT ─── */
+        renderAll();
+
+        console.log('🛍️ ज्ञान_Setu — Parent Shop ready.');

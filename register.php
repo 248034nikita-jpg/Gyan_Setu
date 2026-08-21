@@ -70,8 +70,8 @@ if (isset($_POST['signUp'])) {
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
     // Insert new parent
-    $stmt = $conn->prepare("INSERT INTO parents (full_name, email, password_hash) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $fullname, $email, $password_hash);
+    $stmt = $conn->prepare("INSERT INTO parents (first_name, last_name, email, password_hash) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $fname, $lname, $email, $password_hash);
 
     if ($stmt->execute()) {
         $_SESSION['role'] = 'parent';
@@ -99,7 +99,7 @@ if (isset($_POST['signIn'])) {
     // Detect if logging in as Parent (contains @) or Child (does not contain @)
     if (strpos($email_or_username, '@') !== false) {
         // Parent Auth
-        $stmt = $conn->prepare("SELECT parent_id, full_name, email, password_hash FROM parents WHERE email = ?");
+        $stmt = $conn->prepare("SELECT parent_id, first_name, last_name, email, password_hash FROM parents WHERE email = ?");
         $stmt->bind_param("s", $email_or_username);
         $stmt->execute();
         $res = $stmt->get_result();
@@ -108,7 +108,7 @@ if (isset($_POST['signIn'])) {
             if (password_verify($password, $row['password_hash'])) {
                 $_SESSION['role'] = 'parent';
                 $_SESSION['user_id'] = $row['parent_id'];
-                $_SESSION['name'] = $row['full_name'];
+                $_SESSION['name'] = trim($row['first_name'] . ' ' . $row['last_name']);
                 $_SESSION['email'] = $row['email'];
 
                 $stmt->close();
@@ -118,7 +118,12 @@ if (isset($_POST['signIn'])) {
         $stmt->close();
     } else {
         // Child Auth
-        $stmt = $conn->prepare("SELECT child_id, username, password_hash, parent_id FROM children WHERE username = ?");
+        $stmt = $conn->prepare("
+            SELECT c.child_id, c.username, c.parent_id, p.password_hash 
+            FROM children c 
+            JOIN parents p ON c.parent_id = p.parent_id 
+            WHERE c.username = ?
+        ");
         $stmt->bind_param("s", $email_or_username);
         $stmt->execute();
         $res = $stmt->get_result();
