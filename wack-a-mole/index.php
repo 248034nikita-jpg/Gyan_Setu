@@ -13,26 +13,39 @@ $child_id = isset($_SESSION['user_id']) && $_SESSION['role'] === 'child' ? (int)
     <!-- child_id passed from PHP session so scores are saved to the database -->
     <meta name="child_id" content="<?php echo $child_id; ?>">
 
+    <!-- Google Fonts for Bubbly Title -->
+    <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
+
     <style>
         *, *::before, *::after { box-sizing: border-box; }
         body {
             margin: 0;
-            padding: 0;
-            background: #0d0f18;
+            padding: 10px;
+            background: #8bc34a; /* Light meadow green */
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            width: 100vw;
             overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Chewy', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #ffffff;
         }
         #game-container {
+            width: 100%;
+            height: 100%;
+            max-width: 650px;
+            max-height: 700px;
+            aspect-ratio: 650 / 700;
             box-shadow: 0 12px 40px rgba(78, 84, 200, 0.45);
             border-radius: 14px;
             overflow: hidden;
             border: 4px solid #4e54c8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
+
         #error-overlay {
             display: none;
             position: fixed;
@@ -70,6 +83,6 @@ $child_id = isset($_SESSION['user_id']) && $_SESSION['role'] === 'child' ? (int)
     </script>
 
     <!-- Game script -->
-    <script src="game.js"></script>
+    <script src="game.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>
