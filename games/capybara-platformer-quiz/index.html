@@ -44,13 +44,31 @@
                     levelCompleteData: null,
                     bgmMuted: localStorage.getItem('capybara_bgm_muted') === 'true',
 
+                    // ===== TUTORIAL & PAUSE =====
+                    showTutorial: false,
+                    tutorialStep: 0,
+                    isPaused: false,
+                    tutorialArrowVisible: false,
+                    tutorialArrowTop: 0,
+                    tutorialArrowLeft: 0,
+                    tutorialArrowRotation: 0,
+                    tutorialArrowLabel: '',
+                    hasSeenTutorial: localStorage.getItem('capybara_tutorial_seen') === 'true',
+
+                    tutorialSteps: [
+                        { icon: '🎮', title: 'Welcome to Capybara Adventure!', text: 'Help the capybara collect fruits and learn about Nepal!', arrow: false },
+                        { icon: '🕹️', title: 'Move & Jump', text: 'Use A/D or ←/→ to move. Press Space, W, or ↑ to jump!', arrow: true, arrowTop: 38, arrowLeft: 28, arrowRotation: -20, arrowLabel: 'A/D to move' },
+                        { icon: '🍊', title: 'Collect Golden Fruits!', text: 'Golden fruits teach you fun facts! Collect them to learn and earn coins.', arrow: true, arrowTop: 65, arrowLeft: 50, arrowRotation: 0, arrowLabel: '🍊 Find golden fruits' },
+                        { icon: '🚪', title: 'Reach the Portal!', text: 'Collect ALL fruits to unlock the portal. Answer the quiz to complete the level!', arrow: true, arrowTop: 70, arrowLeft: 75, arrowRotation: 30, arrowLabel: '➡️ Enter the portal' },
+                        { icon: '🏆', title: 'You\'re Ready!', text: 'Complete all 9 levels to become a Nepal Adventure Master!', arrow: false }
+                    ],
+
                     init() {
                         window.alpineGame = this;
                         for (let i = 1; i <= TOTAL_LEVELS; i++) {
                             this.levelStats[i - 1] = { completed: false, oranges: 0 };
                         }
                         
-                        // ✅ FORCE RESET on page load
                         if (window.gameInstance) {
                             window.gameInstance.mode = 'start';
                             window.gameInstance.levelCompleteData = null;
@@ -61,12 +79,106 @@
                             if (e.key.toLowerCase() === 'f' && !e.ctrlKey && !e.metaKey) {
                                 this.toggleFullscreen();
                             }
+                            // Keyboard shortcut for Pause: Escape key
+                            if (e.key.toLowerCase() === 'escape' && (this.mode === 'play' || this.mode === 'paused')) {
+                                this.togglePause();
+                            }
                         });
                         this.totalLevelPages = Math.ceil(TOTAL_LEVELS / 15);
                         this.loadProgressFromStorage();
                         this.syncBGM();
+                        
+                        // Check for first-time tutorial
+                        this.checkFirstTimeTutorial();
                     },
 
+                    // ===== TUTORIAL METHODS =====
+                    nextTutorialStep() {
+                        if (this.tutorialStep < this.tutorialSteps.length - 1) {
+                            this.tutorialStep++;
+                            this.updateTutorialArrow();
+                        } else {
+                            this.finishTutorial();
+                        }
+                    },
+
+                    prevTutorialStep() {
+                        if (this.tutorialStep > 0) {
+                            this.tutorialStep--;
+                            this.updateTutorialArrow();
+                        }
+                    },
+
+                    skipTutorial() {
+                        this.finishTutorial();
+                    },
+
+                    finishTutorial() {
+                        this.showTutorial = false;
+                        this.hasSeenTutorial = true;
+                        localStorage.setItem('capybara_tutorial_seen', 'true');
+                        this.tutorialArrowVisible = false;
+                        if (this.isPaused) {
+                            this.togglePause();
+                        }
+                    },
+
+                    updateTutorialArrow() {
+                        const step = this.tutorialSteps[this.tutorialStep];
+                        this.tutorialArrowVisible = step.arrow || false;
+                        if (step.arrow) {
+                            this.tutorialArrowTop = step.arrowTop || 50;
+                            this.tutorialArrowLeft = step.arrowLeft || 50;
+                            this.tutorialArrowRotation = step.arrowRotation || 0;
+                            this.tutorialArrowLabel = step.arrowLabel || '';
+                        }
+                    },
+
+                    updateAlpineTutorial() {
+                        this.updateTutorialArrow();
+                        if (this.mode === 'play' && this.showTutorial) {
+                            this.isPaused = true;
+                            if (window.gameInstance) {
+                                window.gameInstance.mode = 'paused';
+                                window.gameInstance.updateAlpine();
+                            }
+                        }
+                    },
+
+                    checkFirstTimeTutorial() {
+                        if (!this.hasSeenTutorial) {
+                            setTimeout(() => {
+                                this.showTutorial = true;
+                                this.tutorialStep = 0;
+                                this.updateAlpineTutorial();
+                            }, 800);
+                        }
+                    },
+
+                    // ===== PAUSE METHODS =====
+                    togglePause() {
+                        const g = window.gameInstance;
+                        if (!g) return;
+                        if (this.mode === 'level_complete' || this.mode === 'question' || this.mode === 'feedback') {
+                            return; // Don't pause during critical UI
+                        }
+                        
+                        if (this.isPaused) {
+                            this.isPaused = false;
+                            if (g.mode === 'paused') {
+                                g.mode = 'play';
+                                g.updateAlpine();
+                            }
+                        } else {
+                            this.isPaused = true;
+                            if (g.mode === 'play') {
+                                g.mode = 'paused';
+                                g.updateAlpine();
+                            }
+                        }
+                    },
+
+                    // ===== BGM =====
                     toggleBGM() {
                         this.bgmMuted = !this.bgmMuted;
                         localStorage.setItem('capybara_bgm_muted', this.bgmMuted ? 'true' : 'false');
@@ -243,7 +355,7 @@
 
     <div class="hint">
         <span class="tag desktop">Desktop</span>
-        A/D or ←/→ move • Space/W/↑ jump • 1/2/3/4 answer • Enter start • Esc quit
+        A/D or ←/→ move • Space/W/↑ jump • 1/2/3/4 answer • Enter start • Esc pause/quit
         <br />
         <span class="tag mobile">Mobile</span>
         Tap to start • Touch left/right to move • Bottom-right jump • Tap answers
@@ -258,6 +370,19 @@
         <div id="game-container" x-data="gameUI()">
 
             <canvas id="game"></canvas>
+
+            <!-- ===== HELP BUTTON (?) ===== -->
+            <button class="btn-help" @click="showTutorial = true; tutorialStep = 0; updateAlpineTutorial()" 
+                    title="Show Tutorial">
+                <img src="assets/ui/help.png" alt="Help" class="ui-icon-btn">
+            </button>
+
+            <!-- ===== PAUSE BUTTON ===== -->
+            <button class="btn-pause" @click="togglePause()" title="Pause Game" 
+                    x-show="mode === 'play' || mode === 'paused'">
+                <img src="assets/ui/pause.png" alt="Pause" class="ui-icon-btn" x-show="!isPaused">
+                <img src="assets/ui/play.png" alt="Resume" class="ui-icon-btn" x-show="isPaused">
+            </button>
 
             <!-- BGM SOUND TOGGLE BUTTON -->
             <button class="btn-sound-toggle" @click="toggleBGM()" :title="bgmMuted ? 'Unmute Sound' : 'Mute Sound'">
@@ -296,7 +421,7 @@
             </div>
 
             <!-- ============ LEVEL SELECT ============ -->
-            <div class="game-overlay level-select-screen" x-cloak x-show="mode === 'level_select'" x-transition.opacity.duration.300ms>
+            <div class="game-overlay level-select-screen" x-cloak x-show="mode === 'level_select'" x-transition.opacity.duration.300ms">
                 <button class="btn-level-select-back" @click="mode = 'start'" title="Back to Main Menu">
                     ⬅ BACK
                 </button>
@@ -344,7 +469,7 @@
             </div>
 
             <!-- ============ QUIZ SCREEN ============ -->
-            <div class="game-overlay quiz-screen" x-cloak x-show="mode === 'question'" x-transition.opacity.duration.250ms>
+            <div class="game-overlay quiz-screen" x-cloak x-show="mode === 'question'" x-transition.opacity.duration.250ms">
                 
                 <!-- PHASE LABEL - WITH NULL CHECK -->
                 <div class="phase-label" x-show="currentQuestion && currentQuestion.phaseLabel">
@@ -377,7 +502,7 @@
             </div>
 
             <!-- ============ FEEDBACK SCREEN ============ -->
-            <div class="game-overlay feedback-screen" x-cloak x-show="mode === 'feedback'" x-transition.opacity.duration.200ms>
+            <div class="game-overlay feedback-screen" x-cloak x-show="mode === 'feedback'" x-transition.opacity.duration.200ms">
                 <h1 class="feedback-title" :class="feedbackGood ? 'text-success' : 'text-danger'"
                     x-text="feedbackTitle"></h1>
                 <div class="feedback-text text-center px-4 mt-3" x-text="feedbackText"></div>
@@ -386,7 +511,7 @@
             <!-- ============ LEVEL COMPLETE SCREEN ============ -->
             <div class="game-overlay level-complete-screen" x-cloak 
                 x-show="mode === 'level_complete' && levelCompleteData" 
-                x-transition.opacity.duration.400ms>
+                x-transition.opacity.duration.400ms">
                 <div class="level-complete-card">
                     <button class="btn-close-level" @click="closeLevelComplete()" type="button" aria-label="Close">✕</button>
                     
@@ -415,7 +540,7 @@
                     </div>
 
                     <div class="complete-actions d-flex flex-column align-items-center gap-2">
-                        <!-- Top Row: NEXT LEVEL and PLAY AGAIN in the same line with UI assets -->
+                        <!-- Top Row: NEXT LEVEL and PLAY AGAIN -->
                         <div class="d-flex justify-content-center align-items-center gap-2 w-100">
                             <button class="btn-ui-icon flex-fill" @click="goToNextLevel()" 
                                     x-show="levelCompleteData && !levelCompleteData.isLastLevel"
@@ -435,12 +560,55 @@
                                 <span>PLAY AGAIN</span>
                             </button>
                         </div>
-                        <!-- Bottom Row: SELECT LEVEL option below -->
+                        <!-- Bottom Row: SELECT LEVEL -->
                         <div class="d-flex justify-content-center w-100">
                             <button class="btn-select-level" @click="goToLevelSelect()">
                                 🗺 SELECT LEVEL
                             </button>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============ PAUSE OVERLAY ============ -->
+            <div class="game-overlay pause-overlay" x-cloak 
+                 x-show="isPaused && (mode === 'play' || mode === 'paused')" 
+                 x-transition.opacity.duration.200ms>
+                <div class="pause-card">
+                    <h2 class="pause-title">⏸ Game Paused</h2>
+                    <p class="pause-text">Take a break! Come back anytime.</p>
+                    <button class="btn btn-clay btn-lg" @click="togglePause()">▶ Resume</button>
+                </div>
+            </div>
+
+            <!-- ============ TUTORIAL OVERLAY ============ -->
+            <div class="game-overlay tutorial-overlay" x-cloak 
+                 x-show="showTutorial" 
+                 x-transition.opacity.duration.300ms">
+                <div class="tutorial-card">
+                    <button class="tutorial-skip" @click="skipTutorial()">✕ Skip</button>
+                    <div class="tutorial-step">
+                        <div class="tutorial-icon" x-text="tutorialSteps[tutorialStep].icon"></div>
+                        <h2 class="tutorial-title" x-text="tutorialSteps[tutorialStep].title"></h2>
+                        <p class="tutorial-text" x-text="tutorialSteps[tutorialStep].text"></p>
+                        <div class="tutorial-controls">
+                            <button class="tutorial-btn prev" @click="prevTutorialStep()" 
+                                    x-show="tutorialStep > 0">◀ Back</button>
+                            <div class="tutorial-dots">
+                                <template x-for="(step, index) in tutorialSteps" :key="index">
+                                    <span class="tutorial-dot" 
+                                          :class="{'active': index === tutorialStep}"></span>
+                                </template>
+                            </div>
+                            <button class="tutorial-btn next" @click="nextTutorialStep()" 
+                                    x-text="tutorialStep === tutorialSteps.length - 1 ? '✨ Let\'s Go!' : 'Next ▶'"></button>
+                        </div>
+                    </div>
+                    <!-- Arrow overlay -->
+                    <div class="tutorial-arrow" x-show="tutorialArrowVisible" 
+                         :style="'top: ' + tutorialArrowTop + '%; left: ' + tutorialArrowLeft + '%; --arrow-rotate: ' + tutorialArrowRotation + 'deg;'">
+                        <span>👆</span>
+                        <span class="arrow-label" x-text="tutorialArrowLabel"></span>
                     </div>
                 </div>
             </div>

@@ -8,22 +8,10 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
 // Allow relative include from wack-a-mole subfolder
-$db_candidates = [
-    __DIR__ . '../../database/includes/db_connect.php',
-    __DIR__ . '../../database/includes/db_connect.php',
-    realpath(__DIR__ . '/../../') . '../database/includes/db_connect.php',
-    realpath(__DIR__ . '/../') . '../database/includes/db_connect.php'
-];
+$root = realpath(__DIR__ . '/../../');
+$db_path = $root . '/database/includes/db_connect.php';
 
-$db_path = null;
-foreach ($db_candidates as $candidate) {
-    if ($candidate && file_exists($candidate)) {
-        $db_path = $candidate;
-        break;
-    }
-}
-
-if ($db_path === null) {
+if (!$db_path || !file_exists($db_path)) {
     echo json_encode(['error' => 'DB config not found.']);
     exit;
 }

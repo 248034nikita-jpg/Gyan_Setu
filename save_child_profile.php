@@ -4,7 +4,7 @@ session_start();
 include 'database/includes/db_connect.php';
 
 // Helper: send JSON and exit cleanly
-function sendJson($status, $message, $redirect = null) {
+function sendJson(string $status, string $message, ?string $redirect = null): void {
     ob_clean(); // discard any stray output
     header('Content-Type: application/json');
     echo json_encode(['status' => $status, 'message' => $message, 'redirect' => $redirect]);
@@ -52,7 +52,6 @@ if ($stmt->num_rows > 0) {
 }
 $stmt->close();
 
-<<<<<<< HEAD
 // Look up mascot_id from database
 $stmt = $conn->prepare("SELECT mascot_id FROM mascots WHERE name = ?");
 $stmt->bind_param("s", $mascot_name);
@@ -67,14 +66,6 @@ $stmt = $conn->prepare(
      VALUES (?, ?, ?, ?, 0, 1)"
 );
 $stmt->bind_param("siii", $username, $parent_id, $child_age, $mascot_id);
-=======
-// Insert child — match new schema with age and total_coins columns
-$stmt = $conn->prepare(
-    "INSERT INTO children (username, parent_id, age, total_coins, current_level)
-     VALUES (?, ?, ?, 0, 1)"
-);
-$stmt->bind_param("sii", $username, $parent_id, $child_age);
->>>>>>> 402a674c734938de5405c079aa085ae0188f07b8
 
 if ($stmt->execute()) {
     $child_id = $stmt->insert_id;

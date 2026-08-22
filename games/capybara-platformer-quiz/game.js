@@ -1891,6 +1891,18 @@
 
             // ---------- UPDATE ----------
             update(nowMs) {
+                // ✅ PAUSE: Freeze the game logic completely
+                if (this.mode === 'paused') {
+                    // Still update confetti so it doesn't freeze in air
+                    if (this.confetti.length > 0) {
+                        for (let i = this.confetti.length - 1; i >= 0; i--) {
+                            this.confetti[i].update();
+                            if (this.confetti[i].life <= 0) this.confetti.splice(i, 1);
+                        }
+                    }
+                    return;
+                }
+                
                 if (this.lastTime === 0) this.lastTime = nowMs;
                 const delta = nowMs - this.lastTime;
                 this.lastTime = nowMs;

@@ -483,11 +483,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
           <div class="child-avatar" style="background:<?php echo $theme['bg']; ?>; border-color:<?php echo $theme['border']; ?>;">🧒</div>
           <div class="child-name"><?php echo htmlspecialchars($child['child_name']); ?></div>
           <div class="child-meta">Level <?php echo htmlspecialchars($child['current_level']); ?></div>
-<<<<<<< HEAD
-          <div class="coins-row"><span class="coin-icon">🪙</span> <?php echo htmlspecialchars($child['total_coins']); ?> pts</div>
-=======
           <div class="coins-row"><span class="coin-icon">🪙</span> <?php echo htmlspecialchars($child['total_coins']); ?> coins</div>
->>>>>>> 402a674c734938de5405c079aa085ae0188f07b8
           <div class="mini-progress-label"><span>Quiz Score</span><span><?php echo $progress; ?>%</span></div>
           <div class="mini-bar-bg"><div class="mini-bar-fill" style="width:<?php echo $progress; ?>%; background:<?php echo $theme['bar']; ?>"></div></div>
           <div class="child-btns">
