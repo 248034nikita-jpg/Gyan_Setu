@@ -855,12 +855,13 @@
                 this.onGround = false;
                 for (const p of platforms) {
                     if (intersects(this.rect, p)) {
-                        if (this.vy > 0 && (this.rect.y + this.rect.h - this.vy) <= p.y + 4) {
+                        const overlapX = Math.min(this.rect.x + this.rect.w - p.x, p.x + p.w - this.rect.x);
+                        if (this.vy > 0 && (this.rect.y + this.rect.h - this.vy) <= p.y + 4 && overlapX > 4) {
                             this.rect.y = p.y - this.rect.h;
                             this.vy = 0;
                             this.onGround = true;
                             this.lastOnGroundMs = nowMs;
-                        } else if (this.vy < 0 && (this.rect.y - this.vy) >= p.y + p.h - 4) {
+                        } else if (this.vy < 0 && (this.rect.y - this.vy) >= p.y + p.h - 4 && overlapX > 4) {
                             this.rect.y = p.y + p.h;
                             this.vy = 0;
                         } else {
@@ -1001,7 +1002,8 @@
 
             // ---------- PROGRESS LOADING ----------
             loadProgressFromLocalStorage() {
-                const saved = localStorage.getItem('capybara_game_progress');
+                const childId = getActiveChildId();
+                const saved = localStorage.getItem('capybara_game_progress_' + childId);
                 if (saved) {
                     try {
                         const data = JSON.parse(saved);
@@ -1024,23 +1026,24 @@
                 this.spawnConfetti();
 
                 // Mark this level as completed & determine if it's the first completion
-                let completedLevels = JSON.parse(localStorage.getItem('capybara_completed_levels') || '[]');
+                const childId = getActiveChildId();
+                let completedLevels = JSON.parse(localStorage.getItem('capybara_completed_levels_' + childId) || '[]');
                 const isFirstCompletion = !completedLevels.includes(this.levelIndex);
 
                 let bonusCoins = 0;
                 if (isFirstCompletion) {
                     completedLevels.push(this.levelIndex);
-                    localStorage.setItem('capybara_completed_levels', JSON.stringify(completedLevels));
+                    localStorage.setItem('capybara_completed_levels_' + childId, JSON.stringify(completedLevels));
                     bonusCoins = this.levelCoins * 2;
                     this.totalCoins += bonusCoins;
                 }
 
                 // Save oranges earned
-                let orangesData = JSON.parse(localStorage.getItem('capybara_level_oranges') || '{}');
+                let orangesData = JSON.parse(localStorage.getItem('capybara_level_oranges_' + childId) || '{}');
                 const currentOranges = this.levelCoins;
                 if (!orangesData[this.levelIndex + 1] || orangesData[this.levelIndex + 1] < currentOranges) {
                     orangesData[this.levelIndex + 1] = currentOranges;
-                    localStorage.setItem('capybara_level_oranges', JSON.stringify(orangesData));
+                    localStorage.setItem('capybara_level_oranges_' + childId, JSON.stringify(orangesData));
                 }
 
                 // Save total coins
@@ -1048,7 +1051,7 @@
                     totalCoins: this.totalCoins,
                     completedLevels: completedLevels
                 };
-                localStorage.setItem('capybara_game_progress', JSON.stringify(progress));
+                localStorage.setItem('capybara_game_progress_' + childId, JSON.stringify(progress));
 
                 // Save to MySQL database via API
                 this.saveCoinsToDB(isFirstCompletion ? 1 : 0);
@@ -1188,7 +1191,7 @@
                 const remaining = [];
                 let gotAny = false;
 
-                const completedLevels = JSON.parse(localStorage.getItem('capybara_completed_levels') || '[]');
+                const completedLevels = JSON.parse(localStorage.getItem('capybara_completed_levels_' + getActiveChildId()) || '[]');
                 const isReplay = completedLevels.includes(this.levelIndex);
 
                 for (const c of this.level.coins) {
@@ -1387,7 +1390,7 @@
                 // Reset levelCompleteData to prevent stuck screen
                 this.levelCompleteData = null;
 
-                const completedLevels = JSON.parse(localStorage.getItem('capybara_completed_levels') || '[]');
+                const completedLevels = JSON.parse(localStorage.getItem('capybara_completed_levels_' + getActiveChildId()) || '[]');
                 const isReplay = completedLevels.includes(this.levelIndex);
 
                 if (isCorrect) {
@@ -1508,7 +1511,7 @@
                 const q = this.currentQuestion;
                 const isCorrect = (choiceIndex === q.correctIndex);
 
-                const completedLevels = JSON.parse(localStorage.getItem('capybara_completed_levels') || '[]');
+                const completedLevels = JSON.parse(localStorage.getItem('capybara_completed_levels_' + getActiveChildId()) || '[]');
                 const isReplay = completedLevels.includes(this.levelIndex);
 
                 if (q.learningPhase === 'think') {
