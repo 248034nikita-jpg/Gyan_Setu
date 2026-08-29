@@ -7,7 +7,7 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
 
 // Load database connection
-require_once '../../../database/includes/db_connect.php';
+require_once __DIR__ . '/../../../database/includes/db_connect.php';
 
 // Get POST data
 $input = json_decode(file_get_contents('php://input'), true);
@@ -30,7 +30,7 @@ try {
 
     // 1. UPDATE CHILD'S TOTAL COINS
     
-    $updateChild = "UPDATE children SET total_coins = ? WHERE child_id = ?";
+    $updateChild = "UPDATE children SET total_coins = total_coins + ? WHERE child_id = ?";
     $stmt = $conn->prepare($updateChild);
     $stmt->bind_param("ii", $total_coins, $child_id);
     $stmt->execute();

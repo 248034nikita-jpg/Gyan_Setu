@@ -35,8 +35,8 @@
     const FALL_OFFSET = 200;
 
     const FRAME_COUNTS = {
-        idle_left: 9,
-        idle_right: 9,
+        idle_left: 25,
+        idle_right: 25,
         walk_left: 25,
         walk_right: 25,
         jump_left: 25,
@@ -45,57 +45,48 @@
         sad: 9
     };
 
-
     // ============================================
-        // 🎵 AUDIO SYSTEM 
-        // ============================================
+    // 🎵 AUDIO SYSTEM 
+    // ============================================
 
-        let audioCtx = null;
+    let audioCtx = null;
 
-        function ensureAudio() {
-            if (!audioCtx) audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
-        }
+    function ensureAudio() {
+        if (!audioCtx) audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === "suspended") audioCtx.resume().catch(() => {});
+    }
 
-        // ✅ LOAD YOUR REAL AUDIO FILES
-        const sfx = {
-            correct: new Audio('assets/audio/feedback/correct.wav'),
-            wrong: new Audio('assets/audio/feedback/wrong.wav'),
-            levelComplete: new Audio('assets/audio/level_progression/level_complete.wav'),
-            jump: new Audio('assets/audio/gameplay/jump.wav'),
-            coin: new Audio('assets/audio/gameplay/coin.wav'),
-            button: new Audio('assets/audio/gameplay/button.mp3'),
-        };
+    const sfx = {
+        correct: new Audio('assets/audio/feedback/correct.wav'),
+        wrong: new Audio('assets/audio/feedback/wrong.wav'),
+        levelComplete: new Audio('assets/audio/level_progression/level_complete.wav'),
+        jump: new Audio('assets/audio/gameplay/jump.wav'),
+        coin: new Audio('assets/audio/gameplay/coin.wav'),
+        button: new Audio('assets/audio/gameplay/button.mp3'),
+    };
 
-        // Set volumes (adjust as needed)
-        sfx.correct.volume = 0.6;
-        sfx.wrong.volume = 0.5;
-        sfx.levelComplete.volume = 0.7;
-        sfx.jump.volume = 0.4;
-        sfx.coin.volume = 0.5;
-        sfx.button.volume = 0.3;
+    sfx.correct.volume = 0.6;
+    sfx.wrong.volume = 0.5;
+    sfx.levelComplete.volume = 0.7;
+    sfx.jump.volume = 0.4;
+    sfx.coin.volume = 0.5;
+    sfx.button.volume = 0.3;
 
-        // Safe play function - won't crash if file is missing
-        function playSFX(audioElement) {
-            try {
-                if (audioElement && typeof audioElement.play === 'function') {
-                    audioElement.currentTime = 0;
-                    audioElement.play().catch(() => {
-                        // Silently ignore autoplay blocks or missing files
-                    });
-                }
-            } catch (e) {
-                // Ignore errors (silent fallback)
+    function playSFX(audioElement) {
+        try {
+            if (audioElement && typeof audioElement.play === 'function') {
+                audioElement.currentTime = 0;
+                audioElement.play().catch(() => {});
             }
-        }
+        } catch (e) {}
+    }
 
-        // Your sound functions
-        const soundCorrect = () => { ensureAudio(); playSFX(sfx.correct); };
-        const soundWrong = () => { ensureAudio(); playSFX(sfx.wrong); };
-        const playLevelComplete = () => { ensureAudio(); playSFX(sfx.levelComplete); };
-        const playJump = () => { ensureAudio(); playSFX(sfx.jump); };
-        const playCoin = () => { ensureAudio(); playSFX(sfx.coin); };
-        const playButton = () => { ensureAudio(); playSFX(sfx.button); };
+    const soundCorrect = () => { ensureAudio(); playSFX(sfx.correct); };
+    const soundWrong = () => { ensureAudio(); playSFX(sfx.wrong); };
+    const playLevelComplete = () => { ensureAudio(); playSFX(sfx.levelComplete); };
+    const playJump = () => { ensureAudio(); playSFX(sfx.jump); };
+    const playCoin = () => { ensureAudio(); playSFX(sfx.coin); };
+    const playButton = () => { ensureAudio(); playSFX(sfx.button); };
 
     // ============================================
 
@@ -527,6 +518,15 @@
         // ✅ FETCH LEVEL DATA (API WITH LOCAL FALLBACK)
         // ============================================
 
+        function getActiveChildId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const paramId = urlParams.get('child_id');
+            if (paramId) return parseInt(paramId, 10);
+            const storedId = localStorage.getItem('active_child_id') || localStorage.getItem('child_id');
+            if (storedId) return parseInt(storedId, 10);
+            return 1;
+        }
+
         async function fetchLevelData(childId, levelNumber) {
             const lang = localStorage.getItem('capybara_lang') || 'en';
             try {
@@ -855,14 +855,23 @@
                 this.onGround = false;
                 for (const p of platforms) {
                     if (intersects(this.rect, p)) {
-                        if (this.vy > 0) {
+                        if (this.vy > 0 && (this.rect.y + this.rect.h - this.vy) <= p.y + 4) {
                             this.rect.y = p.y - this.rect.h;
                             this.vy = 0;
                             this.onGround = true;
                             this.lastOnGroundMs = nowMs;
-                        } else if (this.vy < 0) {
+                        } else if (this.vy < 0 && (this.rect.y - this.vy) >= p.y + p.h - 4) {
                             this.rect.y = p.y + p.h;
                             this.vy = 0;
+                        } else {
+                            // Side collision resolved horizontally to prevent wall climbing/snapping
+                            const playerCenterX = this.rect.x + this.rect.w / 2;
+                            const platformCenterX = p.x + p.w / 2;
+                            if (playerCenterX < platformCenterX) {
+                                this.rect.x = p.x - this.rect.w;
+                            } else {
+                                this.rect.x = p.x + p.w;
+                            }
                         }
                     }
                 }
@@ -969,8 +978,6 @@
 
                     if (this.mode === "start") {
                         ensureAudio();
-                        this.mode = "play";
-                        this.updateAlpine();
                         return;
                     }
 
@@ -1085,7 +1092,7 @@
             }
 
             async loadLevel(forceCamera) {
-                const childId = 1;
+                const childId = getActiveChildId();
                 const levelNum = this.levelIndex + 1;
 
                 const levelData = await fetchLevelData(childId, levelNum);
@@ -1536,7 +1543,7 @@
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            child_id: 1,
+                            child_id: getActiveChildId(),
                             content_id: contentId,
                             was_correct: wasCorrect,
                             current_level: this.levelIndex + 1
@@ -1554,7 +1561,7 @@
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            child_id: 1,
+                            child_id: getActiveChildId(),
                             total_coins: this.totalCoins,
                             level_number: this.levelIndex + 1,
                             oranges_collected: this.levelCoins,
@@ -1654,41 +1661,8 @@
             }
 
             drawHUD(nowMs) {
-                const barX = 14,
-                    barY = 12,
-                    barW = WIDTH - 28,
-                    barH = 66;
-                ctx.globalAlpha = 0.95;
-                ctx.fillStyle = "#ffffff";
-                roundRect(ctx, barX, barY, barW, barH, 14);
-                ctx.fill();
-                ctx.globalAlpha = 1;
-
-                ctx.strokeStyle = "#e2e6ee";
-                ctx.lineWidth = 1;
-                roundRect(ctx, barX, barY, barW, barH, 14);
-                ctx.stroke();
-
-                ctx.fillStyle = TEXT_COLOR;
-                ctx.font = (nowMs < this.coinPopUntil) ? "bold 22px Arial" : "bold 20px Arial";
-                ctx.fillText(
-                    `${this.level.name}  •  Fruits: ${this.levelCoins}/${this.requiredCoins}  •  Coins: ${this.totalCoins}  •  Lives: ${this.lives}`,
-                    barX + 18, barY + 30
-                );
-
-                ctx.fillStyle = "#3c4652";
-                ctx.font = "14px Arial";
-                ctx.fillText(
-                    `Move: A/D or ←/→   Jump: Space/W/↑   Touch portal for quiz   Esc: Quit`,
-                    barX + 18, barY + 54
-                );
-
-                if (nowMs < this.msgUntil && this.msg) {
-                    ctx.fillStyle = "#b42828";
-                    ctx.font = "bold 22px Arial";
-                    const w = ctx.measureText(this.msg).width;
-                    ctx.fillText(this.msg, (WIDTH - w) / 2, barY + barH + 30);
-                }
+                // HUD is rendered via HTML overlay (.game-hud in index.html)
+                return;
             }
 
             drawWorld(nowMs) {
@@ -1933,6 +1907,16 @@
 
                 if (this.mode === "play" && this.player) {
                     this.player.update(this.level.platforms, nowMs, input);
+                    
+                    // Clamp player to level horizontal boundaries
+                    if (this.player.rect.x < this.minX) {
+                        this.player.rect.x = this.minX;
+                        this.player.vx = 0;
+                    } else if (this.player.rect.x + this.player.rect.w > this.maxX) {
+                        this.player.rect.x = this.maxX - this.player.rect.w;
+                        this.player.vx = 0;
+                    }
+
                     this.collectCoins();
                     this.updateCamera(false);
 
