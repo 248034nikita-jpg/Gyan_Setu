@@ -158,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['adminSignIn'])) {
         </form>
 
         <div class="footer-link">
-            <a href="login.php">← Back to Main Login</a>
+            <a href="../login.php">← Back to Main Login</a>
         </div>
     </div>
 
