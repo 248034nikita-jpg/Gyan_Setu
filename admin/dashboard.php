@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    header('Location: login.php');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -125,18 +132,18 @@
                             <div class="col-12 col-md-3 ">
                                 <div class="card shadow">
                                     <div class="card-body py-4 rounded-4">
-                                        <h6 class="mb-2 fw-bold">
+                                        <h6 class="mb-2 fw-bold text-muted">
                                             TOTAL LEARNERS
                                         </h6>
-                                        <p class="fw-bold mb-2">
-                                            number of learners
-                                        </p>
+                                        <h4 class="fw-bold mb-2 text-dark" id="total-learners">
+                                            --
+                                        </h4>
                                         <div class="mb-0">
                                             <span class="badge text-success me-2">
-                                                +XX%
+                                                Active
                                             </span>
-                                            <span class="fw-bold">
-                                                Since Last Month
+                                            <span class="text-muted small">
+                                                Enrolled Kids
                                             </span>
                                         </div>
                                     </div>
@@ -146,18 +153,18 @@
                             <div class="col-12 col-md-3 ">
                                 <div class="card shadow">
                                     <div class="card-body py-4 rounded-4">
-                                        <h6 class="mb-2 fw-bold">
+                                        <h6 class="mb-2 fw-bold text-muted">
                                             QUESTION POOL
                                         </h6>
-                                        <p class="fw-bold mb-2">
-                                            number of questions
-                                        </p>
+                                        <h4 class="fw-bold mb-2 text-dark" id="question-pool">
+                                            --
+                                        </h4>
                                         <div class="mb-0">
                                             <span class="badge text-success me-2">
-                                                +XX
+                                                Active
                                             </span>
-                                            <span class="fw-bold">
-                                                Since Last Month
+                                            <span class="text-muted small">
+                                                Quiz Questions
                                             </span>
                                         </div>
                                     </div>
@@ -167,18 +174,18 @@
                             <div class="col-12 col-md-3 ">
                                 <div class="card shadow">
                                     <div class="card-body py-4 rounded-4">
-                                        <h6 class="mb-2 fw-bold">
+                                        <h6 class="mb-2 fw-bold text-muted">
                                             STORE ITEMS
                                         </h6>
-                                        <p class="fw-bold mb-2">
-                                            number of items
-                                        </p>
+                                        <h4 class="fw-bold mb-2 text-dark" id="store-items">
+                                            --
+                                        </h4>
                                         <div class="mb-0">
                                             <span class="badge text-success me-2">
-                                                +XX%
+                                                Active
                                             </span>
-                                            <span class="fw-bold">
-                                                Since Last Month
+                                            <span class="text-muted small">
+                                                Child & Parent Items
                                             </span>
                                         </div>
                                     </div>
@@ -188,18 +195,18 @@
                             <div class="col-12 col-md-3 ">
                                 <div class="card shadow">
                                     <div class="card-body py-4 rounded-4">
-                                        <h6 class="mb-2 fw-bold">
+                                        <h6 class="mb-2 fw-bold text-muted">
                                             COMPLETED SALES
                                         </h6>
-                                        <p class="fw-bold mb-2">
-                                            number of sales
-                                        </p>
+                                        <h4 class="fw-bold mb-2 text-dark" id="completed-sales">
+                                            --
+                                        </h4>
                                         <div class="mb-0">
                                             <span class="badge text-success me-2">
-                                                +XX%
+                                                Active
                                             </span>
-                                            <span class="fw-bold">
-                                                Since Last Month
+                                            <span class="text-muted small">
+                                                Total Orders
                                             </span>
                                         </div>
                                     </div>
@@ -272,7 +279,7 @@
                                     </h5>
                                     <div class="d-grid gap-2">
                                         <button type="button" class="btn btn-outline-success text-start" data-bs-toggle="modal" data-bs-target="#questionModal">
-                                            <i class='bx bx-plus'></i> Create Math Question
+                                            <i class='bx bxs-game'></i> Add Whack-a-Mole Question
                                         </button>
                                         <button type="button" class="btn btn-outline-success text-start" data-bs-toggle="modal" data-bs-target="#rewardModal">
                                             <i class='bx bxs-cart-add'></i> List New Reward Item
@@ -316,44 +323,55 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header bg-success text-white">
-        <h5 class="modal-title">
-            <i class='bx bx-question-mark' ></i> Register New Question
+        <h5 class="modal-title d-flex align-items-center gap-2">
+            <i class='bx bxs-game'></i> Add Whack-a-Mole Question
         </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
-        </button>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
         <form id="questionForm">
-          <label class="fw-bold mb-1">Select Target Group</label>
+          <input type="hidden" name="game_id" value="1">
+          <input type="hidden" name="course_id" value="1">
+
+          <label class="fw-bold mb-1">Whack-a-Mole Topic</label>
           <select class="form-select mb-3" name="target_group" required>
-            <option value="maths">MATHS (Earth Defense / Fraction Fruit)</option>
-            <option value="english">ENGLISH (Word Matcher / Sentence Builder)</option>
-            <option value="story">STORY BOOKS (Vance Mysteries / Adventure Tales)</option>
+            <option value="grammar" selected>ENGLISH: Grammar (is/am/are, verbs, pronouns)</option>
+            <option value="vocabulary">ENGLISH: Vocabulary (opposites, word match, plurals)</option>
           </select>
 
-          <label class="fw-bold mb-1">Sub-Category Identifier</label>
-          <input type="text" class="form-control mb-3" name="subcategory" placeholder="e.g. Fractions">
+          <label class="fw-bold mb-1">Grammar / Vocabulary Concept</label>
+          <input type="text" class="form-control mb-3" name="subcategory" placeholder="e.g. is / am / are or Plurals" required>
 
-          <label class="fw-bold mb-1">Equation / Formulation Prompt String</label>
-          <input type="text" class="form-control mb-3" name="prompt" placeholder="e.g. 5 + ? = 12" required>
+          <label class="fw-bold mb-1">Sentence Prompt (Displayed above Moles)</label>
+          <input type="text" class="form-control mb-3" name="prompt" placeholder="e.g. She ___ a doctor." required>
 
-          <label class="fw-bold mb-1">Correct Key Value</label>
-          <input type="text" class="form-control mb-3" name="answer" placeholder="e.g. 7" required>
+          <div class="p-3 bg-light rounded-3 mb-3 border">
+            <h6 class="fw-bold text-success mb-2"><i class='bx bx-check-circle'></i> Mole Hole Answers (4 Total)</h6>
+            
+            <label class="form-label small fw-bold text-success mb-1">Target Mole (Correct Answer to Whack) *</label>
+            <input type="text" class="form-control mb-2 border-success" name="answer" placeholder="e.g. is" required>
 
-          <label class="fw-bold mb-1">Difficulty Scaling Rank</label>
+            <label class="form-label small fw-bold text-muted mb-1">Wrong Mole 1 (Distractor) *</label>
+            <input type="text" class="form-control mb-2" name="distractor_1" placeholder="e.g. am" required>
+
+            <label class="form-label small fw-bold text-muted mb-1">Wrong Mole 2 (Distractor) *</label>
+            <input type="text" class="form-control mb-2" name="distractor_2" placeholder="e.g. are" required>
+
+            <label class="form-label small fw-bold text-muted mb-1">Wrong Mole 3 (Distractor) *</label>
+            <input type="text" class="form-control mb-1" name="distractor_3" placeholder="e.g. were" required>
+          </div>
+
+          <label class="fw-bold mb-1">Difficulty Tier</label>
           <select class="form-select mb-3" name="difficulty">
-            <option value="easy">Easy</option>
-            <option value="medium" selected>Medium</option>
-            <option value="hard">Hard</option>
+            <option value="easy">Tier 1 (Easy)</option>
+            <option value="medium" selected>Tier 2 (Medium)</option>
+            <option value="hard">Tier 3 (Hard)</option>
           </select>
-
-          <label class="fw-bold mb-1">Award Coin Points Value</label>
-          <input type="number" class="form-control mb-2" name="points" value="10" min="1" required>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-success" id="saveQuestionBtn">Save to Vault</button>
+        <button type="button" class="btn btn-success" id="saveQuestionBtn">Add to Whack-a-Mole</button>
       </div>
     </div>
   </div>
@@ -371,27 +389,17 @@
       </div>
       <div class="modal-body">
         <form id="rewardForm">
-          <label class="fw-bold mb-1">Asset Title</label>
-          <input type="text" class="form-control mb-3" name="item_name" placeholder="e.g. Tracing Numbers Pack" required>
+          <label class="fw-bold mb-1">Asset Title (item_name)</label>
+          <input type="text" class="form-control mb-3" name="item_name" placeholder="e.g. Capybara Mascot Costume" required>
 
-          <label class="fw-bold mb-1">Inventory Classification</label>
-          <select class="form-select mb-3" name="category">
-            <option value="worksheet">Worksheet Packet (PDF)</option>
-            <option value="helper">In-Game Helper Potion</option>
-            <option value="avatar">Avatar Cosmetic Frame</option>
-          </select>
-
-          <label class="fw-bold mb-1">Required Coins Cost</label>
+          <label class="fw-bold mb-1">Required Coins Cost (price_coins)</label>
           <input type="number" class="form-control mb-3" name="price" value="50" min="1" required>
 
-          <label class="fw-bold mb-1">Mascot / Icon Emoji Character</label>
-          <input type="text" class="form-control mb-3" name="icon" placeholder="e.g. 📚" maxlength="4">
+          <label class="fw-bold mb-1">Mascot / Icon Emoji Character (icon_url)</label>
+          <input type="text" class="form-control mb-3" name="icon" placeholder="e.g. 🦫 or 🚀" maxlength="255">
 
           <label class="fw-bold mb-1">Brief Description</label>
           <textarea class="form-control mb-3" name="description" rows="2" placeholder="Describe what the child receives..."></textarea>
-
-          <label class="fw-bold mb-1">Sandbox Available Stock</label>
-          <input type="number" class="form-control mb-2" name="stock" value="10" min="0">
         </form>
       </div>
       <div class="modal-footer">
