@@ -650,7 +650,7 @@ body {
     flex: 1;
     text-align: center;
     padding: 35px 20px;
-    border-right: 2px solid #2d2b63;
+    border-right: 2px solid white;
 }
 
 /* Removes the divider line after the last box. */
@@ -661,7 +661,7 @@ body {
 .impact-box p {
     font-size: 24px;
     font-weight: 600;
-    color: #2d2b63;
+    color: white;
     margin: 0;
 }
 
