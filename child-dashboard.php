@@ -355,6 +355,45 @@ $total_coins = count($badges);
                     </div>
                 </a>
 
+                <!-- Alphabet Adventure (Ages 4-6) -->
+                <a href="games/alphabet-adventure/index.php?child_id=<?php echo $child_id; ?>" class="game-link" title="Play Alphabet Adventure">
+                    <div class="game-card active" style="
+                        background: url('games/alphabet-adventure/assets/cover.jpg') no-repeat center / 100% 100%;
+                        position: relative;
+                        border: 3.5px solid #4caf50;
+                        border-radius: 16px;
+                        box-shadow: 0 6px 18px rgba(76, 175, 80, 0.4);
+                        overflow: hidden;
+                    ">
+                        <span style="
+                            position: absolute;
+                            top: 8px;
+                            right: 8px;
+                            background: #2e7d32;
+                            color: #ffffff;
+                            font-size: 10px;
+                            font-weight: 800;
+                            padding: 3px 8px;
+                            border-radius: 12px;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+                            z-index: 2;
+                        ">Ages 4-6</span>
+                        <div class="play-btn" style="
+                            position: absolute;
+                            bottom: 12px;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            background: rgba(46, 125, 50, 0.95);
+                            color: white;
+                            z-index: 2;
+                            width: 50px;
+                            height: 50px;
+                            font-size: 22px;
+                            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+                        ">▶</div>
+                    </div>
+                </a>
+
                 <a href="wack-a-mole/index.php" class="game-link">
                     <div class="game-card active">
                         <div class="play-btn">▶</div>
