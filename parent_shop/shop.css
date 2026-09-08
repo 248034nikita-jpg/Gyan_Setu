@@ -620,7 +620,7 @@
             position: fixed;
             bottom: 2rem;
             right: 5rem;
-            width: 220px;          /* Adjust as needed */
+            width: 190px;          /* Adjust as needed */
             height: auto;
             z-index: 40;           /* Below checkout button, above background */
             pointer-events: none;  /* Allows clicking through the image */
