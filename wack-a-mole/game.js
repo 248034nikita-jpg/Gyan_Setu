@@ -95,6 +95,10 @@ class BootScene extends Phaser.Scene {
         this.load.image('coin', 'assets/Coin.png');
         this.load.image('coin2', 'assets/coin2.png');
         this.load.image('proud', 'assets/proud.png');
+        this.load.image('scoreboard', 'assets/scoreboard.png');
+        this.load.image('home', 'assets/home.png');
+        this.load.image('replay', 'assets/replay.png');
+        this.load.image('menu', 'assets/menu.png');
         this.load.image('hint_icon', 'assets/hint.svg');
         this.load.image('fullscreen', 'assets/full screen.png');
         this.load.image('child_back', '../assets/images/website/child back button.png');
@@ -102,6 +106,7 @@ class BootScene extends Phaser.Scene {
         this.load.image('topic_bg', 'assets/topic_bg.jpg');
         this.load.image('vocab_card', 'assets/vocab card.png');
         this.load.image('grammar_card', 'assets/grammar card.png');
+        this.load.image('tut_hint', 'assets/tutorial/tut_hint.png');
 
         // Spritesheet: 1140×1152 → 6×8 = 190×144 per frame
         this.load.spritesheet('spritesheet', 'assets/sprites.png', {
@@ -216,6 +221,28 @@ class LevelSelectScene extends Phaser.Scene {
             transitionToScene(this, 'TopicSelectScene');
         });
 
+        // 🎬 Story replay button
+        const storyBtnBg = this.add.graphics();
+        storyBtnBg.fillStyle(0x4e54c8, 0.9).fillRoundedRect(325 - 90, 605, 180, 42, 12);
+        storyBtnBg.lineStyle(3, 0xffffff, 0.8).strokeRoundedRect(325 - 90, 605, 180, 42, 12);
+        
+        const storyText = this.add.text(325, 626, '🎬 Watch Story', {
+            fontFamily: "'Chewy', cursive, sans-serif",
+            fontSize: '22px',
+            fill: '#ffffff'
+        }).setOrigin(0.5);
+
+        const storyZone = this.add.zone(325, 626, 180, 42).setInteractive({ useHandCursor: true });
+        storyZone.on('pointerdown', () => {
+            if (typeof window.playIntroVideo === 'function') {
+                const childMeta = document.querySelector('meta[name="child_id"]');
+                const childId = childMeta ? parseInt(childMeta.content) : 0;
+                window.playIntroVideo(childId, true);
+            }
+        });
+        storyZone.on('pointerover', () => storyText.setStyle({ fill: '#ffd700' }));
+        storyZone.on('pointerout', () => storyText.setStyle({ fill: '#ffffff' }));
+
         createHeaderControls(this);
 
         this.input.setDefaultCursor('none');
@@ -311,6 +338,21 @@ class TopicSelectScene extends Phaser.Scene {
             GAME_STATE.topic = 'vocabulary';
             this._loadAndStart();
         });
+
+        // Interactive tutorial hint button (tut_hint.png) by the right side of Vocabulary card in Meadow Mode (Tier 1)
+        if (GAME_STATE.tier === 1) {
+            const tutHintBtn = this.add.image(525, 230, 'tut_hint')
+                .setDisplaySize(55, 55).setInteractive({ useHandCursor: true }).setDepth(1500);
+
+            tutHintBtn.on('pointerover', () => tutHintBtn.setDisplaySize(60, 60));
+            tutHintBtn.on('pointerout',  () => tutHintBtn.setDisplaySize(55, 55));
+
+            tutHintBtn.on('pointerdown', () => {
+                if (typeof window.showTutorialLesson === 'function') {
+                    window.showTutorialLesson();
+                }
+            });
+        }
 
         // Grammar Card Image (shifted down to add spacing)
         this._mkTopicCard(325, 430, 'grammar_card', () => {
@@ -1163,76 +1205,50 @@ class ResultScene extends Phaser.Scene {
     create() {
         this.add.image(325, 350, 'background').setDisplaySize(650, 700);
 
-        // Dark overlay
-        this.add.graphics().fillStyle(0x000000, 0.7).fillRect(0, 0, 650, 700);
+        // Keep the game visible behind the results, while making the board easy to read.
+        this.add.graphics().fillStyle(0x000000, 0.58).fillRect(0, 0, 650, 700);
 
-        // Result card
-        const cardColor = this.success ? 0x1a3d2b : 0x3d1a1a;
-        const borderColor = this.success ? 0x2ecc71 : 0xe74c3c;
-        const card = this.add.graphics();
-        card.fillStyle(cardColor, 0.95).fillRoundedRect(35, 50, 580, 600, 22);
-        card.lineStyle(4, borderColor, 1).strokeRoundedRect(35, 50, 580, 600, 22);
+        // Wooden result board (the supplied asset includes the decorative characters).
+        this.add.image(325, 310, 'scoreboard').setDisplaySize(600, 328);
 
-        // Proud mascot illustration on the side
-        try {
-            this.add.image(530, 310, 'proud').setScale(0.20).setOrigin(0.5);
-        } catch(e) {}
-
-        // Title
-        const titleColor = this.success ? '#2ecc71' : '#e74c3c';
-        const titleText  = this.success ? '🎉 LEVEL COMPLETE!' : '💔 GAME OVER';
-        this.add.text(325, 95, titleText, {
-            fontFamily: '"Impact","Arial Black",sans-serif',
-            fontSize: '40px', fill: titleColor,
-            stroke: '#000000', strokeThickness: 5
+        this.add.text(325, 208, 'SCORE', {
+            fontFamily: '"Arial Black",Arial,sans-serif', fontSize: '30px',
+            fontStyle: 'bold', fill: '#17100a'
         }).setOrigin(0.5);
 
-        // Topic + tier info
-        const tierNames = ['', 'Easy', 'Medium', 'Hard'];
-        this.add.text(325, 145, `${tierNames[this.tier]} · ${this.topic.charAt(0).toUpperCase() + this.topic.slice(1)}`, {
-            fontFamily: 'Arial', fontSize: '22px', fill: '#cccccc'
+        this.add.text(325, 247, `${this.score} / ${this.total}`, {
+            fontFamily: '"Arial Black",Arial,sans-serif', fontSize: '38px',
+            fontStyle: 'bold', fill: '#17100a'
         }).setOrigin(0.5);
 
-        // Score in big font in the middle
-        this.add.text(325, 210, `SCORE: ${this.score} / ${this.total}`, {
-            fontFamily: '"Impact","Arial Black",sans-serif',
-            fontSize: '48px', fill: '#ffffff',
-            stroke: '#000000', strokeThickness: 6
-        }).setOrigin(0.5);
-
-        // Coins display with coin2.png
-        this.coinImg = this.add.image(210, 280, 'coin2').setDisplaySize(42, 42);
-        this.coinsText = this.add.text(242, 280, '+0 Coins', {
-            fontFamily: 'Arial', fontSize: '24px', fill: '#ffd700', fontWeight: 'bold'
+        // Coins display with the supplied coin artwork.
+        this.coinImg = this.add.image(274, 293, 'coin2').setDisplaySize(42, 42);
+        this.coinsText = this.add.text(307, 293, '+0 coins', {
+            fontFamily: '"Arial Black",Arial,sans-serif', fontSize: '22px',
+            fontStyle: 'bold', fill: '#17100a'
         }).setOrigin(0, 0.5);
 
-        // Stats
+
         const accuracy = this.total > 0 ? Math.round((this.score / this.total) * 100) : 0;
 
-        this._statRow(115, 335, '🎯 Accuracy',    `${accuracy}%`);
-        this._statRow(115, 375, '🔥 Best Streak', `${this.streak} in a row`);
+        this._statRow(210, 387, 'Accuracy', `${accuracy}%`);
+        this._statRow(440, 387, 'Best Streak', `${this.streak} in a row`);
 
         // Badges area
-        this.badgeArea = this.add.text(325, 435, '', {
-            fontFamily: 'Arial', fontSize: '18px', fill: '#ffd700',
-            fontWeight: 'bold', align: 'center', wordWrap: { width: 500 }
+        this.badgeArea = this.add.text(325, 354, '', {
+            fontFamily: 'Arial,sans-serif', fontSize: '13px', fill: '#7d3f13',
+            fontStyle: 'bold', align: 'center', wordWrap: { width: 310 }
         }).setOrigin(0.5);
 
-        // Volume/fullscreen buttons
-        createHeaderControls(this);
-
-        // Buttons (aligned symmetrically)
-        const levelSelectScene = { 1: 'EasyLevelScene', 2: 'MediumLevelScene', 3: 'HardLevelScene' };
-        this._mkBtn(195, 505, 220, '🔄 Play Again', 0x2980b9, () => {
+        // The icon buttons retain the existing destinations and game flow.
+        this._mkIconBtn(205, 500, 'home', () => {
+            window.location.href = '../child-dashboard.php';
+        });
+        this._mkIconBtn(325, 492, 'replay', () => {
             transitionToScene(this, 'TopicSelectScene');
         });
-        this._mkBtn(455, 505, 220, '🏠 Menu', 0x7f8c8d, () => {
+        this._mkIconBtn(445, 500, 'menu', () => {
             transitionToScene(this, 'LevelSelectScene');
-        });
-
-        // Dashboard link (perfectly centered at 325)
-        this._mkBtn(325, 570, 280, '📊 Go to Dashboard', 0x8e44ad, () => {
-            window.location.href = '../child-dashboard.php';
         });
 
         // Custom cursor
@@ -1253,24 +1269,29 @@ class ResultScene extends Phaser.Scene {
 
     _statRow(x, y, label, value) {
         this.add.text(x, y, label, {
-            fontFamily: 'Arial', fontSize: '21px', fill: '#aaaaaa'
-        });
-        this.add.text(x + 180, y, value, {
-            fontFamily: 'Arial', fontSize: '21px', fontWeight: 'bold', fill: '#ffffff'
-        });
+            fontFamily: 'Arial,sans-serif', fontSize: '19px', fontStyle: 'bold',
+            fill: '#17100a'
+        }).setOrigin(0.5);
+        this.add.text(x, y + 25, value, {
+            fontFamily: 'Arial,sans-serif', fontSize: '18px', fontStyle: 'bold',
+            fill: '#7d3f13'
+        }).setOrigin(0.5);
     }
 
-    _mkBtn(x, y, w, label, color, cb) {
-        const g = this.add.graphics();
-        g.fillStyle(color, 0.9).fillRoundedRect(x - w / 2, y - 22, w, 44, 10);
-        g.lineStyle(2, 0xffffff, 0.6).strokeRoundedRect(x - w / 2, y - 22, w, 44, 10);
-        const t = this.add.text(x, y, label, {
-            fontFamily: 'Arial', fontSize: '20px', fontWeight: 'bold', fill: '#ffffff'
-        }).setOrigin(0.5);
-        const z = this.add.zone(x, y, w, 44).setInteractive({ useHandCursor: true });
-        z.on('pointerover', () => t.setStyle({ fill: '#ffd700' }));
-        z.on('pointerout',  () => t.setStyle({ fill: '#ffffff' }));
-        z.on('pointerdown', cb);
+    _mkIconBtn(x, y, texture, cb) {
+        const shadow = this.add.ellipse(x, y + 42, 64, 13, 0x000000, 0.3);
+        const icon = this.add.image(x, y, texture).setDisplaySize(90, 90)
+            .setInteractive({ useHandCursor: true });
+        const baseScale = icon.scaleX;
+        icon.on('pointerover', () => {
+            icon.setScale(baseScale * 1.08);
+            shadow.setScale(0.9);
+        });
+        icon.on('pointerout', () => {
+            icon.setScale(baseScale);
+            shadow.setScale(1);
+        });
+        icon.on('pointerdown', cb);
     }
 
     _submitScore() {
@@ -1300,8 +1321,17 @@ class ResultScene extends Phaser.Scene {
                     this.coinsText.setText(`+${data.coins_earned} Coins`);
                 }
                 if (data.new_badges && data.new_badges.length > 0) {
-                    const titles = data.new_badges.map(b => `🏅 ${b.title}`).join('\n');
-                    this.badgeArea.setText('Badges Earned:\n' + titles);
+                    const badges = data.new_badges
+                        .map(b => {
+                            // icon_url may be an image filename (for example,
+                            // "badges/first steps.png"). Do not render that path as text.
+                            const icon = b.icon_url && !/\.(png|jpe?g|gif|svg|webp)$/i.test(b.icon_url)
+                                ? b.icon_url
+                                : '🏅';
+                            return `${icon} ${b.title}  ·  +${b.coins_reward || 0} coins`;
+                        })
+                        .join('\n');
+                    this.badgeArea.setText(badges);
                 }
             })
             .catch(err => {

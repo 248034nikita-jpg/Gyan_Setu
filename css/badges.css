@@ -1,0 +1,25 @@
+.badges-page { width:min(1050px, 90%); margin:42px auto 60px; flex:1; }
+.badges-back { color:#4a5c1d; font-weight:700; text-decoration:none; display:inline-block; margin-bottom:26px; }
+.badges-intro { text-align:center; margin-bottom:34px; }.badges-intro h1 { font-size:34px; color:#31451a; margin-bottom:8px; }.badges-intro p { color:#66705b; font-size:17px; }
+.subject-badge-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:30px; max-width:650px; margin:auto; }
+.subject-badge-card { background:#fff; border-radius:22px; overflow:hidden; text-decoration:none; color:#27301e; box-shadow:0 8px 22px rgba(0,0,0,.1); border:3px solid transparent; text-align:center; font-size:21px; font-weight:800; padding-bottom:17px; }
+.subject-badge-card:hover { transform:translateY(-7px); border-color:#b6d34d; }.subject-badge-card img,.subject-art-placeholder { width:100%; height:175px; object-fit:cover; display:block; }.subject-art-placeholder { background:#edf1e8; color:#aab3a2; font-size:52px; display:grid; place-items:center; }
+.badge-table { background:#fff; border-radius:18px; overflow:hidden; box-shadow:0 8px 24px rgba(0,0,0,.1); }
+.badge-table-head,.badge-table-row { display:grid; grid-template-columns:180px 1fr 115px; align-items:center; }
+.badge-table-head { background:#c6d58f; font-size:15px; font-weight:800; padding:14px 22px; color:#263417; }
+.badge-table-row { min-height:135px; padding:12px 22px; border-top:1px solid #e7ebdf; gap:14px; }
+.badge-table-row.is-earned { background:#f1f9df; color:#31451a; box-shadow:inset 5px 0 #9dc950; }
+.badge-table-row.is-earned .badge-copy p { color:#5e7043; }.badge-art { height:108px; width:150px; }
+.badge-art img,.badge-art .badge-art-placeholder { width:100%; height:100%; object-fit:contain; border-radius:10px; }
+.badge-copy h2 { font-size:20px; margin-bottom:7px; }.badge-copy p { color:#596154; line-height:1.4; }
+.badge-coin { position:relative; width:86px; height:82px; justify-self:end; display:grid; place-items:center; }
+.badge-coin img { width:80px; height:80px; object-fit:contain; }
+.badge-coin span { position:absolute; min-width:42px; text-align:center; padding:4px 7px; border-radius:5px; color:#4a3210; font-weight:900; background:rgba(255,255,255,.48); }
+.badges-empty { background:#fff; border-radius:16px; padding:30px; text-align:center; color:#66705b; box-shadow:0 6px 18px rgba(0,0,0,.08); }
+@media (max-width:650px) { .badges-page { width:92%; margin-top:25px; }
+.badge-table-head { display:none; }.badge-table-row { grid-template-columns:92px 1fr 64px; padding:12px; min-height:110px; gap:8px; }
+.badge-art { width:85px; height:84px; }.badge-copy h2 { font-size:16px; }
+.badge-copy p { font-size:13px; }
+.badge-coin { width:60px; height:60px; }
+.badge-coin img { width:58px; height:58px; }
+.badge-coin span { font-size:13px; min-width:32px; padding:3px; } }

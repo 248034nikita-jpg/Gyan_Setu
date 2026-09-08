@@ -45,7 +45,7 @@ if (isset($_GET['play_game'])) {
 
     // 1. Update points in children
     $stmt = $conn->prepare("UPDATE children SET total_coins = total_coins + ? WHERE child_id = ?");
-    $stmt->bind_param("ii", $points_to_add, $child_id);
+    $stmt->bind_param("ii", $coins_to_add, $child_id);
     $stmt->execute();
     $stmt->close();
 
@@ -59,7 +59,7 @@ if (isset($_GET['play_game'])) {
     $stmt->close();
 
     // Calculate level: 1 level per 100 coins (minimum Level 1)
-    $new_level = max(1, floor($new_coins / 100) + 1);
+    $new_level = max(1, floor($new_points / 100) + 1);
     $stmt = $conn->prepare("UPDATE children SET current_level = ? WHERE child_id = ?");
     $stmt->bind_param("ii", $new_level, $child_id);
     $stmt->execute();
@@ -88,7 +88,7 @@ if (isset($_GET['play_game'])) {
     }
     $stmt->close();
 
-    $new_badge_msg = '';
+    $badgeTitles = [];
     foreach ($unearned_badges as $badge) {
         $qualifies = false;
         $badge_id = $badge['badge_id'];
@@ -138,13 +138,15 @@ if (isset($_GET['play_game'])) {
                 $new_points += $reward;
             }
 
-            $new_badge_msg = "🏆 Congratulations! You earned the '" . $badge['title'] . "' badge!";
+            $badgeTitles[] = $badge['title'];
         }
-        $stmt->close();
+    }
+
+    if (!empty($badgeTitles)) {
         $new_badge_msg = "🏆 Congratulations! You earned: " . implode(', ', $badgeTitles) . " badge(s)!";
     }
 
-    $_SESSION['game_alert'] = "🎉 Played '$game_name'! You earned +$points_to_add points!";
+    $_SESSION['game_alert'] = "🎉 Played '" . htmlspecialchars($game_name) . "'! You earned +" . $coins_to_add . " points!";
     if (!empty($new_badge_msg)) {
         $_SESSION['badge_alert'] = $new_badge_msg;
     }
@@ -165,22 +167,28 @@ $total_points = $child_info['total_coins'];
 $current_level = $child_info['current_level'];
 $child_age = isset($child_info['age']) ? (int)$child_info['age'] : 8;
 
-// Fetch Earned Badges
-$badges = [];
-$stmt = $conn->prepare("
-    SELECT b.title AS name, b.description, b.icon_url, cb.date_earned 
-    FROM child_badges cb
-    JOIN badges b ON cb.badge_id = b.badge_id
-    WHERE cb.child_id = ?
-");
+// Fetch Earned Badge IDs
+$earned_badge_ids = [];
+$stmt = $conn->prepare("SELECT badge_id FROM child_badges WHERE child_id = ?");
 $stmt->bind_param("i", $child_id);
 $stmt->execute();
 $res = $stmt->get_result();
 while ($row = $res->fetch_assoc()) {
-    $badges[] = $row;
+    $earned_badge_ids[] = $row['badge_id'];
 }
 $stmt->close();
-$total_coins = count($badges);
+
+// Fetch ALL badges for display
+$all_badges = [];
+$res = $conn->query("SELECT badge_id, title, description, icon_url, coins_reward FROM badges ORDER BY badge_id ASC");
+while ($row = $res->fetch_assoc()) {
+    $row['earned'] = in_array($row['badge_id'], $earned_badge_ids);
+    $all_badges[] = $row;
+}
+
+// Legacy: keep $badges for other usages
+$badges = array_filter($all_badges, fn($b) => $b['earned']);
+$total_coins_earned = count($earned_badge_ids);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -188,7 +196,7 @@ $total_coins = count($badges);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gyan Setu - Child Dashboard</title>
-    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dashboard.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
@@ -306,6 +314,9 @@ $total_coins = count($badges);
             <button type="button">🧮 MATHS</button>
             <button type="button">📚 ENGLISH</button>
             <button type="button">📖 STORY BOOKS</button>
+            <a href="badges.php" class="badges-sidebar-link" aria-label="Open my badges" style="width: 90px; height: 90px; max-width: 90px; max-height: 90px; align-self: center; display: flex; justify-content: center; align-items: center; margin-top: 10px; flex-shrink: 0;">
+                <img src="badges/badge thumbnail.png" alt="Badges" style="width: 100%; height: 100%; max-width: 90px; max-height: 90px; object-fit: contain;">
+            </a>
         </aside>
 
         <!-- Games list, locked games can be opened via Unlock All -->
@@ -317,7 +328,8 @@ $total_coins = count($badges);
 
             <div class="games-grid" style="margin-bottom: 30px;" style="display: flex; flex-wrap: wrap; gap: 20px;">
                 <!-- Capybara Nepal Adventure (Featured Platformer Quiz for Ages 8-9) -->
-                <a href="games/capybara-platformer-quiz/index.html" class="game-link" title="Play Capybara Nepal Adventure">
+                <?php if ($child_age >= 8 && $child_age <= 9): ?>
+                <a href="games/capybara-platformer-quiz/index.html" class="game-link" data-subject="maths" title="Play Capybara Nepal Adventure">
                     <div class="game-card active" style="
                         background: url('games/capybara-platformer-quiz/assets/cover.png') no-repeat center / 100% 100%;
                         position: relative;
@@ -349,41 +361,78 @@ $total_coins = count($badges);
                             z-index: 2;
                             width: 50px;
                             height: 50px;
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
                             font-size: 22px;
                             box-shadow: 0 4px 10px rgba(0,0,0,0.4);
                         ">▶</div>
                     </div>
                 </a>
+                <?php endif; ?>
 
-                <a href="wack-a-mole/index.php" class="game-link">
+                <?php if ($child_age == 8 || $child_age == 9): ?>
+                <a href="wack-a-mole/index.php" class="game-link" data-subject="english" style="display:none;">
+                    <div class="game-card active" style="
+                        background: url('wack-a-mole/assets/thumbnail.jpg') no-repeat center / 100% 100%;
+                        position: relative;
+                        border: 3.5px solid #2196f3;
+                        border-radius: 16px;
+                        box-shadow: 0 6px 18px rgba(33, 150, 243, 0.4);
+                        overflow: hidden;
+                    ">
+                        <div class="play-btn" style="
+                            position: absolute;
+                            bottom: 12px;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            background: rgba(33, 150, 243, 0.95);
+                            color: white;
+                            z-index: 2;
+                            width: 50px;
+                            height: 50px;
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 22px;
+                            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+                        ">▶</div>
+                    </div>
+                </a>
+                <?php else: ?>
+                <!-- Optional fallback for Word Whack if age isn't 8 or 9 -->
+                <a href="wack-a-mole/index.php" class="game-link" data-subject="english" style="display:none;">
                     <div class="game-card active">
                         <div class="play-btn">▶</div>
                         <p>Word Whack</p>
                     </div>
                 </a>
+                <?php endif; ?>
 
-                <a href="child-dashboard.php?play_game=Earth+Defense" class="game-link">
+                <a href="child-dashboard.php?play_game=Earth+Defense" class="game-link" data-subject="maths" style="display:none;">
                     <div class="game-card">
                         <div class="play-btn">▶</div>
                         <p>Earth Defense</p>
                     </div>
                 </a>
 
-                <a href="child-dashboard.php?play_game=Word+Matcher" class="game-link">
+                <a href="child-dashboard.php?play_game=Word+Matcher" class="game-link" data-subject="english" style="display:none;">
                     <div class="game-card">
                         <div class="play-btn">▶</div>
                         <p>Word Matcher</p>
                     </div>
                 </a>
 
-                <a href="child-dashboard.php?play_game=Fraction+Fruit" class="game-link">
+                <a href="child-dashboard.php?play_game=Fraction+Fruit" class="game-link" data-subject="maths" style="display:none;">
                     <div class="game-card">
                         <div class="play-btn">▶</div>
                         <p>Fraction Fruit</p>
                     </div>
                 </a>
 
-                <a href="child-dashboard.php?play_game=Sentence+Builder" class="game-link">
+                <a href="child-dashboard.php?play_game=Sentence+Builder" class="game-link" data-subject="english" style="display:none;">
                     <div class="game-card">
                         <div class="play-btn">▶</div>
                         <p>Sentence Builder</p>
@@ -392,8 +441,6 @@ $total_coins = count($badges);
 
             </div>
 
-            <!-- Badges Section -->
-            
         </section>
     </main>
 
@@ -403,6 +450,47 @@ $total_coins = count($badges);
     </footer>
 
     <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const subjectBtns = document.querySelectorAll('.subjects button');
+            const gameLinks = document.querySelectorAll('.game-link');
+            const gamesGrid = document.querySelector('.games-grid');
+            const gameZoneHeader = document.querySelector('.game-zone-header');
+
+            // Set initial state (show all games)
+            gameLinks.forEach(link => {
+                link.style.display = 'block';
+            });
+
+            subjectBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const btnText = btn.textContent.toLowerCase();
+                    let targetSubject = 'all';
+                    if (btnText.includes('math')) targetSubject = 'maths';
+                    else if (btnText.includes('english')) targetSubject = 'english';
+                    else if (btnText.includes('story')) targetSubject = 'story';
+
+                    gameLinks.forEach(link => {
+                        const gameSub = link.getAttribute('data-subject');
+                        if (targetSubject === 'all') {
+                            link.style.display = 'block';
+                        } else if (gameSub === targetSubject || gameSub === 'all') {
+                            link.style.display = 'block';
+                        } else {
+                            link.style.display = 'none';
+                        }
+                    });
+
+                    // Active state on subject btns
+                    subjectBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+            });
+        });
+
+    </script>
+
+
 
     <script>
     // Profile Dropdown Toggle 

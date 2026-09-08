@@ -9,10 +9,7 @@ header('Access-Control-Allow-Origin: *');
 
 // Allow relative include from wack-a-mole subfolder
 $db_candidates = [
-    __DIR__ . '../../database/includes/db_connect.php',
-    __DIR__ . '../../database/includes/db_connect.php',
-    realpath(__DIR__ . '/../../') . '../database/includes/db_connect.php',
-    realpath(__DIR__ . '/../') . '../database/includes/db_connect.php'
+    dirname(__DIR__, 2) . '/database/includes/db_connect.php'
 ];
 
 $db_path = null;
