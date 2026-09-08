@@ -13,6 +13,47 @@ let GAME_STATE = {
     childId: 0,        // set from PHP session if available
 };
 
+// ──── Helper: Smooth Scene Transition ────
+function transitionToScene(scene, targetScene, data = null) {
+    if (scene.isTransitioning) return;
+    scene.isTransitioning = true;
+    scene.cameras.main.fadeOut(300, 0, 0, 0);
+    scene.cameras.main.once('camerafadeoutcomplete', () => {
+        scene.isTransitioning = false; // Reset for when we return to this scene
+        scene.scene.start(targetScene, data);
+    });
+}
+
+// ──── Helper: Volume + Fullscreen Controls ────
+function createHeaderControls(scene) {
+    // Add fade-in effect when scene starts
+    scene.cameras.main.fadeIn(300, 0, 0, 0);
+
+    // Volume (Now on the left side)
+    const volBtn = scene.add.image(550, 45, scene.sound.mute ? 'mute' : 'volume')
+        .setDisplaySize(36, 36).setInteractive({ useHandCursor: true }).setDepth(2000);
+    volBtn.on('pointerdown', () => {
+        scene.sound.mute = !scene.sound.mute;
+        volBtn.setTexture(scene.sound.mute ? 'mute' : 'volume');
+        volBtn.setDisplaySize(36, 36);
+    });
+
+    // Fullscreen (Now on the right side)
+    const fsBtn = scene.add.image(605, 45, 'fullscreen')
+        .setDisplaySize(36, 36).setInteractive({ useHandCursor: true }).setDepth(2000);
+    fsBtn.on('pointerdown', () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.error(`Fullscreen failed: ${err.message}`);
+            });
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    });
+}
+
 // ──────────────────────────────────────────────
 // BOOT SCENE — preload all assets
 // ──────────────────────────────────────────────
@@ -52,7 +93,20 @@ class BootScene extends Phaser.Scene {
         this.load.image('volume', 'assets/volume.png');
         this.load.image('mute', 'assets/mute.png');
         this.load.image('coin', 'assets/Coin.png');
+        this.load.image('coin2', 'assets/coin2.png');
+        this.load.image('proud', 'assets/proud.png');
+        this.load.image('scoreboard', 'assets/scoreboard.png');
+        this.load.image('home', 'assets/home.png');
+        this.load.image('replay', 'assets/replay.png');
+        this.load.image('menu', 'assets/menu.png');
         this.load.image('hint_icon', 'assets/hint.svg');
+        this.load.image('fullscreen', 'assets/full screen.png');
+        this.load.image('child_back', '../assets/images/website/child back button.png');
+        this.load.image('mode_bg', 'assets/mode_bg.jpg');
+        this.load.image('topic_bg', 'assets/topic_bg.jpg');
+        this.load.image('vocab_card', 'assets/vocab card.png');
+        this.load.image('grammar_card', 'assets/grammar card.png');
+        this.load.image('tut_hint', 'assets/tutorial/tut_hint.png');
 
         // Spritesheet: 1140×1152 → 6×8 = 190×144 per frame
         this.load.spritesheet('spritesheet', 'assets/sprites.png', {
@@ -60,9 +114,9 @@ class BootScene extends Phaser.Scene {
             frameHeight: 144
         });
 
-        // Mascot spritesheet: 1774×887 → assume 5 frames wide × 2 rows = 354×443
+        // Mascot spritesheet: 1774×887 → 4 columns × 2 rows = 443×443 per frame
         this.load.spritesheet('mascot', 'assets/mascot_flyingg.png', {
-            frameWidth: 355,
+            frameWidth: 443,
             frameHeight: 443
         });
 
@@ -92,10 +146,10 @@ class BootScene extends Phaser.Scene {
             repeat: 0
         });
 
-        // Mascot flying animation (10 frames across 1774×887 spritesheet)
+        // Mascot flying animation (8 frames across 1774×887 spritesheet)
         this.anims.create({
             key: 'mascot_fly',
-            frames: this.anims.generateFrameNumbers('mascot', { start: 0, end: 9 }),
+            frames: this.anims.generateFrameNumbers('mascot', { start: 0, end: 7 }),
             frameRate: 8,
             repeat: -1
         });
@@ -111,41 +165,85 @@ class LevelSelectScene extends Phaser.Scene {
     constructor() { super('LevelSelectScene'); }
 
     create() {
-        this.add.image(325, 350, 'background').setDisplaySize(650, 700);
+        this.add.image(325, 350, 'mode_bg').setDisplaySize(650, 700);
 
-        // Dark overlay
-        this.add.graphics()
-            .fillStyle(0x000000, 0.45)
-            .fillRect(0, 0, 650, 700);
+        // Back button to Dashboard
+        const backBtn = this.add.image(35, 45, 'child_back')
+            .setDisplaySize(42, 42).setInteractive({ useHandCursor: true }).setDepth(2000);
+        backBtn.on('pointerdown', () => {
+            window.location.href = '../child-dashboard.php';
+        });
 
-        // Title box
-        const titleBg = this.add.graphics();
-        titleBg.fillStyle(0x4e54c8, 0.88);
-        titleBg.fillRoundedRect(50, 40, 550, 100, 15);
-        titleBg.lineStyle(4, 0xffd700, 1);
-        titleBg.strokeRoundedRect(50, 40, 550, 100, 15);
-
-        this.add.text(325, 90, 'WORD WHACK\nLEARNING ZONE', {
-            fontFamily: '"Impact","Arial Black",sans-serif',
-            fontSize: '32px', fill: '#ffffff',
-            align: 'center', stroke: '#000000', strokeThickness: 5
+        // Marsh Melody Style Title
+        const titleY = 75;
+        // Outer dark red/orange stroke with shadow
+        this.add.text(325, titleY, 'WHACK A MOLE', {
+            fontFamily: "'Chewy', cursive, sans-serif",
+            fontSize: '65px',
+            fill: 'transparent',
+            stroke: '#c62828',
+            strokeThickness: 20,
+            shadow: { offsetX: 0, offsetY: 6, color: '#7f0000', blur: 0, stroke: true, fill: true }
         }).setOrigin(0.5);
 
-        // Level buttons
-        this._mkLevelBtn(325, 230, 'EASY', '4 Holes · Static Moles · Tier 1',    0x2ecc71, () => {
+        // Inner white stroke
+        this.add.text(325, titleY, 'WHACK A MOLE', {
+            fontFamily: "'Chewy', cursive, sans-serif",
+            fontSize: '65px',
+            fill: 'transparent',
+            stroke: '#ffffff',
+            strokeThickness: 10
+        }).setOrigin(0.5);
+
+        // Gradient Fill (simulated with a bright orange/yellow fill)
+        this.add.text(325, titleY, 'WHACK A MOLE', {
+            fontFamily: "'Chewy', cursive, sans-serif",
+            fontSize: '65px',
+            fill: '#ffb300'
+        }).setOrigin(0.5);
+
+        // UI styling for buttons inspired by the reference image
+        // 1: Meadow Mode (Green Leaf style)
+        this._mkLevelBtn(325, 220, 'MEADOW MODE', '4 HOLES  •  SLEEPY MOLES', 0x93c437, 0x3d7018, '#3d7018', () => {
             GAME_STATE.tier = 1;
-            this.scene.start('TopicSelectScene');
+            transitionToScene(this, 'TopicSelectScene');
         });
-        this._mkLevelBtn(325, 370, 'MEDIUM', '9 Holes · Moving Moles · Tier 2',  0xe67e22, () => {
+        
+        // 2: Race & Chase (Wood Track style)
+        this._mkLevelBtn(325, 360, 'RACE & CHASE', '9 HOLES  •  FAST MOLES', 0xe28743, 0x874015, '#874015', () => {
             GAME_STATE.tier = 2;
-            this.scene.start('TopicSelectScene');
+            transitionToScene(this, 'TopicSelectScene');
         });
-        this._mkLevelBtn(325, 510, 'HARD', '9 Holes · Bombs & Timers · Tier 3',  0xe74c3c, () => {
+        
+        // 3: Bomb Blitz (Red Dynamite style)
+        this._mkLevelBtn(325, 500, 'BOMB BLITZ', '9 HOLES  •  BOMBS & TIMERS', 0xdb3b42, 0x6e1b21, '#6e1b21', () => {
             GAME_STATE.tier = 3;
-            this.scene.start('TopicSelectScene');
+            transitionToScene(this, 'TopicSelectScene');
         });
 
-        this._mkVolumeBtn();
+        // 🎬 Story replay button
+        const storyBtnBg = this.add.graphics();
+        storyBtnBg.fillStyle(0x4e54c8, 0.9).fillRoundedRect(325 - 90, 605, 180, 42, 12);
+        storyBtnBg.lineStyle(3, 0xffffff, 0.8).strokeRoundedRect(325 - 90, 605, 180, 42, 12);
+        
+        const storyText = this.add.text(325, 626, '🎬 Watch Story', {
+            fontFamily: "'Chewy', cursive, sans-serif",
+            fontSize: '22px',
+            fill: '#ffffff'
+        }).setOrigin(0.5);
+
+        const storyZone = this.add.zone(325, 626, 180, 42).setInteractive({ useHandCursor: true });
+        storyZone.on('pointerdown', () => {
+            if (typeof window.playIntroVideo === 'function') {
+                const childMeta = document.querySelector('meta[name="child_id"]');
+                const childId = childMeta ? parseInt(childMeta.content) : 0;
+                window.playIntroVideo(childId, true);
+            }
+        });
+        storyZone.on('pointerover', () => storyText.setStyle({ fill: '#ffd700' }));
+        storyZone.on('pointerout', () => storyText.setStyle({ fill: '#ffffff' }));
+
+        createHeaderControls(this);
 
         this.input.setDefaultCursor('none');
         this.customCursor = this.add.image(0, 0, 'hammer')
@@ -159,32 +257,43 @@ class LevelSelectScene extends Phaser.Scene {
         }
     }
 
-    _mkVolumeBtn() {
-        const volBtn = this.add.image(615, 35, this.sound.mute ? 'mute' : 'volume')
-            .setDisplaySize(38, 38).setInteractive({ useHandCursor: true }).setDepth(2000);
-        volBtn.on('pointerdown', () => {
-            this.sound.mute = !this.sound.mute;
-            volBtn.setTexture(this.sound.mute ? 'mute' : 'volume');
-        });
-    }
-
-    _mkLevelBtn(x, y, levelName, desc, color, cb) {
+    _mkLevelBtn(x, y, levelName, desc, fillColor, strokeColor, strokeHex, cb) {
+        const w = 460;
+        const h = 110;
         const g = this.add.graphics();
-        g.fillStyle(color, 0.9).fillRoundedRect(x - 200, y - 45, 400, 90, 15);
-        g.lineStyle(3, 0xffffff, 1).strokeRoundedRect(x - 200, y - 45, 400, 90, 15);
+        
+        const drawBtn = (isHover) => {
+            g.clear();
+            // Drop shadow
+            g.fillStyle(0x000000, 0.35).fillRoundedRect(x - w/2 + 6, y - h/2 + 8, w, h, 30);
+            // Base button
+            g.fillStyle(fillColor, isHover ? 0.9 : 1).fillRoundedRect(x - w/2, y - h/2, w, h, 30);
+            // Inner highlight / stroke
+            g.lineStyle(8, strokeColor, 1).strokeRoundedRect(x - w/2, y - h/2, w, h, 30);
+            g.lineStyle(3, 0xffffff, isHover ? 0.7 : 0.4).strokeRoundedRect(x - w/2 + 6, y - h/2 + 6, w - 12, h - 12, 24);
+        };
+        drawBtn(false);
 
-        const nameT = this.add.text(x, y - 14, levelName, {
-            fontFamily: 'Arial', fontSize: '28px', fontWeight: 'bold',
-            fill: '#ffffff', stroke: '#000000', strokeThickness: 4
+        const nameT = this.add.text(x, y - 18, levelName, {
+            fontFamily: '"Impact","Arial Black",sans-serif', fontSize: '42px',
+            fill: '#ffffff', stroke: strokeHex, strokeThickness: 8,
+            shadow: { offsetX: 0, offsetY: 4, color: '#000000', blur: 0, stroke: true, fill: true }
         }).setOrigin(0.5);
 
-        const descT = this.add.text(x, y + 20, desc, {
-            fontFamily: 'Arial', fontSize: '13px', fill: '#ffffff', fontWeight: '600'
+        const descT = this.add.text(x, y + 28, desc, {
+            fontFamily: '"Impact","Arial Black",sans-serif', fontSize: '22px', 
+            fill: '#ffffff', stroke: '#000000', strokeThickness: 5
         }).setOrigin(0.5);
 
-        const zone = this.add.zone(x, y, 400, 90).setInteractive({ useHandCursor: true });
-        zone.on('pointerover', () => { nameT.setScale(1.07); descT.setScale(1.03); });
-        zone.on('pointerout',  () => { nameT.setScale(1);    descT.setScale(1); });
+        const zone = this.add.zone(x, y, w, h).setInteractive({ useHandCursor: true });
+        zone.on('pointerover', () => { 
+            nameT.setScale(1.05); descT.setScale(1.05); 
+            drawBtn(true);
+        });
+        zone.on('pointerout',  () => { 
+            nameT.setScale(1); descT.setScale(1); 
+            drawBtn(false);
+        });
         zone.on('pointerdown', cb);
     }
 }
@@ -196,53 +305,76 @@ class TopicSelectScene extends Phaser.Scene {
     constructor() { super('TopicSelectScene'); }
 
     create() {
-        this.add.image(325, 350, 'background').setDisplaySize(650, 700);
-        this.add.graphics().fillStyle(0x000000, 0.5).fillRect(0, 0, 650, 700);
+        this.add.image(325, 350, 'mode_bg').setDisplaySize(650, 700);
+        
+        // Semi-transparent overlay to make the busy cards pop
+        this.add.graphics().fillStyle(0x000000, 0.45).fillRect(0, 0, 650, 700);
 
         const tierNames = ['', 'EASY', 'MEDIUM', 'HARD'];
-        const tierColors = [0, 0x2ecc71, 0xe67e22, 0xe74c3c];
 
-        // Header
-        const hg = this.add.graphics();
-        hg.fillStyle(tierColors[GAME_STATE.tier], 0.88);
-        hg.fillRoundedRect(50, 50, 550, 90, 15);
-        hg.lineStyle(4, 0xffd700, 1);
-        hg.strokeRoundedRect(50, 50, 550, 90, 15);
+        // Title Wooden Board (covers top sky/sun)
+        const titleBg = this.add.graphics();
+        titleBg.fillStyle(0x8b5a2b, 1);
+        titleBg.fillRoundedRect(125, 15, 400, 80, 20);
+        titleBg.lineStyle(8, 0x5c3a21, 1);
+        titleBg.strokeRoundedRect(125, 15, 400, 80, 20);
+        
+        // Nails for the wooden board
+        titleBg.fillStyle(0x333333, 1);
+        titleBg.fillCircle(150, 35, 6);
+        titleBg.fillCircle(500, 35, 6);
+        titleBg.fillCircle(150, 75, 6);
+        titleBg.fillCircle(500, 75, 6);
 
-        this.add.text(325, 95, `${tierNames[GAME_STATE.tier]} — Choose Your Topic`, {
+        this.add.text(325, 55, `${tierNames[GAME_STATE.tier]} TOPICS`, {
             fontFamily: '"Impact","Arial Black",sans-serif',
-            fontSize: '26px', fill: '#ffffff',
-            align: 'center', stroke: '#000000', strokeThickness: 4
+            fontSize: '44px', fill: '#ffdfa3',
+            align: 'center', stroke: '#3e2723', strokeThickness: 8,
+            shadow: { offsetX: 0, offsetY: 4, color: '#000000', blur: 0, stroke: true, fill: true }
         }).setOrigin(0.5);
 
-        // Vocabulary button
-        this._mkTopicBtn(325, 270, '📖 Vocabulary',
-            'Words, meanings & spelling', 0x9b59b6, () => {
+        // Vocabulary Card Image (shifted up and scaled down)
+        this._mkTopicCard(325, 230, 'vocab_card', () => {
             GAME_STATE.topic = 'vocabulary';
             this._loadAndStart();
         });
 
-        // Grammar button
-        this._mkTopicBtn(325, 420, '✏️ Grammar',
-            'Sentences, tenses & rules', 0x2980b9, () => {
+        // Interactive tutorial hint button (tut_hint.png) by the right side of Vocabulary card in Meadow Mode (Tier 1)
+        if (GAME_STATE.tier === 1) {
+            const tutHintBtn = this.add.image(525, 230, 'tut_hint')
+                .setDisplaySize(55, 55).setInteractive({ useHandCursor: true }).setDepth(1500);
+
+            tutHintBtn.on('pointerover', () => tutHintBtn.setDisplaySize(60, 60));
+            tutHintBtn.on('pointerout',  () => tutHintBtn.setDisplaySize(55, 55));
+
+            tutHintBtn.on('pointerdown', () => {
+                if (typeof window.showTutorialLesson === 'function') {
+                    window.showTutorialLesson();
+                }
+            });
+        }
+
+        // Grammar Card Image (shifted down to add spacing)
+        this._mkTopicCard(325, 430, 'grammar_card', () => {
             GAME_STATE.topic = 'grammar';
             this._loadAndStart();
         });
 
-        // Back button
-        this._mkSmallBtn(325, 570, '← Back to Levels', () => {
-            this.scene.start('LevelSelectScene');
+        // Large Wooden Back Button (Arrow shape)
+        this._mkWoodenBackBtn(325, 570, () => {
+            transitionToScene(this, 'LevelSelectScene');
         });
 
-        this._mkVolumeBtn();
+        createHeaderControls(this);
 
         this.input.setDefaultCursor('none');
         this.customCursor = this.add.image(0, 0, 'hammer')
             .setOrigin(0.2, 0.2).setDepth(2000).setScale(1.3);
 
-        // Loading text (hidden until needed)
-        this.loadingMsg = this.add.text(325, 635, '', {
-            fontFamily: 'Arial', fontSize: '15px', fill: '#ffd700', align: 'center'
+        // Loading text
+        this.loadingMsg = this.add.text(325, 650, '', {
+            fontFamily: '"Impact","Arial Black",sans-serif', fontSize: '22px', 
+            fill: '#ffd700', align: 'center', stroke: '#000000', strokeThickness: 5
         }).setOrigin(0.5).setDepth(100);
     }
 
@@ -255,7 +387,6 @@ class TopicSelectScene extends Phaser.Scene {
 
     _loadAndStart() {
         this.loadingMsg.setText('Loading questions...');
-
         const url = `database/get_questions.php?topic=${GAME_STATE.topic}&tier=${GAME_STATE.tier}`;
         fetch(url)
             .then(r => r.json())
@@ -266,7 +397,7 @@ class TopicSelectScene extends Phaser.Scene {
                 }
                 QUESTIONS = data.questions;
                 const scenes = { 1: 'EasyLevelScene', 2: 'MediumLevelScene', 3: 'HardLevelScene' };
-                this.scene.start(scenes[GAME_STATE.tier] || 'EasyLevelScene');
+                transitionToScene(this, scenes[GAME_STATE.tier] || 'EasyLevelScene');
             })
             .catch(err => {
                 console.error('Question load error:', err);
@@ -274,46 +405,55 @@ class TopicSelectScene extends Phaser.Scene {
             });
     }
 
-    _mkTopicBtn(x, y, title, subtitle, color, cb) {
-        const g = this.add.graphics();
-        g.fillStyle(color, 0.88).fillRoundedRect(x - 210, y - 55, 420, 110, 18);
-        g.lineStyle(3, 0xffffff, 0.9).strokeRoundedRect(x - 210, y - 55, 420, 110, 18);
+    _mkTopicCard(x, y, textureKey, cb) {
+        const img = this.add.image(x, y, textureKey).setInteractive({ useHandCursor: true });
+        
+        // Force the image width to 380px and scale the height proportionally
+        img.displayWidth = 380;
+        img.scaleY = img.scaleX;
+        
+        const baseScale = img.scaleX;
+        const hoverScale = baseScale * 1.05;
 
-        const tT = this.add.text(x, y - 15, title, {
-            fontFamily: 'Arial', fontSize: '26px', fontWeight: 'bold',
-            fill: '#ffffff', stroke: '#000000', strokeThickness: 4
-        }).setOrigin(0.5);
-
-        const sT = this.add.text(x, y + 22, subtitle, {
-            fontFamily: 'Arial', fontSize: '14px', fill: '#f0f0f0'
-        }).setOrigin(0.5);
-
-        const zone = this.add.zone(x, y, 420, 110).setInteractive({ useHandCursor: true });
-        zone.on('pointerover', () => { tT.setScale(1.06); sT.setScale(1.03); });
-        zone.on('pointerout',  () => { tT.setScale(1);    sT.setScale(1); });
-        zone.on('pointerdown', cb);
-    }
-
-    _mkSmallBtn(x, y, label, cb) {
-        const g = this.add.graphics();
-        g.fillStyle(0x555555, 0.8).fillRoundedRect(x - 130, y - 22, 260, 44, 10);
-        g.lineStyle(2, 0xcccccc, 1).strokeRoundedRect(x - 130, y - 22, 260, 44, 10);
-        const t = this.add.text(x, y, label, {
-            fontFamily: 'Arial', fontSize: '16px', fontWeight: 'bold', fill: '#ffffff'
-        }).setOrigin(0.5);
-        const z = this.add.zone(x, y, 260, 44).setInteractive({ useHandCursor: true });
-        z.on('pointerover', () => t.setStyle({ fill: '#ffd700' }));
-        z.on('pointerout',  () => t.setStyle({ fill: '#ffffff' }));
-        z.on('pointerdown', cb);
-    }
-
-    _mkVolumeBtn() {
-        const v = this.add.image(615, 35, this.sound.mute ? 'mute' : 'volume')
-            .setDisplaySize(38, 38).setInteractive({ useHandCursor: true }).setDepth(2000);
-        v.on('pointerdown', () => {
-            this.sound.mute = !this.sound.mute;
-            v.setTexture(this.sound.mute ? 'mute' : 'volume');
+        img.on('pointerover', () => { 
+            img.setScale(hoverScale); 
         });
+        
+        img.on('pointerout',  () => { 
+            img.setScale(baseScale); 
+        });
+        
+        img.on('pointerdown', cb);
+    }
+
+    _mkWoodenBackBtn(x, y, cb) {
+        const w = 320;
+        const h = 70;
+        const g = this.add.graphics();
+        
+        const drawBtn = (isHover) => {
+            g.clear();
+            g.fillStyle(0x000000, 0.4).fillRoundedRect(x - w/2 + 6, y - h/2 + 6, w, h, 15);
+            g.fillStyle(0xa0522d, isHover ? 0.9 : 1).fillRoundedRect(x - w/2, y - h/2, w, h, 15);
+            g.lineStyle(6, 0x5c3a21, 1).strokeRoundedRect(x - w/2, y - h/2, w, h, 15);
+            g.lineStyle(2, 0xd2691e, isHover ? 0.8 : 0.5).strokeRoundedRect(x - w/2 + 4, y - h/2 + 4, w - 8, h - 8, 12);
+            
+            // Draw a neat wooden arrow tip on the left side
+            g.fillStyle(0x000000, 0.4).fillTriangle(x - w/2 - 25, y + 6, x - w/2 + 5, y - 30 + 6, x - w/2 + 5, y + 30 + 6);
+            g.fillStyle(0xa0522d, isHover ? 0.9 : 1).fillTriangle(x - w/2 - 25, y, x - w/2 + 5, y - 30, x - w/2 + 5, y + 30);
+            g.lineStyle(6, 0x5c3a21, 1).strokeTriangle(x - w/2 - 25, y, x - w/2 + 5, y - 30, x - w/2 + 5, y + 30);
+        };
+        drawBtn(false);
+
+        const txt = this.add.text(x + 10, y, "⬅ Back to Levels", {
+            fontFamily: '"Impact","Arial Black",sans-serif', fontSize: '28px',
+            fill: '#ffdfa3', stroke: '#3e2723', strokeThickness: 6
+        }).setOrigin(0.5);
+
+        const zone = this.add.zone(x, y, w + 60, h).setInteractive({ useHandCursor: true });
+        zone.on('pointerover', () => { txt.setScale(1.05); drawBtn(true); });
+        zone.on('pointerout',  () => { txt.setScale(1); drawBtn(false); });
+        zone.on('pointerdown', cb);
     }
 }
 
@@ -350,25 +490,102 @@ class BaseGameScene extends Phaser.Scene {
 
     // ── volume button ──
     createVolumeButton() {
-        const v = this.add.image(615, 35, this.sound.mute ? 'mute' : 'volume')
-            .setDisplaySize(38, 38).setInteractive({ useHandCursor: true }).setDepth(2000);
-        v.on('pointerdown', () => {
-            this.sound.mute = !this.sound.mute;
-            v.setTexture(this.sound.mute ? 'mute' : 'volume');
-        });
+        createHeaderControls(this);
+    }
+
+    // ── score display box ──
+    drawScoreBox(x, y) {
+        const bg = this.add.graphics();
+        bg.fillStyle(0xffd700, 1);
+        bg.fillRoundedRect(x - 65, y - 20, 130, 40, 8);
+        bg.lineStyle(2, 0xffffff, 1);
+        bg.strokeRoundedRect(x - 65, y - 20, 130, 40, 8);
+
+        this.scoreText = this.add.text(x, y, 'Score: 0', {
+            fontFamily: 'Arial', fontSize: '20px', fontWeight: 'bold', fill: '#000000'
+        }).setOrigin(0.5);
     }
 
     // ── exit button ──
     createExitButton() {
-        const g = this.add.graphics();
-        g.fillStyle(0xe74c3c, 0.9).fillRoundedRect(10, 10, 75, 32, 8);
-        const t = this.add.text(47, 26, 'Exit', {
-            fontFamily: 'Arial', fontSize: '15px', fontWeight: 'bold', fill: '#ffffff'
-        }).setOrigin(0.5);
-        const z = this.add.zone(47, 26, 75, 32).setInteractive({ useHandCursor: true });
-        z.on('pointerdown', () => {
+        const backBtn = this.add.image(35, 45, 'child_back')
+            .setDisplaySize(42, 42).setInteractive({ useHandCursor: true }).setDepth(2000);
+        backBtn.on('pointerdown', () => {
+            this.showExitPrompt();
+        });
+    }
+
+    showExitPrompt() {
+        // Pause gameplay
+        this.physics.pause();
+        this.tweens.pauseAll();
+        if (this.moleTimer) this.moleTimer.paused = true;
+        if (this.gameTimerEvent) this.gameTimerEvent.paused = true;
+
+        const overlayGroup = this.add.group();
+
+        // Invisible zone to block clicks beneath the modal
+        const blockZone = this.add.zone(325, 350, 650, 700).setInteractive().setDepth(2999);
+        overlayGroup.add(blockZone);
+
+        const overlay = this.add.graphics().setDepth(3000);
+        overlay.fillStyle(0x000000, 0.75);
+        overlay.fillRect(0, 0, 650, 700);
+        overlayGroup.add(overlay);
+
+        const box = this.add.graphics().setDepth(3000);
+        box.fillStyle(0xffffff, 1);
+        box.fillRoundedRect(100, 250, 450, 200, 15);
+        box.lineStyle(4, 0x4e54c8, 1);
+        box.strokeRoundedRect(100, 250, 450, 200, 15);
+        overlayGroup.add(box);
+
+        const text = this.add.text(325, 305, "Do you want to quit this level?\nYour progress will not be saved.", {
+            fontFamily: 'Arial', fontSize: '22px', fill: '#000000', align: 'center', fontWeight: 'bold', lineSpacing: 10
+        }).setOrigin(0.5).setDepth(3000);
+        overlayGroup.add(text);
+
+        // YES Button
+        const yesBtn = this.add.graphics().setDepth(3000);
+        yesBtn.fillStyle(0xe74c3c, 1).fillRoundedRect(165, 370, 140, 50, 10);
+        overlayGroup.add(yesBtn);
+        
+        const yesTxt = this.add.text(235, 395, "YES, QUIT", {
+            fontFamily: 'Arial', fontSize: '18px', fill: '#ffffff', fontWeight: 'bold'
+        }).setOrigin(0.5).setDepth(3000);
+        overlayGroup.add(yesTxt);
+        
+        const yesZone = this.add.zone(235, 395, 140, 50).setInteractive({ useHandCursor: true }).setDepth(3001);
+        overlayGroup.add(yesZone);
+        
+        yesZone.on('pointerover', () => yesTxt.setScale(1.1));
+        yesZone.on('pointerout', () => yesTxt.setScale(1));
+        yesZone.on('pointerdown', () => {
             this.cleanUpScene();
-            this.scene.start('LevelSelectScene');
+            transitionToScene(this, 'LevelSelectScene');
+        });
+
+        // NO Button
+        const noBtn = this.add.graphics().setDepth(3000);
+        noBtn.fillStyle(0x2ecc71, 1).fillRoundedRect(345, 370, 140, 50, 10);
+        overlayGroup.add(noBtn);
+        
+        const noTxt = this.add.text(415, 395, "NO, STAY", {
+            fontFamily: 'Arial', fontSize: '18px', fill: '#ffffff', fontWeight: 'bold'
+        }).setOrigin(0.5).setDepth(3000);
+        overlayGroup.add(noTxt);
+        
+        const noZone = this.add.zone(415, 395, 140, 50).setInteractive({ useHandCursor: true }).setDepth(3001);
+        overlayGroup.add(noZone);
+
+        noZone.on('pointerover', () => noTxt.setScale(1.1));
+        noZone.on('pointerout', () => noTxt.setScale(1));
+        noZone.on('pointerdown', () => {
+            overlayGroup.destroy(true); // destroy all UI elements
+            this.physics.resume();
+            this.tweens.resumeAll();
+            if (this.moleTimer) this.moleTimer.paused = false;
+            if (this.gameTimerEvent) this.gameTimerEvent.paused = false;
         });
     }
 
@@ -412,29 +629,25 @@ class BaseGameScene extends Phaser.Scene {
 
         // Question number + text
         this.questionText = this.add.text(325, 558, '', {
-            fontFamily: 'Arial', fontSize: '17px', fontWeight: 'bold',
-            fill: '#ffffff', align: 'center', wordWrap: { width: 570 }
+            fontFamily: 'Arial', fontSize: '21px', fontWeight: 'bold',
+            fill: '#ffffff', align: 'center', wordWrap: { width: 550 }
         }).setOrigin(0.5, 0.5);
 
-        // Options legend (A B / C D layout)
-        this.optionA = this.add.text(115, 605, '', { fontFamily: 'Arial', fontSize: '15px', fill: '#ffd700', wordWrap: { width: 190 } }).setOrigin(0.5, 0);
-        this.optionB = this.add.text(325, 605, '', { fontFamily: 'Arial', fontSize: '15px', fill: '#ffd700', wordWrap: { width: 190 } }).setOrigin(0.5, 0);
-        this.optionC = this.add.text(115, 635, '', { fontFamily: 'Arial', fontSize: '15px', fill: '#7ec8e3', wordWrap: { width: 190 } }).setOrigin(0.5, 0);
-        this.optionD = this.add.text(325, 635, '', { fontFamily: 'Arial', fontSize: '15px', fill: '#7ec8e3', wordWrap: { width: 190 } }).setOrigin(0.5, 0);
+        // Options legend (A B / C D layout - centered to their halves)
+        this.optionA = this.add.text(175, 608, '', { fontFamily: 'Arial', fontSize: '18px', fill: '#ffd700', wordWrap: { width: 250 } }).setOrigin(0.5, 0);
+        this.optionB = this.add.text(475, 608, '', { fontFamily: 'Arial', fontSize: '18px', fill: '#ffd700', wordWrap: { width: 250 } }).setOrigin(0.5, 0);
+        this.optionC = this.add.text(175, 642, '', { fontFamily: 'Arial', fontSize: '18px', fill: '#7ec8e3', wordWrap: { width: 250 } }).setOrigin(0.5, 0);
+        this.optionD = this.add.text(475, 642, '', { fontFamily: 'Arial', fontSize: '18px', fill: '#7ec8e3', wordWrap: { width: 250 } }).setOrigin(0.5, 0);
 
         // Hint button
         this._mkHintButton();
     }
 
     _mkHintButton() {
-        const hintBg = this.add.graphics();
-        hintBg.fillStyle(0xf39c12, 0.9).fillRoundedRect(540, 658, 90, 28, 8);
-        hintBg.lineStyle(2, 0xffd700, 1).strokeRoundedRect(540, 658, 90, 28, 8);
-        const hintText = this.add.text(585, 672, '💡 Hint', {
-            fontFamily: 'Arial', fontSize: '14px', fontWeight: 'bold', fill: '#ffffff'
-        }).setOrigin(0.5);
-        const hintZone = this.add.zone(585, 672, 90, 28).setInteractive({ useHandCursor: true });
-        hintZone.on('pointerdown', () => this.showHint());
+        const hintBtn = this.add.image(590, 642, 'hint_icon')
+            .setDisplaySize(36, 36)
+            .setInteractive({ useHandCursor: true });
+        hintBtn.on('pointerdown', () => this.showHint());
     }
 
     showHint() {
@@ -449,12 +662,12 @@ class BaseGameScene extends Phaser.Scene {
         const hintMsg = qData ? `💡 Concept: ${qData.concept}` : '💡 Think carefully!';
 
         this.hintBg = this.add.graphics().setDepth(1800);
-        this.hintBg.fillStyle(0x000000, 0.75).fillRoundedRect(75, 440, 500, 70, 12);
-        this.hintBg.lineStyle(2, 0xf39c12, 1).strokeRoundedRect(75, 440, 500, 70, 12);
+        this.hintBg.fillStyle(0x000000, 0.85).fillRoundedRect(50, 420, 550, 90, 12);
+        this.hintBg.lineStyle(2, 0xf39c12, 1).strokeRoundedRect(50, 420, 550, 90, 12);
 
-        this.hintPopup = this.add.text(325, 475, hintMsg, {
-            fontFamily: 'Arial', fontSize: '16px', fill: '#ffd700',
-            align: 'center', wordWrap: { width: 470 }
+        this.hintPopup = this.add.text(325, 465, hintMsg, {
+            fontFamily: 'Arial', fontSize: '20px', fill: '#ffd700',
+            align: 'center', wordWrap: { width: 510 }
         }).setOrigin(0.5).setDepth(1801);
 
         this.time.delayedCall(3500, () => {
@@ -533,11 +746,9 @@ class EasyLevelScene extends BaseGameScene {
 
         this.createExitButton();
         this.createVolumeButton();
+        this.drawHealthUI();
 
-        // Score display
-        this.scoreText = this.add.text(100, 29, 'Score: 0', {
-            fontFamily: 'Arial', fontSize: '16px', fontWeight: 'bold', fill: '#ffd700'
-        }).setOrigin(0.5);
+        this.drawScoreBox(160, 31);
 
         // Hole positions (2×2)
         this.holeCoords = [
@@ -569,10 +780,10 @@ class EasyLevelScene extends BaseGameScene {
             const mole = this.add.sprite(coord.x, coord.y - 14, 'spritesheet', moleFrame).setScale(0.82);
 
             // Option label above mole head
-            const label = this.add.text(coord.x, coord.y - 72, optLabels[index], {
-                fontFamily: 'Arial', fontSize: '22px', fontWeight: 'bold',
+            const label = this.add.text(coord.x, coord.y - 78, optLabels[index], {
+                fontFamily: 'Arial', fontSize: '30px', fontWeight: 'bold',
                 fill: '#ffd700', stroke: '#000000', strokeThickness: 4,
-                backgroundColor: '#00000066', padding: { x: 6, y: 2 }
+                backgroundColor: '#00000066', padding: { x: 8, y: 3 }
             }).setOrigin(0.5);
 
             mole.setInteractive();
@@ -625,9 +836,7 @@ class MediumLevelScene extends BaseGameScene {
         this.createVolumeButton();
         this.drawHealthUI();
 
-        this.scoreText = this.add.text(200, 29, 'Score: 0', {
-            fontFamily: 'Arial', fontSize: '16px', fontWeight: 'bold', fill: '#ffd700'
-        }).setOrigin(0.5);
+        this.drawScoreBox(160, 31);
 
         // 3×3 holes
         this.holeCoords = [
@@ -661,10 +870,10 @@ class MediumLevelScene extends BaseGameScene {
             const moleFrame = (optionIdx % 2 === 0) ? 5 : 6;
             const mole = this.add.sprite(coord.x, coord.y - 14, 'spritesheet', moleFrame).setScale(0.68);
 
-            const label = this.add.text(coord.x, coord.y - 65, optLabels[optionIdx], {
-                fontFamily: 'Arial', fontSize: '20px', fontWeight: 'bold',
+            const label = this.add.text(coord.x, coord.y - 72, optLabels[optionIdx], {
+                fontFamily: 'Arial', fontSize: '26px', fontWeight: 'bold',
                 fill: '#ffd700', stroke: '#000000', strokeThickness: 4,
-                backgroundColor: '#00000066', padding: { x: 5, y: 2 }
+                backgroundColor: '#00000066', padding: { x: 6, y: 2 }
             }).setOrigin(0.5);
 
             mole.setInteractive();
@@ -712,10 +921,10 @@ class MediumLevelScene extends BaseGameScene {
         // Correct mole
         const cc = this.holeCoords[holes[0]];
         const cMole = this.add.sprite(cc.x, cc.y - 14, 'spritesheet', 5).setScale(0.68);
-        const cLabel = this.add.text(cc.x, cc.y - 65, optLabels[qData.correct], {
-            fontFamily: 'Arial', fontSize: '20px', fontWeight: 'bold',
+        const cLabel = this.add.text(cc.x, cc.y - 72, optLabels[qData.correct], {
+            fontFamily: 'Arial', fontSize: '26px', fontWeight: 'bold',
             fill: '#39ff14', stroke: '#000000', strokeThickness: 4,
-            backgroundColor: '#00000066', padding: { x: 5, y: 2 }
+            backgroundColor: '#00000066', padding: { x: 6, y: 2 }
         }).setOrigin(0.5);
 
         cMole.setInteractive();
@@ -739,10 +948,10 @@ class MediumLevelScene extends BaseGameScene {
             while (decoyOpt === qData.correct) decoyOpt = Phaser.Math.Between(0, 3);
 
             const dMole = this.add.sprite(dc.x, dc.y - 14, 'spritesheet', 6).setScale(0.68);
-            const dLabel = this.add.text(dc.x, dc.y - 65, optLabels[decoyOpt], {
-                fontFamily: 'Arial', fontSize: '20px', fontWeight: 'bold',
+            const dLabel = this.add.text(dc.x, dc.y - 72, optLabels[decoyOpt], {
+                fontFamily: 'Arial', fontSize: '26px', fontWeight: 'bold',
                 fill: '#ffd700', stroke: '#000000', strokeThickness: 4,
-                backgroundColor: '#00000066', padding: { x: 5, y: 2 }
+                backgroundColor: '#00000066', padding: { x: 6, y: 2 }
             }).setOrigin(0.5);
 
             dMole.setInteractive();
@@ -787,9 +996,7 @@ class HardLevelScene extends BaseGameScene {
         this.createVolumeButton();
         this.drawHealthUI();
 
-        this.scoreText = this.add.text(200, 29, 'Score: 0', {
-            fontFamily: 'Arial', fontSize: '16px', fontWeight: 'bold', fill: '#ffd700'
-        }).setOrigin(0.5);
+        this.drawScoreBox(160, 31);
 
         this.holeCoords = [
             { x: 145, y: 178 }, { x: 325, y: 178 }, { x: 505, y: 178 },
@@ -801,7 +1008,7 @@ class HardLevelScene extends BaseGameScene {
         });
 
         this.warningText = this.add.text(325, 122, '', {
-            fontFamily: 'Arial', fontSize: '16px', fontWeight: 'bold',
+            fontFamily: 'Arial', fontSize: '22px', fontWeight: 'bold',
             fill: '#ff4757', align: 'center'
         }).setOrigin(0.5);
 
@@ -821,15 +1028,15 @@ class HardLevelScene extends BaseGameScene {
         const optLabels = ['A', 'B', 'C', 'D'];
         const initialHoles = Phaser.Utils.Array.Shuffle([...Array(9).keys()]).slice(0, 4);
 
-        initialHoles.forEach((holeIdx, optionIdx) => {
-            const coord = this.holeCoords[holeIdx];
+        initialHoles.forEach((newHoleIdx, optionIdx) => {
+            const coord = this.holeCoords[newHoleIdx];
             const moleFrame = (optionIdx % 2 === 0) ? 5 : 6;
             const mole = this.add.sprite(coord.x, coord.y - 14, 'spritesheet', moleFrame).setScale(0.68);
 
-            const label = this.add.text(coord.x, coord.y - 65, optLabels[optionIdx], {
-                fontFamily: 'Arial', fontSize: '20px', fontWeight: 'bold',
+            const label = this.add.text(coord.x, coord.y - 72, optLabels[optionIdx], {
+                fontFamily: 'Arial', fontSize: '26px', fontWeight: 'bold',
                 fill: '#ffd700', stroke: '#000000', strokeThickness: 4,
-                backgroundColor: '#00000066', padding: { x: 5, y: 2 }
+                backgroundColor: '#00000066', padding: { x: 6, y: 2 }
             }).setOrigin(0.5);
 
             mole.setInteractive();
@@ -898,10 +1105,10 @@ class HardLevelScene extends BaseGameScene {
         const cc = this.holeCoords[holes[0]];
         const mFrame = Phaser.Math.Between(5, 6);
         const cMole = this.add.sprite(cc.x, cc.y - 14, 'spritesheet', mFrame).setScale(0.68);
-        const cLabel = this.add.text(cc.x, cc.y - 65, optLabels[qData.correct], {
-            fontFamily: 'Arial', fontSize: '20px', fontWeight: 'bold',
+        const cLabel = this.add.text(cc.x, cc.y - 72, optLabels[qData.correct], {
+            fontFamily: 'Arial', fontSize: '26px', fontWeight: 'bold',
             fill: '#39ff14', stroke: '#000000', strokeThickness: 4,
-            backgroundColor: '#00000066', padding: { x: 5, y: 2 }
+            backgroundColor: '#00000066', padding: { x: 6, y: 2 }
         }).setOrigin(0.5);
 
         cMole.setInteractive();
@@ -922,10 +1129,10 @@ class HardLevelScene extends BaseGameScene {
         let decoyOpt = Phaser.Math.Between(0, 3);
         while (decoyOpt === qData.correct) decoyOpt = Phaser.Math.Between(0, 3);
         const dMole = this.add.sprite(dc.x, dc.y - 14, 'spritesheet', 6).setScale(0.68);
-        const dLabel = this.add.text(dc.x, dc.y - 65, optLabels[decoyOpt], {
-            fontFamily: 'Arial', fontSize: '20px', fontWeight: 'bold',
+        const dLabel = this.add.text(dc.x, dc.y - 72, optLabels[decoyOpt], {
+            fontFamily: 'Arial', fontSize: '26px', fontWeight: 'bold',
             fill: '#ffd700', stroke: '#000000', strokeThickness: 4,
-            backgroundColor: '#00000066', padding: { x: 5, y: 2 }
+            backgroundColor: '#00000066', padding: { x: 6, y: 2 }
         }).setOrigin(0.5);
         dMole.setInteractive();
         dMole.on('pointerdown', () => {
@@ -998,70 +1205,50 @@ class ResultScene extends Phaser.Scene {
     create() {
         this.add.image(325, 350, 'background').setDisplaySize(650, 700);
 
-        // Dark overlay
-        this.add.graphics().fillStyle(0x000000, 0.7).fillRect(0, 0, 650, 700);
+        // Keep the game visible behind the results, while making the board easy to read.
+        this.add.graphics().fillStyle(0x000000, 0.58).fillRect(0, 0, 650, 700);
 
-        // Result card
-        const cardColor = this.success ? 0x1a3d2b : 0x3d1a1a;
-        const borderColor = this.success ? 0x2ecc71 : 0xe74c3c;
-        const card = this.add.graphics();
-        card.fillStyle(cardColor, 0.95).fillRoundedRect(35, 50, 580, 600, 22);
-        card.lineStyle(4, borderColor, 1).strokeRoundedRect(35, 50, 580, 600, 22);
+        // Wooden result board (the supplied asset includes the decorative characters).
+        this.add.image(325, 310, 'scoreboard').setDisplaySize(600, 328);
 
-        // Mascot flying
-        try {
-            const mascot = this.add.sprite(550, 320, 'mascot').setScale(0.35);
-            mascot.play('mascot_fly');
-        } catch(e) {}
-
-        // Title
-        const titleColor = this.success ? '#2ecc71' : '#e74c3c';
-        const titleText  = this.success ? '🎉 LEVEL COMPLETE!' : '💔 GAME OVER';
-        this.add.text(260, 95, titleText, {
-            fontFamily: '"Impact","Arial Black",sans-serif',
-            fontSize: '32px', fill: titleColor,
-            stroke: '#000000', strokeThickness: 5
+        this.add.text(325, 208, 'SCORE', {
+            fontFamily: '"Arial Black",Arial,sans-serif', fontSize: '30px',
+            fontStyle: 'bold', fill: '#17100a'
         }).setOrigin(0.5);
 
-        // Topic + tier info
-        const tierNames = ['', 'Easy', 'Medium', 'Hard'];
-        this.add.text(260, 140, `${tierNames[this.tier]} · ${this.topic.charAt(0).toUpperCase() + this.topic.slice(1)}`, {
-            fontFamily: 'Arial', fontSize: '17px', fill: '#cccccc'
+        this.add.text(325, 247, `${this.score} / ${this.total}`, {
+            fontFamily: '"Arial Black",Arial,sans-serif', fontSize: '38px',
+            fontStyle: 'bold', fill: '#17100a'
         }).setOrigin(0.5);
 
-        // Stats
+        // Coins display with the supplied coin artwork.
+        this.coinImg = this.add.image(274, 293, 'coin2').setDisplaySize(42, 42);
+        this.coinsText = this.add.text(307, 293, '+0 coins', {
+            fontFamily: '"Arial Black",Arial,sans-serif', fontSize: '22px',
+            fontStyle: 'bold', fill: '#17100a'
+        }).setOrigin(0, 0.5);
+
+
         const accuracy = this.total > 0 ? Math.round((this.score / this.total) * 100) : 0;
 
-        this._statRow(115, 185, '📝 Questions',   `${this.score} / ${this.total}`);
-        this._statRow(115, 225, '🎯 Accuracy',    `${accuracy}%`);
-        this._statRow(115, 265, '🔥 Best Streak', `${this.streak} in a row`);
-
-        // Coins placeholder (updated after server response)
-        this.coinsText = this.add.text(115, 305, '💰 Coins Earned:  —', {
-            fontFamily: 'Arial', fontSize: '17px', fill: '#ffd700', fontWeight: 'bold'
-        });
+        this._statRow(210, 387, 'Accuracy', `${accuracy}%`);
+        this._statRow(440, 387, 'Best Streak', `${this.streak} in a row`);
 
         // Badges area
-        this.badgeArea = this.add.text(115, 345, '', {
-            fontFamily: 'Arial', fontSize: '15px', fill: '#f39c12',
-            wordWrap: { width: 360 }
-        });
+        this.badgeArea = this.add.text(325, 354, '', {
+            fontFamily: 'Arial,sans-serif', fontSize: '13px', fill: '#7d3f13',
+            fontStyle: 'bold', align: 'center', wordWrap: { width: 310 }
+        }).setOrigin(0.5);
 
-        // Volume button
-        this._mkVolumeBtn();
-
-        // Buttons
-        const levelSelectScene = { 1: 'EasyLevelScene', 2: 'MediumLevelScene', 3: 'HardLevelScene' };
-        this._mkBtn(175, 505, 240, '🔄 Play Again', 0x2980b9, () => {
-            this.scene.start('TopicSelectScene');
-        });
-        this._mkBtn(430, 505, 200, '🏠 Menu', 0x7f8c8d, () => {
-            this.scene.start('LevelSelectScene');
-        });
-
-        // Dashboard link
-        this._mkBtn(305, 570, 280, '📊 Go to Dashboard', 0x8e44ad, () => {
+        // The icon buttons retain the existing destinations and game flow.
+        this._mkIconBtn(205, 500, 'home', () => {
             window.location.href = '../child-dashboard.php';
+        });
+        this._mkIconBtn(325, 492, 'replay', () => {
+            transitionToScene(this, 'TopicSelectScene');
+        });
+        this._mkIconBtn(445, 500, 'menu', () => {
+            transitionToScene(this, 'LevelSelectScene');
         });
 
         // Custom cursor
@@ -1082,33 +1269,29 @@ class ResultScene extends Phaser.Scene {
 
     _statRow(x, y, label, value) {
         this.add.text(x, y, label, {
-            fontFamily: 'Arial', fontSize: '17px', fill: '#aaaaaa'
-        });
-        this.add.text(x + 230, y, value, {
-            fontFamily: 'Arial', fontSize: '17px', fontWeight: 'bold', fill: '#ffffff'
-        });
-    }
-
-    _mkBtn(x, y, w, label, color, cb) {
-        const g = this.add.graphics();
-        g.fillStyle(color, 0.9).fillRoundedRect(x - w / 2, y - 22, w, 44, 10);
-        g.lineStyle(2, 0xffffff, 0.6).strokeRoundedRect(x - w / 2, y - 22, w, 44, 10);
-        const t = this.add.text(x, y, label, {
-            fontFamily: 'Arial', fontSize: '16px', fontWeight: 'bold', fill: '#ffffff'
+            fontFamily: 'Arial,sans-serif', fontSize: '19px', fontStyle: 'bold',
+            fill: '#17100a'
         }).setOrigin(0.5);
-        const z = this.add.zone(x, y, w, 44).setInteractive({ useHandCursor: true });
-        z.on('pointerover', () => t.setStyle({ fill: '#ffd700' }));
-        z.on('pointerout',  () => t.setStyle({ fill: '#ffffff' }));
-        z.on('pointerdown', cb);
+        this.add.text(x, y + 25, value, {
+            fontFamily: 'Arial,sans-serif', fontSize: '18px', fontStyle: 'bold',
+            fill: '#7d3f13'
+        }).setOrigin(0.5);
     }
 
-    _mkVolumeBtn() {
-        const v = this.add.image(615, 35, this.sound.mute ? 'mute' : 'volume')
-            .setDisplaySize(38, 38).setInteractive({ useHandCursor: true }).setDepth(2000);
-        v.on('pointerdown', () => {
-            this.sound.mute = !this.sound.mute;
-            v.setTexture(this.sound.mute ? 'mute' : 'volume');
+    _mkIconBtn(x, y, texture, cb) {
+        const shadow = this.add.ellipse(x, y + 42, 64, 13, 0x000000, 0.3);
+        const icon = this.add.image(x, y, texture).setDisplaySize(90, 90)
+            .setInteractive({ useHandCursor: true });
+        const baseScale = icon.scaleX;
+        icon.on('pointerover', () => {
+            icon.setScale(baseScale * 1.08);
+            shadow.setScale(0.9);
         });
+        icon.on('pointerout', () => {
+            icon.setScale(baseScale);
+            shadow.setScale(1);
+        });
+        icon.on('pointerdown', cb);
     }
 
     _submitScore() {
@@ -1135,18 +1318,26 @@ class ResultScene extends Phaser.Scene {
             .then(r => r.json())
             .then(data => {
                 if (data.coins_earned !== undefined) {
-                    this.coinsText.setText(`💰 Coins Earned:  +${data.coins_earned}`);
+                    this.coinsText.setText(`+${data.coins_earned} Coins`);
                 }
                 if (data.new_badges && data.new_badges.length > 0) {
-                    const titles = data.new_badges.map(b => `🏅 ${b.title}`).join('\n');
-                    this.badgeArea.setText('New badges:\n' + titles);
+                    const badges = data.new_badges
+                        .map(b => {
+                            // icon_url may be an image filename (for example,
+                            // "badges/first steps.png"). Do not render that path as text.
+                            const icon = b.icon_url && !/\.(png|jpe?g|gif|svg|webp)$/i.test(b.icon_url)
+                                ? b.icon_url
+                                : '🏅';
+                            return `${icon} ${b.title}  ·  +${b.coins_reward || 0} coins`;
+                        })
+                        .join('\n');
+                    this.badgeArea.setText(badges);
                 }
             })
             .catch(err => {
                 console.warn('Score submission failed (offline mode):', err);
-                // Estimate locally
                 const perCorrect = [0, 1, 2, 3][this.tier] || 1;
-                this.coinsText.setText(`💰 Coins Earned:  ~${this.score * perCorrect} (offline)`);
+                this.coinsText.setText(`+${this.score * perCorrect} Coins (offline)`);
             });
     }
 }
@@ -1172,3 +1363,20 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
+
+// Recalculate pointer/hit zones on fullscreen toggle or window resize
+document.addEventListener('fullscreenchange', () => {
+    setTimeout(() => {
+        if (game && game.scale) {
+            game.scale.refresh();
+        }
+    }, 100);
+});
+
+window.addEventListener('resize', () => {
+    setTimeout(() => {
+        if (game && game.scale) {
+            game.scale.refresh();
+        }
+    }, 100);
+});

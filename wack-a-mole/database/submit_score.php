@@ -47,11 +47,11 @@ if ($childId <= 0 || $totalQs <= 0) {
 // Save round and award coins
 $result = saveRoundAndAwardCoins($conn, $childId, $gameId, $tier, $topic, $concept, $correctCount, $totalQs, $streak);
 
-// Fetch badge titles for newly earned badges
+// Fetch the presentation details for newly earned badges.
 $badgeDetails = [];
 if (!empty($result['new_badges'])) {
     $ids = implode(',', array_map('intval', $result['new_badges']));
-    $bRes = $conn->query("SELECT title, icon_url FROM badges WHERE badge_id IN ($ids)");
+    $bRes = $conn->query("SELECT title, icon_url, coins_reward FROM badges WHERE badge_id IN ($ids)");
     while ($b = $bRes->fetch_assoc()) {
         $badgeDetails[] = $b;
     }

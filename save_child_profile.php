@@ -56,8 +56,12 @@ $stmt->close();
 $stmt = $conn->prepare("SELECT mascot_id FROM mascots WHERE name = ?");
 $stmt->bind_param("s", $mascot_name);
 $stmt->execute();
-$m_row = $stmt->get_result()->fetch_assoc();
-$mascot_id = $m_row ? intval($m_row['mascot_id']) : 1;
+$stmt->bind_result($db_mascot_id);
+if ($stmt->fetch()) {
+    $mascot_id = intval($db_mascot_id);
+} else {
+    $mascot_id = 1;
+}
 $stmt->close();
 
 // Insert child — no password_hash column in the children table

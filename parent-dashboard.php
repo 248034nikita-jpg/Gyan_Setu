@@ -14,8 +14,8 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'parent') {
     exit();
 }*/
 
-$parent_id = $_SESSION['user_id'];
-$parent_name = $_SESSION['name'];
+$parent_id   = $_SESSION['user_id'];
+$parent_name = $_SESSION['name'] ?? 'Parent';
 
 $message = '';
 $message_type = '';
@@ -483,7 +483,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
           <div class="child-avatar" style="background:<?php echo $theme['bg']; ?>; border-color:<?php echo $theme['border']; ?>;">🧒</div>
           <div class="child-name"><?php echo htmlspecialchars($child['child_name']); ?></div>
           <div class="child-meta">Level <?php echo htmlspecialchars($child['current_level']); ?></div>
-          <div class="coins-row"><span class="coin-icon">🪙</span> <?php echo htmlspecialchars($child['total_coins']); ?> coins</div>
+          <div class="coins-row"><span class="coin-icon">🪙</span> <?php echo htmlspecialchars($child['total_coins']); ?> pts</div>
           <div class="mini-progress-label"><span>Quiz Score</span><span><?php echo $progress; ?>%</span></div>
           <div class="mini-bar-bg"><div class="mini-bar-fill" style="width:<?php echo $progress; ?>%; background:<?php echo $theme['bar']; ?>"></div></div>
           <div class="child-btns">
