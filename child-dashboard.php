@@ -327,9 +327,52 @@ $total_coins_earned = count($earned_badge_ids);
             </div>
 
             <div class="games-grid" style="margin-bottom: 30px;" style="display: flex; flex-wrap: wrap; gap: 20px;">
-                <!-- Capybara Nepal Adventure (Featured Platformer Quiz for Ages 8-9) -->
-                <?php if ($child_age >= 8 && $child_age <= 9): ?>
-                <a href="games/capybara-platformer-quiz/index.html" class="game-link" data-subject="maths" title="Play Capybara Nepal Adventure">
+<?php if ($child_age >= 4 && $child_age <= 6): ?>
+    <a href="games/alphabet-adventure/index.php" class="game-link" data-subject="story" style="display:none;">
+        <div class="game-card active" style="
+            background: url('games/alphabet-adventure/assets/cover.jpg') no-repeat center / 100% 100%;
+            position: relative;
+            border: 3.5px solid #4caf50;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(76, 175, 80, 0.4);
+            overflow: hidden;
+        ">
+            <span style="
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                background: #4caf50;
+                color: #ffffff;
+                font-size: 10px;
+                font-weight: 800;
+                padding: 3px 8px;
+                border-radius: 12px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+                z-index: 2;
+            ">Ages 4-6</span>
+            <div class="play-btn" style="
+                position: absolute;
+                bottom: 12px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(76, 175, 80, 0.95);
+                color: white;
+                z-index: 2;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 22px;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            ">▶</div>
+        </div>
+    </a>
+<?php endif; ?>
+<!-- Capybara Nepal Adventure (Featured Platformer Quiz for Ages 8-9) -->
+<?php if ($child_age == 8 || $child_age == 9): ?>
+                <a href="games/capybara-platformer-quiz/index.html" class="game-link" data-subject="english" style="display:none;">
                     <div class="game-card active" style="
                         background: url('games/capybara-platformer-quiz/assets/cover.png') no-repeat center / 100% 100%;
                         position: relative;
