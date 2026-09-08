@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap');
+
 /* Removes the default spacing the browser adds to everything. */
 * {
     margin: 0;
@@ -11,9 +13,9 @@ html, body {
     overflow-x: hidden;
 }
 
-/* Sets the font for the whole site. */
+/* Sets the font for the whole site with full Devanagari and Latin support. */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Mukta', 'Nunito', 'Segoe UI', Arial, sans-serif;
 }
 
 /* The top navigation bar. */
