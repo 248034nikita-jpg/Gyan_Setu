@@ -205,7 +205,7 @@ $total_coins_earned = count($earned_badge_ids);
         <!-- Logo -->
         <a href="index.html" class="logo">
             <img src="assets/images/website/logo.png" alt="Gyan Setu Logo" class="logo-img">
-            <h2>Gyan Setu</h2>
+            <h2>ज्ञान Setu</h2>
         </a>
         <button class="menu-toggle" type="button" id="menuToggleBtn" aria-label="Open menu" aria-expanded="false">&#9776;</button>
         <div class="nav-wrapper">

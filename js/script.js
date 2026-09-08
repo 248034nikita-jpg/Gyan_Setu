@@ -159,10 +159,6 @@ const elementTranslations = {
     'hero-desc': {
         en: 'Gyan Setu is a bilingual learning adventure for children aged 4–10. Help Setu earn coins, explore stories, solve quizzes, and enjoy learning in both Nepali and English.',
         ne: 'ज्ञान सेतु ४-१० वर्षका बालबालिकाहरूको लागि दोभाषे सिकाइ यात्रा हो। सेतुलाई सिक्का कमाउन, कथाहरू अन्वेषण गर्न, प्रश्नोत्तरीहरू हल गर्न, र नेपाली र अंग्रेजी दुवैमा सिक्न मद्दत गर्नुहोस्।'
-    },
-    'Gyan Setu': {
-        en: 'Gyan Setu',
-        ne: 'ज्ञान सेतु'
     }
 };
 
@@ -197,6 +193,16 @@ let currentLang = localStorage.getItem('gyansetu_lang') || 'en';
 
 function translateNode(node, dict) {
     if (node.nodeType === Node.TEXT_NODE) {
+        // Never translate text inside logos or elements marked not to translate
+        if (node.parentElement && node.parentElement.closest && (
+            node.parentElement.closest('.logo') ||
+            node.parentElement.closest('.footer-logo') ||
+            node.parentElement.closest('[translate="no"]') ||
+            node.parentElement.closest('.no-translate')
+        )) {
+            return;
+        }
+
         let originalText = node.nodeValue;
         let trimmedText = originalText.trim();
         if (!trimmedText) return;
@@ -209,6 +215,22 @@ function translateNode(node, dict) {
         }
     } else if (node.nodeType === Node.ELEMENT_NODE) {
         if (node.tagName === 'SCRIPT' || node.tagName === 'STYLE') return;
+
+        // Skip logos and elements marked not to translate
+        if (node.closest && (
+            node.closest('.logo') ||
+            node.closest('.footer-logo') ||
+            node.closest('[translate="no"]') ||
+            node.closest('.no-translate')
+        )) {
+            return;
+        }
+
+        // Support elements with explicit data-en and data-ne attributes
+        if (node.hasAttribute('data-en') && node.hasAttribute('data-ne')) {
+            node.textContent = currentLang === 'ne' ? node.getAttribute('data-ne') : node.getAttribute('data-en');
+            return;
+        }
 
         // Check if element has an explicit data-i18n key
         const i18nKey = node.getAttribute('data-i18n');

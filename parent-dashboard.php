@@ -410,7 +410,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
 <header>
    <a href="index.html" class="logo">
     <img src="assets/images/website/logo.png" alt="Gyan Setu Logo" class="logo-img">
-    <span>Gyan Setu</span>
+    <span>ज्ञान Setu</span>
 
 </a>
   <div class="header-right">
