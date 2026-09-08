@@ -87,7 +87,7 @@ const langTranslations = {
     "Made for Nepal's Young Learners": "नेपालका युवा सिकारुहरूका लागि बनाइएको",
     "Play, Learn,": "खेल्नुहोस्, सिक्नुहोस्,",
     "Grow Together": "सँगै बढ्नुहोस्",
-    "Gyan Setu is a free bilingual learning adventure for children aged 4–10. Help Setu earn coins, explore stories, solve quizzes, and enjoy learning in both Nepali and English.": "ज्ञान सेतु ४-१० वर्षका बालबालिकाहरूको लागि नि:शुल्क दोभाषे सिकाइ यात्रा हो। सेतुलाई सिक्का कमाउन, कथाहरू अन्वेषण गर्न, प्रश्नोत्तरीहरू हल गर्न, र नेपाली र अंग्रेजी दुवैमा सिक्न मद्दत गर्नुहोस्।",
+    "Gyan Setu is a bilingual learning adventure for children aged 4–10. Help Setu earn coins, explore stories, solve quizzes, and enjoy learning in both Nepali and English.": "ज्ञान सेतु ४-१० वर्षका बालबालिकाहरूको लागि दोभाषे सिकाइ यात्रा हो। सेतुलाई सिक्का कमाउन, कथाहरू अन्वेषण गर्न, प्रश्नोत्तरीहरू हल गर्न, र नेपाली र अंग्रेजी दुवैमा सिक्न मद्दत गर्नुहोस्।",
     "Play for Free 🎮": "नि:शुल्क खेल्नुहोस् 🎮",
     "Create Family Account 👨‍👩‍👧": "पारिवारिक खाता बनाउनुहोस् 👨‍👩‍👧",
     "Learn More ↓": "थप जान्नुहोस् ↓",

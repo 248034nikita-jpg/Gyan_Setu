@@ -11,7 +11,7 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
 
 // Load database connection 
-require_once '../../../database/includes/db_connect.php';
+require_once __DIR__ . '/../../../database/includes/db_connect.php';
 
 // Get POST data
 $input = json_decode(file_get_contents('php://input'), true);

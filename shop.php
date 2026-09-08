@@ -2,53 +2,78 @@
 session_start();
 include 'database/includes/db_connect.php';
 
-// Route Protection: Check if logged in as Parent
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'parent') {
+// Route Protection: Accept both 'child' and 'parent' sessions
+if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['child', 'parent'])) {
     header("Location: login.php");
     exit();
 }
 
-// Get parent ID from session
-$parent_id = $_SESSION['user_id'];
-$parent_name = $_SESSION['name'];  // ← FIXED: Changed from 'username' to 'name'
+$role = $_SESSION['role'];
 
-// Get child_id from URL
-if (!isset($_GET['child_id']) || empty($_GET['child_id'])) {
-    // No child_id in URL - get the first child for this parent
-    $query = "SELECT child_id FROM children WHERE parent_id = ? LIMIT 1";
+// Get child_id and parent_id
+if ($role === 'child') {
+    $child_id = $_SESSION['user_id'];
+    
+    // Fetch child details and parent_id from database
+    $query = "SELECT parent_id, username, total_coins FROM children WHERE child_id = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $parent_id);
+    $stmt->bind_param("i", $child_id);
     $stmt->execute();
     $result = $stmt->get_result();
-    $child = $result->fetch_assoc();
+    $child_data = $result->fetch_assoc();
     $stmt->close();
     
-    if ($child) {
-        $child_id = $child['child_id'];
-    } else {
-        header("Location: child-dashboard.php");
+    if (!$child_data) {
+        header("Location: login.php");
         exit();
     }
+    
+    $parent_id = $child_data['parent_id'];
+    $child_username = $child_data['username'];
+    $total_points = $child_data['total_coins'];
 } else {
-    $child_id = intval($_GET['child_id']);
+    // Parent is logged in
+    $parent_id = $_SESSION['user_id'];
+    $parent_name = $_SESSION['name'];
+    
+    // Get child_id from URL
+    if (!isset($_GET['child_id']) || empty($_GET['child_id'])) {
+        // No child_id in URL - get the first child for this parent
+        $query = "SELECT child_id FROM children WHERE parent_id = ? LIMIT 1";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $parent_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $child = $result->fetch_assoc();
+        $stmt->close();
+        
+        if ($child) {
+            $child_id = $child['child_id'];
+        } else {
+            header("Location: child-dashboard.php");
+            exit();
+        }
+    } else {
+        $child_id = intval($_GET['child_id']);
+    }
+    
+    // Verify this child belongs to this parent
+    $verify_query = "SELECT username, total_coins FROM children WHERE child_id = ? AND parent_id = ?";
+    $stmt = $conn->prepare($verify_query);
+    $stmt->bind_param("ii", $child_id, $parent_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows === 0) {
+        header("Location: child-dashboard.php?error=invalid_child");
+        exit();
+    }
+    
+    $child_data = $result->fetch_assoc();
+    $child_username = $child_data['username'];
+    $total_points = $child_data['total_coins'];
+    $stmt->close();
 }
-
-// Verify this child belongs to this parent
-$verify_query = "SELECT username, total_coins FROM children WHERE child_id = ? AND parent_id = ?";
-$stmt = $conn->prepare($verify_query);
-$stmt->bind_param("ii", $child_id, $parent_id);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows === 0) {
-    header("Location: child-dashboard.php?error=invalid_child");
-    exit();
-}
-
-$child_data = $result->fetch_assoc();
-$child_username = $child_data['username'];
-$total_points = $child_data['total_coins'];
-$stmt->close();
 
 // Handle Purchase Request
 if (isset($_GET['buy_item'])) {

@@ -4,7 +4,7 @@ session_start();
 include 'database/includes/db_connect.php';
 
 // Helper: send JSON and exit cleanly
-function sendJson($status, $message, $redirect = null) {
+function sendJson(string $status, string $message, ?string $redirect = null): void {
     ob_clean(); // discard any stray output
     header('Content-Type: application/json');
     echo json_encode(['status' => $status, 'message' => $message, 'redirect' => $redirect]);

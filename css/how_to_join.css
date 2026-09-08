@@ -1,0 +1,713 @@
+/* ========================================
+   HOW TO JOIN PAGE - CSS
+   ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #1abcbf;
+    --secondary-color: #6b7fc4;
+    --dark-color: #1a1a2e;
+    --light-bg: #f8f9fb;
+    --white: #ffffff;
+    --text-gray: #666666;
+    --light-gray: #888888;
+    --success-color: #7CBF3F;
+}
+
+body {
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #ffffff;
+    color: var(--dark-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ========================================
+   NAVBAR (Matching Landing Page Header)
+   ======================================== */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 8%;
+    background: rgb(213, 234, 245);
+    border-bottom: 1px solid #ddd;
+    font-size: 1.3rem;
+    font-family: Arial, sans-serif;
+}
+
+/* The logo and site name. */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-decoration: none;
+    color: inherit;
+    white-space: nowrap;
+}
+
+.logo:visited,
+.logo:hover,
+.logo:active {
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo-img {
+    width: 85px;
+    height: 85px;
+    object-fit: contain;
+}
+
+.logo span {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #000000;
+}
+
+/* The main menu links. */
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 60px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: black;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.nav-links a:hover,
+.nav-links a[aria-current="page"] {
+    color: #2d2b63;
+}
+
+/* The language, sign in, and sign up buttons. */
+.nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.language-btn,
+.signin-btn,
+.signup-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-family: inherit;
+}
+
+/* Language Toggle Switch */
+.sliding-toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    user-select: none;
+}
+
+/* Hide actual checkbox input */
+#lang-toggle-checkbox {
+    display: none;
+}
+
+/* Language labels on either side */
+.toggle-label {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #a3acb9; /* Faded inactive color */
+    transition: color 0.3s ease;
+    cursor: pointer;
+}
+
+/* Active states for labels */
+#lang-toggle-checkbox:not(:checked) ~ .toggle-label.en {
+    color: #2d2b63; /* Active color matching primary theme */
+}
+
+#lang-toggle-checkbox:checked ~ .toggle-label.ne {
+    color: #2d2b63; /* Active color matching primary theme */
+}
+
+/* Toggle track capsule */
+.sliding-toggle-label {
+    position: relative;
+    display: block;
+    width: 64px;
+    height: 34px;
+    background: #f0f1f4;
+    border: 1px solid #e3e8ee;
+    border-radius: 17px;
+    cursor: pointer;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(255, 255, 255, 0.8);
+    transition: background-color 0.3s ease;
+}
+
+/* Sliding knob (circular container) */
+.sliding-knob {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Move the knob to the right when checked */
+#lang-toggle-checkbox:checked ~ .sliding-toggle-label .sliding-knob {
+    transform: translateX(30px);
+}
+
+/* Flag representations inside the knob */
+.flag {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    transition: opacity 0.3s ease;
+}
+
+/* UK Flag SVG */
+.flag-uk {
+    opacity: 1;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30"><rect width="60" height="30" fill="%23012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="%23fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="%23c8102e" stroke-width="4"/><path d="M0,15 H60 M30,0 V30" stroke="%23fff" stroke-width="10"/><path d="M0,15 H60 M30,0 V30" stroke="%23c8102e" stroke-width="6"/></svg>');
+}
+
+/* Nepal Flag SVG (within a white circular background for beautiful rendering) */
+.flag-np {
+    opacity: 0;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%23ffffff"/><g transform="translate(18, 8) scale(0.9)"><path d="M 12,5 L 68,48 L 26,48 L 68,91 L 12,91 Z" fill="%23003893"/><path d="M 16,10 L 59,44 L 22,44 L 59,86 L 16,86 Z" fill="%23dc143c"/><path d="M 23,28 A 5.5,5.5 0 0,0 34,28 A 4.5,4.5 0 0,1 23,28" fill="%23ffffff"/><circle cx="28.5" cy="27" r="1.5" fill="%23ffffff"/><path d="M 28.5,58 L 29.5,60.5 L 32,59.5 L 31,62 L 33.5,63 L 31,64 L 32,66.5 L 29.5,65.5 L 28.5,68 L 27.5,65.5 L 25,66.5 L 26,64 L 23.5,63 L 26,62 L 25,59.5 L 27.5,60.5 Z" fill="%23ffffff"/></g></svg>');
+}
+
+/* Cross-fade the flags based on checkbox state */
+#lang-toggle-checkbox:checked ~ .sliding-toggle-label .flag-uk {
+    opacity: 0;
+}
+
+#lang-toggle-checkbox:checked ~ .sliding-toggle-label .flag-np {
+    opacity: 1;
+}
+
+.language-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
+.signin-btn {
+    background: #f5f5f5;
+    color: #000000;
+}
+
+.signup-btn {
+    background: #2d2b63;
+    color: white;
+}
+
+/* ========================================
+   HEADER SECTION
+   ======================================== */
+
+.htj-header {
+    padding: 60px 20px 40px;
+    background: #ffffff;
+    text-align: center;
+}
+
+.htj-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #2d2b63;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+}
+
+.htj-subtitle {
+    font-size: 18px;
+    color: var(--text-gray);
+    font-weight: 500;
+}
+
+/* ========================================
+   STEPS SECTION
+   ======================================== */
+
+.htj-steps {
+    padding: 60px 20px;
+    background: var(--light-bg);
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.step-card {
+    background: white;
+    border-radius: 14px;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: #2d2b63;
+    color: #ffff;
+    border-radius: 50%;
+    font-weight: 900;
+    font-size: 28px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(45, 43, 99, 0.15);
+}
+
+.step-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--dark-color);
+    margin-bottom: 12px;
+}
+
+.step-desc {
+    font-size: 15px;
+    color: var(--text-gray);
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+/* ========================================
+   VIDEO WRAPPER
+   ======================================== */
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    background: #000;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 18px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.video-wrapper video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.step-highlight {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-align: center;
+    padding: 12px;
+    background: rgba(26, 188, 191, 0.1);
+    border-radius: 8px;
+}
+
+/* ========================================
+   STEP 3 FEATURES
+   ======================================== */
+
+.step-features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.feature {
+    padding: 10px;
+    background: var(--light-bg);
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--dark-color);
+}
+
+.feature span {
+    display: block;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+/* ========================================
+   CTA SECTION
+   ======================================== */
+
+.htj-cta {
+    padding: 80px 20px;
+    background: white;
+}
+
+.cta-content {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.cta-title {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--dark-color);
+    margin-bottom: 15px;
+}
+
+.cta-subtitle {
+    font-size: 16px;
+    color: var(--light-gray);
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.cta-button {
+    display: inline-block;
+    background: #2d2b63;
+    color: white;
+    padding: 18px 50px;
+    font-weight: 800;
+    font-size: 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 8px 25px #2d2b63;
+    cursor: pointer;
+}
+
+.cta-button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 35px rgba(45, 43, 99, 0.5);
+}
+
+/* ========================================
+   FAQ SECTION
+   ======================================== */
+
+.htj-faq {
+    padding: 60px 20px;
+    background: var(--light-bg);
+}
+
+.faq-title {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--dark-color);
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.faq-item {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e8ecf4;
+    border-left: 4px solid var(--primary-color);
+}
+
+.faq-q {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--dark-color);
+    margin-bottom: 12px;
+}
+
+.faq-a {
+    font-size: 14px;
+    color: var(--text-gray);
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* ========================================
+   FEATURES SECTION
+   ======================================== */
+
+.htj-features {
+    padding: 60px 20px;
+    background: white;
+}
+
+.features-title {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--dark-color);
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.feature-card {
+    text-align: center;
+    padding: 30px;
+    background: var(--light-bg);
+    border: 1px solid #e8ecf4;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.feature-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.feature-card h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--dark-color);
+    margin-bottom: 12px;
+}
+
+.feature-card p {
+    font-size: 14px;
+    color: var(--text-gray);
+    line-height: 1.6;
+}
+
+/* ========================================
+   FOOTER (Matching Landing Page Footer)
+   ======================================== */
+
+.footer {
+    background: #f8f8f8;
+    margin-top: 80px;
+    padding-top: 60px;
+    font-family: Arial, sans-serif;
+    border-top: 1px solid #ddd;
+}
+
+.footer-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+
+.footer-logo {
+    max-width: 300px;
+}
+
+.footer-logo img {
+    width: 60px;
+    margin-bottom: 10px;
+}
+
+.footer-logo h3 {
+    margin-bottom: 10px;
+    color: #2d2b63;
+    font-size: 1.5rem;
+}
+
+.footer-logo p {
+    color: #666;
+    line-height: 1.7;
+    font-size: 15px;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-column h4 {
+    margin-bottom: 10px;
+    color: #2d2b63;
+    font-size: 1.2rem;
+}
+
+.footer-column a {
+    text-decoration: none;
+    color: #666;
+    font-size: 15px;
+    transition: color 0.3s ease;
+}
+
+.footer-column a:hover {
+    color: #2d2b63;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 25px;
+    margin-top: 40px;
+    border-top: 1px solid #ddd;
+    color: #777;
+    font-size: 14px;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 992px) {
+    .navbar {
+        flex-wrap: wrap;
+        row-gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 20px 6%;
+    }
+
+    .nav-links {
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .nav-buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .logo span {
+        font-size: 1.7rem;
+    }
+
+    .logo-img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .htj-title {
+        font-size: 1.8rem;
+    }
+
+    .htj-subtitle {
+        font-size: 15px;
+    }
+
+    .steps-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .step-features {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cta-title {
+        font-size: 1.6rem;
+    }
+
+    .cta-button {
+        padding: 14px 35px;
+        font-size: 15px;
+    }
+
+    .faq-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-container {
+        text-align: center;
+        justify-content: center;
+    }
+
+    .footer-logo {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo span {
+        font-size: 1.4rem;
+    }
+
+    .logo-img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .nav-links {
+        gap: 12px;
+        font-size: 1.1rem;
+    }
+
+    .signin-btn,
+    .signup-btn {
+        padding: 8px 14px;
+        font-size: 0.95rem;
+    }
+
+    .step-number {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+    }
+
+    .htj-title {
+        font-size: 1.4rem;
+    }
+
+    .steps-grid {
+        gap: 15px;
+    }
+
+    .step-card {
+        padding: 20px;
+    }
+
+    .cta-title {
+        font-size: 1.3rem;
+    }
+}

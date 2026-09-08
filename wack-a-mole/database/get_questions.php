@@ -12,15 +12,7 @@ $db_candidates = [
     dirname(__DIR__, 2) . '/database/includes/db_connect.php'
 ];
 
-$db_path = null;
-foreach ($db_candidates as $candidate) {
-    if ($candidate && file_exists($candidate)) {
-        $db_path = $candidate;
-        break;
-    }
-}
-
-if ($db_path === null) {
+if (!$db_path || !file_exists($db_path)) {
     echo json_encode(['error' => 'DB config not found.']);
     exit;
 }

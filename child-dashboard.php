@@ -212,7 +212,7 @@ $total_coins_earned = count($earned_badge_ids);
             <nav class="dashboard-menu">
                 <a href="child-dashboard.php">🎮 Game Zone</a>
                 <a href="progress.html">📈 My Progress</a>
-                <a href="shop.php">🏪 Store</a>
+                <a href="shop.php?child_id=<?php echo $child_id; ?>">🏪 Store</a>
             </nav>
             <div class="dashboard-right">
                 <button class="language-btn">🌐 Language</button>

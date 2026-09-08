@@ -55,10 +55,10 @@ function saveRoundAndAwardCoins(mysqli $conn, int $childId, int $gameId, int $ti
  
     // --- Save the round to `scores` (the single source of truth) ---
     $insert = $conn->prepare("
-        INSERT INTO scores (child_id, game_id, difficulty_tier_played, topic, concept, score_value, total_questions, accuracy_percentage, streak_achieved, coins_earned)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO scores (child_id, game_id, difficulty_tier_played, topic, concept, score_value, accuracy_percentage, streak_achieved, coins_earned)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     ");
-    $insert->bind_param('iiissiidii', $childId, $gameId, $tier, $topic, $concept, $correctCount, $totalQuestions, $accuracy, $roundStreak, $coins);
+    $insert->bind_param('iiissidii', $childId, $gameId, $tier, $topic, $concept, $correctCount, $accuracy, $roundStreak, $coins);
     $insert->execute();
     $insert->close();
  
@@ -197,6 +197,24 @@ function evaluateCriteria(mysqli $conn, int $childId, array $c): bool {
             $days = $stmt->get_result()->fetch_assoc()['days'];
             $stmt->close();
             return $days >= $threshold;
+ 
+        case 'oranges_collected':
+            $sql = "SELECT COALESCE(SUM(oranges_collected),0) AS total FROM capybara_level_scores WHERE child_id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('i', $childId);
+            $stmt->execute();
+            $total = (int)($stmt->get_result()->fetch_assoc()['total'] ?? 0);
+            $stmt->close();
+            return $total >= $threshold;
+ 
+        case 'total_coins':
+            $sql = "SELECT total_coins FROM children WHERE child_id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('i', $childId);
+            $stmt->execute();
+            $coins = (int)($stmt->get_result()->fetch_assoc()['total_coins'] ?? 0);
+            $stmt->close();
+            return $coins >= $threshold;
  
         default:
             return false;
