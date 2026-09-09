@@ -1,0 +1,2664 @@
+        (function() {
+            'use strict';
+
+            //  UI STRINGS
+            const UI_STRINGS = {
+                en: {
+                    greeting: "👋 Hi there, Explorer!",
+                    subGreeting: "Choose a subject below and let's start learning together!",
+                    subjectTitle: "📚 What do you want to learn?",
+                    subjectSub: "Pick a topic and start your adventure!",
+                    levelTitle: "🎯 Choose your level!",
+                    startBtn: "🚀 Start Adventure",
+                    startFlashcards: "🚀 Start Flashcards",
+                    progressLabel: " complete",
+                    questionLabel: "📝 Question",
+                    puzzleLabel: "🧩 Puzzle",
+                    checkOrder: "✅ Check Order",
+                    back: "Back",
+                    next: "Next",
+                    finish: "🎉 Finish",
+                    feedbackThink: "🤔 Think carefully!",
+                    feedbackCorrect: "🎉 Amazing! You got it! +1 ⭐ +2 💰",
+                    feedbackWrong: "❌ Oops! The correct answer was: ",
+                    feedbackPuzzleHint: "🧩 Arrange the items correctly!",
+                    feedbackPuzzleSolved: "🧩 Puzzle solved! +1 ⭐ +3 💰",
+                    feedbackPuzzleWrong: "❌ Not quite right! Try swapping the items.",
+                    resultTitle: "Great Job, Scientist!",
+                    resultMsgStar: "🌟 You're a science superstar!",
+                    resultMsgMid: "🌱 Keep exploring! Every scientist starts somewhere!",
+                    resultMsgHigh: "🌈 Great job! You're learning so much!",
+                    resultMsgTop: "🏆 Amazing! You're a true Science Champion!",
+                    playAgain: "🔁 Play Again",
+                    tapToSelect: "Tap to select",
+                    selected: "✓ Selected!",
+                    tapLevel: "Tap to select",
+                    yourLevel: "✓ Your Level!",
+                    menu: "Menu",
+                    popupCongrats: "🎉 You completed all flashcards!",
+                    popupPlayAgain: "🔄 Play Again",
+                    popupHome: "🏠 Home",
+                    popupOk: "OK",
+                    flashcardTitle: "Flashcards",
+                    flashcardCard: "Card",
+                    flashcardOf: "of",
+                    flashcardPrev: "◀ Prev",
+                    flashcardNext: "Next ▶",
+                    flashcardFlip: "🔄 Flip",
+                    flashcardShuffle: "🔀 Shuffle",
+                    flashcardBack: "🏠 Back to Menu",
+                    tutorial: "Tutorial",
+                    reset: "Reset"
+                },
+                ne: {
+                    greeting: "👋 नमस्ते, अन्वेषक!",
+                    subGreeting: "तपाईं के सिक्न चाहनुहुन्छ? तलको विषय छान्नुहोस् र सँगै सिक्न सुरु गरौं!",
+                    subjectTitle: "📚 तपाईं के सिक्न चाहनुहुन्छ?",
+                    subjectSub: "एउटा विषय छान्नुहोस् र आफ्नो यात्रा सुरु गर्नुहोस्!",
+                    levelTitle: "🎯 आफ्नो स्तर छान्नुहोस्!",
+                    startBtn: "🚀 यात्रा सुरु गर्नुहोस्",
+                    startFlashcards: "🚀 फ्ल्यास कार्ड सुरु गर्नुहोस्",
+                    progressLabel: " पूरा",
+                    questionLabel: "📝 प्रश्न",
+                    puzzleLabel: "🧩 पजल",
+                    checkOrder: "✅ क्रम जाँच गर्नुहोस्",
+                    back: "पछाडि",
+                    next: "अर्को",
+                    finish: "🎉 समाप्त",
+                    feedbackThink: "🤔 ध्यानपूर्वक सोच्नुहोस्!",
+                    feedbackCorrect: "🎉 वाह! तपाईंले पाउनुभयो! +1 ⭐ +2 💰",
+                    feedbackWrong: "❌ उफ्! सही उत्तर थियो: ",
+                    feedbackPuzzleHint: "🧩 वस्तुहरूलाई सही क्रममा मिलाउनुहोस्!",
+                    feedbackPuzzleSolved: "🧩 पजल हल भयो! +1 ⭐ +3 💰",
+                    feedbackPuzzleWrong: "❌ ठीक छैन! वस्तुहरू साट्नुहोस्।",
+                    resultTitle: "राम्रो काम, वैज्ञानिक!",
+                    resultMsgStar: "🌟 तपाईं विज्ञानका सुपरस्टार हुनुहुन्छ!",
+                    resultMsgMid: "🌱 खोजी गरिरहनुहोस्! हरेक वैज्ञानिक कतैबाट सुरु हुन्छ!",
+                    resultMsgHigh: "🌈 राम्रो काम! तपाईं धेरै सिक्दै हुनुहुन्छ!",
+                    resultMsgTop: "🏆 अद्भुत! तपाईं साँचो विज्ञान च्याम्पियन हुनुहुन्छ!",
+                    playAgain: "🔁 फेरि खेल्नुहोस्",
+                    tapToSelect: "छान्नको लागि ट्याप गर्नुहोस्",
+                    selected: "✓ चयन गरियो!",
+                    tapLevel: "छान्नको लागि ट्याप गर्नुहोस्",
+                    yourLevel: "✓ तपाईंको स्तर!",
+                    menu: "मेनु",
+                    popupCongrats: "🎉 तपाईंले सबै फ्ल्यास कार्ड पूरा गर्नुभयो!",
+                    popupPlayAgain: "🔄 फेरि खेल्नुहोस्",
+                    popupHome: "🏠 गृह",
+                    popupOk: "हुन्छ",
+                    flashcardTitle: "फ्ल्यास कार्ड",
+                    flashcardCard: "कार्ड",
+                    flashcardOf: "को",
+                    flashcardPrev: "◀ अघिल्लो",
+                    flashcardNext: "अर्को ▶",
+                    flashcardFlip: "🔄 पल्टाउनुहोस्",
+                    flashcardShuffle: "🔀 मिसाउनुहोस्",
+                    flashcardBack: "🏠 मेनुमा फर्कनुहोस्",
+                    tutorial: "ट्यूटोरियल",
+                    reset: "रिसेट"
+                }
+            };
+
+            //  SUBJECT DATA — all quiz questions now kid-friendly and fun!
+            const SUBJECTS_EN = {
+                science: {
+                    label: 'Science',
+                    icon: '🔬',
+                    levels: {
+                        basic: {
+                            label: 'Basic',
+                            questions: [{
+                                    type: 'mcq',
+                                    question: 'What color do we see the Sun as? 🌞',
+                                    question_ne: 'सूर्य हामीलाई कस्तो रंगको देखिन्छ? 🌞',
+                                    options: [
+                                        { label: 'Yellow', emoji: '☀️', label_ne: 'पहेंलो' },
+                                        { label: 'Red', emoji: '🔴', label_ne: 'रातो' },
+                                        { label: 'Blue', emoji: '🔵', label_ne: 'निलो' },
+                                        { label: 'Green', emoji: '🟢', label_ne: 'हरियो' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'The Sun is actually white, but our sky makes it look yellow!',
+                                    funFact_ne: 'सूर्य वास्तवमा सेतो हो, तर हाम्रो आकाशले यसलाई पहेंलो देखाउँछ!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'What gas do we blow out when we breathe? 💨',
+                                    question_ne: 'सास फेर्दा हामी बाहिर कुन ग्यास निकाल्छौं? 💨',
+                                    options: [
+                                        { label: 'Oxygen', emoji: '💨', label_ne: 'अक्सिजन' },
+                                        { label: 'Carbon Dioxide', emoji: '🫧', label_ne: 'कार्बन डाइअक्साइड' },
+                                        { label: 'Nitrogen', emoji: '🧪', label_ne: 'नाइट्रोजन' },
+                                        { label: 'Hydrogen', emoji: '💧', label_ne: 'हाइड्रोजन' }
+                                    ],
+                                    correct: 1,
+                                    funFact: 'We breathe in oxygen and breathe out carbon dioxide – plants love it!',
+                                    funFact_ne: 'हामी अक्सिजन सास लिन्छौं र कार्बन डाइअक्साइड बाहिर निकाल्छौं – बोटबिरुवालाई यो मन पर्छ!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Which of these can flow and take the shape of a glass? 🥤',
+                                    question_ne: 'यी मध्ये कुन गिलासको आकार लिन सक्छ? 🥤',
+                                    options: [
+                                        { label: 'Water', emoji: '💧', label_ne: 'पानी' },
+                                        { label: 'Ice', emoji: '🧊', label_ne: 'बरफ' },
+                                        { label: 'Steam', emoji: '♨️', label_ne: 'भाप' },
+                                        { label: 'Rock', emoji: '🪨', label_ne: 'ढुङ्गा' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Water is a liquid – it can be solid as ice or gas as steam too!',
+                                    funFact_ne: 'पानी तरल हो – यो बरफजस्तै ठोस वा भापजस्तै ग्यास पनि हुन सक्छ!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'What force keeps our feet on the ground? 🦶',
+                                    question_ne: 'हामीलाई जमिनमा टाँसिराख्ने बल के हो? 🦶',
+                                    options: [
+                                        { label: 'Gravity', emoji: '⬇️', label_ne: 'गुरुत्वाकर्षण' },
+                                        { label: 'Magnetism', emoji: '🧲', label_ne: 'चुम्बकत्व' },
+                                        { label: 'Friction', emoji: '✋', label_ne: 'घर्षण' },
+                                        { label: 'Buoyancy', emoji: '🛟', label_ne: 'उत्प्लावन' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Gravity is like a giant magnet that pulls everything down to Earth!',
+                                    funFact_ne: 'गुरुत्वाकर्षण एउटा विशाल चुम्बक जस्तै हो जसले सबैलाई पृथ्वीतिर तान्छ!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Which body part do we use to hear music? 🎵',
+                                    question_ne: 'संगीत सुन्न हामी कुन अंग प्रयोग गर्छौं? 🎵',
+                                    options: [
+                                        { label: 'Ears', emoji: '👂', label_ne: 'कान' },
+                                        { label: 'Eyes', emoji: '👀', label_ne: 'आँखा' },
+                                        { label: 'Nose', emoji: '👃', label_ne: 'नाक' },
+                                        { label: 'Mouth', emoji: '👄', label_ne: 'मुख' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Your ears catch sound waves and send them straight to your brain!',
+                                    funFact_ne: 'तपाईंको कानले ध्वनि तरंगहरू समात्छ र मस्तिष्कमा पठाउँछ!'
+                                },
+                                {
+                                    type: 'puzzle',
+                                    question: 'Put the states of matter in order from coldest to hottest:',
+                                    question_ne: 'पदार्थका अवस्थाहरूलाई चिसोदेखि तातोसम्म मिलाउनुहोस्:',
+                                    hint: 'Solid → Liquid → Gas',
+                                    hint_ne: 'ठोस → तरल → ग्यास',
+                                    items: [
+                                        { id: 'a', label: 'Solid', emoji: '🧊', label_ne: 'ठोस' },
+                                        { id: 'b', label: 'Liquid', emoji: '💧', label_ne: 'तरल' },
+                                        { id: 'c', label: 'Gas', emoji: '♨️', label_ne: 'ग्यास' }
+                                    ],
+                                    correctOrder: ['a', 'b', 'c'],
+                                    funFact: 'When you heat or cool things, they can change from one state to another!',
+                                    funFact_ne: 'तातो वा चिसो पार्दा पदार्थको अवस्था परिवर्तन हुन्छ!'
+                                }
+                            ]
+                        },
+                        intermediate: {
+                            label: 'Intermediate',
+                            questions: [{
+                                    type: 'mcq',
+                                    question: 'What is the fancy name for water? 💧',
+                                    question_ne: 'पानीको विशेष नाम के हो? 💧',
+                                    options: [
+                                        { label: 'H₂O', emoji: '💧', label_ne: 'H₂O' },
+                                        { label: 'CO₂', emoji: '🫧', label_ne: 'CO₂' },
+                                        { label: 'NaCl', emoji: '🧂', label_ne: 'NaCl' },
+                                        { label: 'O₂', emoji: '💨', label_ne: 'O₂' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Every water drop is made of two hydrogen atoms and one oxygen atom!',
+                                    funFact_ne: 'हरेक पानीको थोपा दुई हाइड्रोजन परमाणु र एक अक्सिजन परमाणुले बनेको हुन्छ!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Which part of a plant is like its kitchen? 🍳',
+                                    question_ne: 'बोटको कुन भाग भान्सा जस्तै हो? 🍳',
+                                    options: [
+                                        { label: 'Leaves', emoji: '🍃', label_ne: 'पात' },
+                                        { label: 'Roots', emoji: '🌱', label_ne: 'जरा' },
+                                        { label: 'Stem', emoji: '🌿', label_ne: 'डाँठ' },
+                                        { label: 'Flowers', emoji: '🌸', label_ne: 'फूल' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Leaves use sunshine to cook food – it\'s called photosynthesis!',
+                                    funFact_ne: 'पातहरूले खाना पकाउन घामको प्रयोग गर्छन् – यसलाई प्रकाश संश्लेषण भनिन्छ!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Who is the fastest runner on land? 🏃‍♂️',
+                                    question_ne: 'जमिनमा सबैभन्दा छिटो दौडने कुन हो? 🏃‍♂️',
+                                    options: [
+                                        { label: 'Cheetah', emoji: '🐆', label_ne: 'चितुवा' },
+                                        { label: 'Lion', emoji: '🦁', label_ne: 'सिंह' },
+                                        { label: 'Horse', emoji: '🐴', label_ne: 'घोडा' },
+                                        { label: 'Dog', emoji: '🐕', label_ne: 'कुकुर' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Cheetahs can zoom at 70 mph – that\'s like a car on the highway!',
+                                    funFact_ne: 'चितुवा ७० माइल प्रति घण्टाको गतिमा दौडन सक्छ – त्यो राजमार्गको कार जस्तै हो!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'What is the biggest organ in your body? 🫀',
+                                    question_ne: 'तपाईंको शरीरको सबैभन्दा ठूलो अंग कुन हो? 🫀',
+                                    options: [
+                                        { label: 'Skin', emoji: '🧴', label_ne: 'छाला' },
+                                        { label: 'Liver', emoji: '🧫', label_ne: 'कलेजो' },
+                                        { label: 'Brain', emoji: '🧠', label_ne: 'मस्तिष्क' },
+                                        { label: 'Heart', emoji: '❤️', label_ne: 'मुटु' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Your skin is like a superhero cape – it protects you from germs!',
+                                    funFact_ne: 'तपाईंको छाला सुपरहीरोको पोशाक जस्तै हो – यसले कीटाणुबाट जोगाउँछ!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Which planet is called the Red Planet? 🔴',
+                                    question_ne: 'कुन ग्रहलाई रातो ग्रह भनिन्छ? 🔴',
+                                    options: [
+                                        { label: 'Mars', emoji: '🔴', label_ne: 'मंगल' },
+                                        { label: 'Venus', emoji: '🟡', label_ne: 'शुक्र' },
+                                        { label: 'Jupiter', emoji: '🟠', label_ne: 'बृहस्पति' },
+                                        { label: 'Saturn', emoji: '🪐', label_ne: 'शनि' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Mars is red because it\'s covered in rusty iron – like an old bike!',
+                                    funFact_ne: 'मंगल रातो छ किनभने यो खिया लागेको फलामले ढाकिएको छ – पुरानो साइकल जस्तै!'
+                                },
+                                {
+                                    type: 'puzzle',
+                                    question: 'Arrange these planets from smallest to largest:',
+                                    question_ne: 'यी ग्रहहरूलाई सानोदेखि ठूलोसम्म मिलाउनुहोस्:',
+                                    hint: 'Mercury → Mars → Venus → Earth',
+                                    hint_ne: 'बुध → मंगल → शुक्र → पृथ्वी',
+                                    items: [
+                                        { id: 'a', label: 'Earth', emoji: '🌍', label_ne: 'पृथ्वी' },
+                                        { id: 'b', label: 'Mars', emoji: '🔴', label_ne: 'मंगल' },
+                                        { id: 'c', label: 'Venus', emoji: '🟡', label_ne: 'शुक्र' },
+                                        { id: 'd', label: 'Mercury', emoji: '☿️', label_ne: 'बुध' }
+                                    ],
+                                    correctOrder: ['d', 'b', 'c', 'a'],
+                                    funFact: 'Jupiter is the biggest – it could swallow all the other planets!',
+                                    funFact_ne: 'बृहस्पति सबैभन्दा ठूलो हो – यसले अरू सबै ग्रहहरू निल्न सक्छ!'
+                                }
+                            ]
+                        },
+                        advanced: {
+                            label: 'Advanced',
+                            questions: [{
+                                    type: 'mcq',
+                                    question: 'What number tells us if water is neutral? ⚖️',
+                                    question_ne: 'पानी सन्तुलित छ कि भन्ने संख्या कति हो? ⚖️',
+                                    options: [
+                                        { label: '7', emoji: '⚖️', label_ne: '७' },
+                                        { label: '1', emoji: '🧪', label_ne: '१' },
+                                        { label: '14', emoji: '🧪', label_ne: '१४' },
+                                        { label: '5', emoji: '🧪', label_ne: '५' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Pure water has a neutral pH of 7 – it\'s not sour or bitter!',
+                                    funFact_ne: 'शुद्ध पानीको पीएच ७ हुन्छ – यो न त अमिलो न त तीतो!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Who came up with the idea that everything is relative? 🧠',
+                                    question_ne: 'सबै कुरा सापेक्षिक हो भन्ने विचार कसले दियो? 🧠',
+                                    options: [
+                                        { label: 'Einstein', emoji: '🧑‍🔬', label_ne: 'आइन्स्टाइन' },
+                                        { label: 'Newton', emoji: '🍎', label_ne: 'न्यूटन' },
+                                        { label: 'Darwin', emoji: '🐒', label_ne: 'डार्विन' },
+                                        { label: 'Galileo', emoji: '🔭', label_ne: 'ग्यालिलियो' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Albert Einstein was super smart – he changed how we think about time!',
+                                    funFact_ne: 'अल्बर्ट आइन्स्टाइन धेरै बुद्धिमान थिए – उनले समयको बारेमा हाम्रो सोच परिवर्तन गरे!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Which gas fills most of our air? 🌬️',
+                                    question_ne: 'हाम्रो हावामा सबैभन्दा धेरै कुन ग्यास छ? 🌬️',
+                                    options: [
+                                        { label: 'Nitrogen', emoji: '🧪', label_ne: 'नाइट्रोजन' },
+                                        { label: 'Oxygen', emoji: '💨', label_ne: 'अक्सिजन' },
+                                        { label: 'Carbon Dioxide', emoji: '🫧', label_ne: 'कार्बन डाइअक्साइड' },
+                                        { label: 'Argon', emoji: '🧪', label_ne: 'आर्गन' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'About 78% of the air we breathe is nitrogen – it\'s everywhere!',
+                                    funFact_ne: 'हामीले सास फेर्ने हावाको करिब ७८% नाइट्रोजन हो – यो जताततै छ!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Which sea creature can grow back its arms? 🌊',
+                                    question_ne: 'कुन समुद्री प्राणीले आफ्ना हातहरू फेरि उमार्न सक्छ? 🌊',
+                                    options: [
+                                        { label: 'Starfish', emoji: '⭐', label_ne: 'तारा माछा' },
+                                        { label: 'Dog', emoji: '🐕', label_ne: 'कुकुर' },
+                                        { label: 'Cat', emoji: '🐱', label_ne: 'बिरालो' },
+                                        { label: 'Bird', emoji: '🐦', label_ne: 'चरा' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Starfish are like superheroes – they can regrow lost arms!',
+                                    funFact_ne: 'तारा माछा सुपरहीरो जस्तै हुन् – तिनीहरूले हराएको पाखुरा फेरि उमार्न सक्छन्!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'What do we call the push or pull that moves things? 💪',
+                                    question_ne: 'वस्तुहरूलाई धकेल्ने वा तान्ने कसरी भनिन्छ? 💪',
+                                    options: [
+                                        { label: 'Force', emoji: '⚡', label_ne: 'बल' },
+                                        { label: 'Energy', emoji: '🔋', label_ne: 'ऊर्जा' },
+                                        { label: 'Power', emoji: '💡', label_ne: 'शक्ति' },
+                                        { label: 'Pressure', emoji: '📏', label_ne: 'दबाव' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Force is measured in Newtons – named after Sir Isaac Newton!',
+                                    funFact_ne: 'बललाई न्यूटनमा मापन गरिन्छ – सर आइज्याक न्यूटनको नाममा!'
+                                },
+                                {
+                                    type: 'puzzle',
+                                    question: 'Put these planets in order from closest to farthest from the Sun:',
+                                    question_ne: 'यी ग्रहहरूलाई सूर्यबाट नजिकदेखि टाढासम्म मिलाउनुहोस्:',
+                                    hint: 'Mercury → Venus → Earth → Mars',
+                                    hint_ne: 'बुध → शुक्र → पृथ्वी → मंगल',
+                                    items: [
+                                        { id: 'a', label: 'Mars', emoji: '🔴', label_ne: 'मंगल' },
+                                        { id: 'b', label: 'Venus', emoji: '♀️', label_ne: 'शुक्र' },
+                                        { id: 'c', label: 'Mercury', emoji: '☿️', label_ne: 'बुध' },
+                                        { id: 'd', label: 'Earth', emoji: '🌍', label_ne: 'पृथ्वी' }
+                                    ],
+                                    correctOrder: ['c', 'b', 'd', 'a'],
+                                    funFact: 'The Sun\'s light takes 8 minutes to reach us – that\'s a long trip!',
+                                    funFact_ne: 'सूर्यको प्रकाश हामीसम्म आउन ८ मिनेट लाग्छ – त्यो लामो यात्रा हो!'
+                                }
+                            ]
+                        }
+                    }
+                },
+                nature: {
+                    label: 'Nature',
+                    icon: '🌱',
+                    levels: {
+                        basic: {
+                            label: 'Basic',
+                            questions: [{
+                                    type: 'mcq',
+                                    question: 'Which animal is the king of the jungle? 👑',
+                                    question_ne: 'कुन जनावर जंगलको राजा हो? 👑',
+                                    options: [
+                                        { label: 'Lion', emoji: '🦁', label_ne: 'सिंह' },
+                                        { label: 'Tiger', emoji: '🐯', label_ne: 'बाघ' },
+                                        { label: 'Bear', emoji: '🐻', label_ne: 'भालु' },
+                                        { label: 'Elephant', emoji: '🐘', label_ne: 'हात्ती' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Lions live in big families called prides – they love company!',
+                                    funFact_ne: 'सिंह ठूला परिवारमा बस्छन् जसलाई प्राइड भनिन्छ – उनीहरूलाई साथी मन पर्छ!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'What do bees collect from flowers to make honey? 🍯',
+                                    question_ne: 'मौरीले मह बनाउन फूलबाट के सङ्कलन गर्छ? 🍯',
+                                    options: [
+                                        { label: 'Nectar', emoji: '🍯', label_ne: 'मकरन्द' },
+                                        { label: 'Pollen', emoji: '🌸', label_ne: 'पराग' },
+                                        { label: 'Water', emoji: '💧', label_ne: 'पानी' },
+                                        { label: 'Leaves', emoji: '🍃', label_ne: 'पात' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Bees are busy little workers – they turn nectar into sweet honey!',
+                                    funFact_ne: 'मौरीहरू व्यस्त साना कामदार हुन् – तिनीहरू मकरन्दलाई मीठो मह बनाउँछन्!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Which season comes right after winter? 🌷',
+                                    question_ne: 'जाडो पछि कुन ऋतु आउँछ? 🌷',
+                                    options: [
+                                        { label: 'Spring', emoji: '🌷', label_ne: 'वसन्त' },
+                                        { label: 'Summer', emoji: '☀️', label_ne: 'ग्रीष्म' },
+                                        { label: 'Autumn', emoji: '🍂', label_ne: 'शरद' },
+                                        { label: 'Monsoon', emoji: '🌧️', label_ne: 'वर्षा' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Spring is when flowers pop up and animals wake from their long naps!',
+                                    funFact_ne: 'वसन्तमा फूल फुल्छन् र जनावरहरू आफ्नो लामो निद्राबाट जाग्छन्!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'What is a baby frog called? 🐸',
+                                    question_ne: 'बच्चा भ्यागुतालाई के भनिन्छ? 🐸',
+                                    options: [
+                                        { label: 'Tadpole', emoji: '🐸', label_ne: 'ट्याडपोल' },
+                                        { label: 'Caterpillar', emoji: '🐛', label_ne: 'क्याटरपिलर' },
+                                        { label: 'Chick', emoji: '🐣', label_ne: 'चल्लो' },
+                                        { label: 'Puppy', emoji: '🐶', label_ne: 'कुकुरको बच्चा' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Tadpoles swim in water and grow legs to become frogs – amazing!',
+                                    funFact_ne: 'ट्याडपोल पानीमा पौडिन्छ र खुट्टा उमारेर भ्यागुता बन्छ – अचम्म!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Which plant has a really long trunk and huge leaves? 🌴',
+                                    question_ne: 'कुन बोटको लामो हाँगा र ठूला पात हुन्छ? 🌴',
+                                    options: [
+                                        { label: 'Banana tree', emoji: '🍌', label_ne: 'केराको रूख' },
+                                        { label: 'Pine tree', emoji: '🌲', label_ne: 'पाइन रूख' },
+                                        { label: 'Oak tree', emoji: '🌳', label_ne: 'ओक रूख' },
+                                        { label: 'Bamboo', emoji: '🎋', label_ne: 'बाँस' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Banana trees are actually giant herbs – not trees at all!',
+                                    funFact_ne: 'केराको रूख वास्तवमा विशाल जडीबुटी हो – रूख होइन!'
+                                },
+                                {
+                                    type: 'puzzle',
+                                    question: 'Put the butterfly life cycle in order:',
+                                    question_ne: 'पुतलीको जीवन चक्र मिलाउनुहोस्:',
+                                    hint: 'Egg → Caterpillar → Chrysalis → Butterfly',
+                                    hint_ne: 'अण्डा → क्याटरपिलर → कोष → पुतली',
+                                    items: [
+                                        { id: 'a', label: 'Egg', emoji: '🥚', label_ne: 'अण्डा' },
+                                        { id: 'b', label: 'Caterpillar', emoji: '🐛', label_ne: 'क्याटरपिलर' },
+                                        { id: 'c', label: 'Chrysalis', emoji: '🦋', label_ne: 'कोष' },
+                                        { id: 'd', label: 'Butterfly', emoji: '🦋', label_ne: 'पुतली' }
+                                    ],
+                                    correctOrder: ['a', 'b', 'c', 'd'],
+                                    funFact: 'A butterfly goes through a magical change called metamorphosis!',
+                                    funFact_ne: 'पुतलीले कायापलट भनिने जादुई परिवर्तनबाट गुज्रन्छ!'
+                                }
+                            ]
+                        },
+                        intermediate: {
+                            label: 'Intermediate',
+                            questions: [{
+                                    type: 'mcq',
+                                    question: 'What is the largest animal on Earth? 🐋',
+                                    question_ne: 'पृथ्वीमा सबैभन्दा ठूलो जनावर कुन हो? 🐋',
+                                    options: [
+                                        { label: 'Blue Whale', emoji: '🐋', label_ne: 'नीलो ह्वेल' },
+                                        { label: 'Elephant', emoji: '🐘', label_ne: 'हात्ती' },
+                                        { label: 'Giraffe', emoji: '🦒', label_ne: 'जिराफ' },
+                                        { label: 'Hippo', emoji: '🦛', label_ne: 'हिप्पो' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'A blue whale weighs as much as 33 elephants – that\'s huge!',
+                                    funFact_ne: 'नीलो ह्वेलको तौल ३३ हात्तीको बराबर हुन्छ – त्यो विशाल हो!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'What do trees give us that helps us breathe? 🌳',
+                                    question_ne: 'रूखहरूले हामीलाई सास फेर्न के दिन्छ? 🌳',
+                                    options: [
+                                        { label: 'Oxygen', emoji: '💨', label_ne: 'अक्सिजन' },
+                                        { label: 'Carbon Dioxide', emoji: '🫧', label_ne: 'कार्बन डाइअक्साइड' },
+                                        { label: 'Nitrogen', emoji: '🧪', label_ne: 'नाइट्रोजन' },
+                                        { label: 'Hydrogen', emoji: '💧', label_ne: 'हाइड्रोजन' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Trees are like nature\'s oxygen factories – they keep our air fresh!',
+                                    funFact_ne: 'रूखहरू प्रकृतिको अक्सिजन कारखाना जस्तै हुन् – तिनीहरूले हावा ताजा राख्छन्!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Which bird can talk like a human? 🗣️',
+                                    question_ne: 'कुन चराले मानिसजस्तै बोल्न सक्छ? 🗣️',
+                                    options: [
+                                        { label: 'Parrot', emoji: '🦜', label_ne: 'सुगा' },
+                                        { label: 'Sparrow', emoji: '🐦', label_ne: 'भँगेरा' },
+                                        { label: 'Eagle', emoji: '🦅', label_ne: 'चील' },
+                                        { label: 'Owl', emoji: '🦉', label_ne: 'लाटोकोसेरो' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Parrots are clever copycats – they can learn to say words!',
+                                    funFact_ne: 'सुगा चलाख नक्कल गर्ने हुन् – तिनीहरूले शब्दहरू भन्न सिक्न सक्छन्!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'What is the process called when plants make food? 🌿',
+                                    question_ne: 'बोटबिरुवाले खाना बनाउने प्रक्रियालाई के भनिन्छ? 🌿',
+                                    options: [
+                                        { label: 'Photosynthesis', emoji: '🌱', label_ne: 'प्रकाश संश्लेषण' },
+                                        { label: 'Respiration', emoji: '🫁', label_ne: 'श्वसन' },
+                                        { label: 'Digestion', emoji: '🍽️', label_ne: 'पाचन' },
+                                        { label: 'Circulation', emoji: '❤️', label_ne: 'संचार' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Photosynthesis is like a recipe – sunlight + water + air = plant food!',
+                                    funFact_ne: 'प्रकाश संश्लेषण एउटा रेसिपी जस्तै हो – घाम + पानी + हावा = बोटको खाना!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Which animal has black and white stripes? 🦓',
+                                    question_ne: 'कुन जनावरको कालो र सेतो धर्का हुन्छ? 🦓',
+                                    options: [
+                                        { label: 'Zebra', emoji: '🦓', label_ne: 'जेब्रा' },
+                                        { label: 'Tiger', emoji: '🐯', label_ne: 'बाघ' },
+                                        { label: 'Panda', emoji: '🐼', label_ne: 'पाण्डा' },
+                                        { label: 'Skunk', emoji: '🦨', label_ne: 'स्कंक' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Zebra stripes are like fingerprints – each one is unique!',
+                                    funFact_ne: 'जेब्राका धर्काहरू औंठाछाप जस्तै हुन् – प्रत्येक फरक हुन्छ!'
+                                },
+                                {
+                                    type: 'puzzle',
+                                    question: 'Order the food chain from plant to top hunter:',
+                                    question_ne: 'खाद्य शृंखलालाई बोटबाट शीर्ष शिकारीसम्म मिलाउनुहोस्:',
+                                    hint: 'Grass → Rabbit → Fox → Lion',
+                                    hint_ne: 'घाँस → खरायो → फ्याक्स → सिंह',
+                                    items: [
+                                        { id: 'a', label: 'Grass', emoji: '🌾', label_ne: 'घाँस' },
+                                        { id: 'b', label: 'Rabbit', emoji: '🐇', label_ne: 'खरायो' },
+                                        { id: 'c', label: 'Fox', emoji: '🦊', label_ne: 'फ्याक्स' },
+                                        { id: 'd', label: 'Lion', emoji: '🦁', label_ne: 'सिंह' }
+                                    ],
+                                    correctOrder: ['a', 'b', 'c', 'd'],
+                                    funFact: 'Everything in nature is connected – like a big chain of friends!',
+                                    funFact_ne: 'प्रकृतिमा सबै कुरा जोडिएको छ – साथीहरूको ठूलो शृंखला जस्तै!'
+                                }
+                            ]
+                        },
+                        advanced: {
+                            label: 'Advanced',
+                            questions: [{
+                                    type: 'mcq',
+                                    question: 'What is the biggest internal organ we have? 🧬',
+                                    question_ne: 'हाम्रो भित्रको सबैभन्दा ठूलो अंग कुन हो? 🧬',
+                                    options: [
+                                        { label: 'Liver', emoji: '🧫', label_ne: 'कलेजो' },
+                                        { label: 'Brain', emoji: '🧠', label_ne: 'मस्तिष्क' },
+                                        { label: 'Heart', emoji: '❤️', label_ne: 'मुटु' },
+                                        { label: 'Lungs', emoji: '🫁', label_ne: 'फोक्सो' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Your liver is like a filter – it cleans your blood every day!',
+                                    funFact_ne: 'तपाईंको कलेजो फिल्टर जस्तै हो – यसले दैनिक रगत सफा गर्छ!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Which animal carries its babies in a pouch? 🦘',
+                                    question_ne: 'कुन जनावरले आफ्ना बच्चाहरूलाई झोलामा बोक्छ? 🦘',
+                                    options: [
+                                        { label: 'Kangaroo', emoji: '🦘', label_ne: 'कंगारू' },
+                                        { label: 'Bear', emoji: '🐻', label_ne: 'भालु' },
+                                        { label: 'Elephant', emoji: '🐘', label_ne: 'हात्ती' },
+                                        { label: 'Giraffe', emoji: '🦒', label_ne: 'जिराफ' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Kangaroos are marsupials – their babies grow in a cozy pouch!',
+                                    funFact_ne: 'कंगारूहरू मार्सुपियल हुन् – तिनीहरूका बच्चाहरू आरामदायी झोलामा बढ्छन्!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Which element is most common in the Earth\'s crust? 🪨',
+                                    question_ne: 'पृथ्वीको क्रस्टमा सबैभन्दा धेरै कुन तत्व पाइन्छ? 🪨',
+                                    options: [
+                                        { label: 'Oxygen', emoji: '💨', label_ne: 'अक्सिजन' },
+                                        { label: 'Silicon', emoji: '🔮', label_ne: 'सिलिकन' },
+                                        { label: 'Aluminium', emoji: '🔩', label_ne: 'एल्युमिनियम' },
+                                        { label: 'Iron', emoji: '⚙️', label_ne: 'फलाम' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Oxygen makes up nearly half of the Earth\'s crust – it\'s everywhere!',
+                                    funFact_ne: 'अक्सिजनले पृथ्वीको क्रस्टको लगभग आधा भाग ओगट्छ – यो जताततै छ!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'What is the study of plants called? 🌿',
+                                    question_ne: 'बोटबिरुवाको अध्ययनलाई के भनिन्छ? 🌿',
+                                    options: [
+                                        { label: 'Botany', emoji: '🌿', label_ne: 'वनस्पतिशास्त्र' },
+                                        { label: 'Zoology', emoji: '🐾', label_ne: 'प्राणीशास्त्र' },
+                                        { label: 'Ecology', emoji: '🌍', label_ne: 'पारिस्थितिकी' },
+                                        { label: 'Geology', emoji: '⛰️', label_ne: 'भूविज्ञान' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Botany is all about plants – from tiny mosses to giant trees!',
+                                    funFact_ne: 'वनस्पतिशास्त्र बोटबिरुवाको बारेमा हो – साना मसदेखि विशाल रूखसम्म!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Which organ cleans our blood and makes pee? 🧼',
+                                    question_ne: 'कुन अंगले रगत सफा गर्छ र पिसाब बनाउँछ? 🧼',
+                                    options: [
+                                        { label: 'Kidneys', emoji: '🧫', label_ne: 'मृगौला' },
+                                        { label: 'Liver', emoji: '🧫', label_ne: 'कलेजो' },
+                                        { label: 'Heart', emoji: '❤️', label_ne: 'मुटु' },
+                                        { label: 'Lungs', emoji: '🫁', label_ne: 'फोक्सो' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Kidneys work like a washing machine – they filter waste from blood!',
+                                    funFact_ne: 'मृगौला वासिङ मेसिन जस्तै काम गर्छ – यसले रगतबाट फोहोर फिल्टर गर्छ!'
+                                },
+                                {
+                                    type: 'puzzle',
+                                    question: 'Order the human life stages from baby to adult:',
+                                    question_ne: 'मानव जीवनका चरणहरूलाई बच्चादेखि वयस्कसम्म मिलाउनुहोस्:',
+                                    hint: 'Baby → Child → Teenager → Adult',
+                                    hint_ne: 'बच्चा → बालक → किशोर → वयस्क',
+                                    items: [
+                                        { id: 'a', label: 'Child', emoji: '🧒', label_ne: 'बालक' },
+                                        { id: 'b', label: 'Baby', emoji: '👶', label_ne: 'बच्चा' },
+                                        { id: 'c', label: 'Adult', emoji: '🧑', label_ne: 'वयस्क' },
+                                        { id: 'd', label: 'Teenager', emoji: '🧑‍🎓', label_ne: 'किशोर' }
+                                    ],
+                                    correctOrder: ['b', 'a', 'd', 'c'],
+                                    funFact: 'We all start as babies and grow up – everyone does!',
+                                    funFact_ne: 'हामी सबै बच्चाबाट सुरु हुन्छौं र ठूला हुन्छौं – सबैले यस्तै गर्छन्!'
+                                }
+                            ]
+                        }
+                    }
+                },
+                solar: {
+                    label: 'Solar System',
+                    icon: '🪐',
+                    levels: {
+                        basic: {
+                            label: 'Basic',
+                            questions: [{
+                                    type: 'mcq',
+                                    question: 'Which planet is closest to the Sun? 🌞',
+                                    question_ne: 'कुन ग्रह सूर्यको सबैभन्दा नजिक छ? 🌞',
+                                    options: [
+                                        { label: 'Mercury', emoji: '☿️', label_ne: 'बुध' },
+                                        { label: 'Venus', emoji: '♀️', label_ne: 'शुक्र' },
+                                        { label: 'Earth', emoji: '🌍', label_ne: 'पृथ्वी' },
+                                        { label: 'Mars', emoji: '🔴', label_ne: 'मंगल' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Mercury is tiny and fast – it orbits the Sun in just 88 days!',
+                                    funFact_ne: 'बुध सानो र छिटो छ – यसले सूर्यको परिक्रमा जम्मा ८८ दिनमा गर्छ!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Which planet looks red like rust? 🔴',
+                                    question_ne: 'कुन ग्रह खिया जस्तै रातो देखिन्छ? 🔴',
+                                    options: [
+                                        { label: 'Mars', emoji: '🔴', label_ne: 'मंगल' },
+                                        { label: 'Venus', emoji: '🟡', label_ne: 'शुक्र' },
+                                        { label: 'Jupiter', emoji: '🟠', label_ne: 'बृहस्पति' },
+                                        { label: 'Saturn', emoji: '🪐', label_ne: 'शनि' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Mars is red because of iron rust – like an old bicycle!',
+                                    funFact_ne: 'मंगल रातो छ किनभने फलामको खिया – पुरानो साइकल जस्तै!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Which planet has beautiful rings around it? 💍',
+                                    question_ne: 'कुन ग्रहको वरिपरि सुन्दर वलय छ? 💍',
+                                    options: [
+                                        { label: 'Saturn', emoji: '🪐', label_ne: 'शनि' },
+                                        { label: 'Jupiter', emoji: '🟠', label_ne: 'बृहस्पति' },
+                                        { label: 'Neptune', emoji: '🔵', label_ne: 'नेप्च्युन' },
+                                        { label: 'Uranus', emoji: '🟢', label_ne: 'युरेनस' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Saturn\'s rings are made of ice and rock – they sparkle like jewels!',
+                                    funFact_ne: 'शनिका वलय बरफ र ढुङ्गाले बनेका छन् – तिनीहरू रत्नजस्तै चम्किन्छन्!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Which planet is the biggest of them all? 🐘',
+                                    question_ne: 'सबैभन्दा ठूलो ग्रह कुन हो? 🐘',
+                                    options: [
+                                        { label: 'Jupiter', emoji: '🟠', label_ne: 'बृहस्पति' },
+                                        { label: 'Saturn', emoji: '🪐', label_ne: 'शनि' },
+                                        { label: 'Neptune', emoji: '🔵', label_ne: 'नेप्च्युन' },
+                                        { label: 'Uranus', emoji: '🟢', label_ne: 'युरेनस' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Jupiter is so huge that all the other planets could fit inside!',
+                                    funFact_ne: 'बृहस्पति यति ठूलो छ कि अरू सबै ग्रहहरू यसको भित्र अटाउन सक्छन्!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'What is the name of our galaxy? 🌌',
+                                    question_ne: 'हाम्रो आकाशगंगाको नाम के हो? 🌌',
+                                    options: [
+                                        { label: 'Milky Way', emoji: '🌌', label_ne: 'दुधको बाटो' },
+                                        { label: 'Andromeda', emoji: '🌠', label_ne: 'एन्ड्रोमेडा' },
+                                        { label: 'Triangulum', emoji: '🔺', label_ne: 'त्रिभुज' },
+                                        { label: 'Sombrero', emoji: '🎩', label_ne: 'सोम्ब्रेरो' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Our galaxy looks like a milky swirl in the night sky – that\'s why it\'s called the Milky Way!',
+                                    funFact_ne: 'हाम्रो आकाशगंगा रातको आकाशमा दुधको जस्तै देखिन्छ – त्यसैले यसलाई दुधको बाटो भनिन्छ!'
+                                },
+                                {
+                                    type: 'puzzle',
+                                    question: 'Order these planets from closest to farthest from the Sun:',
+                                    question_ne: 'यी ग्रहहरूलाई सूर्यबाट नजिकदेखि टाढासम्म मिलाउनुहोस्:',
+                                    hint: 'Mercury → Venus → Earth → Mars',
+                                    hint_ne: 'बुध → शुक्र → पृथ्वी → मंगल',
+                                    items: [
+                                        { id: 'a', label: 'Earth', emoji: '🌍', label_ne: 'पृथ्वी' },
+                                        { id: 'b', label: 'Mercury', emoji: '☿️', label_ne: 'बुध' },
+                                        { id: 'c', label: 'Venus', emoji: '♀️', label_ne: 'शुक्र' },
+                                        { id: 'd', label: 'Mars', emoji: '🔴', label_ne: 'मंगल' }
+                                    ],
+                                    correctOrder: ['b', 'c', 'a', 'd'],
+                                    funFact: 'The inner planets are small and rocky – the outer ones are big gas balls!',
+                                    funFact_ne: 'भित्री ग्रहहरू साना र चट्टानी हुन् – बाहिरी ग्रहहरू ठूला ग्यासका बल हुन्!'
+                                }
+                            ]
+                        },
+                        intermediate: {
+                            label: 'Intermediate',
+                            questions: [{
+                                    type: 'mcq',
+                                    question: 'What is Saturn\'s biggest moon called? 🌕',
+                                    question_ne: 'शनिको सबैभन्दा ठूलो चन्द्रमाको नाम के हो? 🌕',
+                                    options: [
+                                        { label: 'Titan', emoji: '🌕', label_ne: 'टाइटान' },
+                                        { label: 'Europa', emoji: '🌕', label_ne: 'युरोपा' },
+                                        { label: 'Ganymede', emoji: '🌕', label_ne: 'ग्यानिमेड' },
+                                        { label: 'Callisto', emoji: '🌕', label_ne: 'क्यालिस्टो' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Titan is even bigger than Mercury – it has its own thick air!',
+                                    funFact_ne: 'टाइटान बुधभन्दा पनि ठूलो छ – यसको आफ्नै बाक्लो हावा छ!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Which planet has a day that\'s longer than its year? ⏳',
+                                    question_ne: 'कुन ग्रहको दिन वर्षभन्दा लामो छ? ⏳',
+                                    options: [
+                                        { label: 'Venus', emoji: '♀️', label_ne: 'शुक्र' },
+                                        { label: 'Mercury', emoji: '☿️', label_ne: 'बुध' },
+                                        { label: 'Mars', emoji: '🔴', label_ne: 'मंगल' },
+                                        { label: 'Jupiter', emoji: '🟠', label_ne: 'बृहस्पति' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Venus spins so slowly that a day there lasts longer than a year – crazy!',
+                                    funFact_ne: 'शुक्र यति ढिलो घुम्छ कि त्यहाँको दिन वर्षभन्दा लामो हुन्छ – पागल!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'What is the famous big storm on Jupiter called? 🌪️',
+                                    question_ne: 'बृहस्पतिमा रहेको प्रसिद्ध ठूलो आँधीलाई के भनिन्छ? 🌪️',
+                                    options: [
+                                        { label: 'Great Red Spot', emoji: '🌀', label_ne: 'ठूलो रातो धब्बा' },
+                                        { label: 'Great Dark Spot', emoji: '🌑', label_ne: 'ठूलो कालो धब्बा' },
+                                        { label: 'Eye of Jupiter', emoji: '👁️', label_ne: 'बृहस्पतिको आँखा' },
+                                        { label: 'Jupiter\'s Hurricane', emoji: '💨', label_ne: 'बृहस्पतिको आँधी' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'The Great Red Spot is a giant storm – it\'s been raging for hundreds of years!',
+                                    funFact_ne: 'ठूलो रातो धब्बा एक विशाल आँधी हो – यो सयौं वर्षदेखि चलिरहेको छ!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Which planet is often called the "Morning Star"? ⭐',
+                                    question_ne: 'कुन ग्रहलाई प्रायः "बिहानी तारा" भनिन्छ? ⭐',
+                                    options: [
+                                        { label: 'Venus', emoji: '♀️', label_ne: 'शुक्र' },
+                                        { label: 'Mars', emoji: '🔴', label_ne: 'मंगल' },
+                                        { label: 'Jupiter', emoji: '🟠', label_ne: 'बृहस्पति' },
+                                        { label: 'Saturn', emoji: '🪐', label_ne: 'शनि' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Venus shines bright in the morning and evening – it\'s a dazzling star!',
+                                    funFact_ne: 'शुक्र बिहान र साँझ उज्यालो हुन्छ – यो चम्किलो तारा हो!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'What is the tiniest planet in our solar system? 🪐',
+                                    question_ne: 'हाम्रो सौर्यमण्डलको सबैभन्दा सानो ग्रह कुन हो? 🪐',
+                                    options: [
+                                        { label: 'Mercury', emoji: '☿️', label_ne: 'बुध' },
+                                        { label: 'Mars', emoji: '🔴', label_ne: 'मंगल' },
+                                        { label: 'Venus', emoji: '♀️', label_ne: 'शुक्र' },
+                                        { label: 'Neptune', emoji: '🔵', label_ne: 'नेप्च्युन' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Mercury is the smallest – it\'s only a little bigger than our Moon!',
+                                    funFact_ne: 'बुध सबैभन्दा सानो हो – यो हाम्रो चन्द्रमाभन्दा अलि मात्र ठूलो छ!'
+                                },
+                                {
+                                    type: 'puzzle',
+                                    question: 'Put these planets in order from smallest to largest:',
+                                    question_ne: 'यी ग्रहहरूलाई सानोदेखि ठूलोसम्म मिलाउनुहोस्:',
+                                    hint: 'Mercury → Mars → Venus → Earth',
+                                    hint_ne: 'बुध → मंगल → शुक्र → पृथ्वी',
+                                    items: [
+                                        { id: 'a', label: 'Earth', emoji: '🌍', label_ne: 'पृथ्वी' },
+                                        { id: 'b', label: 'Mars', emoji: '🔴', label_ne: 'मंगल' },
+                                        { id: 'c', label: 'Venus', emoji: '♀️', label_ne: 'शुक्र' },
+                                        { id: 'd', label: 'Mercury', emoji: '☿️', label_ne: 'बुध' }
+                                    ],
+                                    correctOrder: ['d', 'b', 'c', 'a'],
+                                    funFact: 'Earth is the biggest rocky planet, but Jupiter is the real giant!',
+                                    funFact_ne: 'पृथ्वी सबैभन्दा ठूलो चट्टानी ग्रह हो, तर बृहस्पति साँचो विशाल हो!'
+                                }
+                            ]
+                        },
+                        advanced: {
+                            label: 'Advanced',
+                            questions: [{
+                                    type: 'mcq',
+                                    question: 'Which body was demoted to a dwarf planet? 😢',
+                                    question_ne: 'कुन पिण्डलाई बौना ग्रहको रूपमा पुन: वर्गीकृत गरियो? 😢',
+                                    options: [
+                                        { label: 'Pluto', emoji: '♇', label_ne: 'प्लुटो' },
+                                        { label: 'Ceres', emoji: '🌑', label_ne: 'सेरेस' },
+                                        { label: 'Eris', emoji: '🌑', label_ne: 'एरिस' },
+                                        { label: 'Makemake', emoji: '🌑', label_ne: 'मेकमेक' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Pluto got kicked out of the planet club in 2006 – but it\'s still cool!',
+                                    funFact_ne: 'प्लुटोलाई २००६ मा ग्रह क्लबबाट निकालियो – तर यो अझै राम्रो छ!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'Which planet has the most moons? 🌙',
+                                    question_ne: 'कुन ग्रहमा सबैभन्दा धेरै चन्द्रमा छन्? 🌙',
+                                    options: [
+                                        { label: 'Saturn', emoji: '🪐', label_ne: 'शनि' },
+                                        { label: 'Jupiter', emoji: '🟠', label_ne: 'बृहस्पति' },
+                                        { label: 'Uranus', emoji: '🟢', label_ne: 'युरेनस' },
+                                        { label: 'Neptune', emoji: '🔵', label_ne: 'नेप्च्युन' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'Saturn has over 80 moons – that\'s a whole solar system of friends!',
+                                    funFact_ne: 'शनिसँग ८० भन्दा बढी चन्द्रमा छन् – त्यो साथीहरूको सम्पूर्ण सौर्यमण्डल हो!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'What is the Kuiper Belt? 🧊',
+                                    question_ne: 'काइपर बेल्ट के हो? 🧊',
+                                    options: [
+                                        { label: 'A ring of icy stuff past Neptune', emoji: '🧊', label_ne: 'नेप्च्युनभन्दा पर बरफीय क्षेत्र' },
+                                        { label: 'A belt of asteroids between Mars and Jupiter', emoji: '🪨', label_ne: 'मंगल र बृहस्पतिबीचको क्षुद्रग्रह घेरा' },
+                                        { label: 'A big gas cloud around the Sun', emoji: '☁️', label_ne: 'सूर्यको वरिपरि ठूलो ग्यास बादल' },
+                                        { label: 'A layer of the Sun\'s atmosphere', emoji: '☀️', label_ne: 'सूर्यको वायुमण्डलको तह' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'The Kuiper Belt is like a giant freezer full of icy rocks and dwarf planets!',
+                                    funFact_ne: 'काइपर बेल्ट बरफीय ढुङ्गा र बौना ग्रहहरूले भरिएको विशाल फ्रिजर जस्तै हो!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'What is the Sun mostly made of? ☀️',
+                                    question_ne: 'सूर्य प्रायः केले बनेको छ? ☀️',
+                                    options: [
+                                        { label: 'Hydrogen and Helium', emoji: '💨', label_ne: 'हाइड्रोजन र हेलियम' },
+                                        { label: 'Oxygen and Carbon', emoji: '🌿', label_ne: 'अक्सिजन र कार्बन' },
+                                        { label: 'Iron and Nickel', emoji: '⚙️', label_ne: 'फलाम र निकेल' },
+                                        { label: 'Silicon and Aluminium', emoji: '🔮', label_ne: 'सिलिकन र एल्युमिनियम' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'The Sun is a giant ball of gas – mostly hydrogen and helium, like a star!',
+                                    funFact_ne: 'सूर्य ग्यासको विशाल बल हो – प्रायः हाइड्रोजन र हेलियम, तारा जस्तै!'
+                                },
+                                {
+                                    type: 'mcq',
+                                    question: 'How fast do you need to go to escape Earth\'s gravity? 🚀',
+                                    question_ne: 'पृथ्वीको गुरुत्वाकर्षणबाट मुक्त हुन कति छिटो जानुपर्छ? 🚀',
+                                    options: [
+                                        { label: '11.2 km/s', emoji: '🚀', label_ne: '११.२ किमी/से' },
+                                        { label: '7.9 km/s', emoji: '🛰️', label_ne: '७.९ किमी/से' },
+                                        { label: '3.5 km/s', emoji: '✈️', label_ne: '३.५ किमी/से' },
+                                        { label: '15 km/s', emoji: '🚀', label_ne: '१५ किमी/से' }
+                                    ],
+                                    correct: 0,
+                                    funFact: 'That\'s called escape velocity – it\'s like a rocket\'s need for speed!',
+                                    funFact_ne: 'यसलाई पलायन वेग भनिन्छ – यो रकेटको गतिको आवश्यकता जस्तै हो!'
+                                },
+                                {
+                                    type: 'puzzle',
+                                    question: 'Order these planets by distance from the Sun (closest to farthest):',
+                                    question_ne: 'यी ग्रहहरूलाई सूर्यबाट दूरी (नजिकदेखि टाढा) अनुसार मिलाउनुहोस्:',
+                                    hint: 'Mercury → Venus → Earth → Mars',
+                                    hint_ne: 'बुध → शुक्र → पृथ्वी → मंगल',
+                                    items: [
+                                        { id: 'a', label: 'Mars', emoji: '🔴', label_ne: 'मंगल' },
+                                        { id: 'b', label: 'Venus', emoji: '♀️', label_ne: 'शुक्र' },
+                                        { id: 'c', label: 'Mercury', emoji: '☿️', label_ne: 'बुध' },
+                                        { id: 'd', label: 'Earth', emoji: '🌍', label_ne: 'पृथ्वी' }
+                                    ],
+                                    correctOrder: ['c', 'b', 'd', 'a'],
+                                    funFact: 'It takes 8 minutes for sunlight to reach us – that\'s a long journey!',
+                                    funFact_ne: 'सूर्यको प्रकाश हामीसम्म आउन ८ मिनेट लाग्छ – त्यो लामो यात्रा हो!'
+                                }
+                            ]
+                        }
+                    }
+                }
+            };
+            const SUBJECTS = SUBJECTS_EN;
+
+            //  FLASHCARD DATA — kid-friendly, bilingual, casual tone!
+            const FLASHCARD_LEVELS = {
+                basic: {
+                    id: 'basic',
+                    label: 'Basic',
+                    icon: '🌱',
+                    cards: [
+                        // --- Space (6) ---
+                        { id: 'sun', icon: '☀️', name: 'The Sun', subtitle: 'Our Star',
+                            facts: ['The Sun gives us light and heat – it\'s a big, bright star!',
+                                'It\'s so huge that 1 million Earths could fit inside!',
+                                'The Sun is about 5,500°C on the surface – that\'s super hot!'
+                            ],
+                            facts_ne: ['सूर्यले हामीलाई उज्यालो र गर्मी दिन्छ – यो एउटा ठूलो, चम्किलो तारा हो!',
+                                'यति ठूलो छ कि १० लाख पृथ्वीहरू यसको भित्र अटाउन सक्छन्!',
+                                'सूर्यको सतहको तापक्रम करिब ५,५००°C छ – त्यो धेरै तातो हो!'
+                            ],
+                            tag: 'Star', tag_ne: 'तारा' },
+                        { id: 'mercury', icon: '☿', name: 'Mercury', subtitle: 'The Swift Planet',
+                            facts: ['Mercury is the tiniest planet and the closest to the Sun!',
+                                'It has almost no air, so days are boiling hot and nights are freezing cold!',
+                                'A year on Mercury is just 88 Earth days – super short!'
+                            ],
+                            facts_ne: ['बुध सबैभन्दा सानो ग्रह हो र सूर्यको सबैभन्दा नजिक छ!',
+                                'यहाँ लगभग हावा छैन, त्यसैले दिनमा धेरै तातो र रातमा धेरै चिसो हुन्छ!',
+                                'बुधको एक वर्ष जम्मा ८८ पृथ्वी दिन हो – धेरै छोटो!'
+                            ],
+                            tag: 'Terrestrial', tag_ne: 'स्थलीय' },
+                        { id: 'venus', icon: '♀', name: 'Venus', subtitle: 'The Evening Star',
+                            facts: ['Venus is the hottest planet – even hotter than Mercury!',
+                                'It spins backwards – the Sun rises in the west and sets in the east!',
+                                'Its thick clouds are made of acid – yikes!'
+                            ],
+                            facts_ne: ['शुक्र सबैभन्दा तातो ग्रह हो – बुधभन्दा पनि तातो!',
+                                'यो उल्टो घुम्छ – सूर्य पश्चिममा उदाउँछ र पूर्वमा अस्ताउँछ!',
+                                'यसको बाक्लो बादलहरू एसिडले बनेका छन् – ओहो!'
+                            ],
+                            tag: 'Terrestrial', tag_ne: 'स्थलीय' },
+                        { id: 'earth', icon: '🌍', name: 'Earth', subtitle: 'The Blue Marble',
+                            facts: ['Earth is the only planet we know that has life!',
+                                'About 71% of Earth is covered with water – that\'s why it looks blue!',
+                                'We have one moon that lights up our night sky.'
+                            ],
+                            facts_ne: ['पृथ्वी मात्र त्यो ग्रह हो जहाँ जीवन छ!',
+                                'पृथ्वीको करिब ७१% पानीले ढाकिएको छ – त्यसैले यो निलो देखिन्छ!',
+                                'हामीसँग एउटा चन्द्रमा छ जसले रातको आकाश उज्यालो बनाउँछ।'
+                            ],
+                            tag: 'Terrestrial', tag_ne: 'स्थलीय' },
+                        { id: 'mars', icon: '♂', name: 'Mars', subtitle: 'The Red Planet',
+                            facts: ['Mars is called the Red Planet because of rusty iron on its surface!',
+                                'It has the tallest volcano in the solar system – Olympus Mons!',
+                                'Mars has two tiny moons: Phobos and Deimos.'
+                            ],
+                            facts_ne: ['मंगललाई रातो ग्रह भनिन्छ किनभने यसको सतहमा खिया लागेको फलाम छ!',
+                                'यसमा सौर्यमण्डलको सबैभन्दा अग्लो ज्वालामुखी छ – ओलम्पस मोन्स!',
+                                'मंगलका दुई साना चन्द्रमा छन्: फोबोस र डेमोस।'
+                            ],
+                            tag: 'Terrestrial', tag_ne: 'स्थलीय' },
+                        { id: 'moon', icon: '🌙', name: 'The Moon', subtitle: 'Earth\'s Companion',
+                            facts: ['The Moon is Earth\'s only natural satellite – it orbits around us!',
+                                'It\'s about 384,400 km away – that\'s far but we can see it every night!',
+                                'There\'s no air on the Moon, so footprints stay forever!'
+                            ],
+                            facts_ne: ['चन्द्रमा पृथ्वीको एकमात्र प्राकृतिक उपग्रह हो – यो हाम्रो वरिपरि घुम्छ!',
+                                'यो करिब ३,८४,४०० किमी टाढा छ – त्यो धेरै टाढा तर हामी यसलाई हरेक रात देख्न सक्छौं!',
+                                'चन्द्रमामा हावा छैन, त्यसैले पाइलाका छाप सधैं रहन्छन्!'
+                            ],
+                            tag: 'Moon', tag_ne: 'चन्द्रमा' },
+                        // --- Science & Nature (6) ---
+                        { id: 'matter', icon: '🧊', name: 'States of Matter', subtitle: 'Solid, Liquid, Gas',
+                            facts: ['Solids keep their shape – like ice cubes and rocks!',
+                                'Liquids flow and take the shape of their container – like water and milk!',
+                                'Gases fill up any space – like the air we breathe!',
+                                'Heating or cooling can change matter from one state to another – cool, right?'
+                            ],
+                            facts_ne: ['ठोस पदार्थहरू आफ्नो आकार राख्छन् – जस्तै बरफका टुक्रा र ढुङ्गा!',
+                                'तरल पदार्थ बग्छन् र भाँडाको आकार लिन्छन् – जस्तै पानी र दूध!',
+                                'ग्यासहरू कुनै पनि ठाउँ भर्छन् – जस्तै हामीले सास फेर्ने हावा!',
+                                'तातो वा चिसोले पदार्थको अवस्था परिवर्तन गर्न सक्छ – रमाइलो, हैन?'
+                            ],
+                            tag: 'Science', tag_ne: 'विज्ञान' },
+                        { id: 'watercycle', icon: '💧', name: 'The Water Cycle', subtitle: 'Water on the Move',
+                            facts: ['Evaporation: the Sun heats water and turns it into vapor!',
+                                'Condensation: vapor cools and makes clouds!',
+                                'Precipitation: water falls back as rain or snow!',
+                                'Collection: water gathers in rivers, lakes, and oceans – and the cycle starts again!'
+                            ],
+                            facts_ne: ['वाष्पीकरण: सूर्यले पानीलाई तताउँछ र वाष्प बनाउँछ!',
+                                'संघनन: वाष्प चिसो हुन्छ र बादल बनाउँछ!',
+                                'वर्षा: पानी फेरि वर्षा वा हिउँको रूपमा खस्छ!',
+                                'सङ्कलन: पानी नदी, ताल र महासागरमा जम्मा हुन्छ – र चक्र फेरि सुरु हुन्छ!'
+                            ],
+                            tag: 'Nature', tag_ne: 'प्रकृति' },
+                        { id: 'plantparts', icon: '🌱', name: 'Plant Parts', subtitle: 'Roots, Stem, Leaves, Flowers',
+                            facts: ['Roots hold the plant in the ground and drink water and minerals!',
+                                'Stems stand tall and carry food and water around the plant!',
+                                'Leaves are like little kitchens – they make food using sunlight!',
+                                'Flowers are the pretty part – they make seeds for new plants!'
+                            ],
+                            facts_ne: ['जराले बोटलाई जमिनमा टाँस्छ र पानी र खनिज पिउँछ!',
+                                'डाँठले बोटलाई उभ्याउँछ र खाना र पानी बोटभरि पुर्याउँछ!',
+                                'पातहरू सानो भान्सा जस्तै हुन् – तिनीहरूले सूर्यको प्रकाश प्रयोग गरेर खाना बनाउँछन्!',
+                                'फूलहरू सुन्दर भाग हुन् – तिनीहरूले नयाँ बोटका लागि बीउ बनाउँछन्!'
+                            ],
+                            tag: 'Nature', tag_ne: 'प्रकृति' },
+                        { id: 'senses', icon: '👁️', name: 'The Five Senses', subtitle: 'See, Hear, Smell, Taste, Touch',
+                            facts: ['Sight – our eyes help us see colors, shapes, and faces!',
+                                'Hearing – our ears catch sounds and music!',
+                                'Smell – our nose picks up yummy and yucky smells!',
+                                'Taste – our tongue tastes sweet, sour, salty, bitter, and umami!',
+                                'Touch – our skin feels things like soft, rough, hot, and cold!'
+                            ],
+                            facts_ne: ['दृष्टि – हाम्रा आँखाले रंग, आकार र अनुहार देख्न मद्दत गर्छ!',
+                                'श्रवण – हाम्रा कानले आवाज र संगीत सुन्छन्!',
+                                'घ्राण – हाम्रो नाकले मीठो र फोहोर गन्ध पत्ता लगाउँछ!',
+                                'स्वाद – हाम्रो जिब्रोले मीठो, अमिलो, नुनिलो, तीतो र उमामी स्वाद लिन्छ!',
+                                'स्पर्श – हाम्रो छालाले नरम, नराम्रो, तातो र चिसो महसुस गर्छ!'
+                            ],
+                            tag: 'Science', tag_ne: 'विज्ञान' },
+                        { id: 'weather', icon: '☀️', name: 'Weather Types', subtitle: 'Sunny, Rainy, Cloudy, Snowy',
+                            facts: ['Sunny – bright and warm, great for playing outside!',
+                                'Rainy – water drops fall from clouds, don\'t forget your umbrella!',
+                                'Cloudy – the sky is covered with clouds, sometimes it rains!',
+                                'Snowy – ice crystals fall as snowflakes, perfect for snowmen!',
+                                'Weather changes how we dress and what we do every day!'
+                            ],
+                            facts_ne: ['घाम – उज्यालो र न्यानो, बाहिर खेल्नको लागि उत्तम!',
+                                'वर्षा – बादलबाट पानीका थोपा खस्छन्, आफ्नो छाता नबिर्सनुहोस्!',
+                                'बादली – आकाश बादलले ढाकिएको छ, कहिलेकाहीँ वर्षा हुन्छ!',
+                                'हिउँ – बरफका क्रिस्टल हिउँका फोका जस्तै खस्छन्, हिउँमानिस बनाउन उत्तम!',
+                                'मौसमले हाम्रो पहिरन र हामीले दैनिक के गर्छौं भनेर परिवर्तन गर्छ!'
+                            ],
+                            tag: 'Nature', tag_ne: 'प्रकृति' },
+                        { id: 'livingthings', icon: '🌿', name: 'Living vs Non-Living', subtitle: 'What is alive?',
+                            facts: ['Living things grow, need food, and can have babies – like plants and animals!',
+                                'People, dogs, and trees are living things.',
+                                'Non-living things don\'t grow or need food – like rocks, chairs, and toys!',
+                                'Living things react to changes around them – like a plant bending toward the sun!'
+                            ],
+                            facts_ne: ['जीवित चीजहरू बढ्छन्, खाना चाहिन्छ र बच्चा जन्माउँछन् – जस्तै बोट र जनावर!',
+                                'मानिस, कुकुर र रूखहरू जीवित चीजहरू हुन्।',
+                                'निर्जीव चीजहरू बढ्दैनन् र खाना चाहिँदैन – जस्तै ढुङ्गा, कुर्सी र खेलौना!',
+                                'जीवित चीजहरू आफ्नो वरपरको परिवर्तनमा प्रतिक्रिया दिन्छन् – जस्तै सूर्यतिर झुकेको बोट!'
+                            ],
+                            tag: 'Science', tag_ne: 'विज्ञान' }
+                    ]
+                },
+                intermediate: {
+                    id: 'intermediate',
+                    label: 'Intermediate',
+                    icon: '🚀',
+                    cards: [
+                        // --- Space (6) ---
+                        { id: 'jupiter', icon: '♃', name: 'Jupiter', subtitle: 'The Giant',
+                            facts: ['Jupiter is the biggest planet – you could fit 1,300 Earths inside!',
+                                'It has a giant storm called the Great Red Spot – it\'s bigger than Earth!',
+                                'Jupiter has 79 known moons – that\'s a lot of friends!'
+                            ],
+                            facts_ne: ['बृहस्पति सबैभन्दा ठूलो ग्रह हो – यसको भित्र १३०० पृथ्वीहरू अटाउन सक्छन्!',
+                                'यसमा ठूलो आँधी छ जसलाई ठूलो रातो धब्बा भनिन्छ – यो पृथ्वीभन्दा ठूलो छ!',
+                                'बृहस्पतिसँग ७९ ज्ञात चन्द्रमा छन् – त्यो धेरै साथीहरू!'
+                            ],
+                            tag: 'Gas Giant', tag_ne: 'ग्यासको विशाल' },
+                        { id: 'saturn', icon: '♄', name: 'Saturn', subtitle: 'The Ringed World',
+                            facts: ['Saturn has beautiful rings made of ice and rock – they sparkle!',
+                                'Saturn is so light that it would float in a giant bathtub – weird, right?',
+                                'It has 82 known moons – the most in the solar system!'
+                            ],
+                            facts_ne: ['शनिसँग बरफ र ढुङ्गाले बनेका सुन्दर वलय छन् – तिनीहरू चम्किन्छन्!',
+                                'शनि यति हलुका छ कि यो एउटा विशाल नुहाउने टबमा पौडिन सक्छ – अनौठो, हैन?',
+                                'यससँग ८२ ज्ञात चन्द्रमा छन् – सौर्यमण्डलमा सबैभन्दा धेरै!'
+                            ],
+                            tag: 'Gas Giant', tag_ne: 'ग्यासको विशाल' },
+                        { id: 'uranus', icon: '⛢', name: 'Uranus', subtitle: 'The Sideways Planet',
+                            facts: ['Uranus spins on its side – almost like a rolling ball!',
+                                'It\'s the coldest planet – -224°C, brrr!',
+                                'It has 27 known moons, all named after Shakespeare characters!'
+                            ],
+                            facts_ne: ['युरेनस आफ्नो छेउमा घुम्छ – लगभग एउटा बल जस्तै!',
+                                'यो सबैभन्दा चिसो ग्रह हो – -२२४°C, हिउँ!',
+                                'यससँग २७ ज्ञात चन्द्रमा छन्, सबै शेक्सपियरका पात्रहरूको नाममा!'
+                            ],
+                            tag: 'Ice Giant', tag_ne: 'बरफको विशाल' },
+                        { id: 'neptune', icon: '♆', name: 'Neptune', subtitle: 'The Windy World',
+                            facts: ['Neptune is the windiest planet – winds blow at 2,100 km/h!',
+                                'It\'s the farthest planet from the Sun – very cold and dark!',
+                                'It has 14 known moons, with the largest named Triton.'
+                            ],
+                            facts_ne: ['नेप्च्युन सबैभन्दा हावायुक्त ग्रह हो – हावा २,१०० किमी/घण्टाको गतिले बहन्छ!',
+                                'यो सूर्यबाट सबैभन्दा टाढाको ग्रह हो – धेरै चिसो र अँधेरो!',
+                                'यससँग १४ ज्ञात चन्द्रमा छन्, सबैभन्दा ठूलोको नाम ट्राइटन हो।'
+                            ],
+                            tag: 'Ice Giant', tag_ne: 'बरफको विशाल' },
+                        { id: 'asteroidbelt', icon: '☄️', name: 'Asteroid Belt', subtitle: 'Between Mars & Jupiter',
+                            facts: ['The asteroid belt is a huge ring of rocks between Mars and Jupiter!',
+                                'There are millions of asteroids – some are tiny, some are huge!',
+                                'The biggest one is Ceres – it\'s a dwarf planet!'
+                            ],
+                            facts_ne: ['क्षुद्रग्रह घेरा मंगल र बृहस्पतिबीच ढुङ्गाहरूको विशाल घेरा हो!',
+                                'त्यहाँ लाखौं क्षुद्रग्रहहरू छन् – कोही साना, कोही ठूला!',
+                                'सबैभन्दा ठूलो सेरेस हो – यो एउटा बौना ग्रह हो!'
+                            ],
+                            tag: 'Belt', tag_ne: 'घेरा' },
+                        { id: 'pluto', icon: '🪐', name: 'Pluto', subtitle: 'Dwarf Planet',
+                            facts: ['Pluto is a dwarf planet – it\'s smaller than our Moon!',
+                                'It has 5 moons – the biggest one is Charon, almost as big as Pluto!',
+                                'Pluto was reclassified as a dwarf planet in 2006 – poor Pluto!'
+                            ],
+                            facts_ne: ['प्लुटो एउटा बौना ग्रह हो – यो हाम्रो चन्द्रमाभन्दा सानो छ!',
+                                'यससँग ५ चन्द्रमा छन् – सबैभन्दा ठूलो चारोन हो, लगभग प्लुटो जति ठूलो!',
+                                'प्लुटोलाई २००६ मा बौना ग्रहको रूपमा पुन: वर्गीकृत गरियो – गरिब प्लुटो!'
+                            ],
+                            tag: 'Dwarf Planet', tag_ne: 'बौना ग्रह' },
+                        // --- Science & Nature (6) ---
+                        { id: 'photosynthesis', icon: '🌱', name: 'Photosynthesis', subtitle: 'How Plants Make Food',
+                            facts: ['Plants use sunlight, water, and CO₂ to make their own food!',
+                                'The green stuff in leaves – chlorophyll – catches sunlight!',
+                                'Plants release oxygen – that\'s the air we breathe!',
+                                'Without plants, we wouldn\'t have any oxygen – thank you, plants!'
+                            ],
+                            facts_ne: ['बोटबिरुवाले आफ्नो खाना बनाउन सूर्यको प्रकाश, पानी र CO₂ प्रयोग गर्छन्!',
+                                'पातको हरियो भाग – क्लोरोफिल – सूर्यको प्रकाश समात्छ!',
+                                'बोटबिरुवाले अक्सिजन छोड्छन् – त्यो हामीले सास फेर्ने हावा हो!',
+                                'बोटबिरुवा नभएको भए हामीसँग अक्सिजन हुँदैन – धन्यवाद, बोटबिरुवा!'
+                            ],
+                            tag: 'Science', tag_ne: 'विज्ञान' },
+                        { id: 'foodchains', icon: '🐾', name: 'Food Chains', subtitle: 'Who Eats Whom?',
+                            facts: ['Producers – like plants – make their own food from sunlight!',
+                                'Consumers – like rabbits and foxes – eat other living things!',
+                                'Decomposers – like fungi and bacteria – break down dead things!',
+                                'A food chain shows how energy flows in nature – it\'s all connected!'
+                            ],
+                            facts_ne: ['उत्पादकहरू – जस्तै बोट – सूर्यको प्रकाशबाट आफ्नो खाना बनाउँछन्!',
+                                'उपभोक्ताहरू – जस्तै खरायो र फ्याक्स – अरू जीवित चीजहरू खान्छन्!',
+                                'विघटनकर्ताहरू – जस्तै फङ्गस र ब्याक्टेरिया – मरेका चीजहरू विघटन गर्छन्!',
+                                'खाद्य शृंखलाले प्रकृतिमा ऊर्जा कसरी प्रवाह हुन्छ देखाउँछ – यो सबै जोडिएको छ!'
+                            ],
+                            tag: 'Nature', tag_ne: 'प्रकृति' },
+                        { id: 'humanbody', icon: '🧠', name: 'Human Body Systems', subtitle: 'How We Work',
+                            facts: ['Skeletal system – bones support us and protect our insides!',
+                                'Muscular system – muscles let us run, jump, and play!',
+                                'Digestive system – it breaks down food so we get energy!',
+                                'Respiratory system – our lungs take in oxygen and let out CO₂!',
+                                'All systems work together – teamwork makes the body work!'
+                            ],
+                            facts_ne: ['कंकाल प्रणाली – हड्डीहरूले हामीलाई सहारा दिन्छन् र भित्री अंगहरूको सुरक्षा गर्छन्!',
+                                'मांसपेशी प्रणाली – मांसपेशीले हामीलाई दौडन, हामफाल्न र खेल्न दिन्छ!',
+                                'पाचन प्रणाली – यसले खानालाई पचाउँछ ताकि हामीलाई ऊर्जा मिलोस्!',
+                                'श्वसन प्रणाली – हाम्रो फोक्सोले अक्सिजन लिन्छ र CO₂ बाहिर निकाल्छ!',
+                                'सबै प्रणालीहरू मिलेर काम गर्छन् – टोली कार्यले शरीर काम गर्छ!'
+                            ],
+                            tag: 'Science', tag_ne: 'विज्ञान' },
+                        { id: 'ecosystems', icon: '🌍', name: 'Ecosystems', subtitle: 'Nature\'s Communities',
+                            facts: ['An ecosystem is a community of living and non-living things!',
+                                'Forests, deserts, oceans, and grasslands are all ecosystems!',
+                                'Each ecosystem has its own plants, animals, and weather!',
+                                'Living things depend on each other – it\'s like a big family!'
+                            ],
+                            facts_ne: ['पारिस्थितिकी तंत्र भनेको जीवित र निर्जीव चीजहरूको समुदाय हो!',
+                                'वन, मरुभूमि, महासागर र घाँसे मैदानहरू सबै पारिस्थितिकी तंत्र हुन्!',
+                                'प्रत्येक पारिस्थितिकी तंत्रको आफ्नै बोटबिरुवा, जनावर र मौसम हुन्छ!',
+                                'जीवित चीजहरू एकअर्कामा निर्भर हुन्छन् – यो ठूलो परिवार जस्तै हो!'
+                            ],
+                            tag: 'Nature', tag_ne: 'प्रकृति' },
+                        { id: 'animalclass', icon: '🐾', name: 'Animal Classification', subtitle: 'Mammals, Birds, Fish & More',
+                            facts: ['Mammals have fur or hair and feed milk to their babies – like lions and dogs!',
+                                'Birds have feathers, lay eggs, and many can fly – like eagles and penguins!',
+                                'Reptiles have scales and are cold-blooded – like snakes and turtles!',
+                                'Amphibians live on land and water – like frogs and salamanders!',
+                                'Fish live in water, have gills and fins – like sharks and salmon!'
+                            ],
+                            facts_ne: ['स्तनधारीहरूको रौं वा कपाल हुन्छ र बच्चाहरूलाई दूध खुवाउँछन् – जस्तै सिंह र कुकुर!',
+                                'चराहरूमा प्वाँख हुन्छ, अण्डा पार्छन्, र धेरै उड्न सक्छन् – जस्तै चील र पेंगुइन!',
+                                'सरीसृपहरूमा स्केल हुन्छ र चिसो रगतका हुन्छन् – जस्तै सर्प र कछुवा!',
+                                'उभयचरहरू जमिन र पानीमा बस्छन् – जस्तै भ्यागुता र सलामन्डर!',
+                                'माछाहरू पानीमा बस्छन्, गिल र पखेटा हुन्छ – जस्तै शार्क र सामन!'
+                            ],
+                            tag: 'Nature', tag_ne: 'प्रकृति' },
+                        { id: 'plantlifecycle', icon: '🌱', name: 'Plant Life Cycle', subtitle: 'From Seed to Flower',
+                            facts: ['Seed – it\'s the start of a new plant, waiting to grow!',
+                                'Germination – the seed sprouts and sends roots down!',
+                                'Growth – the plant grows leaves and stems to catch sunlight!',
+                                'Reproduction – the plant makes flowers and new seeds!',
+                                'The cycle goes on as seeds spread to make new plants – nature\'s magic!'
+                            ],
+                            facts_ne: ['बीउ – यो नयाँ बोटको सुरुवात हो, बढ्नको लागि पर्खिरहेको!',
+                                'अंकुरण – बीउ अंकुरिन्छ र जरा तल पठाउँछ!',
+                                'वृद्धि – बोटले सूर्यको प्रकाश समात्न पात र डाँठ उमार्छ!',
+                                'प्रजनन – बोटले फूल र नयाँ बीउ बनाउँछ!',
+                                'चक्र जारी रहन्छ किनभने बीउहरू फैलिएर नयाँ बोट बनाउँछन् – प्रकृतिको जादू!'
+                            ],
+                            tag: 'Nature', tag_ne: 'प्रकृति' }
+                    ]
+                },
+                advanced: {
+                    id: 'advanced',
+                    label: 'Advanced',
+                    icon: '🧠',
+                    cards: [
+                        // --- Space (6) ---
+                        { id: 'solar-mass', icon: '☀️', name: 'Solar Mass', subtitle: '1.989 × 10³⁰ kg',
+                            facts: ['The Sun is so heavy that it holds 99.86% of all the mass in our solar system!',
+                                'It would take 333,000 Earths to match the Sun\'s weight – wow!',
+                                'Every second, the Sun loses 4 million tons of mass as it shines – that\'s crazy!'
+                            ],
+                            facts_ne: ['सूर्य यति भारी छ कि यसले हाम्रो सौर्यमण्डलको ९९.८६% द्रव्यमान समाउँछ!',
+                                'सूर्यको तौल बराबर गर्न ३,३३,००० पृथ्वीहरू चाहिन्छ – वाह!',
+                                'प्रत्येक सेकेन्ड, सूर्यले चम्किरहेको बेला ४ लाख टन द्रव्यमान गुमाउँछ – त्यो अचम्मको हो!'
+                            ],
+                            tag: 'Star', tag_ne: 'तारा' },
+                        { id: 'merc-orbit', icon: '☿', name: 'Mercury\'s Orbit', subtitle: '88 Days, Eccentric',
+                            facts: ['Mercury has the most oval-shaped orbit of all planets – it\'s not a perfect circle!',
+                                'Its distance from the Sun changes a lot – from 46 to 70 million km!',
+                                'Mercury zips around the Sun at 47.87 km/s – faster than any other planet!'
+                            ],
+                            facts_ne: ['बुधको कक्षा सबैभन्दा अण्डाकार छ – यो पूरा वृत्त होइन!',
+                                'सूर्यबाट यसको दूरी धेरै परिवर्तन हुन्छ – ४६ देखि ७० मिलियन किमी!',
+                                'बुध सूर्यको वरिपरि ४७.८७ किमी/सेकेन्डको गतिमा घुम्छ – अरू कुनै ग्रहभन्दा छिटो!'
+                            ],
+                            tag: 'Terrestrial', tag_ne: 'स्थलीय' },
+                        { id: 'venus-rotation', icon: '♀', name: 'Venus\' Rotation', subtitle: '243 Days — Longer than Year',
+                            facts: ['Venus takes 243 Earth days to spin once – that\'s longer than its year (225 days)!',
+                                'So a day on Venus is longer than a year – weird!',
+                                'It spins backwards, so the Sun rises in the west – that\'s topsy-turvy!'
+                            ],
+                            facts_ne: ['शुक्रलाई एक पटक घुम्न २४३ पृथ्वी दिन लाग्छ – त्यो यसको वर्ष (२२५ दिन) भन्दा लामो छ!',
+                                'त्यसैले शुक्रमा एउटा दिन वर्षभन्दा लामो हुन्छ – अनौठो!',
+                                'यो उल्टो घुम्छ, त्यसैले सूर्य पश्चिममा उदाउँछ – त्यो उल्टो हुन्छ!'
+                            ],
+                            tag: 'Terrestrial', tag_ne: 'स्थलीय' },
+                        { id: 'earth-tilt', icon: '🌍', name: 'Earth\'s Axial Tilt', subtitle: '23.5° — Causes Seasons',
+                            facts: ['Earth is tilted at 23.5° – that\'s why we have four seasons!',
+                                'The tilt changes slightly over 41,000 years – a slow wobble!',
+                                'The tilt also makes days longer in summer and shorter in winter!'
+                            ],
+                            facts_ne: ['पृथ्वी २३.५° मा झुकेको छ – त्यसैले हामीलाई चार ऋतुहरू हुन्छन्!',
+                                'झुकाव ४१,००० वर्षमा अलि परिवर्तन हुन्छ – एक ढिलो हल्लाउने!',
+                                'झुकावले गर्मीमा दिन लामो र जाडोमा छोटो बनाउँछ!'
+                            ],
+                            tag: 'Terrestrial', tag_ne: 'स्थलीय' },
+                        { id: 'mars-atmos', icon: '♂', name: 'Mars\' Atmosphere', subtitle: '95% CO₂, Very Thin',
+                            facts: ['Mars\' atmosphere is very thin – only 1% as thick as Earth\'s!',
+                                'It\'s mostly carbon dioxide (95%) – not good for breathing!',
+                                'Dust storms on Mars can cover the whole planet – like a big blanket!'
+                            ],
+                            facts_ne: ['मंगलको वायुमण्डल धेरै पातलो छ – पृथ्वीको भन्दा १% मात्र बाक्लो!',
+                                'यो प्रायः कार्बन डाइअक्साइड (९५%) हो – सास फेर्नको लागि राम्रो छैन!',
+                                'मंगलमा धुलोको आँधीले पूरै ग्रह ढाक्न सक्छ – ठूलो कम्बल जस्तै!'
+                            ],
+                            tag: 'Terrestrial', tag_ne: 'स्थलीय' },
+                        { id: 'jupiter-comp', icon: '♃', name: 'Jupiter\'s Composition', subtitle: '90% H, 10% He',
+                            facts: ['Jupiter is mostly hydrogen (90%) and helium (10%) – just like the Sun!',
+                                'It has no solid surface – it\'s a giant ball of gas!',
+                                'Jupiter\'s gravity is 2.5 times stronger than Earth\'s – you\'d be heavier there!'
+                            ],
+                            facts_ne: ['बृहस्पति प्रायः हाइड्रोजन (९०%) र हेलियम (१०%) हो – सूर्य जस्तै!',
+                                'यसको कुनै ठोस सतह छैन – यो ग्यासको विशाल बल हो!',
+                                'बृहस्पतिको गुरुत्वाकर्षण पृथ्वीको भन्दा २.५ गुणा बलियो छ – त्यहाँ तपाईं भारी हुनुहुन्छ!'
+                            ],
+                            tag: 'Gas Giant', tag_ne: 'ग्यासको विशाल' },
+                        // --- Science & Nature (6) ---
+                        { id: 'dna', icon: '🧬', name: 'DNA & Genetics', subtitle: 'The Blueprint of Life',
+                            facts: ['DNA is like a recipe book that tells living things how to grow and function!',
+                                'Genes are small bits of DNA that decide traits like eye color and height!',
+                                'We get our DNA from our parents – that\'s why we look like them!',
+                                'Changes in DNA – mutations – can create new traits and help evolution!'
+                            ],
+                            facts_ne: ['DNA एउटा रेसिपी किताब जस्तै हो जसले जीवित चीजहरूलाई कसरी बढ्न र काम गर्ने भन्ने बताउँछ!',
+                                'जीनहरू DNA का साना टुक्रा हुन् जसले आँखाको रङ र उचाइ जस्ता विशेषताहरू निर्धारण गर्छन्!',
+                                'हामी आफ्नो DNA आमाबाबुबाट पाउँछौं – त्यसैले हामी उनीहरू जस्तै देखिन्छौं!',
+                                'DNA मा परिवर्तन – उत्परिवर्तन – नयाँ विशेषताहरू सिर्जना गर्न र विकासमा मद्दत गर्न सक्छ!'
+                            ],
+                            tag: 'Science', tag_ne: 'विज्ञान' },
+                        { id: 'evolution', icon: '🧬', name: 'Evolution', subtitle: 'Change Over Time',
+                            facts: ['Natural selection means creatures with useful traits survive and have babies!',
+                                'Adaptations help animals live better in their homes – like polar bears\' white fur!',
+                                'Fossils are like time capsules – they show us ancient life!',
+                                'All life on Earth is related – we all share a common ancestor, way back!'
+                            ],
+                            facts_ne: ['प्राकृतिक चयन भनेको उपयोगी विशेषताहरू भएका प्राणीहरू बाँच्छन् र बच्चा जन्माउँछन्!',
+                                'अनुकूलनले जनावरहरूलाई आफ्नो घरमा राम्रोसँग बाँच्न मद्दत गर्छ – जस्तै ध्रुवीय भालुको सेतो फर!',
+                                'जीवाश्महरू समय क्याप्सूल जस्तै हुन् – तिनीहरूले हामीलाई प्राचीन जीवन देखाउँछन्!',
+                                'पृथ्वीमा सबै जीवन सम्बन्धित छ – हामी सबैको एउटै साझा पूर्वज छ, धेरै पहिले!'
+                            ],
+                            tag: 'Science', tag_ne: 'विज्ञान' },
+                        { id: 'biodiversity', icon: '🌍', name: 'Biodiversity', subtitle: 'Variety of Life',
+                            facts: ['Biodiversity means all the different kinds of life on Earth – from tiny bugs to giant whales!',
+                                'There are millions of species – each one is unique!',
+                                'Biodiversity keeps ecosystems healthy – like a team with different players!',
+                                'When we lose species, biodiversity drops – and that\'s bad for nature.',
+                                'We can help by protecting forests, oceans, and all animals!'
+                            ],
+                            facts_ne: ['जैविक विविधता भनेको पृथ्वीमा जीवनका सबै विभिन्न प्रकारहरू हुन् – साना किरादेखि विशाल ह्वेलसम्म!',
+                                'त्यहाँ लाखौं प्रजातिहरू छन् – प्रत्येक अद्वितीय छ!',
+                                'जैविक विविधताले पारिस्थितिकी तंत्रलाई स्वस्थ राख्छ – विभिन्न खेलाडीहरू भएको टोली जस्तै!',
+                                'जब हामीले प्रजातिहरू गुमाउँछौं, जैविक विविधता घट्छ – र त्यो प्रकृतिको लागि खराब हो।',
+                                'हामी वन, महासागर र सबै जनावरहरूको संरक्षण गरेर मद्दत गर्न सक्छौं!'
+                            ],
+                            tag: 'Nature', tag_ne: 'प्रकृति' },
+                        { id: 'climatechange', icon: '🌡️', name: 'Climate Change', subtitle: 'Our Warming Planet',
+                            facts: ['Climate change means Earth is getting warmer over time.',
+                                'It\'s caused by gases like CO₂ from cars, factories, and cutting down trees.',
+                                'Effects include melting ice, rising seas, and wilder weather.',
+                                'We can help by using clean energy, planting trees, and recycling!'
+                            ],
+                            facts_ne: ['जलवायु परिवर्तन भनेको पृथ्वी समयसँगै तातो हुँदै गइरहेको छ।',
+                                'यो कार, कारखाना र रूख कटानबाट CO₂ जस्ता ग्यासहरूका कारण हुन्छ।',
+                                'प्रभावहरूमा बरफ पग्लनु, समुद्रको सतह बढ्नु र मौसम अझ खराब हुनु समावेश छ।',
+                                'हामी स्वच्छ ऊर्जा प्रयोग गरेर, रूख रोपेर र रिसाइकल गरेर मद्दत गर्न सक्छौं!'
+                            ],
+                            tag: 'Nature', tag_ne: 'प्रकृति' },
+                        { id: 'cellbiology', icon: '🔬', name: 'Cell Biology', subtitle: 'The Building Blocks of Life',
+                            facts: ['Cells are the smallest unit of life – every living thing is made of cells!',
+                                'Some cells have a nucleus (eukaryotic) and some don\'t (prokaryotic).',
+                                'Cells have parts called organelles – like a nucleus, mitochondria, and ribosomes!',
+                                'Cells divide to make new cells – that\'s how we grow and heal!'
+                            ],
+                            facts_ne: ['कोशिकाहरू जीवनको सबैभन्दा सानो एकाइ हुन् – प्रत्येक जीवित चीज कोशिकाहरूले बनेको हुन्छ!',
+                                'कतिपय कोशिकाहरूमा न्यूक्लियस (युकेरियोटिक) हुन्छ र कतिपयमा हुँदैन (प्रोकेरियोटिक)।',
+                                'कोशिकाहरूमा अंगहरू हुन्छन् – जस्तै न्यूक्लियस, माइटोकोन्ड्रिया र राइबोसोम!',
+                                'कोशिकाहरू विभाजित भएर नयाँ कोशिकाहरू बनाउँछन् – त्यसरी हामी बढ्छौं र निको हुन्छौं!'
+                            ],
+                            tag: 'Science', tag_ne: 'विज्ञान' },
+                        { id: 'ecology', icon: '🌿', name: 'Ecological Succession', subtitle: 'Nature\'s Rebuilding',
+                            facts: ['Primary succession – new land forms like islands from volcanoes!',
+                                'Secondary succession – land recovers after a fire or flood.',
+                                'First come pioneer species – like lichens and mosses – they prepare the soil.',
+                                'Over time, a stable ecosystem called a climax community develops.',
+                                'Nature always finds a way to rebuild!'
+                            ],
+                            facts_ne: ['प्राथमिक उत्तराधिकार – ज्वालामुखीबाट टापुहरू जस्तै नयाँ जमिन बन्छ!',
+                                'द्वितीयक उत्तराधिकार – आगो वा बाढीपछि जमिन पुन: प्राप्त हुन्छ।',
+                                'पहिले अग्रणी प्रजातिहरू आउँछन् – जस्तै लाइकेन र मस – तिनीहरूले माटो तयार गर्छन्।',
+                                'समयसँगै, क्लाइम्याक्स समुदाय भनिने स्थिर पारिस्थितिकी तंत्र विकास हुन्छ।',
+                                'प्रकृतिले सधैं पुन: निर्माण गर्ने तरिका खोज्छ!'
+                            ],
+                            tag: 'Nature', tag_ne: 'प्रकृति' }
+                    ]
+                }
+            };
+
+            //  STATE
+            let state = {
+                lang: 'en',
+                soundEnabled: true,
+                subject: null,
+                level: null,
+                questions: [],
+                currentIndex: 0,
+                stars: 0,
+                coins: 0,
+                gameStars: 0,
+                gameCoins: 0,
+                selectedOption: null,
+                answered: false,
+                puzzleOrder: [],
+                puzzleSolved: false,
+                questionRewarded: false,
+                totalQuestions: 0,
+                correctCount: 0,
+                answeredCount: 0,
+                isTransitioning: false,
+                fcDeck: [],
+                fcCurrentIndex: 0,
+                fcFlipped: false,
+                fcStarsEarned: 0,
+                fcCoinsEarned: 0
+            };
+
+            //  DOM REFS
+            const $ = id => document.getElementById(id);
+            const homeScreen = $('homeScreen'),
+                gameScreen = $('gameScreen'),
+                resultScreen = $('resultScreen');
+            const flashcardScreen = $('flashcardScreen'),
+                popupModal = $('popupModal');
+            const popupEmoji = $('popupEmoji'),
+                popupText = $('popupText'),
+                popupStats = $('popupStats'),
+                popupBtnContainer = $('popupBtnContainer');
+            const startBtn = $('startGameBtn'),
+                starCount = $('starCount'),
+                coinCount = $('coinCount');
+            const tutorialModal = $('tutorialModal');
+            const resetModal = $('resetModal');
+
+            //  PERSISTENCE (localStorage)
+            function saveScores() {
+                try {
+                    localStorage.setItem('gn_setu_stars', String(state.stars));
+                    localStorage.setItem('gn_setu_coins', String(state.coins));
+                } catch (e) {
+                    // Ignore if localStorage is not available
+                }
+            }
+
+            function loadScores() {
+                try {
+                    const stars = localStorage.getItem('gn_setu_stars');
+                    const coins = localStorage.getItem('gn_setu_coins');
+                    if (stars !== null) state.stars = parseInt(stars, 10) || 0;
+                    if (coins !== null) state.coins = parseInt(coins, 10) || 0;
+                } catch (e) {
+                    // Ignore
+                }
+            }
+
+            //  SCREEN MANAGEMENT
+            function showHome() {
+                homeScreen.style.display = 'block';
+                gameScreen.classList.remove('active');
+                flashcardScreen.style.display = 'none';
+                flashcardScreen.classList.remove('active');
+                resultScreen.classList.remove('active');
+            }
+
+            //  AMAZING SOUND SYSTEM (Kids Edition)
+            let audioCtx = null;
+
+            function getAudioContext() {
+                if (!audioCtx) {
+                    audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                return audioCtx;
+            }
+
+            function playCorrectSound() {
+                if (!state.soundEnabled) return;
+                try {
+                    const ctx = getAudioContext();
+                    const now = ctx.currentTime;
+                    const notes = [523.25, 659.25, 783.99, 1046.50];
+                    notes.forEach((freq, i) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'square';
+                        osc.frequency.setValueAtTime(freq, now + i * 0.08);
+                        gain.gain.setValueAtTime(0.1, now + i * 0.08);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.15);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(now + i * 0.08);
+                        osc.stop(now + i * 0.08 + 0.15);
+                    });
+                    const sparkle = [1046.50, 1318.51, 1567.98, 2093.00];
+                    sparkle.forEach((freq, i) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, now + i * 0.08);
+                        gain.gain.setValueAtTime(0.05, now + i * 0.08);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.1);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(now + i * 0.08);
+                        osc.stop(now + i * 0.08 + 0.1);
+                    });
+                } catch (e) { /* ignore */ }
+            }
+
+            function playWrongSound() {
+                if (!state.soundEnabled) return;
+                try {
+                    const ctx = getAudioContext();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(300, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.4);
+                    gain.gain.setValueAtTime(0.12, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(ctx.currentTime);
+                    osc.stop(ctx.currentTime + 0.4);
+                } catch (e) { /* ignore */ }
+            }
+
+            function playFlipSound() {
+                if (!state.soundEnabled) return;
+                try {
+                    const ctx = getAudioContext();
+                    const now = ctx.currentTime;
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(400, now);
+                    osc.frequency.linearRampToValueAtTime(900, now + 0.08);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.15);
+                    const osc2 = ctx.createOscillator();
+                    const gain2 = ctx.createGain();
+                    osc2.type = 'sine';
+                    osc2.frequency.setValueAtTime(1500, now + 0.08);
+                    gain2.gain.setValueAtTime(0.1, now + 0.08);
+                    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                    osc2.connect(gain2);
+                    gain2.connect(ctx.destination);
+                    osc2.start(now + 0.08);
+                    osc2.stop(now + 0.3);
+                } catch (e) { /* ignore */ }
+            }
+
+            function playSparkleSound() {
+                if (!state.soundEnabled) return;
+                try {
+                    const ctx = getAudioContext();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(1600, ctx.currentTime);
+                    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(ctx.currentTime);
+                    osc.stop(ctx.currentTime + 0.06);
+                } catch (e) { /* ignore */ }
+            }
+
+            function playCelebrationSound() {
+                if (!state.soundEnabled) return;
+                try {
+                    const ctx = getAudioContext();
+                    const now = ctx.currentTime;
+                    const notes = [523, 523, 659, 659, 784, 784, 1047];
+                    notes.forEach((freq, i) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'square';
+                        osc.frequency.setValueAtTime(freq, now + i * 0.1);
+                        gain.gain.setValueAtTime(0.1, now + i * 0.1);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.2);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(now + i * 0.1);
+                        osc.stop(now + i * 0.1 + 0.2);
+                    });
+                } catch (e) { /* ignore */ }
+            }
+
+            function playClickSound() {
+                if (!state.soundEnabled) return;
+                try {
+                    const ctx = getAudioContext();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(600, ctx.currentTime);
+                    gain.gain.setValueAtTime(0.05, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(ctx.currentTime);
+                    osc.stop(ctx.currentTime + 0.04);
+                } catch (e) { /* ignore */ }
+            }
+
+            //  TOAST HELPER
+            let toastTimeout = null;
+
+            function showToast(message, isCorrect) {
+                const toast = $('feedbackToast');
+                if (toastTimeout) clearTimeout(toastTimeout);
+                toast.textContent = message;
+                toast.className = 'feedback-toast show';
+                toast.classList.add(isCorrect ? 'toast-correct' : 'toast-wrong');
+                toastTimeout = setTimeout(() => {
+                    toast.className = 'feedback-toast hide';
+                    toastTimeout = null;
+                }, 2500);
+            }
+
+            //  HELPERS
+            function updateScoreUI() {
+                starCount.textContent = state.stars;
+                coinCount.textContent = state.coins;
+                const resultStar = document.getElementById('resultStarCount');
+                const resultCoin = document.getElementById('resultCoinCount');
+                if (resultStar) resultStar.textContent = state.stars;
+                if (resultCoin) resultCoin.textContent = state.coins;
+                saveScores(); // persist every time UI updates
+            }
+
+            function updateLevelBadge() {
+                const badge = $('levelBadge');
+                const badgeResult = $('levelBadgeResult');
+                if (state.level) {
+                    const lvl = state.level.charAt(0).toUpperCase() + state.level.slice(1);
+                    const text = '  ' + lvl;
+                    if (badge) badge.textContent = text;
+                    if (badgeResult) badgeResult.textContent = text;
+                } else {
+                    const menuText = state.lang === 'en' ? '🎮 Menu' : '🎮 मेनु';
+                    if (badge) badge.textContent = menuText;
+                    if (badgeResult) badgeResult.textContent = menuText;
+                }
+            }
+
+            //  CUSTOM POPUP WITH TWO BUTTONS
+            function showFlashcardPopup(emoji, text, statsText, onPlayAgain, onHome) {
+                popupEmoji.textContent = emoji || '🎉';
+                popupText.textContent = text || (state.lang === 'en' ? '🎉 You completed all flashcards!' :
+                    '🎉 तपाईंले सबै फ्ल्यास कार्ड पूरा गर्नुभयो!');
+                popupStats.textContent = statsText || '⭐ 0  |  💰 0';
+                popupBtnContainer.innerHTML = ''; // clear previous buttons
+
+                const playAgainBtn = document.createElement('button');
+                playAgainBtn.className = 'popup-btn';
+                const ui = UI_STRINGS[state.lang];
+                playAgainBtn.textContent = ui.popupPlayAgain;
+                playAgainBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    popupModal.classList.remove('active');
+                    if (onPlayAgain) onPlayAgain();
+                });
+                popupBtnContainer.appendChild(playAgainBtn);
+
+                const homeBtn = document.createElement('button');
+                homeBtn.className = 'popup-btn';
+                homeBtn.textContent = ui.popupHome;
+                homeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    popupModal.classList.remove('active');
+                    if (onHome) onHome();
+                });
+                popupBtnContainer.appendChild(homeBtn);
+
+                popupModal.classList.add('active');
+            }
+
+            //  CONFETTI POPPER
+            const popperCanvas = $('confettiPopperCanvas');
+            const ctxP = popperCanvas.getContext('2d');
+            let popperParticles = [];
+            let popperAnimId = null;
+            let popperRunning = false;
+
+            function resizePopperCanvas() {
+                popperCanvas.width = window.innerWidth;
+                popperCanvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizePopperCanvas);
+            resizePopperCanvas();
+
+            class PopperParticle {
+                constructor(x, y) {
+                    this.x = x;
+                    this.y = y;
+                    const angle = Math.random() * 2 * Math.PI;
+                    const speed = 3 + Math.random() * 8;
+                    this.vx = Math.cos(angle) * speed;
+                    this.vy = Math.sin(angle) * speed - 2;
+                    this.size = 6 + Math.random() * 10;
+                    this.color = `hsl(${Math.random() * 360}, 80%, 60%)`;
+                    this.life = 1;
+                    this.decay = 0.008 + Math.random() * 0.015;
+                    this.gravity = 0.15 + Math.random() * 0.10;
+                    this.rotation = Math.random() * 360;
+                    this.rotSpeed = (Math.random() - 0.5) * 10;
+                    this.shape = Math.random() > 0.5 ? 'circle' : 'rect';
+                    this.squish = 0.8 + Math.random() * 0.4;
+                }
+                update() {
+                    this.vx *= 0.99;
+                    this.vy += this.gravity;
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.life -= this.decay;
+                    this.rotation += this.rotSpeed;
+                    this.size *= 0.998;
+                }
+                draw(ctx) {
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate((this.rotation * Math.PI) / 180);
+                    ctx.globalAlpha = Math.max(0, this.life);
+                    ctx.fillStyle = this.color;
+                    if (this.shape === 'circle') {
+                        ctx.beginPath();
+                        ctx.arc(0, 0, Math.max(1, this.size * this.squish * 0.6), 0, Math.PI * 2);
+                        ctx.fill();
+                    } else {
+                        const w = Math.max(2, this.size * this.squish * 0.8);
+                        const h = Math.max(2, this.size * 0.6);
+                        ctx.fillRect(-w / 2, -h / 2, w, h);
+                    }
+                    ctx.restore();
+                }
+                get alive() { return this.life > 0 && this.size > 1; }
+            }
+
+            function triggerPopper(burstCount = 120) {
+                if (popperRunning) {} else {
+                    popperCanvas.classList.add('active');
+                    popperRunning = true;
+                }
+                const cx = window.innerWidth / 2;
+                const cy = window.innerHeight / 2;
+                for (let i = 0; i < burstCount; i++) {
+                    const x = cx + (Math.random() - 0.5) * 40;
+                    const y = cy + (Math.random() - 0.5) * 40;
+                    popperParticles.push(new PopperParticle(x, y));
+                }
+                if (!popperAnimId) {
+                    animatePopper();
+                }
+            }
+
+            function animatePopper() {
+                ctxP.clearRect(0, 0, popperCanvas.width, popperCanvas.height);
+                for (let i = popperParticles.length - 1; i >= 0; i--) {
+                    const p = popperParticles[i];
+                    p.update();
+                    p.draw(ctxP);
+                    if (!p.alive) {
+                        popperParticles.splice(i, 1);
+                    }
+                }
+                if (popperParticles.length > 0) {
+                    popperAnimId = requestAnimationFrame(animatePopper);
+                } else {
+                    popperAnimId = null;
+                    popperRunning = false;
+                    popperCanvas.classList.remove('active');
+                    ctxP.clearRect(0, 0, popperCanvas.width, popperCanvas.height);
+                }
+            }
+
+            //  TUTORIAL
+            function openTutorial() {
+                tutorialModal.classList.add('active');
+                playClickSound();
+            }
+
+            function closeTutorial() {
+                tutorialModal.classList.remove('active');
+                playClickSound();
+            }
+
+            //  RESET SCORES
+            function openResetModal() {
+                resetModal.classList.add('active');
+                playClickSound();
+            }
+
+            function closeResetModal() {
+                resetModal.classList.remove('active');
+                playClickSound();
+            }
+
+            function resetScores() {
+                state.stars = 0;
+                state.coins = 0;
+                updateScoreUI();
+                closeResetModal();
+                showToast('🔄 Scores reset to 0!', false);
+                playClickSound();
+            }
+
+            //  LANGUAGE TOGGLE — THE MAIN BILINGUAL ENGINE
+            function updateAllLanguage() {
+                const lang = state.lang;
+                const ui = UI_STRINGS[lang];
+
+                document.querySelectorAll('#langLabel, #langLabelResult').forEach(el => {
+                    el.textContent = lang === 'en' ? 'EN' : 'नेपाली';
+                });
+                document.querySelectorAll('#tutorialLabel, #tutorialLabelResult').forEach(el => {
+                    el.textContent = ui.tutorial;
+                });
+                document.querySelectorAll('#resetLabel, #resetLabelResult').forEach(el => {
+                    el.textContent = ui.reset;
+                });
+
+                document.querySelectorAll('[data-en][data-ne]').forEach(el => {
+                    const val = lang === 'en' ? el.dataset.en : el.dataset.ne;
+                    if (val !== undefined) el.textContent = val;
+                });
+
+                const g = $('homeGreeting');
+                if (g) g.textContent = ui.greeting;
+                const sg = $('homeSubGreeting');
+                if (sg) sg.textContent = ui.subGreeting;
+                const st = $('subjectTitle');
+                if (st) {
+                    const sub = $('subjectSub');
+                    st.innerHTML = ui.subjectTitle + ' <span style="font-size:0.9rem;font-weight:400;color:#7a5f4a;" id="subjectSub">' +
+                        ui.subjectSub + '</span>';
+                }
+                const lt = $('levelTitle');
+                if (lt) lt.textContent = ui.levelTitle;
+
+                if (startBtn) {
+                    if (state.subject === 'flashcards') {
+                        startBtn.textContent = ui.startFlashcards;
+                    } else {
+                        startBtn.textContent = ui.startBtn;
+                    }
+                }
+
+                updateLevelBadge();
+
+                const progLabel = $('progressLabel');
+                if (progLabel) {
+                    const pct = $('progressFill') ? $('progressFill').style.width || '0%' : '0%';
+                    progLabel.textContent = pct + ui.progressLabel;
+                }
+                const qCounter = $('qCounter');
+                if (qCounter && state.questions.length > 0) {
+                    const idx = state.currentIndex + 1;
+                    const total = state.questions.length;
+                    qCounter.textContent = 'Q' + idx + ' / ' + total;
+                }
+                const puzzleInd = $('puzzleIndicator');
+                if (puzzleInd) {
+                    const isPuzzle = state.questions.length > 0 && state.questions[state.currentIndex] &&
+                        state.questions[state.currentIndex].type === 'puzzle';
+                    puzzleInd.textContent = isPuzzle ? ui.puzzleLabel : ui.questionLabel;
+                }
+
+                const backLabel = $('backLabel');
+                if (backLabel) backLabel.textContent = ui.back;
+                const nextLabel = $('nextLabel');
+                if (nextLabel) {
+                    const total = state.questions.length;
+                    if (state.currentIndex === total - 1 && total > 0) {
+                        nextLabel.textContent = ui.finish;
+                    } else {
+                        nextLabel.textContent = ui.next;
+                    }
+                }
+                const checkBtn = $('checkPuzzleBtn');
+                if (checkBtn) checkBtn.textContent = ui.checkOrder;
+
+                const fbMsg = $('feedbackMsg');
+                if (fbMsg && !state.answered && !state.puzzleSolved) {
+                    fbMsg.textContent = ui.feedbackThink;
+                }
+
+                const rTitle = $('resultTitle');
+                if (rTitle) rTitle.textContent = ui.resultTitle;
+                const rMsg = $('resultMessage');
+                if (rMsg) {
+                    const total = state.questions.length || 1;
+                    const stars = state.gameStars || 0;
+                    let msg = ui.resultMsgMid;
+                    if (stars < total * 0.5) msg = ui.resultMsgMid;
+                    else if (stars < total * 0.8) msg = ui.resultMsgHigh;
+                    else msg = ui.resultMsgTop;
+                    if (stars === total && total > 0) msg = ui.resultMsgStar;
+                    rMsg.textContent = msg;
+                }
+                const playAgain = $('playAgainBtn');
+                if (playAgain) playAgain.textContent = ui.playAgain;
+
+                // If flashcard screen is visible, re-render it
+                const fcScreen = $('flashcardScreen');
+                if (fcScreen && fcScreen.style.display !== 'none' && state.fcDeck.length > 0) {
+                    renderFlashcard();
+                }
+
+                // Update popup if active
+                if (popupModal.classList.contains('active')) {
+                    const popupTextEl = $('popupText');
+                    if (popupTextEl) popupTextEl.textContent = ui.popupCongrats;
+                    const btns = popupBtnContainer.querySelectorAll('.popup-btn');
+                    if (btns.length >= 2) {
+                        btns[0].textContent = ui.popupPlayAgain;
+                        btns[1].textContent = ui.popupHome;
+                    }
+                }
+
+                // Update tutorial modal content language (5 steps only)
+                const tutSteps = tutorialModal.querySelectorAll('.tut-step .step-text');
+                if (lang === 'ne') {
+                    const stepTexts = [
+                        '📚 एउटा <span class="highlight">विषय</span> छान्नुहोस् – विज्ञान, प्रकृति, वा सौर्य प्रणाली!',
+                        '🎯 आफ्नो <span class="highlight">स्तर</span> छान्नुहोस् – आधारभूत (सजिलो), मध्यवर्ती (मध्यम), वा उन्नत (सुपर मस्तिष्क!)।',
+                        '🚀 <span class="highlight">यात्रा सुरु गर्नुहोस्</span> थिच्नुहोस् र प्रश्नहरूको जवाफ दिनुहोस्। सही जवाफले ⭐ तारा र 💰 सिक्का कमाउनुहोस्!',
+                        '🧩 केही प्रश्नहरू <span class="highlight">पजल</span> हुन् – वस्तुहरूलाई सही क्रममा तान्नुहोस् र छोड्नुहोस्!',
+                        '🌐 कुनै पनि समय <span class="highlight">EN / नेपाली</span> टगल गरेर दुई भाषामा सिक्नुहोस्!'
+                    ];
+                    tutSteps.forEach((el, i) => {
+                        if (i < stepTexts.length) el.innerHTML = stepTexts[i];
+                    });
+                } else {
+                    const stepTexts = [
+                        '📚 Pick a <span class="highlight">Subject</span> – Science, Nature, or Solar System!',
+                        '🎯 Choose your <span class="highlight">Level</span> – Basic (easy), Intermediate (medium), or Advanced (super brain!).',
+                        '🚀 Hit <span class="highlight">Start Adventure</span> and answer questions. Get them right to earn ⭐ stars and 💰 coins!',
+                        '🧩 Some questions are <span class="highlight">puzzles</span> – drag & drop items into the right order!',
+                        '🌐 Toggle <span class="highlight">EN / नेपाली</span> anytime to learn in two languages!'
+                    ];
+                    tutSteps.forEach((el, i) => {
+                        if (i < stepTexts.length) el.innerHTML = stepTexts[i];
+                    });
+                }
+            }
+
+            function setupLangToggle() {
+                const toggle1 = $('langToggle');
+                const toggle2 = $('langToggleResult');
+                const toggles = [toggle1, toggle2].filter(Boolean);
+                toggles.forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        state.lang = state.lang === 'en' ? 'ne' : 'en';
+                        updateAllLanguage();
+                        playClickSound();
+                    });
+                });
+            }
+
+            //  SUBJECT & LEVEL SELECT
+            document.querySelectorAll('.subject-card').forEach(el => {
+                el.addEventListener('click', function() {
+                    document.querySelectorAll('.subject-card').forEach(s => s.classList.remove('selected'));
+                    this.classList.add('selected');
+                    state.subject = this.dataset.subject;
+                    const ui = UI_STRINGS[state.lang];
+                    startBtn.disabled = false;
+                    if (state.subject === 'flashcards') {
+                        startBtn.textContent = ui.startFlashcards;
+                    } else {
+                        startBtn.textContent = ui.startBtn;
+                    }
+                    playClickSound();
+                });
+            });
+            document.querySelectorAll('.level-item').forEach(el => {
+                el.addEventListener('click', function() {
+                    document.querySelectorAll('.level-item').forEach(l => l.classList.remove('selected'));
+                    this.classList.add('selected');
+                    state.level = this.dataset.level;
+                    if (state.subject) startBtn.disabled = false;
+                    playClickSound();
+                });
+            });
+
+            //  START BUTTON
+            startBtn.addEventListener('click', function() {
+                if (!state.subject || !state.level) return;
+                playClickSound();
+                if (state.subject === 'flashcards') {
+                    startFlashcards(state.level);
+                } else {
+                    startQuiz(state.subject, state.level);
+                }
+            });
+
+            //  QUIZ FUNCTIONS
+            function startQuiz(subjectKey, levelKey) {
+                const subjectData = SUBJECTS[subjectKey];
+                const levelData = subjectData.levels[levelKey];
+                state.questions = JSON.parse(JSON.stringify(levelData.questions));
+                state.currentIndex = 0;
+                state.gameStars = 0;
+                state.gameCoins = 0;
+                state.correctCount = 0;
+                state.answeredCount = 0;
+                state.questionRewarded = false;
+                state.questions.forEach(q => {
+                    if (q.type === 'mcq') {
+                        const opts = q.options;
+                        const correctLabel = opts[q.correct].label;
+                        const shuffled = shuffleArray([...opts]);
+                        const newCorrect = shuffled.findIndex(o => o.label === correctLabel);
+                        q.options = shuffled;
+                        q.correct = newCorrect;
+                    }
+                });
+                // Hide all other screens, show game
+                homeScreen.style.display = 'none';
+                flashcardScreen.style.display = 'none';
+                flashcardScreen.classList.remove('active');
+                gameScreen.classList.add('active');
+                resultScreen.classList.remove('active');
+                updateLevelBadge();
+                updateScoreUI();
+                renderQuestion();
+            }
+
+            function shuffleArray(arr) {
+                for (let i = arr.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
+                return arr;
+            }
+
+            function renderQuestion() {
+                const qs = state.questions;
+                if (!qs || state.currentIndex >= qs.length) {
+                    showFinish();
+                    return;
+                }
+                const q = qs[state.currentIndex];
+                const idx = state.currentIndex;
+                const total = qs.length;
+                const progress = state.questions.length > 0 ? Math.round((state.answeredCount / state.questions
+                .length) * 100) : 0;
+                const ui = UI_STRINGS[state.lang];
+                $('progressFill').style.width = progress + '%';
+                $('progressLabel').textContent = progress + '% ' + ui.progressLabel;
+                $('qCounter').textContent = 'Q' + (idx + 1) + ' / ' + total;
+                $('qText').textContent = getQuestionText(q, 'question');
+                state.answered = false;
+                state.selectedOption = null;
+                state.questionRewarded = false;
+                state.puzzleSolved = false;
+                state.isTransitioning = false;
+                $('feedbackMsg').textContent = ui.feedbackThink;
+                $('funFact').classList.remove('show');
+                $('funFact').textContent = '';
+                if (q.type === 'puzzle') {
+                    $('optionsContainer').style.display = 'none';
+                    $('puzzleContainer').style.display = 'block';
+                    $('puzzleIndicator').textContent = ui.puzzleLabel;
+                    renderPuzzle(q);
+                    $('nextBtn').style.display = 'none';
+                    $('finishBtn').style.display = 'none';
+                    $('checkPuzzleBtn').style.display = 'inline-block';
+                    $('backBtn').disabled = (idx === 0);
+                } else {
+                    $('optionsContainer').style.display = 'grid';
+                    $('puzzleContainer').style.display = 'none';
+                    $('puzzleIndicator').textContent = ui.questionLabel;
+                    renderMCQ(q);
+                    $('nextBtn').style.display = 'inline-flex';
+                    $('finishBtn').style.display = 'none';
+                    $('checkPuzzleBtn').style.display = 'none';
+                    $('backBtn').disabled = (idx === 0);
+                    $('nextBtn').disabled = true;
+                }
+                const nextLabel = $('nextLabel');
+                if (nextLabel) {
+                    nextLabel.textContent = (idx === total - 1) ? ui.finish : ui.next;
+                }
+                $('backBtn').disabled = (idx === 0);
+                document.querySelector('.game-container').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+
+            function getQuestionText(q, field) {
+                const lang = state.lang;
+                if (lang === 'en') return q[field] || '';
+                return q[field + '_ne'] || q[field] || '';
+            }
+
+            function getOptionLabel(opt) {
+                const lang = state.lang;
+                if (lang === 'en') return opt.label;
+                return opt.label_ne || opt.label;
+            }
+
+            function getItemLabel(item) {
+                const lang = state.lang;
+                if (lang === 'en') return item.label;
+                return item.label_ne || item.label;
+            }
+
+            function renderMCQ(q) {
+                $('optionsContainer').innerHTML = '';
+                const optLabels = ['A', 'B', 'C', 'D'];
+                q.options.forEach((opt, i) => {
+                    const card = document.createElement('div');
+                    card.className = 'option-card';
+                    card.dataset.index = i;
+                    const cartoon = document.createElement('div');
+                    cartoon.className = 'cartoon-box';
+                    cartoon.textContent = opt.emoji || '🔹';
+                    const label = document.createElement('span');
+                    label.className = 'opt-label';
+                    label.textContent = optLabels[i] + '. ' + getOptionLabel(opt);
+                    card.appendChild(cartoon);
+                    card.appendChild(label);
+                    card.addEventListener('click', () => handleMCQClick(i, q));
+                    $('optionsContainer').appendChild(card);
+                });
+                state.selectedOption = null;
+                state.answered = false;
+                $('nextBtn').disabled = true;
+            }
+
+            function handleMCQClick(index, q) {
+                if (state.answered || state.isTransitioning) return;
+                const cards = $('optionsContainer').querySelectorAll('.option-card');
+                cards.forEach(c => c.classList.remove('selected', 'correct-reveal', 'wrong-reveal'));
+                cards[index].classList.add('selected');
+                state.selectedOption = index;
+                const correct = q.correct;
+                cards.forEach((c, i) => {
+                    if (i === correct) c.classList.add('correct-reveal');
+                    else if (i === index && i !== correct) c.classList.add('wrong-reveal');
+                    c.classList.add('disabled');
+                });
+                state.answered = true;
+                $('nextBtn').disabled = false;
+                state.answeredCount++;
+                const ui = UI_STRINGS[state.lang];
+
+                if (index === correct) {
+                    state.correctCount++;
+                    if (!state.questionRewarded) {
+                        state.gameStars += 1;
+                        state.gameCoins += 2;
+                        state.stars += 1;
+                        state.coins += 2;
+                        state.questionRewarded = true;
+                        updateScoreUI();
+                    }
+                    $('feedbackMsg').innerHTML = ui.feedbackCorrect;
+                    if (q.funFact) {
+                        $('funFact').textContent = '💡 ' + (state.lang === 'en' ? 'Fun fact: ' : 'रोचक तथ्य: ') +
+                            getQuestionText(q, 'funFact');
+                        $('funFact').classList.add('show');
+                    } else {
+                        $('funFact').classList.remove('show');
+                    }
+                    playCorrectSound();
+                    showToast('✅ Correct! Keep up the great work!', true);
+                } else {
+                    $('feedbackMsg').innerHTML = ui.feedbackWrong + getOptionLabel(q.options[correct]);
+                    $('funFact').classList.remove('show');
+                    playWrongSound();
+                    showToast('❌ Try again next time!', false);
+                }
+                const progress = state.questions.length > 0 ? Math.round((state.answeredCount / state.questions
+                .length) * 100) : 0;
+                $('progressFill').style.width = progress + '%';
+                $('progressLabel').textContent = progress + '% ' + ui.progressLabel;
+                if (state.currentIndex === state.questions.length - 1) {
+                    const nextLabel = $('nextLabel');
+                    if (nextLabel) nextLabel.textContent = ui.finish;
+                }
+            }
+
+            function renderPuzzle(q) {
+                const hintText = getQuestionText(q, 'hint');
+                $('puzzleHint').textContent = hintText || (state.lang === 'en' ?
+                    '✨ Drag the items into the correct order!' :
+                    '✨ वस्तुहरूलाई सही क्रममा मिलाउनुहोस्!');
+                const shuffled = shuffleArray([...q.items]);
+                state.puzzleOrder = shuffled.map(item => item.id);
+                renderPuzzleItems(q);
+                $('checkPuzzleBtn').style.display = 'inline-block';
+                $('checkPuzzleBtn').disabled = false;
+                state.puzzleSolved = false;
+                const ui = UI_STRINGS[state.lang];
+                $('feedbackMsg').textContent = ui.feedbackPuzzleHint;
+                $('funFact').classList.remove('show');
+                $('checkPuzzleBtn').textContent = ui.checkOrder;
+            }
+
+            function renderPuzzleItems(q) {
+                $('puzzleItems').innerHTML = '';
+                const order = state.puzzleOrder;
+                const itemsMap = {};
+                q.items.forEach(item => { itemsMap[item.id] = item; });
+                order.forEach(id => {
+                    const item = itemsMap[id];
+                    const div = document.createElement('div');
+                    div.className = 'puzzle-item';
+                    div.dataset.id = id;
+                    div.draggable = true;
+                    const emojiSpan = document.createElement('span');
+                    emojiSpan.className = 'puzzle-emoji';
+                    emojiSpan.textContent = item.emoji || '📦';
+                    const labelSpan = document.createElement('span');
+                    labelSpan.textContent = getItemLabel(item);
+                    div.appendChild(emojiSpan);
+                    div.appendChild(labelSpan);
+                    div.addEventListener('dragstart', handleDragStart);
+                    div.addEventListener('dragend', handleDragEnd);
+                    div.addEventListener('dragover', handleDragOver);
+                    div.addEventListener('dragenter', handleDragEnter);
+                    div.addEventListener('dragleave', handleDragLeave);
+                    div.addEventListener('drop', handleDrop);
+                    $('puzzleItems').appendChild(div);
+                });
+            }
+
+            let dragSrcId = null;
+
+            function handleDragStart(e) {
+                const el = e.target.closest('.puzzle-item');
+                if (!el) return;
+                dragSrcId = el.dataset.id;
+                el.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', dragSrcId);
+            }
+
+            function handleDragEnd(e) {
+                const el = e.target.closest('.puzzle-item');
+                if (el) el.classList.remove('dragging');
+                document.querySelectorAll('.puzzle-item.droppable').forEach(el => el.classList.remove('droppable'));
+            }
+
+            function handleDragOver(e) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+            }
+
+            function handleDragEnter(e) {
+                e.preventDefault();
+                const el = e.target.closest('.puzzle-item');
+                if (el && el.dataset.id !== dragSrcId) {
+                    el.classList.add('droppable');
+                }
+            }
+
+            function handleDragLeave(e) {
+                const el = e.target.closest('.puzzle-item');
+                if (el) el.classList.remove('droppable');
+            }
+
+            function handleDrop(e) {
+                e.preventDefault();
+                const target = e.target.closest('.puzzle-item');
+                if (!target) return;
+                const targetId = target.dataset.id;
+                if (targetId === dragSrcId) return;
+                const q = state.questions[state.currentIndex];
+                if (!q || q.type !== 'puzzle') return;
+                const order = state.puzzleOrder;
+                const srcIdx = order.indexOf(dragSrcId);
+                const tgtIdx = order.indexOf(targetId);
+                if (srcIdx === -1 || tgtIdx === -1) return;
+                [order[srcIdx], order[tgtIdx]] = [order[tgtIdx], order[srcIdx]];
+                state.puzzleOrder = order;
+                renderPuzzleItems(q);
+                state.puzzleSolved = false;
+                $('checkPuzzleBtn').disabled = false;
+                document.querySelectorAll('.puzzle-item.droppable').forEach(el => el.classList.remove('droppable'));
+                const ui = UI_STRINGS[state.lang];
+                $('feedbackMsg').textContent = ui.feedbackPuzzleHint;
+                $('funFact').classList.remove('show');
+            }
+
+            $('checkPuzzleBtn').addEventListener('click', function() {
+                if (state.isTransitioning) return;
+                const q = state.questions[state.currentIndex];
+                if (!q || q.type !== 'puzzle') return;
+                const order = state.puzzleOrder;
+                const correct = q.correctOrder;
+                const isCorrect = order.length === correct.length && order.every((id, i) => id === correct[i]);
+                const ui = UI_STRINGS[state.lang];
+                if (isCorrect) {
+                    if (!state.questionRewarded) {
+                        state.gameStars += 1;
+                        state.gameCoins += 3;
+                        state.stars += 1;
+                        state.coins += 3;
+                        state.questionRewarded = true;
+                        updateScoreUI();
+                    }
+                    state.puzzleSolved = true;
+                    $('checkPuzzleBtn').disabled = true;
+                    document.querySelectorAll('.puzzle-item').forEach(el => el.classList.add('placed'));
+                    $('nextBtn').disabled = false;
+                    $('nextBtn').style.display = 'inline-flex';
+                    state.answeredCount++;
+                    const progress = state.questions.length > 0 ? Math.round((state.answeredCount / state.questions
+                        .length) * 100) : 0;
+                    $('progressFill').style.width = progress + '%';
+                    $('progressLabel').textContent = progress + '% ' + ui.progressLabel;
+                    $('feedbackMsg').innerHTML = ui.feedbackPuzzleSolved;
+                    if (q.funFact) {
+                        $('funFact').textContent = '💡 ' + (state.lang === 'en' ? 'Fun fact: ' : 'रोचक तथ्य: ') +
+                            getQuestionText(q, 'funFact');
+                        $('funFact').classList.add('show');
+                    }
+                    const nextLabel = $('nextLabel');
+                    if (nextLabel) {
+                        nextLabel.textContent = (state.currentIndex === state.questions.length - 1) ? ui.finish : ui
+                        .next;
+                    }
+                    playCorrectSound();
+                    showToast('✅ Puzzle solved! Great job!', true);
+                } else {
+                    $('feedbackMsg').textContent = ui.feedbackPuzzleWrong;
+                    $('funFact').classList.remove('show');
+                    playWrongSound();
+                    showToast('❌ Not quite right! Try again.', false);
+                }
+            });
+
+            $('backBtn').addEventListener('click', function() {
+                if (state.currentIndex > 0) {
+                    state.currentIndex--;
+                    renderQuestion();
+                }
+                playClickSound();
+            });
+
+            $('nextBtn').addEventListener('click', function() {
+                if (state.isTransitioning) return;
+                const q = state.questions[state.currentIndex];
+                if (q && q.type === 'puzzle' && !state.puzzleSolved) {
+                    return;
+                }
+                if (q && q.type === 'mcq' && !state.answered) {
+                    return;
+                }
+                if (state.currentIndex < state.questions.length - 1) {
+                    state.currentIndex++;
+                    renderQuestion();
+                } else {
+                    showFinish();
+                }
+                playClickSound();
+            });
+
+            function showFinish() {
+                gameScreen.classList.remove('active');
+                resultScreen.classList.add('active');
+                $('resultStars').textContent = state.gameStars;
+                $('resultCoins').textContent = state.gameCoins;
+                const total = state.questions.length;
+                const ui = UI_STRINGS[state.lang];
+                let msg;
+                if (state.gameStars < total * 0.5) msg = ui.resultMsgMid;
+                else if (state.gameStars < total * 0.8) msg = ui.resultMsgHigh;
+                else msg = ui.resultMsgTop;
+                if (state.gameStars === total && total > 0) msg = ui.resultMsgStar;
+                $('resultMessage').textContent = msg;
+                $('resultTitle').textContent = ui.resultTitle;
+                playCelebrationSound();
+                triggerPopper(280);
+                setTimeout(() => {
+                    triggerPopper(150);
+                }, 500);
+                const rStar = $('resultStarCount');
+                if (rStar) rStar.textContent = state.stars;
+                const rCoin = $('resultCoinCount');
+                if (rCoin) rCoin.textContent = state.coins;
+                updateLevelBadge();
+                const rLangLabel = $('langLabelResult');
+                if (rLangLabel) rLangLabel.textContent = state.lang === 'en' ? 'EN' : 'नेपाली';
+            }
+
+            $('playAgainBtn').addEventListener('click', function() {
+                resultScreen.classList.remove('active');
+                state.subject = null;
+                state.level = null;
+                document.querySelectorAll('.subject-card').forEach(s => s.classList.remove('selected'));
+                document.querySelectorAll('.level-item').forEach(l => l.classList.remove('selected'));
+                startBtn.disabled = true;
+                updateLevelBadge();
+                updateScoreUI();
+                showHome();
+                playClickSound();
+                updateAllLanguage();
+            });
+
+            $('homeTitle').addEventListener('click', function() {
+                resultScreen.classList.remove('active');
+                state.subject = null;
+                state.level = null;
+                document.querySelectorAll('.subject-card').forEach(s => s.classList.remove('selected'));
+                document.querySelectorAll('.level-item').forEach(l => l.classList.remove('selected'));
+                startBtn.disabled = true;
+                updateLevelBadge();
+                updateScoreUI();
+                showHome();
+                playClickSound();
+                updateAllLanguage();
+            });
+
+            //  FLASHCARD LOGIC (with shuffle & fixed bullet points)
+            function startFlashcards(levelId) {
+                // Deep copy the deck to avoid mutating the original data
+                state.fcDeck = JSON.parse(JSON.stringify(FLASHCARD_LEVELS[levelId].cards));
+                state.fcCurrentIndex = 0;
+                state.fcFlipped = false;
+                state.level = levelId;
+                state.fcStarsEarned = 0;
+                state.fcCoinsEarned = 0;
+                state.gameStars = 0;
+                state.gameCoins = 0;
+                // Hide home and game, show flashcard
+                homeScreen.style.display = 'none';
+                gameScreen.classList.remove('active');
+                flashcardScreen.classList.add('active');
+                flashcardScreen.style.display = 'block';
+                resultScreen.classList.remove('active');
+                updateLevelBadge();
+                renderFlashcard();
+            }
+
+            function renderFlashcard() {
+                // Ensure home and game are hidden while flashcard is rendered
+                homeScreen.style.display = 'none';
+                gameScreen.classList.remove('active');
+
+                const level = FLASHCARD_LEVELS[state.level];
+                const card = state.fcDeck[state.fcCurrentIndex];
+                const total = state.fcDeck.length;
+                const current = state.fcCurrentIndex + 1;
+                const ui = UI_STRINGS[state.lang];
+
+                // Choose facts and tag based on language
+                const facts = state.lang === 'en' ? card.facts : card.facts_ne;
+                const tag = state.lang === 'en' ? card.tag : card.tag_ne;
+
+                flashcardScreen.innerHTML = `
+                    <div class="text-center" style="margin-bottom:20px;">
+                        <h2 style="font-size:2rem;color:#5a3e2b;">${level.icon} ${level.label} ${ui.flashcardTitle}</h2>
+                        <p style="color:#7a5f4a;">${ui.flashcardCard} ${current} ${ui.flashcardOf} ${total}</p>
+                    </div>
+                    <div class="flashcard-deck" id="fcCardContainer">
+                        <div class="flashcard ${state.fcFlipped ? 'flipped' : ''}" id="fcCard">
+                            <div class="flashcard-face flashcard-front">
+                                <div class="fc-icon">${card.icon}</div>
+                                <div class="fc-title">${card.name}</div>
+                                <div class="fc-subtitle">${card.subtitle}</div>
+                                <div class="fc-tag">${tag}</div>
+                            </div>
+                            <div class="flashcard-face flashcard-back">
+                                <div class="fc-title">${card.name}</div>
+                                <ul class="fc-facts">${facts.map(f => `<li>${f}</li>`).join('')}</ul>
+                                <div class="fc-tag">${tag}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flashcard-controls">
+                        <button id="prevFcBtn">${ui.flashcardPrev}</button>
+                        <button id="flipFcBtn">${ui.flashcardFlip}</button>
+                        <button id="shuffleFcBtn">${ui.flashcardShuffle}</button>
+                        <button id="nextFcBtn">${ui.flashcardNext}</button>
+                    </div>
+                    <div class="flashcard-progress">${current} / ${total}</div>
+                    <div class="text-center" style="margin-top:20px;">
+                        <button class="flashcard-back-btn" id="backToHomeBtn">${ui.flashcardBack}</button>
+                    </div>
+                `;
+
+                $('fcCard').addEventListener('click', toggleFlashcardFlip);
+                $('prevFcBtn').addEventListener('click', prevFlashcard);
+                $('nextFcBtn').addEventListener('click', nextFlashcard);
+                $('flipFcBtn').addEventListener('click', toggleFlashcardFlip);
+                $('shuffleFcBtn').addEventListener('click', shuffleFlashcards);
+                $('backToHomeBtn').addEventListener('click', backToHomeFromFlashcards);
+            }
+
+            function toggleFlashcardFlip() {
+                state.fcFlipped = !state.fcFlipped;
+                const cardEl = $('fcCard');
+                if (cardEl) {
+                    if (state.fcFlipped) {
+                        cardEl.classList.add('flipped');
+                        playFlipSound();
+                    } else {
+                        cardEl.classList.remove('flipped');
+                    }
+                }
+            }
+
+            function prevFlashcard() {
+                if (state.fcCurrentIndex > 0) {
+                    state.fcCurrentIndex--;
+                    state.fcFlipped = false;
+                    renderFlashcard();
+                }
+                playClickSound();
+            }
+
+            function shuffleFlashcards() {
+                // Fisher-Yates shuffle on the current deck
+                for (let i = state.fcDeck.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [state.fcDeck[i], state.fcDeck[j]] = [state.fcDeck[j], state.fcDeck[i]];
+                }
+                state.fcCurrentIndex = 0;
+                state.fcFlipped = false;
+                renderFlashcard();
+                playClickSound();
+            }
+
+            function nextFlashcard() {
+                const ui = UI_STRINGS[state.lang];
+                if (state.fcFlipped) {
+                    state.gameStars += 1;
+                    state.fcStarsEarned += 1;
+                    state.stars += 1;
+                    updateScoreUI();
+                    playSparkleSound();
+                    triggerPopper(80);
+                }
+                if (state.fcCurrentIndex === state.fcDeck.length - 1) {
+                    state.gameCoins += 3;
+                    state.fcCoinsEarned = 3;
+                    state.coins += 3;
+                    updateScoreUI();
+                    playCelebrationSound();
+                    triggerPopper(200);
+
+                    // Show custom popup with two buttons
+                    showFlashcardPopup(
+                        '🎉',
+                        ui.popupCongrats,
+                        '⭐ ' + state.fcStarsEarned + '  |  💰 ' + state.fcCoinsEarned,
+                        // Play Again callback
+                        function() {
+                            // Reset deck: go to first card, reset session counters (keep total)
+                            state.fcCurrentIndex = 0;
+                            state.fcFlipped = false;
+                            state.fcStarsEarned = 0;
+                            state.fcCoinsEarned = 0;
+                            state.gameStars = 0;
+                            state.gameCoins = 0;
+                            renderFlashcard();
+                        },
+                        // Home callback
+                        function backToHomeFromFlashcards() {
+                            flashcardScreen.innerHTML = ''; // <-- clear content
+                            flashcardScreen.style.display = 'none';
+                            flashcardScreen.classList.remove('active');
+                            showHome();
+                            // Reset subject/level selection
+                            document.querySelectorAll('.subject-card').forEach(s => s.classList.remove('selected'));
+                            document.querySelectorAll('.level-item').forEach(l => l.classList.remove('selected'));
+                            startBtn.disabled = true;
+                            state.subject = null;
+                            state.level = null;
+                            state.fcStarsEarned = 0;
+                            state.fcCoinsEarned = 0;
+                            updateLevelBadge();
+                            updateScoreUI();
+                            playClickSound();
+                            updateAllLanguage();
+                        }
+                    );
+                } else {
+                    state.fcCurrentIndex++;
+                    state.fcFlipped = false;
+                    renderFlashcard();
+                }
+                playClickSound();
+            }
+
+            function backToHomeFromFlashcards() {
+                flashcardScreen.style.display = 'none';
+                flashcardScreen.classList.remove('active');
+                showHome();
+                document.querySelectorAll('.subject-card').forEach(s => s.classList.remove('selected'));
+                document.querySelectorAll('.level-item').forEach(l => l.classList.remove('selected'));
+                startBtn.disabled = true;
+                const ui = UI_STRINGS[state.lang];
+                startBtn.textContent = ui.startBtn;
+                state.subject = null;
+                state.level = null;
+                state.fcStarsEarned = 0;
+                state.fcCoinsEarned = 0;
+                updateLevelBadge();
+                updateScoreUI();
+                playClickSound();
+                updateAllLanguage();
+            }
+
+            //  SOUND TOGGLE
+            function setupSoundToggle() {
+                const toggle1 = $('soundToggle');
+                const toggle2 = $('soundToggleResult');
+                const toggles = [toggle1, toggle2].filter(Boolean);
+                toggles.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        state.soundEnabled = !state.soundEnabled;
+                        const label = this.querySelector('.label');
+                        if (label) label.textContent = state.soundEnabled ? 'ON' : 'OFF';
+                        playClickSound();
+                    });
+                });
+            }
+
+            //  TUTORIAL & RESET BUTTONS
+            function setupTutorialAndReset() {
+                const tutBtns = document.querySelectorAll('#tutorialBtn, #tutorialBtnResult');
+                tutBtns.forEach(btn => {
+                    btn.addEventListener('click', openTutorial);
+                });
+                document.getElementById('tutCloseBtn').addEventListener('click', closeTutorial);
+                // Close tutorial by clicking outside the box
+                tutorialModal.addEventListener('click', function(e) {
+                    if (e.target === tutorialModal) closeTutorial();
+                });
+
+                const resetBtns = document.querySelectorAll('#resetBtn, #resetBtnResult');
+                resetBtns.forEach(btn => {
+                    btn.addEventListener('click', openResetModal);
+                });
+                document.getElementById('resetYesBtn').addEventListener('click', resetScores);
+                document.getElementById('resetNoBtn').addEventListener('click', closeResetModal);
+                resetModal.addEventListener('click', function(e) {
+                    if (e.target === resetModal) closeResetModal();
+                });
+            }
+
+            //  INIT
+            function init() {
+                loadScores(); // restore scores from localStorage
+                showHome(); // ensures home visible, others hidden
+                // Clear flashcard content
+                flashcardScreen.innerHTML = '';
+                updateScoreUI();
+                updateLevelBadge();
+                setupLangToggle();
+                setupSoundToggle();
+                setupTutorialAndReset();
+                updateAllLanguage();
+                startBtn.disabled = true;
+            }
+
+            if (document.readyState === 'complete') {
+                init();
+            } else {
+                window.addEventListener('load', init);
+            }
+
+        })();

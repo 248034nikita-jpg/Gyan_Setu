@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ज्ञान_Setu – Science, Nature & Space</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="quiz_flashcard.css" />
+</head>
+<body>
+
+    <!-- ===== TUTORIAL MODAL ===== -->
+    <div id="tutorialModal">
+        <div class="tutorial-box">
+            <h2>🌟 Welcome to ज्ञान_Setu!</h2>
+            <div class="tut-sub">Learn, play, and earn stars & coins! 🌟💰</div>
+
+            <div class="tut-icon-row">
+                <span>🔬</span>
+                <span>🌱</span>
+                <span>🪐</span>
+            </div>
+
+            <div class="tut-step">
+                <div class="step-num">1</div>
+                <div class="step-text"><span class="emoji-big">📚</span> Pick a <span class="highlight">Subject</span> – Science, Nature, or Solar System!</div>
+            </div>
+
+            <div class="tut-step">
+                <div class="step-num">2</div>
+                <div class="step-text"><span class="emoji-big">🎯</span> Choose your <span class="highlight">Level</span> – Basic (easy), Intermediate (medium), or Advanced (super brain!).</div>
+            </div>
+
+            <div class="tut-step">
+                <div class="step-num">3</div>
+                <div class="step-text"><span class="emoji-big">🚀</span> Hit <span class="highlight">Start Adventure</span> and answer questions. Get them right to earn ⭐ stars and 💰 coins!</div>
+            </div>
+
+            <div class="tut-step">
+                <div class="step-num">4</div>
+                <div class="step-text"><span class="emoji-big">🧩</span> Some questions are <span class="highlight">puzzles</span> – drag & drop items into the right order!</div>
+            </div>
+
+            <div class="tut-step">
+                <div class="step-num">5</div>
+                <div class="step-text"><span class="emoji-big">🌐</span> Toggle <span class="highlight">EN / नेपाली</span> anytime to learn in two languages!</div>
+            </div>
+
+            <button class="tut-close" id="tutCloseBtn">🎉 Got it!</button>
+        </div>
+    </div>
+
+    <!-- ===== RESET CONFIRM MODAL ===== -->
+    <div id="resetModal">
+        <div class="reset-box">
+            <h3>⚠️ Reset Scores?</h3>
+            <p>This will set your ⭐ stars and 💰 coins back to <strong>0</strong>. Are you sure?</p>
+            <div class="reset-btns">
+                <button class="btn-yes" id="resetYesBtn">✅ Yes, reset!</button>
+                <button class="btn-no" id="resetNoBtn">❌ Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== POPUP MODAL (for final flashcard celebration) ===== -->
+    <div id="popupModal">
+        <div class="popup-box">
+            <span class="popup-emoji" id="popupEmoji">🎉</span>
+            <div class="popup-text" id="popupText">Congratulations kiddo you done it! 😊</div>
+            <div class="popup-stats" id="popupStats">⭐ 0 &nbsp;|&nbsp; 💰 0</div>
+            <div class="popup-btn-container" id="popupBtnContainer">
+                <!-- Buttons will be added dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CONFETTI POPPER CANVAS ===== -->
+    <canvas id="confettiPopperCanvas"></canvas>
+
+    <!-- ===== FEEDBACK TOAST (for correct/wrong answers) ===== -->
+    <div id="feedbackToast" class="feedback-toast hide"></div>
+
+    <!-- ===== GAME CONTAINER ===== -->
+    <div class="game-container" id="app">
+
+        <div class="cloud-deco c1">☁️</div>
+        <div class="cloud-deco c2">☁️</div>
+
+        <!-- ===== HEADER ===== -->
+        <header class="game-header">
+            <div class="game-title" id="homeTitle">
+                <span>🚀</span>ज्ञान_<span style="color:#ef6c00;">Setu</span>
+            </div>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <div class="header-controls">
+                    <button id="langToggle" class="ctrl-btn" title="Toggle Language">🌐 <span class="label" id="langLabel">EN</span></button>
+                    <button id="soundToggle" class="ctrl-btn" title="Toggle Sound">🔊 <span class="label" id="soundLabel">ON</span></button>
+                    <button id="tutorialBtn" class="ctrl-btn tutorial-btn" title="Tutorial">📖 <span class="label" id="tutorialLabel">Tutorial</span></button>
+                    <button id="resetBtn" class="ctrl-btn reset-btn" title="Reset Scores">🔄 <span class="label" id="resetLabel">Reset</span></button>
+                </div>
+                <div class="score-area">
+                    <div class="score-item"><span class="emoji-big">⭐</span><span id="starCount">0</span></div>
+                    <div class="score-item"><span class="emoji-big">💰</span><span id="coinCount">0</span></div>
+                    <div class="score-item"><span id="levelBadge" class="level-badge" style="background:#7ec8e0;color:#fff;font-size:0.9rem;padding:2px 14px;border-radius:40px;box-shadow:0 4px 0 #4f8fa3;border:2px solid #a8def0;cursor:pointer;">Menu</span></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===== HOME SCREEN ===== -->
+        <div id="homeScreen" class="home-screen">
+            <div class="greeting" id="homeGreeting">👋 Hi there, Explorer!</div>
+            <div class="sub-greeting" id="homeSubGreeting">Choose a subject below and let's start learning together!</div>
+
+            <div class="section-title" id="subjectTitle">📚 What do you want to learn? <span style="font-size:0.9rem;font-weight:400;color:#7a5f4a;" id="subjectSub">Pick a topic and start your adventure!</span></div>
+            <div class="subject-grid" id="subjectGrid">
+                <div class="subject-card" data-subject="science">
+                    <div class="subject-icon">🔬</div>
+                    <div class="subject-name" data-en="Science" data-ne="विज्ञान">Science</div>
+                    <div class="subject-desc" data-en="Physics &amp; Chemistry" data-ne="भौतिकशास्त्र र रसायनशास्त्र">Physics &amp; Chemistry</div>
+                    <div class="tap-hint" data-en="Tap to select" data-ne="छान्नको लागि ट्याप गर्नुहोस्">Tap to select</div>
+                </div>
+                <div class="subject-card" data-subject="nature">
+                    <div class="subject-icon">🌱</div>
+                    <div class="subject-name" data-en="Nature" data-ne="प्रकृति">Nature</div>
+                    <div class="subject-desc" data-en="Plants &amp; Animals" data-ne="बिरुवा र जनावरहरू">Plants &amp; Animals</div>
+                    <div class="tap-hint" data-en="Tap to select" data-ne="छान्नको लागि ट्याप गर्नुहोस्">Tap to select</div>
+                </div>
+                <div class="subject-card" data-subject="solar">
+                    <div class="subject-icon">🪐</div>
+                    <div class="subject-name" data-en="Solar System" data-ne="सौर्य प्रणाली">Solar System</div>
+                    <div class="subject-desc" data-en="Space &amp; Planets" data-ne="अन्तरिक्ष र ग्रहहरू">Space &amp; Planets</div>
+                    <div class="tap-hint" data-en="Tap to select" data-ne="छान्नको लागि ट्याप गर्नुहोस्">Tap to select</div>
+                </div>
+                <div class="subject-card" data-subject="flashcards">
+                    <div class="subject-icon">🃏</div>
+                    <div class="subject-name" data-en="Flashcards" data-ne="फ्ल्यास कार्ड">Flashcards</div>
+                    <div class="subject-desc" data-en="Science, Nature &amp; Space" data-ne="विज्ञान, प्रकृति र अन्तरिक्ष">Science, Nature &amp; Space</div>
+                    <div class="tap-hint" data-en="Tap to select" data-ne="छान्नको लागि ट्याप गर्नुहोस्">Tap to select</div>
+                </div>
+            </div>
+
+            <div class="section-title" id="levelTitle">🎯 Choose your level!</div>
+            <div class="level-grid" id="levelGrid">
+                <div class="level-item" data-level="basic">
+                    <div class="level-label" data-en="🌱 Basic" data-ne="🌱 आधारभूत">🌱 Basic</div>
+                    <div class="level-desc" style="font-size:0.85rem;color:#7a5f4a;" data-en="Simple fun questions!" data-ne="सरल रमाइला प्रश्नहरू!">Simple fun questions!</div>
+                    <div class="level-check" data-en="Tap to select" data-ne="छान्नको लागि ट्याप गर्नुहोस्">Tap to select</div>
+                </div>
+                <div class="level-item" data-level="intermediate">
+                    <div class="level-label" data-en="🌟 Intermediate" data-ne="🌟 मध्यवर्ती">🌟 Intermediate</div>
+                    <div class="level-desc" style="font-size:0.85rem;color:#7a5f4a;" data-en="A bit more tricky!" data-ne="अलि गाह्रो!">A bit more tricky!</div>
+                    <div class="level-check" data-en="Tap to select" data-ne="छान्नको लागि ट्याप गर्नुहोस्">Tap to select</div>
+                </div>
+                <div class="level-item" data-level="advanced">
+                    <div class="level-label" data-en="🚀 Advanced" data-ne="🚀 उन्नत">🚀 Advanced</div>
+                    <div class="level-desc" style="font-size:0.85rem;color:#7a5f4a;" data-en="Super brain challenge!" data-ne="सुपर मस्तिष्क चुनौती!">Super brain challenge!</div>
+                    <div class="level-check" data-en="Tap to select" data-ne="छान्नको लागि ट्याप गर्नुहोस्">Tap to select</div>
+                </div>
+            </div>
+
+            <div class="text-center" style="margin-top:12px;">
+                <button id="startGameBtn" class="start-btn" disabled>🚀 Start Adventure</button>
+            </div>
+        </div>
+
+        <!-- ===== FLASHCARD SCREEN ===== -->
+        <div id="flashcardScreen"></div>
+
+        <!-- ===== GAME SCREEN ===== -->
+        <div id="gameScreen" class="game-screen">
+            <img src="cat.png" alt="Cute Cat" class="game-cat-overlay">
+            <div class="progress-area">
+                <span class="progress-text" id="progressLabel">0% complete</span>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%;"></div></div>
+            </div>
+
+            <div class="question-top">
+                <span class="q-counter" id="qCounter">Q1 / 5</span>
+                <span id="puzzleIndicator" style="font-weight:600;color:#7a5f4a;background:#fce5d4;padding:2px 16px;border-radius:40px;border:2px solid #efc9b0;">📝 Question</span>
+            </div>
+
+            <div id="qText" class="q-text">Question goes here</div>
+            <div id="optionsContainer" class="options-grid"></div>
+
+            <div id="puzzleContainer" class="puzzle-area" style="display:none;">
+                <div class="puzzle-hint" id="puzzleHint">✨ Drag the items into the correct order!</div>
+                <div id="puzzleItems" class="puzzle-items"></div>
+                <div style="text-align:center;margin-top:12px;">
+                    <button id="checkPuzzleBtn" class="nav-btn" style="background:#ffa726;padding:10px 32px;font-size:1.1rem;">✅ Check Order</button>
+                </div>
+            </div>
+
+            <div id="feedbackArea" class="feedback-area">
+                <div id="feedbackMsg" class="feedback-msg">🌟 Let's answer!</div>
+                <div id="funFact" class="fun-fact">💡 Fun fact: ...</div>
+            </div>
+            <div class="nav-buttons">
+                <button id="backBtn" class="nav-btn back" disabled><span class="btn-icon">⬅</span> <span id="backLabel">Back</span></button>
+                <button id="nextBtn" class="nav-btn next"><span id="nextLabel">Next</span> <span class="btn-icon">➡</span></button>
+                <button id="finishBtn" class="nav-btn finish" style="display:none;">🎉 Finish</button>
+            </div>
+
+            <img src="cat.png" alt="Cute Cat" class="game-cat-overlay">
+        </div>
+
+        <!-- ===== RESULT SCREEN ===== -->
+        <div id="resultScreen" class="result-screen">
+            <canvas id="confettiCanvas"></canvas>
+            <img src="popupcat-left.png" class="result-cat-right" alt="Happy Cat">
+            <header class="game-header" style="padding:0; margin-bottom:15px; flex-wrap: nowrap;">
+                <div class="game-title" id="homeTitle"><span>🚀</span> ज्ञान_<span style="color:#ef6c00;">Setu</span></div>
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <div class="header-controls">
+                        <button id="langToggleResult" class="ctrl-btn"><span id="langIconResult">🌐</span> <span class="label" id="langLabelResult">EN</span></button>
+                        <button id="soundToggleResult" class="ctrl-btn"><span id="soundIconResult">🔊</span> <span class="label" id="soundLabelResult">ON</span></button>
+                    </div>
+                    <div class="score-area">
+                        <div class="score-item"><span class="emoji-big">⭐</span><span id="resultStarCount">0</span></div>
+                        <div class="score-item"><span class="emoji-big">💰</span><span id="resultCoinCount">0</span></div>
+                        <div class="score-item"><span class="emoji-big">🏆</span><span id="levelBadgeResult">Basic</span></div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="result-inner">
+                <span class="big-emoji">🎊</span>
+                <h2 id="resultTitle">Great Job, Scientist!</h2>
+                <div class="result-stats">⭐ <span id="resultStars">0</span> &nbsp;|&nbsp; 💰 <span id="resultCoins">0</span></div>
+                <div id="resultMessage" class="result-message">You're a superstar!</div>
+                <button class="play-again-btn" id="playAgainBtn">🔁 Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="quiz_flashcard.js"></script>
+</body>
+</html>
