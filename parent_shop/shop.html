@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ज्ञान_Setu — Parent Shop</title>
+    <title>ज्ञान_Setu — Parent Store</title>
     <!-- Google Font: Playfair Display (semi-bold) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,20 +12,72 @@
 </head>
 <body>
 
-    <div class="top-green-line"></div>
+    <!-- ─── NAVBAR (Matching Child Dashboard) ─── -->
+    <header class="dashboard-navbar">
+        <!-- Logo -->
+        <a href="../parent-dashboard.php" class="logo">
+            <img src="../assets/images/website/logo.png" alt="Gyan Setu Logo" class="logo-img">
+            <h2>ज्ञान Setu</h2>
+        </a>
+        <button class="menu-toggle" type="button" id="menuToggleBtn" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+        <div class="nav-wrapper">
+            <nav class="dashboard-menu">
+                <a href="../parent-dashboard.php">
+                    <span class="en">📊 Dashboard</span>
+                    <span class="np">📊 ड्यासबोर्ड</span>
+                </a>
+                <a href="shop.html" class="active">
+                    <span class="en">🏪 Parent Store</span>
+                    <span class="np">🏪 अभिभावक पसल</span>
+                </a>
+                <a href="../child-dashboard.php">
+                    <span class="en">🎮 Child Zone</span>
+                    <span class="np">🎮 बच्चा जोन</span>
+                </a>
+            </nav>
+            <div class="dashboard-right">
+                <button class="sound-btn" id="btnSoundToggle" onclick="toggleSound()" title="Toggle Sound">
+                    <span>🔊</span>
+                </button>
+                <button class="language-btn" onclick="toggleLanguage()" type="button">
+                    🌐 <span id="langBtnText">नेपाली</span>
+                </button>
 
-    <!-- ─── HEADER (nav removed) ─── -->
-    <header>
-        <div class="logo">
-        <span>ज्ञान_Setu</span>
-        </div>
-        <div class="nav-controls">
-            <button class="btn-control lang-btn" onclick="toggleLanguage()">
-                <span>🌐</span> <span id="langBtnText">नेपाली</span>
-            </button>
-            <button class="btn-control" id="btnSoundToggle" onclick="toggleSound()" title="Toggle Sound">
-                <span>🔊</span>
-            </button>
+                <!-- Profile Avatar + Dropdown -->
+                <div class="profile-dropdown-wrapper" id="profileDropdownWrapper">
+                    <button class="profile-avatar-btn" id="profileAvatarBtn" onclick="toggleDropdown()" title="Profile Menu" aria-haspopup="true" aria-expanded="false">
+                        P
+                    </button>
+                    <div class="profile-dropdown-menu" id="profileDropdownMenu" role="menu">
+                        <div class="dropdown-header">
+                            <div class="dh-name">Parent Account</div>
+                            <div class="dh-role">Parent Portal</div>
+                        </div>
+                        <a href="../parent-dashboard.php" class="dropdown-item" role="menuitem">
+                            <span class="di-icon">📊</span>
+                            <span class="en">Parent Dashboard</span>
+                            <span class="np">अभिभावक ड्यासबोर्ड</span>
+                        </a>
+                        <a href="shop.html" class="dropdown-item" role="menuitem">
+                            <span class="di-icon">🏪</span>
+                            <span class="en">Parent Store</span>
+                            <span class="np">अभिभावक पसल</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="../child-dashboard.php" class="dropdown-item" role="menuitem">
+                            <span class="di-icon">🎮</span>
+                            <span class="en">Switch to Child Zone</span>
+                            <span class="np">बच्चा मोडमा जानुहोस्</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="../logout.php" class="dropdown-item danger" role="menuitem">
+                            <span class="di-icon">🚪</span>
+                            <span class="en">Logout</span>
+                            <span class="np">लगआउट</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -86,7 +138,7 @@
         <div class="header-section">
             <h1 id="pageTitle">
                 <span class="icon">🛍️</span>
-                <span class="en">Parent Shop</span>
+                <span class="en">Parent Store</span>
                 <span class="np">अभिभावक पसल</span>
             </h1>
         </div>

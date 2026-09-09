@@ -163,6 +163,13 @@ $res = $stmt->get_result();
 $child_info = $res->fetch_assoc();
 $stmt->close();
 
+// Guard: if no record found, the session child_id is invalid
+if (!$child_info) {
+    session_destroy();
+    header("Location: login.php");
+    exit();
+}
+
 $total_points = $child_info['total_coins'];
 $current_level = $child_info['current_level'];
 $child_age = isset($child_info['age']) ? (int)$child_info['age'] : 8;
@@ -311,9 +318,9 @@ $total_coins_earned = count($earned_badge_ids);
         <!-- Subject filter sidebar -->
         <aside class="subjects">
             <h3>Select Subject</h3>
-            <button type="button">🧮 MATHS</button>
+            <button type="button">🌍 GK</button>
             <button type="button">📚 ENGLISH</button>
-            <button type="button">📖 STORY BOOKS</button>
+            <button type="button">🔤 ALPHABETS</button>
             <a href="badges.php" class="badges-sidebar-link" aria-label="Open my badges" style="width: 90px; height: 90px; max-width: 90px; max-height: 90px; align-self: center; display: flex; justify-content: center; align-items: center; margin-top: 10px; flex-shrink: 0;">
                 <img src="badges/badge thumbnail.png" alt="Badges" style="width: 100%; height: 100%; max-width: 90px; max-height: 90px; object-fit: contain;">
             </a>
@@ -328,7 +335,7 @@ $total_coins_earned = count($earned_badge_ids);
 
             <div class="games-grid" style="margin-bottom: 30px;" style="display: flex; flex-wrap: wrap; gap: 20px;">
 <?php if ($child_age >= 4 && $child_age <= 6): ?>
-    <a href="games/alphabet-adventure/index.php" class="game-link" data-subject="story" style="display:none;">
+    <a href="games/alphabet-adventure/index.php" class="game-link" data-subject="alphabets" style="display:none;">
         <div class="game-card active" style="
             background: url('games/alphabet-adventure/assets/cover.jpg') no-repeat center / 100% 100%;
             position: relative;
@@ -372,7 +379,7 @@ $total_coins_earned = count($earned_badge_ids);
 <?php endif; ?>
 <!-- Capybara Nepal Adventure (Featured Platformer Quiz for Ages 8-9) -->
 <?php if ($child_age == 8 || $child_age == 9): ?>
-                <a href="games/capybara-platformer-quiz/index.html" class="game-link" data-subject="english" style="display:none;">
+                <a href="games/capybara-platformer-quiz/index.html" class="game-link" data-subject="gk" style="display:none;">
                     <div class="game-card active" style="
                         background: url('games/capybara-platformer-quiz/assets/cover.png') no-repeat center / 100% 100%;
                         position: relative;
@@ -454,7 +461,7 @@ $total_coins_earned = count($earned_badge_ids);
                 </a>
                 <?php endif; ?>
 
-                <a href="child-dashboard.php?play_game=Earth+Defense" class="game-link" data-subject="maths" style="display:none;">
+                <a href="child-dashboard.php?play_game=Earth+Defense" class="game-link" data-subject="gk" style="display:none;">
                     <div class="game-card">
                         <div class="play-btn">▶</div>
                         <p>Earth Defense</p>
@@ -468,7 +475,7 @@ $total_coins_earned = count($earned_badge_ids);
                     </div>
                 </a>
 
-                <a href="child-dashboard.php?play_game=Fraction+Fruit" class="game-link" data-subject="maths" style="display:none;">
+                <a href="child-dashboard.php?play_game=Fraction+Fruit" class="game-link" data-subject="gk" style="display:none;">
                     <div class="game-card">
                         <div class="play-btn">▶</div>
                         <p>Fraction Fruit</p>
@@ -509,9 +516,9 @@ $total_coins_earned = count($earned_badge_ids);
                 btn.addEventListener('click', () => {
                     const btnText = btn.textContent.toLowerCase();
                     let targetSubject = 'all';
-                    if (btnText.includes('math')) targetSubject = 'maths';
+                    if (btnText.includes('gk')) targetSubject = 'gk';
                     else if (btnText.includes('english')) targetSubject = 'english';
-                    else if (btnText.includes('story')) targetSubject = 'story';
+                    else if (btnText.includes('alphabets')) targetSubject = 'alphabets';
 
                     gameLinks.forEach(link => {
                         const gameSub = link.getAttribute('data-subject');

@@ -288,6 +288,64 @@
             if (e.key === 'Enter') verifyOTP();
         });
 
+        /* ─── PROFILE DROPDOWN ─── */
+        function toggleDropdown() {
+            const menu = document.getElementById('profileDropdownMenu');
+            const btn  = document.getElementById('profileAvatarBtn');
+            if (menu && btn) {
+                const isOpen = menu.classList.toggle('open');
+                btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            }
+        }
+
+        document.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('profileDropdownWrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                const menu = document.getElementById('profileDropdownMenu');
+                const btn  = document.getElementById('profileAvatarBtn');
+                if (menu) menu.classList.remove('open');
+                if (btn) btn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        /* ─── MOBILE NAV TOGGLE ─── */
+        (function() {
+            const toggleBtn = document.getElementById('menuToggleBtn');
+            const navWrapper = document.querySelector('.nav-wrapper');
+            if (toggleBtn && navWrapper) {
+                toggleBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const isOpen = navWrapper.classList.toggle('show');
+                    toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                    toggleBtn.innerHTML = isOpen ? '&#10005;' : '&#9776;';
+                });
+
+                navWrapper.querySelectorAll('a').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        navWrapper.classList.remove('show');
+                        toggleBtn.setAttribute('aria-expanded', 'false');
+                        toggleBtn.innerHTML = '&#9776;';
+                    });
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!navWrapper.contains(e.target) && !toggleBtn.contains(e.target)) {
+                        navWrapper.classList.remove('show');
+                        toggleBtn.setAttribute('aria-expanded', 'false');
+                        toggleBtn.innerHTML = '&#9776;';
+                    }
+                });
+
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth > 768) {
+                        navWrapper.classList.remove('show');
+                        toggleBtn.setAttribute('aria-expanded', 'false');
+                        toggleBtn.innerHTML = '&#9776;';
+                    }
+                });
+            }
+        })();
+
         /* ─── INIT ─── */
         renderAll();
 
