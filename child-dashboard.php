@@ -482,6 +482,13 @@ $total_coins_earned = count($earned_badge_ids);
                     </div>
                 </a>
 
+                <a href="quiz_flashcards.html" class="game-link" data-subject="all" style="display:none;">
+                    <div class="game-card active">
+                        <div class="play-btn">▶</div>
+                        <p>Quiz & Flashcards</p>
+                    </div>
+                </a>
+
             </div>
 
         </section>
