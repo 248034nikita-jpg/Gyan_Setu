@@ -7,17 +7,20 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-// Allow relative include from wack-a-mole subfolder
-$db_candidates = [
-    dirname(__DIR__, 2) . '/database/includes/db_connect.php'
-];
+// Connect to the main outside database configuration (not the wack-a-mole database folder)
+$root = realpath(__DIR__ . '/../../');
+$db_path = $root ? ($root . '/database/includes/db_connect.php') : '';
 
 if (!$db_path || !file_exists($db_path)) {
-    echo json_encode(['error' => 'DB config not found.']);
+    $db_path = dirname(__DIR__, 2) . '/database/includes/db_connect.php';
+}
+
+if (!file_exists($db_path)) {
+    echo json_encode(['error' => 'DB config not found at: ' . $db_path]);
     exit;
 }
 
-require $db_path;
+require_once $db_path;
 
 if (!isset($conn) || !($conn instanceof mysqli)) {
     echo json_encode(['error' => 'Database connection is unavailable.']);
