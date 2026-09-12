@@ -38,10 +38,6 @@ CREATE TABLE `child_badges` (
 -- Dumping data for table `child_badges`
 --
 
-INSERT INTO `child_badges` (`child_badge_id`, `child_id`, `badge_id`, `date_earned`) VALUES
-(1, 9, 1, '2026-09-02 18:03:48'),
-(2, 9, 3, '2026-09-02 18:03:48'),
-(3, 9, 2, '2026-09-03 14:41:42');
 
 --
 -- Indexes for dumped tables
