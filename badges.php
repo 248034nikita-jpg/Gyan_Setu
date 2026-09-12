@@ -140,12 +140,22 @@ $badgePhotos = [
                 <div class="badge-table" role="table" aria-label="<?php echo htmlspecialchars($selected['name']); ?> badges">
                     <div class="badge-table-head" role="row"><span>Badge</span><span>Description</span><span>Coins</span></div>
                     <?php foreach ($badges as $badge): $photo = $badgePhotos[strtolower($badge['title'])] ?? null; ?>
-                        <div class="badge-table-row <?php echo $badge['earned'] ? 'is-earned' : ''; ?>" role="row">
+                        <div class="badge-table-row <?php echo $badge['earned'] ? 'is-earned' : 'is-locked'; ?>" role="row">
                             <div class="badge-art" role="cell">
                                 <?php if ($photo): ?><img src="<?php echo htmlspecialchars($photo); ?>" alt="<?php echo htmlspecialchars($badge['title']); ?>">
                                 <?php else: ?><div class="badge-art-placeholder" aria-label="Badge artwork coming soon"></div><?php endif; ?>
                             </div>
-                            <div class="badge-copy" role="cell"><h2><?php echo htmlspecialchars($badge['title']); ?></h2><p><?php echo htmlspecialchars($badge['description']); ?></p></div>
+                            <div class="badge-copy" role="cell">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 7px;">
+                                    <h2 style="margin: 0;"><?php echo htmlspecialchars($badge['title']); ?></h2>
+                                    <?php if ($badge['earned']): ?>
+                                        <span style="background: #7cb342; color: #fff; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 12px; display: inline-flex; align-items: center; gap: 3px;">✓ Unlocked</span>
+                                    <?php else: ?>
+                                        <span style="background: #e0e0e0; color: #757575; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 12px; display: inline-flex; align-items: center; gap: 3px;">🔒 Locked</span>
+                                    <?php endif; ?>
+                                </div>
+                                <p><?php echo htmlspecialchars($badge['description']); ?></p>
+                            </div>
                             <div class="badge-coin" role="cell"><img src="wack-a-mole/assets/coin2.png" alt=""><span><?php echo (int) $badge['coins_reward']; ?></span></div>
                         </div>
                     <?php endforeach; ?>

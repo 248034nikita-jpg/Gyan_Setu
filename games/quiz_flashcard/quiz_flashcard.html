@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="quiz_flashcard.css" />
 </head>
 <body>
+    <a href="../../child-dashboard.php" class="btn-page-back" title="Back to Child Dashboard">
+            <img src="assets/back.png" alt="Back to Dashboard" class="page-back-icon">
+    </a>
 
     <!-- ===== TUTORIAL MODAL ===== -->
     <div id="tutorialModal">
@@ -92,9 +95,6 @@
 
         <!-- ===== HEADER ===== -->
         <header class="game-header">
-            <div class="game-title" id="homeTitle">
-                <span>🚀</span>ज्ञान_<span style="color:#ef6c00;">Setu</span>
-            </div>
             <div class="d-flex align-items-center gap-2 flex-wrap">
                 <div class="header-controls">
                     <button id="langToggle" class="ctrl-btn" title="Toggle Language">🌐 <span class="label" id="langLabel">EN</span></button>
@@ -172,7 +172,7 @@
 
         <!-- ===== GAME SCREEN ===== -->
         <div id="gameScreen" class="game-screen">
-            <img src="cat.png" alt="Cute Cat" class="game-cat-overlay">
+            <img src="assets/cat.png" alt="Cute Cat" class="game-cat-overlay">
             <div class="progress-area">
                 <span class="progress-text" id="progressLabel">0% complete</span>
                 <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%;"></div></div>
@@ -204,13 +204,13 @@
                 <button id="finishBtn" class="nav-btn finish" style="display:none;">🎉 Finish</button>
             </div>
 
-            <img src="cat.png" alt="Cute Cat" class="game-cat-overlay">
+            <img src="assets/cat.png" alt="Cute Cat" class="game-cat-overlay">
         </div>
 
         <!-- ===== RESULT SCREEN ===== -->
         <div id="resultScreen" class="result-screen">
             <canvas id="confettiCanvas"></canvas>
-            <img src="popupcat-left.png" class="result-cat-right" alt="Happy Cat">
+            <img src="assets/popupcat-left.png" class="result-cat-right" alt="Happy Cat">
             <header class="game-header" style="padding:0; margin-bottom:15px; flex-wrap: nowrap;">
                 <div class="game-title" id="homeTitle"><span>🚀</span> ज्ञान_<span style="color:#ef6c00;">Setu</span></div>
                 <div class="d-flex align-items-center gap-2 flex-wrap">

@@ -13,6 +13,105 @@ let GAME_STATE = {
     childId: 0,        // set from PHP session if available
 };
 
+// ──── Built-in fallback questions (used when API/DB is unavailable) ────
+const FALLBACK_QUESTIONS = {
+    grammar: {
+        1: [
+            { id:1, q:'She ___ a doctor.',        options:['is','am','are','be'],   correct:0, concept:'is / am / are' },
+            { id:2, q:'I ___ nine years old.',     options:['am','is','are','be'],   correct:0, concept:'is / am / are' },
+            { id:3, q:'They ___ playing outside.', options:['are','is','am','be'],   correct:0, concept:'is / am / are' },
+            { id:4, q:'We ___ students.',          options:['are','is','am','was'],  correct:0, concept:'is / am / are' },
+            { id:5, q:'He ___ my brother.',        options:['is','am','are','be'],   correct:0, concept:'is / am / are' },
+            { id:6, q:'You ___ very kind.',        options:['are','is','am','be'],   correct:0, concept:'is / am / are' },
+            { id:7, q:'It ___ a big elephant.',    options:['is','am','are','be'],   correct:0, concept:'is / am / are' },
+            { id:8, q:'My parents ___ farmers.',   options:['are','is','am','be'],   correct:0, concept:'is / am / are' },
+            { id:9, q:'I ___ happy today.',        options:['am','is','are','be'],   correct:0, concept:'is / am / are' },
+            { id:10,q:'The sky ___ blue.',         options:['is','am','are','be'],   correct:0, concept:'is / am / are' },
+        ],
+        2: [
+            { id:1, q:'Yesterday, I ___ to the market.',    options:['went','go','goes','going'],       correct:0, concept:'simple past tense' },
+            { id:2, q:'She ___ her lunch already.',         options:['ate','eat','eats','eating'],      correct:0, concept:'simple past tense' },
+            { id:3, q:'We ___ a movie last night.',         options:['watched','watch','watches','watching'], correct:0, concept:'simple past tense' },
+            { id:4, q:'He ___ his homework before dinner.', options:['did','do','does','doing'],        correct:0, concept:'simple past tense' },
+            { id:5, q:'They ___ to Pokhara last month.',   options:['travelled','travel','travels','travelling'], correct:0, concept:'simple past tense' },
+            { id:6, q:'I ___ a letter to my friend.',      options:['wrote','write','writes','writing'],correct:0, concept:'simple past tense' },
+            { id:7, q:'She ___ the door quietly.',         options:['closed','close','closes','closing'],correct:0, concept:'simple past tense' },
+            { id:8, q:'We ___ football yesterday.',        options:['played','play','plays','playing'], correct:0, concept:'simple past tense' },
+            { id:9, q:'He ___ his keys this morning.',     options:['lost','lose','loses','losing'],    correct:0, concept:'simple past tense' },
+            { id:10,q:'I ___ very happy yesterday.',       options:['was','am','is','are'],             correct:0, concept:'simple past tense' },
+        ],
+        3: [
+            { id:1, q:'Tomorrow, I ___ visit my grandmother.',  options:['will','am','shall go','going'], correct:0, concept:'future tense (will)' },
+            { id:2, q:'She ___ finish her project by tomorrow.',options:['will','is','was','are'],        correct:0, concept:'future tense (will)' },
+            { id:3, q:'If it rains, we ___ stay inside.',       options:['will','would','shall','are'],   correct:0, concept:'future tense (will)' },
+            { id:4, q:'Next year, he ___ join a new school.',   options:['will','is','was','has'],        correct:0, concept:'future tense (will)' },
+            { id:5, q:'We ___ go to the market later.',         options:['will','are','were','had'],      correct:0, concept:'future tense (will)' },
+            { id:6, q:'They ___ visit us next weekend.',        options:['will','are','were','had'],      correct:0, concept:'future tense (will)' },
+            { id:7, q:'I ___ call you after school.',           options:['will','am','was','have'],       correct:0, concept:'future tense (will)' },
+            { id:8, q:'She ___ not come to the party.',         options:['will','is','was','can'],        correct:0, concept:'future tense (will)' },
+            { id:9, q:'He ___ travel to Pokhara next month.',   options:['will','is','was','has'],        correct:0, concept:'future tense (will)' },
+            { id:10,q:'We ___ start the game soon.',            options:['will','are','were','have'],     correct:0, concept:'future tense (will)' },
+        ],
+    },
+    vocabulary: {
+        1: [
+            { id:1, q:'Opposite of "big"',   options:['small','large','huge','tall'],   correct:0, concept:'opposites' },
+            { id:2, q:'Opposite of "happy"', options:['sad','glad','angry','joyful'],   correct:0, concept:'opposites' },
+            { id:3, q:'Opposite of "hot"',   options:['cold','warm','cool','frozen'],   correct:0, concept:'opposites' },
+            { id:4, q:'Opposite of "fast"',  options:['slow','quick','swift','speedy'], correct:0, concept:'opposites' },
+            { id:5, q:'Opposite of "open"',  options:['closed','wide','shut','near'],   correct:0, concept:'opposites' },
+            { id:6, q:'Opposite of "day"',   options:['night','morning','noon','dusk'], correct:0, concept:'opposites' },
+            { id:7, q:'Opposite of "up"',    options:['down','above','high','over'],    correct:0, concept:'opposites' },
+            { id:8, q:'Opposite of "full"',  options:['empty','heavy','large','wide'],  correct:0, concept:'opposites' },
+            { id:9, q:'Opposite of "tall"',  options:['short','long','fat','wide'],     correct:0, concept:'opposites' },
+            { id:10,q:'Opposite of "clean"', options:['dirty','bright','fresh','neat'], correct:0, concept:'opposites' },
+        ],
+        2: [
+            { id:1, q:'Synonym of "happy"',    options:['joyful','sad','angry','tired'],     correct:0, concept:'synonyms' },
+            { id:2, q:'Synonym of "big"',       options:['large','small','thin','short'],    correct:0, concept:'synonyms' },
+            { id:3, q:'Synonym of "quick"',     options:['fast','slow','lazy','careful'],    correct:0, concept:'synonyms' },
+            { id:4, q:'Synonym of "beautiful"', options:['lovely','ugly','plain','dull'],    correct:0, concept:'synonyms' },
+            { id:5, q:'Synonym of "smart"',     options:['clever','foolish','dull','slow'],  correct:0, concept:'synonyms' },
+            { id:6, q:'Synonym of "sad"',       options:['unhappy','glad','joyful','merry'], correct:0, concept:'synonyms' },
+            { id:7, q:'Synonym of "small"',     options:['tiny','huge','tall','wide'],       correct:0, concept:'synonyms' },
+            { id:8, q:'Synonym of "brave"',     options:['courageous','scared','shy','weak'],correct:0, concept:'synonyms' },
+            { id:9, q:'Synonym of "kind"',      options:['caring','mean','rude','harsh'],    correct:0, concept:'synonyms' },
+            { id:10,q:'Synonym of "angry"',     options:['furious','happy','calm','joyful'], correct:0, concept:'synonyms' },
+        ],
+        3: [
+            { id:1, q:'She felt ___ after winning the race.',        options:['proud','sad','bored','tired'],       correct:0, concept:'context-based word choice' },
+            { id:2, q:'The weather was ___, so we stayed indoors.',  options:['stormy','sunny','mild','warm'],      correct:0, concept:'context-based word choice' },
+            { id:3, q:'He is very ___; he always helps others.',     options:['generous','selfish','rude','lazy'],  correct:0, concept:'context-based word choice' },
+            { id:4, q:'After running an hour, he felt completely ___.', options:['exhausted','fresh','happy','strong'], correct:0, concept:'context-based word choice' },
+            { id:5, q:'The teacher asked him to ___ his answer.',    options:['explain','hide','ignore','copy'],    correct:0, concept:'context-based word choice' },
+            { id:6, q:'She whispered ___ so no one could hear.',     options:['softly','loudly','clearly','quickly'],correct:0, concept:'context-based word choice' },
+            { id:7, q:'The puppy was full of energy and very ___.',  options:['playful','tired','quiet','lazy'],    correct:0, concept:'context-based word choice' },
+            { id:8, q:'He works hard to ___ his family safe.',       options:['keep','make','let','bring'],         correct:0, concept:'context-based word choice' },
+            { id:9, q:'Her ___ about space made her read many books.',options:['curiosity','fear','anger','sadness'],correct:0, concept:'context-based word choice' },
+            { id:10,q:'He is known to be ___ and never lies.',       options:['honest','sneaky','rude','greedy'],   correct:0, concept:'context-based word choice' },
+        ],
+    },
+};
+
+/** Returns shuffled fallback questions for the given topic and tier. */
+function getFallbackQuestions(topic, tier) {
+    const pool = (FALLBACK_QUESTIONS[topic] && FALLBACK_QUESTIONS[topic][tier])
+        ? FALLBACK_QUESTIONS[topic][tier]
+        : FALLBACK_QUESTIONS['grammar'][1];
+    // Deep clone & shuffle options so correct index stays valid
+    return pool.map(q => {
+        const opts = [...q.options];
+        const correctText = opts[q.correct];
+        // Fisher-Yates shuffle
+        for (let i = opts.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [opts[i], opts[j]] = [opts[j], opts[i]];
+        }
+        return { ...q, options: opts, correct: opts.indexOf(correctText) };
+    });
+}
+
+
 // ──── Helper: Smooth Scene Transition ────
 function transitionToScene(scene, targetScene, data = null) {
     if (scene.isTransitioning) return;
@@ -388,22 +487,34 @@ class TopicSelectScene extends Phaser.Scene {
     _loadAndStart() {
         this.loadingMsg.setText('Loading questions...');
         const url = `database/get_questions.php?topic=${GAME_STATE.topic}&tier=${GAME_STATE.tier}`;
+        const scenes = { 1: 'EasyLevelScene', 2: 'MediumLevelScene', 3: 'HardLevelScene' };
+        const targetScene = scenes[GAME_STATE.tier] || 'EasyLevelScene';
+
+        const useFallback = (reason) => {
+            console.warn('Using built-in fallback questions:', reason);
+            QUESTIONS = getFallbackQuestions(GAME_STATE.topic, GAME_STATE.tier);
+            transitionToScene(this, targetScene);
+        };
+
         fetch(url)
-            .then(r => r.json())
+            .then(r => {
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                return r.json();
+            })
             .then(data => {
                 if (data.error || !data.questions || data.questions.length === 0) {
-                    this.loadingMsg.setText('❌ No questions found. Try another topic.');
+                    useFallback(data.error || 'empty question list from server');
                     return;
                 }
                 QUESTIONS = data.questions;
-                const scenes = { 1: 'EasyLevelScene', 2: 'MediumLevelScene', 3: 'HardLevelScene' };
-                transitionToScene(this, scenes[GAME_STATE.tier] || 'EasyLevelScene');
+                transitionToScene(this, targetScene);
             })
             .catch(err => {
                 console.error('Question load error:', err);
-                this.loadingMsg.setText('⚠️ Could not load questions. Check connection.');
+                useFallback(err.message);
             });
     }
+
 
     _mkTopicCard(x, y, textureKey, cb) {
         const img = this.add.image(x, y, textureKey).setInteractive({ useHandCursor: true });
@@ -1211,34 +1322,33 @@ class ResultScene extends Phaser.Scene {
         // Wooden result board (the supplied asset includes the decorative characters).
         this.add.image(325, 310, 'scoreboard').setDisplaySize(600, 328);
 
-        this.add.text(325, 208, 'SCORE', {
-            fontFamily: '"Arial Black",Arial,sans-serif', fontSize: '30px',
+        this.add.text(325, 195, 'SCORE', {
+            fontFamily: '"Arial Black",Arial,sans-serif', fontSize: '28px',
             fontStyle: 'bold', fill: '#17100a'
         }).setOrigin(0.5);
 
-        this.add.text(325, 247, `${this.score} / ${this.total}`, {
-            fontFamily: '"Arial Black",Arial,sans-serif', fontSize: '38px',
+        this.add.text(325, 232, `${this.score} / ${this.total}`, {
+            fontFamily: '"Arial Black",Arial,sans-serif', fontSize: '36px',
             fontStyle: 'bold', fill: '#17100a'
         }).setOrigin(0.5);
 
         // Coins display with the supplied coin artwork.
-        this.coinImg = this.add.image(274, 293, 'coin2').setDisplaySize(42, 42);
-        this.coinsText = this.add.text(307, 293, '+0 coins', {
-            fontFamily: '"Arial Black",Arial,sans-serif', fontSize: '22px',
+        this.coinImg = this.add.image(274, 272, 'coin2').setDisplaySize(38, 38);
+        this.coinsText = this.add.text(304, 272, '+0 Coins', {
+            fontFamily: '"Arial Black",Arial,sans-serif', fontSize: '20px',
             fontStyle: 'bold', fill: '#17100a'
         }).setOrigin(0, 0.5);
 
+        // Badges notification area (positioned cleanly between coins and stats)
+        this.badgeArea = this.add.text(325, 312, '', {
+            fontFamily: 'Arial,sans-serif', fontSize: '13px', fill: '#4a2c00',
+            fontStyle: 'bold', align: 'center', wordWrap: { width: 340 }
+        }).setOrigin(0.5);
 
         const accuracy = this.total > 0 ? Math.round((this.score / this.total) * 100) : 0;
 
-        this._statRow(210, 387, 'Accuracy', `${accuracy}%`);
-        this._statRow(440, 387, 'Best Streak', `${this.streak} in a row`);
-
-        // Badges area
-        this.badgeArea = this.add.text(325, 354, '', {
-            fontFamily: 'Arial,sans-serif', fontSize: '13px', fill: '#7d3f13',
-            fontStyle: 'bold', align: 'center', wordWrap: { width: 310 }
-        }).setOrigin(0.5);
+        this._statRow(210, 368, 'Accuracy', `${accuracy}%`);
+        this._statRow(440, 368, 'Best Streak', `${this.streak} in a row`);
 
         // The icon buttons retain the existing destinations and game flow.
         this._mkIconBtn(205, 500, 'home', () => {
@@ -1298,11 +1408,12 @@ class ResultScene extends Phaser.Scene {
         if (this.submitted) return;
         this.submitted = true;
 
-        // Get child_id from meta tag if available (set by child-dashboard.php template)
+        // Get child_id from meta tag if available (set by index.php)
         const childMeta = document.querySelector('meta[name="child_id"]');
         const childId = childMeta ? parseInt(childMeta.content) : 0;
 
         const concept = (QUESTIONS.length > 0 && QUESTIONS[0].concept) ? QUESTIONS[0].concept : '';
+        const perCorrect = [0, 1, 2, 3][this.tier] || 1;
 
         const form = new FormData();
         form.append('child_id',       childId);
@@ -1314,30 +1425,48 @@ class ResultScene extends Phaser.Scene {
         form.append('total_questions',this.total);
         form.append('streak',         this.streak);
 
+        // Show coins immediately (will be updated if server responds)
+        this.coinsText.setText(`+${this.score * perCorrect} Coins`);
+
         fetch('database/submit_score.php', { method: 'POST', body: form })
-            .then(r => r.json())
-            .then(data => {
+            .then(r => {
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                return r.text();
+            })
+            .then(text => {
+                // Try to parse JSON — server may have output warnings before the JSON
+                let data;
+                try {
+                    // Find the JSON object in case there's stray output before it
+                    const jsonStart = text.indexOf('{');
+                    if (jsonStart >= 0) {
+                        data = JSON.parse(text.substring(jsonStart));
+                    } else {
+                        throw new Error('No JSON in response');
+                    }
+                } catch (e) {
+                    console.warn('Could not parse score response:', e, text);
+                    return; // keep the coins text we already set
+                }
+
                 if (data.coins_earned !== undefined) {
                     this.coinsText.setText(`+${data.coins_earned} Coins`);
                 }
                 if (data.new_badges && data.new_badges.length > 0) {
-                    const badges = data.new_badges
-                        .map(b => {
-                            // icon_url may be an image filename (for example,
-                            // "badges/first steps.png"). Do not render that path as text.
-                            const icon = b.icon_url && !/\.(png|jpe?g|gif|svg|webp)$/i.test(b.icon_url)
-                                ? b.icon_url
-                                : '🏅';
-                            return `${icon} ${b.title}  ·  +${b.coins_reward || 0} coins`;
-                        })
-                        .join('\n');
-                    this.badgeArea.setText(badges);
+                    if (data.new_badges.length === 1) {
+                        const b = data.new_badges[0];
+                        this.badgeArea.setText(`🏅 Unlocked: ${b.title} (+${b.coins_reward || 0} coins)`);
+                    } else {
+                        const names = data.new_badges.slice(0, 2).map(b => b.title).join(', ');
+                        const extra = data.new_badges.length > 2 ? ` +${data.new_badges.length - 2} more` : '';
+                        const totalBonus = data.new_badges.reduce((sum, b) => sum + (parseInt(b.coins_reward) || 0), 0);
+                        this.badgeArea.setText(`🏅 Unlocked: ${names}${extra} (+${totalBonus} coins)`);
+                    }
                 }
             })
             .catch(err => {
-                console.warn('Score submission failed (offline mode):', err);
-                const perCorrect = [0, 1, 2, 3][this.tier] || 1;
-                this.coinsText.setText(`+${this.score * perCorrect} Coins (offline)`);
+                // Network error — coins text is already set above, nothing else to do
+                console.warn('Score submission failed:', err);
             });
     }
 }

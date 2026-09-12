@@ -5,7 +5,7 @@
         }
         body {
             font-family: 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
-            background: url('forest.jpg') no-repeat center center fixed;
+            background: url('assets/forest.jpg') no-repeat center center fixed;
             background-size: cover;
             min-height: 100vh;
             display: flex;
@@ -57,6 +57,39 @@
         }
         .game-title:active {
             transform: scale(0.96);
+        }
+        .btn-page-back {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 999;
+            width: 65px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+            text-decoration: none;
+        }
+
+        .btn-page-back:hover {
+            transform: scale(1.12);
+        }
+
+        .btn-page-back:active {
+            transform: scale(0.95);
+        }
+
+        .page-back-icon {
+            width: 100%;
+            height: 100%;
+            max-width: 65px;
+            max-height: 65px;
+            object-fit: contain;
+            filter: drop-shadow(0 3.5px 7px rgba(0, 0, 0, 0.35));
         }
         .header-controls {
             display: flex;
