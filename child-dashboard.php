@@ -418,7 +418,7 @@ $total_coins_earned = count($earned_badge_ids);
                         ">▶</div>
                     </div>
                 </a>
-                <a href="wack-a-mole/index.php" class="game-link" data-subject="english" style="display:none;">
+                <a href="wack-a-mole/index.php?child_id=<?php echo (int)$child_id; ?>" class="game-link" data-subject="english" style="display:none;">
                     <div class="game-card active" style="
                         background: url('wack-a-mole/assets/thumbnail.jpg') no-repeat center / 100% 100%;
                         position: relative;
