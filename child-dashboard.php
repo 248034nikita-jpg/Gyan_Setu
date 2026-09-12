@@ -475,7 +475,7 @@ $total_coins_earned = count($earned_badge_ids);
                         ">▶</div>
                     </div>
                     </a>
-                <a href="#" class="game-link" data-subject="maths" style="display:none;">
+                <a href="games/hangman/index.php" class="game-link" data-subject="English" style="display:none;">
                     <div class="game-card">
                         <div class="play-btn">▶</div>
                         <p>Word Safari</p>
