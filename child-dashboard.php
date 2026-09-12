@@ -474,28 +474,28 @@ $total_coins_earned = count($earned_badge_ids);
                         ">▶</div>
                     </div>
                     </a>
-                <a href="child-dashboard.php?play_game=Earth+Defense" class="game-link" data-subject="gk" style="display:none;">
+                <a href="#" class="game-link" data-subject="gk" style="display:none;">
                     <div class="game-card">
                         <div class="play-btn">▶</div>
                         <p>Earth Defense</p>
                     </div>
                 </a>
 
-                <a href="child-dashboard.php?play_game=Word+Matcher" class="game-link" data-subject="english" style="display:none;">
+                <a href="#" class="game-link" data-subject="english" style="display:none;">
                     <div class="game-card">
                         <div class="play-btn">▶</div>
                         <p>Word Matcher</p>
                     </div>
                 </a>
 
-                <a href="child-dashboard.php?play_game=Fraction+Fruit" class="game-link" data-subject="gk" style="display:none;">
+                <a href="#" class="game-link" data-subject="gk" style="display:none;">
                     <div class="game-card">
                         <div class="play-btn">▶</div>
                         <p>Fraction Fruit</p>
                     </div>
                 </a>
 
-                <a href="child-dashboard.php?play_game=Sentence+Builder" class="game-link" data-subject="english" style="display:none;">
+                <a href="#" class="game-link" data-subject="english" style="display:none;">
                     <div class="game-card">
                         <div class="play-btn">▶</div>
                         <p>Sentence Builder</p>
