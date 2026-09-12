@@ -3,7 +3,7 @@
 // quiz_flashcards.php – Complete game with backend integration
 // ============================================================
 session_start();
-include 'database/includes/db_connect.php';
+include '../../database/includes/db_connect.php';
 
 // Route protection: accept 'child' or 'parent' sessions
 if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['child', 'parent'])) {

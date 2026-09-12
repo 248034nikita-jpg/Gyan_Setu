@@ -54,8 +54,9 @@ while ($row = $categoryRows->fetch_assoc()) {
 $thumbnailBySubject = [
     'english' => 'badges/english badge thumbnail.png',
     'general-knowledge' => 'badges/gk thumbnail.png',
+    'science' => 'badges/gk thumbnail.png',
 ];
-foreach (['english' => 'English', 'general-knowledge' => 'General Knowledge'] as $slug => $name) {
+foreach (['english' => 'English', 'general-knowledge' => 'General Knowledge', 'science' => 'Science'] as $slug => $name) {
     if (!isset($categories[$slug])) {
         $categories[$slug] = ['slug' => $slug, 'name' => $name, 'game_ids' => [], 'game_titles' => []];
     }
