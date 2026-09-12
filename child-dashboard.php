@@ -476,9 +476,31 @@ $total_coins_earned = count($earned_badge_ids);
                     </div>
                     </a>
                 <a href="games/hangman/index.php" class="game-link" data-subject="English" style="display:none;">
-                    <div class="game-card">
-                        <div class="play-btn">▶</div>
-                        <p>Word Safari</p>
+                    <div class="game-card" style="
+                        background: url('games/hangman/cover.png') no-repeat center / 100% 100%;
+                        position: relative;
+                        border: 3.5px solid #21f37c;
+                        border-radius: 16px;
+                        box-shadow: 0 6px 18px rgba(33, 243, 96, 0.4);
+                        overflow: hidden;
+                    ">
+                        <div class="play-btn" style="
+                            position: absolute;
+                            bottom: 12px;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            background: rgba(76, 175, 80, 0.95);
+                            color: white;
+                            z-index: 2;
+                            width: 50px;
+                            height: 50px;
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 22px;
+                            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+                        ">▶</div>
                     </div>
                 </a>
 
