@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 10, 2026 at 10:08 AM
+-- Generation Time: Sep 12, 2026 at 10:59 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -83,7 +83,9 @@ CREATE TABLE `alphabet_adventure_progress` (
 
 INSERT INTO `alphabet_adventure_progress` (`progress_id`, `child_id`, `level_letter`, `word_index`, `word`, `stars`, `mistakes`, `completed`, `completed_at`) VALUES
 (1, 9, 'A', 0, 'APPLE', 3, 0, 1, '2026-09-10 07:44:57'),
-(2, 9, 'A', 1, 'ANT', 3, 0, 1, '2026-09-10 07:45:09');
+(2, 9, 'A', 1, 'ANT', 3, 0, 1, '2026-09-10 07:45:09'),
+(3, 9, 'A', 2, 'AIRPLANE', 3, 0, 1, '2026-09-12 08:18:24'),
+(4, 27, 'A', 0, 'APPLE', 3, 0, 1, '2026-09-12 08:48:12');
 
 -- --------------------------------------------------------
 
@@ -168,7 +170,7 @@ INSERT INTO `badge_criteria` (`criteria_id`, `badge_id`, `criteria_type_id`, `ga
 (4, 4, 5, 1, 'grammar', '', NULL, 3),
 (5, 5, 5, 1, 'vocabulary', '', NULL, 3),
 (6, 6, 6, 1, '', '', NULL, 6),
-(7, 7, 2, NULL, '', '', NULL, 20),
+(7, 7, 2, NULL, '', '', NULL, 10),
 (8, 8, 3, NULL, '', '', NULL, 5),
 (9, 9, 4, NULL, '', '', 3, 90),
 (10, 10, 7, NULL, '', '', NULL, 7),
@@ -233,9 +235,9 @@ CREATE TABLE `capybara_child_progress` (
 --
 
 INSERT INTO `capybara_child_progress` (`child_id`, `content_id`, `attempts`, `correct_attempts`, `last_seen_level`, `next_review_level`, `last_attempt_at`, `updated_at`) VALUES
-(1, 1, 61, 56, 1, 5, '2026-08-12 07:23:12', '2026-08-12 07:23:12'),
-(1, 2, 16, 9, 1, 3, '2026-08-12 07:23:26', '2026-08-12 07:23:26'),
-(1, 3, 14, 9, 1, 3, '2026-08-12 07:23:35', '2026-08-12 07:23:35'),
+(1, 1, 63, 58, 1, 5, '2026-09-12 08:44:18', '2026-09-12 08:44:18'),
+(1, 2, 18, 9, 1, 3, '2026-09-12 08:44:33', '2026-09-12 08:44:33'),
+(1, 3, 16, 9, 1, 3, '2026-09-12 08:44:42', '2026-09-12 08:44:42'),
 (1, 4, 2, 1, 2, 4, '2026-09-09 15:05:50', '2026-09-09 15:05:50'),
 (1, 5, 2, 2, 2, 6, '2026-09-09 15:06:11', '2026-09-09 15:06:11'),
 (1, 6, 2, 2, 2, 6, '2026-09-09 15:06:23', '2026-09-09 15:06:23'),
@@ -330,6 +332,7 @@ CREATE TABLE `capybara_level_scores` (
 --
 
 INSERT INTO `capybara_level_scores` (`child_id`, `level_number`, `coins_earned`, `oranges_collected`, `knowledge_mastered`, `completed`, `started_at`, `completed_at`, `last_played`) VALUES
+(1, 1, 204, 6, 3, 0, '2026-09-12 08:45:00', NULL, '2026-09-12 08:45:00'),
 (1, 2, 204, 6, 3, 1, '2026-09-09 15:06:35', NULL, '2026-09-09 15:06:35');
 
 -- --------------------------------------------------------
@@ -355,13 +358,14 @@ CREATE TABLE `children` (
 --
 
 INSERT INTO `children` (`child_id`, `parent_id`, `username`, `age`, `mascot_id`, `total_coins`, `total_stars`, `current_level`, `created_at`) VALUES
-(1, 1, 'testkid', 5, 1, 204, 0, 1, '2026-08-11 14:16:34'),
-(9, 22, 'jeli_22', 9, 8, 10, 0, 1, '2026-09-09 09:39:36'),
+(1, 1, 'testkid', 5, 1, 608, 0, 1, '2026-08-11 14:16:34'),
+(9, 22, 'jeli_22', 9, 8, 190, 0, 2, '2026-09-09 09:39:36'),
 (21, 21, 'arch_21', 8, 7, 0, 0, 1, '2026-08-21 08:35:01'),
 (23, 23, 'jelshi_23', 4, 6, 0, 0, 1, '2026-09-09 09:47:54'),
 (24, 24, 'anup_24', 7, 7, 19, 0, 1, '2026-09-09 09:51:00'),
 (25, 25, 'nikhil_25', 6, 1, 0, 0, 1, '2026-09-09 09:59:46'),
-(26, 26, 'sunny_26', 10, 2, 0, 0, 1, '2026-09-09 16:47:11');
+(26, 26, 'sunny_26', 10, 2, 0, 0, 1, '2026-09-09 16:47:11'),
+(27, 27, 'jejyurai_27', 5, 6, 32, 0, 1, '2026-09-12 08:40:54');
 
 -- --------------------------------------------------------
 
@@ -383,7 +387,25 @@ CREATE TABLE `child_badges` (
 INSERT INTO `child_badges` (`child_badge_id`, `child_id`, `badge_id`, `date_earned`) VALUES
 (1, 9, 1, '2026-09-02 18:03:48'),
 (2, 9, 3, '2026-09-02 18:03:48'),
-(3, 9, 2, '2026-09-03 14:41:42');
+(3, 9, 2, '2026-09-03 14:41:42'),
+(21, 9, 5, '2026-09-12 05:32:08'),
+(22, 9, 7, '2026-09-12 05:32:08'),
+(23, 9, 8, '2026-09-12 05:32:08'),
+(24, 9, 4, '2026-09-12 05:32:12'),
+(25, 9, 9, '2026-09-12 05:32:12'),
+(26, 9, 19, '2026-09-12 05:39:49'),
+(27, 1, 1, '2026-09-12 08:45:00'),
+(28, 1, 7, '2026-09-12 08:45:00'),
+(29, 1, 11, '2026-09-12 08:45:00'),
+(30, 1, 12, '2026-09-12 08:45:01'),
+(31, 1, 13, '2026-09-12 08:45:01'),
+(32, 1, 14, '2026-09-12 08:45:01'),
+(33, 1, 15, '2026-09-12 08:45:01'),
+(34, 1, 17, '2026-09-12 08:45:01'),
+(35, 1, 19, '2026-09-12 08:45:01'),
+(36, 27, 1, '2026-09-12 08:46:02'),
+(37, 27, 2, '2026-09-12 08:46:02'),
+(38, 27, 7, '2026-09-12 08:48:12');
 
 -- --------------------------------------------------------
 
@@ -444,7 +466,8 @@ CREATE TABLE `child_game_intro` (
 --
 
 INSERT INTO `child_game_intro` (`child_id`, `game_id`, `seen_at`) VALUES
-(9, 1, '2026-09-10 13:30:33');
+(9, 1, '2026-09-12 14:02:29'),
+(27, 1, '2026-09-12 14:30:33');
 
 -- --------------------------------------------------------
 
@@ -484,7 +507,9 @@ CREATE TABLE `coin_transactions` (
 INSERT INTO `coin_transactions` (`transaction_id`, `child_id`, `amount`, `source`, `reference_id`, `description`, `created_at`) VALUES
 (3, 1, 204, 'capybara_level_complete', NULL, 'Level 2 completed with 204 coins, 3/3 facts mastered', '2026-09-09 15:06:35'),
 (4, 9, 5, 'game', NULL, 'Spelled \'APPLE\' in Level A', '2026-09-10 07:44:57'),
-(5, 9, 5, 'game', NULL, 'Spelled \'ANT\' in Level A', '2026-09-10 07:45:09');
+(5, 9, 5, 'game', NULL, 'Spelled \'ANT\' in Level A', '2026-09-10 07:45:09'),
+(6, 9, 5, 'game', NULL, 'Spelled \'AIRPLANE\' in Level A', '2026-09-12 08:18:24'),
+(7, 27, 5, 'game', NULL, 'Spelled \'APPLE\' in Level A', '2026-09-12 08:48:12');
 
 -- --------------------------------------------------------
 
@@ -507,6 +532,33 @@ CREATE TABLE `courses` (
 
 INSERT INTO `courses` (`course_id`, `title`, `description`, `difficulty_level`, `min_age`, `max_age`) VALUES
 (1, 'english', NULL, 'Beginner', 8, 9);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `criteria_types`
+--
+
+CREATE TABLE `criteria_types` (
+  `criteria_type_id` int(11) NOT NULL,
+  `type_name` varchar(50) NOT NULL,
+  `description` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `criteria_types`
+--
+
+INSERT INTO `criteria_types` (`criteria_type_id`, `type_name`, `description`) VALUES
+(1, 'rounds_completed', 'Total attempts across matching rounds meets threshold_value'),
+(2, 'perfect_score', 'A single round scored at or above threshold_value'),
+(3, 'streak', 'Best-ever correct-answer streak meets threshold_value'),
+(4, 'accuracy_threshold', 'A single round\'s accuracy meets threshold_value (%)'),
+(5, 'topic_all_tiers', 'All difficulty tiers within a topic have been attempted'),
+(6, 'game_all_rounds', 'All round-types within a game have been attempted'),
+(7, 'daily_streak', 'Played on threshold_value consecutive days'),
+(8, 'oranges_collected', 'Total oranges collected across all levels meets threshold_value'),
+(9, 'total_coins', 'Total coins balance meets threshold_value');
 
 -- --------------------------------------------------------
 
@@ -1058,6 +1110,50 @@ CREATE TABLE `hangman_words` (
   `target_age_max` int(11) DEFAULT 12
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `hangman_words`
+--
+
+INSERT INTO `hangman_words` (`word_id`, `game_id`, `word`, `hint`, `category`, `difficulty_tier`, `target_age_min`, `target_age_max`) VALUES
+(1, 22, 'CAT', 'A small furry pet', 'mammals', 1, 4, 6),
+(2, 22, 'DOG', 'A friendly barker', 'mammals', 1, 4, 6),
+(3, 22, 'COW', 'A farm animal that gives milk', 'mammals', 1, 4, 6),
+(4, 22, 'PIG', 'A pink farm animal', 'mammals', 1, 4, 6),
+(5, 22, 'BAT', 'The only flying mammal', 'mammals', 1, 4, 6),
+(6, 22, 'FOX', 'A clever orange animal', 'mammals', 1, 4, 6),
+(7, 22, 'BEAR', 'A big furry animal', 'mammals', 1, 4, 6),
+(8, 22, 'DEER', 'A graceful animal with antlers', 'mammals', 1, 4, 6),
+(9, 22, 'ZEBRA', 'A striped horse-like animal', 'mammals', 1, 4, 6),
+(10, 22, 'TIGER', 'A large striped cat', 'mammals', 2, 7, 8),
+(11, 22, 'RABBIT', 'A hopping animal with long ears', 'mammals', 2, 7, 8),
+(12, 22, 'HORSE', 'A large animal used for riding', 'mammals', 2, 7, 8),
+(13, 22, 'MONKEY', 'A playful tree-dweller', 'mammals', 2, 7, 8),
+(14, 22, 'LION', 'The king of the jungle', 'mammals', 2, 7, 8),
+(15, 22, 'ELEPHANT', 'The largest land animal', 'mammals', 3, 9, 10),
+(16, 22, 'GIRAFFE', 'The tallest land animal', 'mammals', 3, 9, 10),
+(17, 22, 'DOLPHIN', 'A smart sea animal', 'mammals', 3, 9, 10),
+(18, 22, 'KANGAROO', 'An animal with a pouch', 'mammals', 3, 9, 10),
+(19, 22, 'DUCK', 'A bird that says quack', 'birds', 1, 4, 6),
+(20, 22, 'HEN', 'A bird that lays eggs', 'birds', 1, 4, 6),
+(21, 22, 'OWL', 'A night bird', 'birds', 1, 4, 6),
+(22, 22, 'EAGLE', 'A large bird with sharp eyes', 'birds', 1, 4, 6),
+(23, 22, 'PENGUIN', 'A bird that swims', 'birds', 1, 4, 6),
+(24, 22, 'PARROT', 'A colorful talking bird', 'birds', 2, 7, 8),
+(25, 22, 'SPARROW', 'A small brown bird', 'birds', 2, 7, 8),
+(26, 22, 'FLAMINGO', 'A pink bird on one leg', 'birds', 3, 9, 10),
+(27, 22, 'PELICAN', 'A bird with a big beak pouch', 'birds', 3, 9, 10),
+(28, 22, 'SNAKE', 'A long animal with no legs', 'reptiles', 1, 4, 6),
+(29, 22, 'LIZARD', 'A small animal that can lose its tail', 'reptiles', 1, 4, 6),
+(30, 22, 'TURTLE', 'A slow animal with a shell', 'reptiles', 1, 4, 6),
+(31, 22, 'CROCODILE', 'A large reptile with many teeth', 'reptiles', 2, 7, 8),
+(32, 22, 'IGUANA', 'A green sun-loving reptile', 'reptiles', 2, 7, 8),
+(33, 22, 'CHAMELEON', 'A reptile that changes color', 'reptiles', 3, 9, 10),
+(34, 22, 'ALLIGATOR', 'A large reptile with a broad snout', 'reptiles', 3, 9, 10),
+(35, 22, 'FROG', 'A small animal that says ribbit', 'amphibians', 1, 4, 6),
+(36, 22, 'TOAD', 'A bumpy animal like a frog', 'amphibians', 1, 4, 6),
+(37, 22, 'SALAMANDER', 'A long animal that looks like a lizard', 'amphibians', 2, 7, 8),
+(38, 22, 'AXOLOTL', 'A unique animal that stays young', 'amphibians', 3, 9, 10);
+
 -- --------------------------------------------------------
 
 --
@@ -1115,7 +1211,8 @@ INSERT INTO `parents` (`parent_id`, `first_name`, `last_name`, `email`, `passwor
 (23, 'Dhan Kumar', 'Rai', 'dkthulung@gmail.com', '$2y$10$WTMCUyFGVRvrOMndok5YWOPsE9JUlYCGlz.Vf21rO0eXX5MPJsNAi', NULL, '2026-09-09 09:47:41'),
 (24, 'Anupa', 'Pudasaini', 'anupapookie@gmail.com', '$2y$10$39ZmV7cRoLsdcpU56MqtD.RvGAr4RzdPIJTZXzRzgP1678JUSzEgG', NULL, '2026-09-09 09:50:48'),
 (25, 'Nikita', 'Shrestha', 'nikitapookie@gmail.com', '$2y$10$dBp8kKDfKleT4aTMfiVUJu5SYbn0IPy7jmwQudPMEF1syNhvlPA12', NULL, '2026-09-09 09:59:20'),
-(26, 'Surye', 'Dahal', 'surye12@gmail.com', '$2y$10$3hZzu9d3PJMGMYFzE5z/c.HCb6G2buaw8jv/lxwGF60qdV7bEK6XS', NULL, '2026-09-09 16:46:58');
+(26, 'Surye', 'Dahal', 'surye12@gmail.com', '$2y$10$3hZzu9d3PJMGMYFzE5z/c.HCb6G2buaw8jv/lxwGF60qdV7bEK6XS', NULL, '2026-09-09 16:46:58'),
+(27, 'Santu', 'Rai', 'raisantu123@gmail.com', '$2y$10$hdGkeRKRo2e8Pe/AKj3neun1IhmZpnzsSMKELrREObq01ICcyQSrK', NULL, '2026-09-12 08:40:31');
 
 -- --------------------------------------------------------
 
@@ -1874,7 +1971,17 @@ INSERT INTO `scores` (`score_id`, `child_id`, `game_id`, `topic`, `concept`, `di
 (21, 1, 2, 'nepal_adventure', 'Level 2', 1, 6, 100.00, 3, 204, '2026-09-09 15:06:35'),
 (22, 24, 1, 'vocabulary', 'opposites', 1, 9, 90.00, 4, 19, '2026-09-09 16:09:06'),
 (23, 9, 3, 'spelling', 'Level A', 1, 3, 100.00, 1, 5, '2026-09-10 07:44:57'),
-(24, 9, 3, 'spelling', 'Level A', 1, 3, 100.00, 1, 5, '2026-09-10 07:45:09');
+(24, 9, 3, 'spelling', 'Level A', 1, 3, 100.00, 1, 5, '2026-09-10 07:45:09'),
+(25, 9, 1, '', '', 1, 20, 100.00, 1, 20, '2026-09-12 05:32:08'),
+(26, 9, 1, '', '', 1, 20, 100.00, 1, 20, '2026-09-12 05:32:10'),
+(27, 9, 1, '', '', 1, 20, 100.00, 1, 20, '2026-09-12 05:32:12'),
+(28, 9, 1, 'vocabulary', 'opposites', 1, 8, 80.00, 4, 18, '2026-09-12 05:39:49'),
+(29, 9, 1, 'vocabulary', 'opposites', 1, 3, 30.00, 2, 1, '2026-09-12 05:41:04'),
+(30, 9, 1, 'vocabulary', 'opposites', 1, 3, 30.00, 1, 1, '2026-09-12 08:17:53'),
+(31, 9, 3, 'spelling', 'Level A', 1, 3, 100.00, 1, 5, '2026-09-12 08:18:24'),
+(32, 1, 2, 'nepal_adventure', 'Level 1', 1, 6, 100.00, 3, 204, '2026-09-12 08:45:00'),
+(33, 27, 1, 'grammar', 'is / am / are', 1, 2, 20.00, 1, 7, '2026-09-12 08:46:02'),
+(34, 27, 3, 'spelling', 'Level A', 1, 3, 100.00, 1, 5, '2026-09-12 08:48:12');
 
 -- --------------------------------------------------------
 
@@ -2203,6 +2310,13 @@ ALTER TABLE `courses`
   ADD PRIMARY KEY (`course_id`);
 
 --
+-- Indexes for table `criteria_types`
+--
+ALTER TABLE `criteria_types`
+  ADD PRIMARY KEY (`criteria_type_id`),
+  ADD UNIQUE KEY `type_name` (`type_name`);
+
+--
 -- Indexes for table `flashcard_cards`
 --
 ALTER TABLE `flashcard_cards`
@@ -2387,7 +2501,7 @@ ALTER TABLE `alphabet_adventure_levels`
 -- AUTO_INCREMENT for table `alphabet_adventure_progress`
 --
 ALTER TABLE `alphabet_adventure_progress`
-  MODIFY `progress_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `progress_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `badges`
@@ -2417,13 +2531,13 @@ ALTER TABLE `capybara_learning_content`
 -- AUTO_INCREMENT for table `children`
 --
 ALTER TABLE `children`
-  MODIFY `child_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `child_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `child_badges`
 --
 ALTER TABLE `child_badges`
-  MODIFY `child_badge_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `child_badge_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `child_progress`
@@ -2435,7 +2549,7 @@ ALTER TABLE `child_progress`
 -- AUTO_INCREMENT for table `coin_transactions`
 --
 ALTER TABLE `coin_transactions`
-  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `courses`
@@ -2495,7 +2609,7 @@ ALTER TABLE `games`
 -- AUTO_INCREMENT for table `hangman_words`
 --
 ALTER TABLE `hangman_words`
-  MODIFY `word_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `word_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `mascots`
@@ -2507,7 +2621,7 @@ ALTER TABLE `mascots`
 -- AUTO_INCREMENT for table `parents`
 --
 ALTER TABLE `parents`
-  MODIFY `parent_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `parent_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `parent_orders`
@@ -2549,7 +2663,7 @@ ALTER TABLE `quiz_questions`
 -- AUTO_INCREMENT for table `scores`
 --
 ALTER TABLE `scores`
-  MODIFY `score_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `score_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `shape_game_items`
@@ -2696,12 +2810,6 @@ ALTER TABLE `flashcard_questions`
 ALTER TABLE `game_access`
   ADD CONSTRAINT `fk_gameaccess_game` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_gameaccess_plan` FOREIGN KEY (`plan_id`) REFERENCES `subscription_plans` (`plan_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `hangman_words`
---
-ALTER TABLE `hangman_words`
-  ADD CONSTRAINT `fk_hangman_game` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `parent_orders`
