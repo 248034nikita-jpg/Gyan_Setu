@@ -504,11 +504,7 @@ $total_coins_earned = count($earned_badge_ids);
                     </div>
                 </a>
 
-<<<<<<< HEAD
-                <a href="child-dashboard.php?play_game=Earth+Defense" class="game-link" data-subject="science gk" style="display:none;">
-=======
                 <a href="#" class="game-link" data-subject="english" style="display:none;">
->>>>>>> 88a6b9eec495d6ba91d86fe89250e6b50cbbaa8a
                     <div class="game-card">
                         <div class="play-btn">▶</div>
                         <p>Earth Defense</p>
@@ -529,60 +525,6 @@ $total_coins_earned = count($earned_badge_ids);
                     </div>
                 </a>
 
-<<<<<<< HEAD
-                <?php if ($child_age >= 4 && $child_age <= 12): ?>
-                <a href="games/quiz_flashcard/quiz_flashcard.php" class="game-link" data-subject="science" style="display:none;">
-                    <div class="game-card active" style="
-                        background: url('games/quiz_flashcard/assets/forest.jpg') no-repeat center / 100% 100%;
-                        position: relative;
-                        border: 3.5px solid #9c27b0;
-                        border-radius: 16px;
-                        box-shadow: 0 6px 18px rgba(156, 39, 176, 0.4);
-                        overflow: hidden;
-                    ">
-                        <span style="
-                            position: absolute;
-                            top: 8px;
-                            right: 8px;
-                            background: #9c27b0;
-                            color: #ffffff;
-                            font-size: 10px;
-                            font-weight: 800;
-                            padding: 3px 8px;
-                            border-radius: 12px;
-                            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-                            z-index: 2;
-                        ">Ages 4-12</span>
-                        <div class="play-btn" style="
-                            position: absolute;
-                            bottom: 12px;
-                            left: 50%;
-                            transform: translateX(-50%);
-                            background: rgba(156, 39, 176, 0.95);
-                            color: white;
-                            z-index: 2;
-                            width: 50px;
-                            height: 50px;
-                            border-radius: 50%;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            font-size: 22px;
-                            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-                        ">▶</div>
-                    </div>
-                </a>
-                <?php else: ?>
-                <a href="games/quiz_flashcard/quiz_flashcard.php" class="game-link" data-subject="science" style="display:none;">
-                    <div class="game-card active">
-                        <div class="play-btn">▶</div>
-                        <p>🔬 Science Quiz & Flashcards</p>
-                    </div>
-                </a>
-                <?php endif; ?>
-
-=======
->>>>>>> 88a6b9eec495d6ba91d86fe89250e6b50cbbaa8a
             </div>
 
         </section>
@@ -614,16 +556,13 @@ $total_coins_earned = count($earned_badge_ids);
                     else if (btnText.includes('english')) targetSubject = 'english';
                     else if (btnText.includes('alphabets')) targetSubject = 'alphabets';
                     else if (btnText.includes('science')) targetSubject = 'science';
-<<<<<<< HEAD
-=======
                     else if (btnText.includes('maths')) targetSubject = 'maths';
->>>>>>> 88a6b9eec495d6ba91d86fe89250e6b50cbbaa8a
 
                     gameLinks.forEach(link => {
-                        const gameSub = link.getAttribute('data-subject') || '';
+                        const gameSub = link.getAttribute('data-subject');
                         if (targetSubject === 'all') {
                             link.style.display = 'block';
-                        } else if (gameSub === targetSubject || gameSub === 'all' || gameSub.includes(targetSubject)) {
+                        } else if (gameSub === targetSubject || gameSub === 'all') {
                             link.style.display = 'block';
                         } else {
                             link.style.display = 'none';
