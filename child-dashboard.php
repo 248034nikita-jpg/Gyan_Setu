@@ -474,17 +474,17 @@ $total_coins_earned = count($earned_badge_ids);
                         ">▶</div>
                     </div>
                     </a>
-                <a href="#" class="game-link" data-subject="gk" style="display:none;">
+                <a href="#" class="game-link" data-subject="English" style="display:none;">
                     <div class="game-card">
                         <div class="play-btn">▶</div>
-                        <p>Earth Defense</p>
+                        <p>Word Safari</p>
                     </div>
                 </a>
 
                 <a href="#" class="game-link" data-subject="english" style="display:none;">
                     <div class="game-card">
                         <div class="play-btn">▶</div>
-                        <p>Word Matcher</p>
+                        <p>Earth Defense</p>
                     </div>
                 </a>
 
