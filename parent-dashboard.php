@@ -626,7 +626,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
 
 <!-- Navbar (Matching Child Dashboard) -->
 <header class="dashboard-navbar">
-    <a href="parent-dashboard.php" class="logo">
+    <a href="index.html" class="logo">
         <img src="assets/images/website/logo.png" alt="Gyan Setu Logo" class="logo-img">
         <h2>ज्ञान Setu</h2>
     </a>

@@ -36,7 +36,9 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role']
     PEEKING MASCOT - Appears when 2 lives left
     ======================================== -->
     <div id="peekMascot" class="mascot-peek">🦁</div>
-
+    <a href="../../child-dashboard.php" class="btn-page-back" title="Back to Child Dashboard">
+            <img src="assets/back.png" alt="Back to Dashboard" class="page-back-icon">
+        </a>
     <!-- ========================================
     SCREEN 1: HOME SCREEN
     The first thing players see
