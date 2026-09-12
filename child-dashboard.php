@@ -322,10 +322,7 @@ $total_coins_earned = count($earned_badge_ids);
             <button type="button">📚 ENGLISH</button>
             <button type="button">🔤 ALPHABETS</button>
             <button type="button">🔬 SCIENCE</button>
-<<<<<<< HEAD
-=======
             <button type="button">🔢 MATHS</button>
->>>>>>> 88a6b9eec495d6ba91d86fe89250e6b50cbbaa8a
             <a href="badges.php" class="badges-sidebar-link" aria-label="Open my badges" style="width: 90px; height: 90px; max-width: 90px; max-height: 90px; align-self: center; display: flex; justify-content: center; align-items: center; margin-top: 10px; flex-shrink: 0;">
                 <img src="badges/badge thumbnail.png" alt="Badges" style="width: 100%; height: 100%; max-width: 90px; max-height: 90px; object-fit: contain;">
             </a>
