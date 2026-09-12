@@ -322,6 +322,7 @@ $total_coins_earned = count($earned_badge_ids);
             <button type="button">📚 ENGLISH</button>
             <button type="button">🔤 ALPHABETS</button>
             <button type="button">🔬 SCIENCE</button>
+            <button type="button">🔢 MATHS</button>
             <a href="badges.php" class="badges-sidebar-link" aria-label="Open my badges" style="width: 90px; height: 90px; max-width: 90px; max-height: 90px; align-self: center; display: flex; justify-content: center; align-items: center; margin-top: 10px; flex-shrink: 0;">
                 <img src="badges/badge thumbnail.png" alt="Badges" style="width: 100%; height: 100%; max-width: 90px; max-height: 90px; object-fit: contain;">
             </a>
@@ -418,7 +419,7 @@ $total_coins_earned = count($earned_badge_ids);
                         ">▶</div>
                     </div>
                 </a>
-                <a href="wack-a-mole/index.php" class="game-link" data-subject="english" style="display:none;">
+                <a href="wack-a-mole/index.php?child_id=<?php echo (int)$child_id; ?>" class="game-link" data-subject="english" style="display:none;">
                     <div class="game-card active" style="
                         background: url('wack-a-mole/assets/thumbnail.jpg') no-repeat center / 100% 100%;
                         position: relative;
@@ -474,28 +475,28 @@ $total_coins_earned = count($earned_badge_ids);
                         ">▶</div>
                     </div>
                     </a>
-                <a href="child-dashboard.php?play_game=Earth+Defense" class="game-link" data-subject="gk" style="display:none;">
+                <a href="#" class="game-link" data-subject="maths" style="display:none;">
                     <div class="game-card">
                         <div class="play-btn">▶</div>
                         <p>Earth Defense</p>
                     </div>
                 </a>
 
-                <a href="child-dashboard.php?play_game=Word+Matcher" class="game-link" data-subject="english" style="display:none;">
+                <a href="#" class="game-link" data-subject="english" style="display:none;">
                     <div class="game-card">
                         <div class="play-btn">▶</div>
                         <p>Word Matcher</p>
                     </div>
                 </a>
 
-                <a href="child-dashboard.php?play_game=Fraction+Fruit" class="game-link" data-subject="gk" style="display:none;">
+                <a href="#" class="game-link" data-subject="maths" style="display:none;">
                     <div class="game-card">
                         <div class="play-btn">▶</div>
                         <p>Fraction Fruit</p>
                     </div>
                 </a>
 
-                <a href="child-dashboard.php?play_game=Sentence+Builder" class="game-link" data-subject="english" style="display:none;">
+                <a href="#" class="game-link" data-subject="english" style="display:none;">
                     <div class="game-card">
                         <div class="play-btn">▶</div>
                         <p>Sentence Builder</p>
@@ -533,6 +534,7 @@ $total_coins_earned = count($earned_badge_ids);
                     else if (btnText.includes('english')) targetSubject = 'english';
                     else if (btnText.includes('alphabets')) targetSubject = 'alphabets';
                     else if (btnText.includes('science')) targetSubject = 'science';
+                    else if (btnText.includes('maths')) targetSubject = 'maths';
 
                     gameLinks.forEach(link => {
                         const gameSub = link.getAttribute('data-subject');

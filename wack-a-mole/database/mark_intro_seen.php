@@ -8,7 +8,8 @@
  */
 header('Content-Type: application/json');
 
-$root = realpath(__DIR__ . '/../../');
+$root   = dirname(__DIR__); // → <root>/wack-a-mole
+$root   = dirname($root);   // → <root>  (project root, e.g. Gyan_Setu)
 $dbPath = $root . '/database/includes/db_connect.php';
 
 if (!file_exists($dbPath)) {

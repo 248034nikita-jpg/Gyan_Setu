@@ -1,28 +1,37 @@
 <?php
 session_start();
+include_once __DIR__ . '/../database/includes/db_connect.php';
 
 $child_id = 0;
 
-if (isset($_SESSION['role'], $_SESSION['user_id'])) {
+if (isset($_GET['child_id']) && (int)$_GET['child_id'] > 0) {
+    $child_id = (int)$_GET['child_id'];
+} elseif (isset($_SESSION['role'], $_SESSION['user_id'])) {
     if ($_SESSION['role'] === 'child') {
-        // Child is directly logged in — use their own ID
         $child_id = (int) $_SESSION['user_id'];
     } elseif ($_SESSION['role'] === 'parent') {
-        // Parent is logged in — resolve the child they're viewing (same logic as child-dashboard.php)
-        include __DIR__ . '/../database/includes/db_connect.php';
         $parent_id = (int) $_SESSION['user_id'];
-        $stmt = $conn->prepare(
-            "SELECT child_id FROM children WHERE parent_id = ? ORDER BY created_at ASC LIMIT 1"
-        );
-        $stmt->bind_param("i", $parent_id);
-        $stmt->execute();
-        $row = $stmt->get_result()->fetch_assoc();
-        $stmt->close();
-        if ($row) {
-            $child_id = (int) $row['child_id'];
+        if (isset($conn) && $conn && !$conn->connect_errno) {
+            $stmt = $conn->prepare(
+                "SELECT child_id FROM children WHERE parent_id = ? ORDER BY created_at ASC LIMIT 1"
+            );
+            if ($stmt) {
+                $stmt->bind_param("i", $parent_id);
+                $stmt->execute();
+                $row = $stmt->get_result()->fetch_assoc();
+                $stmt->close();
+                if ($row) {
+                    $child_id = (int) $row['child_id'];
+                }
+            }
         }
     }
 }
+
+if ($child_id <= 0 && isset($_SESSION['child_id']) && (int)$_SESSION['child_id'] > 0) {
+    $child_id = (int)$_SESSION['child_id'];
+}
+
 
 // Check if child has already seen the introductory storyline video
 $has_seen_intro = false;

@@ -73,6 +73,18 @@ ALTER TABLE `badges`
   MODIFY `badge_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+update badges 
+set icon_url = 'badges/first steps.png'
+where badge_id = 1;
+
+update badges
+set icon_url= 'badges/grammar starter.png'
+where badge_id=2;
+
+update badges
+set icon_url='badges/perfect score.png'
+where badge_id=7;
+
+update badges
+set icon_url='badges/sharp shoooter.png'
+where badge_id=8;
