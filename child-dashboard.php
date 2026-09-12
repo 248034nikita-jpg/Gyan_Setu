@@ -475,7 +475,7 @@ $total_coins_earned = count($earned_badge_ids);
                         ">▶</div>
                     </div>
                     </a>
-                <a href="games/hangman/index.php" class="game-link" data-subject="English" style="display:none;">
+                <a href="games/hangman/index.php" class="game-link" data-subject="english" style="display:none;">
                     <div class="game-card" style="
                         background: url('games/hangman/cover.png') no-repeat center / 100% 100%;
                         position: relative;
