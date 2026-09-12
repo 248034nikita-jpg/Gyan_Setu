@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `child_badges`
 --
 
-CREATE TABLE `child_badges` (
+CREATE TABLE if not exists `child_badges`(
   `child_badge_id` int(11) NOT NULL,
   `child_id` int(11) NOT NULL,
   `badge_id` int(11) NOT NULL,

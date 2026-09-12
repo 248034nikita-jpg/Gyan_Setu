@@ -5,6 +5,15 @@ function toggleLanguage(lang) {
     const elements = document.querySelectorAll('[data-en]');
     
     elements.forEach(el => {
+        if (el.closest && (
+            el.closest('.logo') ||
+            el.closest('.footer-logo') ||
+            el.closest('[translate="no"]') ||
+            el.closest('.no-translate')
+        )) {
+            return;
+        }
+
         if (lang === 'ne' && el.dataset.ne) {
             el.textContent = el.dataset.ne;
         } else if (lang === 'en' && el.dataset.en) {

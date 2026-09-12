@@ -101,7 +101,7 @@ $badgePhotos = [
 </head>
 <body>
     <header class="dashboard-navbar">
-        <a href="index.html" class="logo"><img src="assets/images/website/logo.png" alt="Gyan Setu Logo" class="logo-img"><h2>Gyan Setu</h2></a>
+        <a href="index.html" class="logo"><img src="assets/images/website/logo.png" alt="Gyan Setu Logo" class="logo-img"><h2>ज्ञान Setu</h2></a>
         <button class="menu-toggle" type="button" id="menuToggleBtn" aria-label="Open menu" aria-expanded="false">&#9776;</button>
         <div class="nav-wrapper">
             <nav class="dashboard-menu"><a href="child-dashboard.php">🎮 Game Zone</a><a href="progress.html">📈 My Progress</a><a href="shop.php">🏪 Store</a></nav>

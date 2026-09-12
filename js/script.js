@@ -78,6 +78,7 @@ navWrapper.classList.remove("show");
 
 const langTranslations = {
     "Gyan Setu": "ज्ञान सेतु",
+    "ज्ञान Setu": "ज्ञान सेतु",
     "Home": "गृहपृष्ठ",
     "How to Join": "कसरी जोडिने",
     "About Us": "हाम्रो बारेमा",
@@ -88,10 +89,15 @@ const langTranslations = {
     "Play, Learn,": "खेल्नुहोस्, सिक्नुहोस्,",
     "Grow Together": "सँगै बढ्नुहोस्",
     "Gyan Setu is a bilingual learning adventure for children aged 4–10. Help Setu earn coins, explore stories, solve quizzes, and enjoy learning in both Nepali and English.": "ज्ञान सेतु ४-१० वर्षका बालबालिकाहरूको लागि दोभाषे सिकाइ यात्रा हो। सेतुलाई सिक्का कमाउन, कथाहरू अन्वेषण गर्न, प्रश्नोत्तरीहरू हल गर्न, र नेपाली र अंग्रेजी दुवैमा सिक्न मद्दत गर्नुहोस्।",
+    "Gyan Setu is a bilingual learning adventure for children aged 4-10. Help Setu earn coins, explore stories, solve quizzes, and enjoy learning in both Nepali and English.": "ज्ञान सेतु ४-१० वर्षका बालबालिकाहरूको लागि दोभाषे सिकाइ यात्रा हो। सेतुलाई सिक्का कमाउन, कथाहरू अन्वेषण गर्न, प्रश्नोत्तरीहरू हल गर्न, र नेपाली र अंग्रेजी दुवैमा सिक्न मद्दत गर्नुहोस्।",
+    "Gyan Setu is a free bilingual learning adventure for children aged 4–10. Help Setu earn coins, explore stories, solve quizzes, and enjoy learning in both Nepali and English.": "ज्ञान सेतु ४-१० वर्षका बालबालिकाहरूको लागि दोभाषे सिकाइ यात्रा हो। सेतुलाई सिक्का कमाउन, कथाहरू अन्वेषण गर्न, प्रश्नोत्तरीहरू हल गर्न, र नेपाली र अंग्रेजी दुवैमा सिक्न मद्दत गर्नुहोस्।",
+    "Gyan Setu is a free bilingual learning adventure for children aged 4-10. Help Setu earn coins, explore stories, solve quizzes, and enjoy learning in both Nepali and English.": "ज्ञान सेतु ४-१० वर्षका बालबालिकाहरूको लागि दोभाषे सिकाइ यात्रा हो। सेतुलाई सिक्का कमाउन, कथाहरू अन्वेषण गर्न, प्रश्नोत्तरीहरू हल गर्न, र नेपाली र अंग्रेजी दुवैमा सिक्न मद्दत गर्नुहोस्।",
     "Play for Free 🎮": "नि:शुल्क खेल्नुहोस् 🎮",
     "Create Family Account 👨‍👩‍👧": "पारिवारिक खाता बनाउनुहोस् 👨‍👩‍👧",
+    "Create Family Account 🧑‍🤝‍🧑": "पारिवारिक खाता बनाउनुहोस् 🧑‍🤝‍🧑",
     "Learn More ↓": "थप जान्नुहोस् ↓",
     "4-10": "४-१०",
+    "4–10": "४-१०",
     "Age Range": "उमेर समूह",
     "2": "२",
     "Languages": "भाषाहरू",
@@ -100,6 +106,7 @@ const langTranslations = {
     "What's Inside?": "भित्र के छ?",
     "Everything a young learner needs": "युवा सिकारुलाई चाहिने सबै कुरा",
     "A complete learning ecosystem — games, tracking, worksheets, and parental oversight in one place.": "एक पूर्ण सिकाइ इकोसिस्टम - खेलहरू, ट्र्याकिङ, कार्यपत्रहरू, र अभिभावकीय निगरानी एकै ठाउँमा।",
+    "A complete learning ecosystem - games, tracking, worksheets, and parental oversight in one place.": "एक पूर्ण सिकाइ इकोसिस्टम - खेलहरू, ट्र्याकिङ, कार्यपत्रहरू, र अभिभावकीय निगरानी एकै ठाउँमा।",
     "Bilingual": "दोभाषे",
     "One-click switch between Nepali and English for all content, games, and interface elements.": "सबै सामग्री, खेल र इन्टरफेस तत्वहरूको लागि नेपाली र अंग्रेजी बीच एक-क्लिक स्विच।",
     "Family Account": "पारिवारिक खाता",
@@ -147,48 +154,135 @@ const langTranslations = {
     "© 2025 Gyan Setu. All rights reserved.": "© २०२५ ज्ञान सेतु। सबै अधिकार सुरक्षित।"
 };
 
-const reverseTranslations = {};
-for(let key in langTranslations) {
-    reverseTranslations[langTranslations[key]] = key;
+// Explicit mappings for elements with data-i18n attribute
+const elementTranslations = {
+    'hero-desc': {
+        en: 'Gyan Setu is a bilingual learning adventure for children aged 4–10. Help Setu earn coins, explore stories, solve quizzes, and enjoy learning in both Nepali and English.',
+        ne: 'ज्ञान सेतु ४-१० वर्षका बालबालिकाहरूको लागि दोभाषे सिकाइ यात्रा हो। सेतुलाई सिक्का कमाउन, कथाहरू अन्वेषण गर्न, प्रश्नोत्तरीहरू हल गर्न, र नेपाली र अंग्रेजी दुवैमा सिक्न मद्दत गर्नुहोस्।'
+    }
+};
+
+function normalizeKey(str) {
+    if (!str) return '';
+    return str
+        .replace(/[\u2010-\u2015\u2212]/g, '-') // normalize en-dash, em-dash, figure-dash, minus to standard hyphen
+        .replace(/[\u2018\u2019]/g, "'")       // normalize curly single quotes
+        .replace(/[\u201C\u201D]/g, '"')       // normalize curly double quotes
+        .replace(/\u00A0/g, ' ')               // normalize non-breaking space
+        .replace(/\s+/g, ' ')                  // collapse all whitespace/newlines
+        .trim();
 }
+
+const normalizedTranslations = {};
+for (let key in langTranslations) {
+    normalizedTranslations[normalizeKey(key)] = langTranslations[key];
+}
+
+const normalizedReverseTranslations = {};
+for (let key in langTranslations) {
+    const neVal = langTranslations[key];
+    const origEn = (key === 'ज्ञान Setu' || key.includes('free')) ? 'Gyan Setu' : key;
+    normalizedReverseTranslations[normalizeKey(neVal)] = normalizedReverseTranslations[normalizeKey(neVal)] || origEn;
+}
+// Ensure clean reverse translations for primary texts
+normalizedReverseTranslations[normalizeKey("ज्ञान सेतु")] = "Gyan Setu";
+normalizedReverseTranslations[normalizeKey("ज्ञान सेतु ४-१० वर्षका बालबालिकाहरूको लागि दोभाषे सिकाइ यात्रा हो। सेतुलाई सिक्का कमाउन, कथाहरू अन्वेषण गर्न, प्रश्नोत्तरीहरू हल गर्न, र नेपाली र अंग्रेजी दुवैमा सिक्न मद्दत गर्नुहोस्।")] =
+    "Gyan Setu is a bilingual learning adventure for children aged 4–10. Help Setu earn coins, explore stories, solve quizzes, and enjoy learning in both Nepali and English.";
 
 let currentLang = localStorage.getItem('gyansetu_lang') || 'en';
 
 function translateNode(node, dict) {
     if (node.nodeType === Node.TEXT_NODE) {
+        // Never translate text inside logos or elements marked not to translate
+        if (node.parentElement && node.parentElement.closest && (
+            node.parentElement.closest('.logo') ||
+            node.parentElement.closest('.footer-logo') ||
+            node.parentElement.closest('[translate="no"]') ||
+            node.parentElement.closest('.no-translate')
+        )) {
+            return;
+        }
+
         let originalText = node.nodeValue;
         let trimmedText = originalText.trim();
-        let normalizedText = trimmedText.replace(/\s+/g, ' ');
-        if (normalizedText && dict[normalizedText]) {
-            node.nodeValue = originalText.replace(trimmedText, dict[normalizedText]);
+        if (!trimmedText) return;
+
+        let normKey = normalizeKey(trimmedText);
+        if (dict[normKey]) {
+            const leading = originalText.match(/^\s*/)[0];
+            const trailing = originalText.match(/\s*$/)[0];
+            node.nodeValue = leading + dict[normKey] + trailing;
         }
     } else if (node.nodeType === Node.ELEMENT_NODE) {
         if (node.tagName === 'SCRIPT' || node.tagName === 'STYLE') return;
-        if (node.placeholder && dict[node.placeholder.trim()]) {
-            node.placeholder = dict[node.placeholder.trim()];
+
+        // Skip logos and elements marked not to translate
+        if (node.closest && (
+            node.closest('.logo') ||
+            node.closest('.footer-logo') ||
+            node.closest('[translate="no"]') ||
+            node.closest('.no-translate')
+        )) {
+            return;
         }
-        for (let child of node.childNodes) {
+
+        // Support elements with explicit data-en and data-ne attributes
+        if (node.hasAttribute('data-en') && node.hasAttribute('data-ne')) {
+            node.textContent = currentLang === 'ne' ? node.getAttribute('data-ne') : node.getAttribute('data-en');
+            return;
+        }
+
+        // Check if element has an explicit data-i18n key
+        const i18nKey = node.getAttribute('data-i18n');
+        if (i18nKey && elementTranslations[i18nKey]) {
+            node.textContent = elementTranslations[i18nKey][currentLang];
+            return;
+        }
+
+        if (node.placeholder) {
+            const normPlaceholder = normalizeKey(node.placeholder);
+            if (dict[normPlaceholder]) {
+                node.placeholder = dict[normPlaceholder];
+            }
+        }
+
+        for (let child of Array.from(node.childNodes)) {
             translateNode(child, dict);
         }
     }
 }
 
 function updateLanguage(lang) {
-    const dict = lang === 'ne' ? langTranslations : reverseTranslations;
-    translateNode(document.body, dict);
+    currentLang = lang;
     localStorage.setItem('gyansetu_lang', lang);
+
+    const dict = lang === 'ne' ? normalizedTranslations : normalizedReverseTranslations;
+    translateNode(document.body, dict);
+
+    // Update document language attribute and title
+    document.documentElement.lang = lang;
+    if (lang === 'ne') {
+        document.title = 'ज्ञान सेतु';
+    } else {
+        document.title = 'Gyan Setu';
+    }
+
+    // Sync toggle switch if present
+    const langCheckbox = document.getElementById('lang-toggle-checkbox');
+    if (langCheckbox && langCheckbox.checked !== (lang === 'ne')) {
+        langCheckbox.checked = (lang === 'ne');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     const langCheckbox = document.getElementById('lang-toggle-checkbox');
     if (langCheckbox) {
-        // Set initial state
+        // Set initial checkbox state
         langCheckbox.checked = currentLang === 'ne';
 
         // Add change listener
         langCheckbox.addEventListener('change', function() {
-            currentLang = this.checked ? 'ne' : 'en';
-            updateLanguage(currentLang);
+            updateLanguage(this.checked ? 'ne' : 'en');
         });
     }
 

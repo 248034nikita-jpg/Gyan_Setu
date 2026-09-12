@@ -158,7 +158,7 @@ while ($row = $res->fetch_assoc()) {
         <!-- Logo -->
         <a href="index.html" class="logo">
             <img src="assets/images/website/logo.png" alt="Gyan Setu Logo" class="logo-img">
-            <h2>Gyan Setu</h2>
+            <h2>ज्ञान Setu</h2>
         </a>
         <button class="menu-toggle" type="button">☰</button>
         <div class="nav-wrapper">

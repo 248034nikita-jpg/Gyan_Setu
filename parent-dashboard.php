@@ -148,60 +148,278 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
     font-size: 15px;
   }
 
-  /* ── HEADER ── */
-  header {
-    background: #8BAD46;
-    padding: 0 60px;
-    height: 68px;
+  /* ── NAVBAR (Matching Child Dashboard) ── */
+  .dashboard-navbar {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    background: #c6d58f;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
   }
+
   .logo {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     text-decoration: none;
-    color: inherit;
-}
-
-.logo:visited {
-    text-decoration: none;
-    color: inherit;
-}
-
-.logo:hover {
-    text-decoration: none;
-    color: inherit;
-}
-
-.logo:active {
-    text-decoration: none;
-    color: inherit;
-}
-
-.logo-img {
-    width: 85px;
-    height: 85px;
-    object-fit: contain;
-}
-
-.logo span {
-    font-size: 20px;
-    font-weight: 700;
-    color: #000000;
-}
-  .header-right { display: flex; gap: 10px; align-items: center; }
-  .btn-lang {
-    background: rgba(255,255,255,0.22); border: none; border-radius: 20px;
-    color: #fff; padding: 6px 16px; font-family: inherit; font-weight: 700; font-size: 13px;
-    cursor: pointer; display: flex; align-items: center; gap: 6px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
   }
-  .btn-close {
-    background: #F5C842; border: none; border-radius: 50%; width: 30px; height: 30px;
-    font-size: 16px; font-weight: 900; cursor: pointer; color: #4A3A00;
-    display: flex; align-items: center; justify-content: center;
+
+  .logo:hover {
+    transform: translateY(-4px);
+    opacity: 0.9;
+  }
+
+  .logo-img {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+  }
+
+  .logo h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: black;
+    margin: 0;
+  }
+
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 35px;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .nav-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .dashboard-menu {
+    display: flex;
+    gap: 40px;
+  }
+
+  .dashboard-menu a {
     text-decoration: none;
+    font-size: 22px;
+    font-weight: bold;
+    color: black;
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+
+  .dashboard-menu a:hover {
+    color: #4a5c1d;
+    transform: translateY(-3px);
+  }
+
+  .dashboard-menu a.active {
+    color: #2d5a1e;
+    border-bottom: 3px solid #2d5a1e;
+    padding-bottom: 2px;
+  }
+
+  .dashboard-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+  }
+
+  .language-btn {
+    padding: 10px 20px;
+    background: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+
+  .language-btn:hover {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  }
+
+  /* Profile Avatar + Dropdown */
+  .profile-dropdown-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  .profile-avatar-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6b7fc4);
+    border: 3px solid rgba(255,255,255,0.7);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    position: relative;
+    font-family: 'Nunito', Arial, sans-serif;
+  }
+
+  .profile-avatar-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.22);
+  }
+
+  .profile-avatar-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 9px;
+    height: 9px;
+    background: #4134d3;
+    border-radius: 50%;
+    border: 2px solid #fff;
+  }
+
+  .profile-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 220px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+    overflow: hidden;
+    z-index: 1000;
+    animation: dropdownFade 0.2s ease;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .profile-dropdown-menu.open {
+    display: block;
+  }
+
+  @keyframes dropdownFade {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .dropdown-header {
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .dropdown-header .dh-name {
+    font-size: 13px;
+    font-weight: 800;
+    color: #1a1a2e;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .dropdown-header .dh-role {
+    font-size: 11px;
+    color: #1abcbf;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 16px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    text-decoration: none;
+    width: 100%;
+    border: none;
+    background: none;
+    text-align: left;
+    font-family: Arial, sans-serif;
+  }
+
+  .dropdown-item:hover {
+    background: #f5f7ff;
+    color: #1abcbf;
+  }
+
+  .dropdown-divider {
+    height: 1px;
+    background: #f0f0f0;
+    margin: 4px 0;
+  }
+
+  .dropdown-item.danger {
+    color: #dc2626;
+  }
+
+  .dropdown-item.danger:hover {
+    background: #fff5f5;
+    color: #b91c1c;
+  }
+
+  @media (max-width: 768px) {
+    .dashboard-navbar {
+      position: relative;
+      justify-content: space-between;
+      padding: 20px;
+    }
+
+    .menu-toggle {
+      display: block;
+    }
+
+    .nav-wrapper {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background: white;
+      padding: 25px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 25px;
+      z-index: 999;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+    }
+
+    .nav-wrapper.show {
+      display: flex;
+    }
+
+    .dashboard-menu {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+    }
+
+    .dashboard-right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      width: 100%;
+    }
   }
 
   /* ── MAIN LAYOUT ── */
@@ -406,18 +624,50 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-   <a href="index.html" class="logo">
-    <img src="assets/images/website/logo.png" alt="Gyan Setu Logo" class="logo-img">
-    <span>Gyan Setu</span>
+<!-- Navbar (Matching Child Dashboard) -->
+<header class="dashboard-navbar">
+    <a href="parent-dashboard.php" class="logo">
+        <img src="assets/images/website/logo.png" alt="Gyan Setu Logo" class="logo-img">
+        <h2>ज्ञान Setu</h2>
+    </a>
+    <button class="menu-toggle" type="button" id="menuToggleBtn" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+    <div class="nav-wrapper">
+        <nav class="dashboard-menu">
+            <a href="parent-dashboard.php" class="active">📊 Dashboard</a>
+            <a href="parent_shop/shop.html">🏪 Parent Store</a>
+            <a href="child-dashboard.php">🎮 Child Zone</a>
+        </nav>
+        <div class="dashboard-right">
+            <button class="language-btn" type="button">🌐 Language</button>
 
-</a>
-  <div class="header-right">
-    <a href="parent_shop/shop.html" class="btn-play" style="padding: 6px 16px; font-size: 13px; text-decoration: none; background: var(--orange); color: #fff; margin-right: 10px;">🏪 Parent Shop</a>
-    <button class="btn-lang">🌐 Language</button>
-    <a href="child-dashboard.php" class="btn-close">✕</a>
-  </div>
+            <!-- Profile Avatar + Dropdown -->
+            <div class="profile-dropdown-wrapper" id="profileDropdownWrapper">
+                <button class="profile-avatar-btn" id="profileAvatarBtn" onclick="toggleDropdown()" title="Profile Menu" aria-haspopup="true" aria-expanded="false">
+                    <?php echo strtoupper(substr($parent_name, 0, 1)); ?>
+                </button>
+                <div class="profile-dropdown-menu" id="profileDropdownMenu" role="menu">
+                    <div class="dropdown-header">
+                        <div class="dh-name"><?php echo htmlspecialchars($parent_name); ?></div>
+                        <div class="dh-role">Parent Account</div>
+                    </div>
+                    <a href="parent-dashboard.php" class="dropdown-item" role="menuitem">
+                        <span class="di-icon">📊</span> Parent Dashboard
+                    </a>
+                    <a href="parent_shop/shop.html" class="dropdown-item" role="menuitem">
+                        <span class="di-icon">🏪</span> Parent Store
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="child-dashboard.php" class="dropdown-item" role="menuitem">
+                        <span class="di-icon">🎮</span> Switch to Child Zone
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="logout.php" class="dropdown-item danger" role="menuitem">
+                        <span class="di-icon">🚪</span> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </header>
 
 <main>
@@ -637,6 +887,66 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
     bar.style.width = '0%';
     setTimeout(() => { bar.style.width = w; }, 400);
   });
+
+  // Profile Dropdown Toggle
+  function toggleDropdown() {
+    const menu = document.getElementById('profileDropdownMenu');
+    const btn  = document.getElementById('profileAvatarBtn');
+    if (menu && btn) {
+      const isOpen = menu.classList.toggle('open');
+      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    }
+  }
+
+  // Close profile dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    const wrapper = document.getElementById('profileDropdownWrapper');
+    if (wrapper && !wrapper.contains(e.target)) {
+      const menu = document.getElementById('profileDropdownMenu');
+      const btn  = document.getElementById('profileAvatarBtn');
+      if (menu) menu.classList.remove('open');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Mobile Nav Menu Toggle
+  (function() {
+    const toggleBtn = document.getElementById('menuToggleBtn');
+    const navWrapper = document.querySelector('.nav-wrapper');
+    if (toggleBtn && navWrapper) {
+      toggleBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const isOpen = navWrapper.classList.toggle('show');
+        toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        toggleBtn.innerHTML = isOpen ? '&#10005;' : '&#9776;';
+      });
+
+      navWrapper.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          navWrapper.classList.remove('show');
+          toggleBtn.setAttribute('aria-expanded', 'false');
+          toggleBtn.innerHTML = '&#9776;';
+        });
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!navWrapper.contains(e.target) && !toggleBtn.contains(e.target)) {
+          navWrapper.classList.remove('show');
+          toggleBtn.setAttribute('aria-expanded', 'false');
+          toggleBtn.innerHTML = '&#9776;';
+        }
+      });
+
+      window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+          navWrapper.classList.remove('show');
+          toggleBtn.setAttribute('aria-expanded', 'false');
+          toggleBtn.innerHTML = '&#9776;';
+        }
+      });
+    }
+  })();
 </script>
+<script src="js/script.js"></script>
 </body>
 </html>

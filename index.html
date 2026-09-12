@@ -3,47 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gyan Setu</title>
+    <title>ज्ञान Setu</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
     <!-- Header / Navbar -->
     <header class="navbar">
-        <a href="index.html" class="logo">
-
-<img src="assets/images/website/logo.png"
-alt="Gyan Setu Logo"
-class="logo-img">
-
-<span>ज्ञान Setu</span>
-
-</a>
+        <a href="index.html" class="logo" translate="no">
+            <img src="assets/images/website/logo.png" alt="Gyan Setu Logo" class="logo-img">
+            <span>ज्ञान Setu</span>
+        </a>
 
         <!-- Navigation Menu -->
         <nav>
-
             <ul class="nav-links">
-
                 <li>
-   <a href="index.html" aria-current="page">Home</a>
-</li>
-
-<li>
-   <a href="how_to_join.html">How to Join</a>
-</li>
-
-<li>
-   <a href="about.html">About Us</a>
-</li>
+                    <a href="index.html" aria-current="page" data-en="Home" data-ne="गृहपृष्ठ">Home</a>
+                </li>
+                <li>
+                    <a href="how_to_join.html" data-en="How to Join" data-ne="कसरी जोडिने">How to Join</a>
+                </li>
+                <li>
+                    <a href="about.html" data-en="About Us" data-ne="हाम्रो बारेमा">About Us</a>
+                </li>
             </ul>
-
         </nav>
-
 
         <!-- Right Side Buttons -->
         <div class="nav-buttons">
-
             <div class="sliding-toggle-container">
                 <input type="checkbox" id="lang-toggle-checkbox">
                 <span class="toggle-label en">EN</span>
@@ -63,7 +51,6 @@ class="logo-img">
             <button class="signup-btn" type="button" onclick="window.location.href='signup.php'">
                 Sign Up
             </button>
-
         </div>
     </header>
 
@@ -72,8 +59,8 @@ class="logo-img">
         <div class="hero-badge">Made for Nepal's Young Learners</div>
         <img src="assets/images/website/hero.png" alt="Hero Character" class="hero-image">
         <h1>Play, Learn,<br>Grow Together</h1>
-        <p>
-            Gyan Setu is a bilingual learning adventure
+        <p data-i18n="hero-desc">
+            ज्ञान Setu is a bilingual learning adventure
             for children aged 4–10. Help Setu earn coins,
             explore stories, solve quizzes, and enjoy learning
             in both Nepali and English.
@@ -246,7 +233,7 @@ class="logo-img">
     <footer class="footer">
         <div class="footer-container">
 
-            <div class="footer-logo">
+            <div class="footer-logo" translate="no">
                 <img src="assets/images/website/logo.png" alt="Gyan Setu Logo">
                 <h3>ज्ञान Setu</h3>
                 <p>
@@ -257,10 +244,10 @@ class="logo-img">
             </div>
 
             <div class="footer-column">
-                <h4>Quick Links</h4>
-                <a href="index.html">Home</a>
-                <a href="#">How to Join</a>
-                <a href="about.html">About Us</a>
+                <h4 data-en="Quick Links" data-ne="द्रुत लिङ्कहरू">Quick Links</h4>
+                <a href="index.html" data-en="Home" data-ne="गृहपृष्ठ">Home</a>
+                <a href="how_to_join.html" data-en="How to Join" data-ne="कसरी जोडिने">How to Join</a>
+                <a href="about.html" data-en="About Us" data-ne="हाम्रो बारेमा">About Us</a>
             </div>
 
             <div class="footer-column">
@@ -279,10 +266,10 @@ class="logo-img">
 
         </div>
 
-        <div class="footer-bottom">© 2025 Gyan Setu. All rights reserved.</div>
+        <div class="footer-bottom">© 2025 ज्ञान Setu. All rights reserved.</div>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script src="js/script.js?v=2.0"></script>
 
 </body>
 </html>
