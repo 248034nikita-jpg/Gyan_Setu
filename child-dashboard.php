@@ -218,7 +218,7 @@ $total_coins_earned = count($earned_badge_ids);
         <div class="nav-wrapper">
             <nav class="dashboard-menu">
                 <a href="child-dashboard.php">🎮 Game Zone</a>
-                <a href="progress.html">📈 My Progress</a>
+                <a href="progress.php">📈 My Progress</a>
                 <a href="shop.php?child_id=<?php echo $child_id; ?>">🏪 Store</a>
             </nav>
             <div class="dashboard-right">
@@ -236,10 +236,10 @@ $total_coins_earned = count($earned_badge_ids);
                             <div class="dh-role"> Child Account</div>
                         </div>
                         <!-- Items -->
-                        <a href="#" class="dropdown-item" role="menuitem">
-                            <span class="di-icon">👤</span> My Profile
+                        <a href="child-dashboard.php" class="dropdown-item" role="menuitem">
+                            <span class="di-icon">🎮</span> Game Zone
                         </a>
-                        <a href="#" class="dropdown-item" role="menuitem">
+                        <a href="progress.php" class="dropdown-item" role="menuitem">
                             <span class="di-icon">📈</span> My Progress
                         </a>
                         <div class="dropdown-divider"></div>
