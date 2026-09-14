@@ -1,8 +1,55 @@
+<?php
+session_start();
+$root = realpath(__DIR__ . '/../../');
+$dbPath = $root . '/database/includes/db_connect.php';
+
+$child_id = 0;
+$child_username = 'Explorer';
+
+if (file_exists($dbPath)) {
+    require_once $dbPath;
+
+    if (isset($_GET['child_id']) && (int)$_GET['child_id'] > 0) {
+        $child_id = (int)$_GET['child_id'];
+        $stmt = $conn->prepare("SELECT username FROM children WHERE child_id = ?");
+        if ($stmt) {
+            $stmt->bind_param("i", $child_id);
+            $stmt->execute();
+            $r = $stmt->get_result()->fetch_assoc();
+            if ($r) $child_username = $r['username'];
+            $stmt->close();
+        }
+    } elseif (isset($_SESSION['user_id']) && isset($_SESSION['role'])) {
+        if ($_SESSION['role'] === 'child') {
+            $child_id = (int)$_SESSION['user_id'];
+            $child_username = $_SESSION['username'] ?? 'Explorer';
+        } elseif ($_SESSION['role'] === 'parent') {
+            $parentId = (int)$_SESSION['user_id'];
+            $stmt = $conn->prepare("SELECT child_id, username FROM children WHERE parent_id = ? ORDER BY created_at ASC LIMIT 1");
+            if ($stmt) {
+                $stmt->bind_param("i", $parentId);
+                $stmt->execute();
+                $cRes = $stmt->get_result()->fetch_assoc();
+                if ($cRes) {
+                    $child_id = (int)$cRes['child_id'];
+                    $child_username = $cRes['username'];
+                }
+                $stmt->close();
+            }
+        }
+    }
+}
+
+if ($child_id <= 0 && isset($_SESSION['child_id']) && (int)$_SESSION['child_id'] > 0) {
+    $child_id = (int)$_SESSION['child_id'];
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="child_id" content="<?php echo $child_id; ?>">
     <title>🐾 Capybara Nepal Adventure</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,6 +63,8 @@
 
     <script>
         const TOTAL_LEVELS = 9;
+        window.CHILD_ID = <?php echo (int)$child_id; ?>;
+        window.CHILD_USERNAME = <?php echo json_encode($child_username); ?>;
     </script>
 
     <script>

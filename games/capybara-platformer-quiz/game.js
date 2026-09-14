@@ -519,11 +519,14 @@
         // ============================================
 
         function getActiveChildId() {
+            const childMeta = document.querySelector('meta[name="child_id"]');
+            if (childMeta && parseInt(childMeta.content, 10) > 0) return parseInt(childMeta.content, 10);
+            if (window.CHILD_ID && parseInt(window.CHILD_ID, 10) > 0) return parseInt(window.CHILD_ID, 10);
             const urlParams = new URLSearchParams(window.location.search);
             const paramId = urlParams.get('child_id');
-            if (paramId) return parseInt(paramId, 10);
+            if (paramId && parseInt(paramId, 10) > 0) return parseInt(paramId, 10);
             const storedId = localStorage.getItem('active_child_id') || localStorage.getItem('child_id');
-            if (storedId) return parseInt(storedId, 10);
+            if (storedId && parseInt(storedId, 10) > 0) return parseInt(storedId, 10);
             return 1;
         }
 
@@ -901,6 +904,7 @@
                 this.levelIndex = 0;
                 this.totalCoins = 0;
                 this.levelCoins = 0;
+                this.levelCoinsEarned = 0;
                 this.requiredCoins = 0;
                 this.portalCooldownUntil = 0;
                 this.msg = "";
@@ -1036,6 +1040,7 @@
                     localStorage.setItem('capybara_completed_levels_' + childId, JSON.stringify(completedLevels));
                     bonusCoins = this.levelCoins * 2;
                     this.totalCoins += bonusCoins;
+                    this.levelCoinsEarned += bonusCoins;
                 }
 
                 // Save oranges earned
@@ -1063,7 +1068,7 @@
                 this.levelCompleteData = {
                     levelName: this.level ? this.level.name : `Level ${this.levelIndex + 1}`,
                     levelNumber: this.levelIndex + 1,
-                    coinsEarned: this.levelCoins,
+                    coinsEarned: this.levelCoinsEarned,
                     bonusCoins: bonusCoins,
                     totalCoins: this.totalCoins,
                     isFirstCompletion: isFirstCompletion,
@@ -1076,7 +1081,6 @@
             resetWholeGame() {
                 this.lives = MAX_LIVES;
                 this.levelIndex = 0;
-                this.totalCoins = 0;
                 this.levelCompleteData = null;
                 this.mode = "start";
                 this.loadLevel(true);
@@ -1109,8 +1113,8 @@
                     this.levelContents = levelData;
                 } else if (levelData && levelData.contents) {
                     this.levelContents = levelData.contents;
-                    if (levelData.score && typeof levelData.score.coins_earned === 'number' && levelData.score.coins_earned > this.totalCoins) {
-                        this.totalCoins = levelData.score.coins_earned;
+                    if (typeof levelData.total_coins === 'number' && levelData.total_coins > 0) {
+                        this.totalCoins = levelData.total_coins;
                     }
                 } else {
                     this.levelContents = getFallbackData(levelNum);
@@ -1129,6 +1133,7 @@
 
                 this.player = new Player(this.level.spawn[0], this.level.spawn[1]);
                 this.levelCoins = 0;
+                this.levelCoinsEarned = 0;
                 this.requiredCoins = this.level.required_coins;
                 this.computeLevelBounds();
                 this.updateCamera(forceCamera);
@@ -1199,6 +1204,7 @@
                         this.levelCoins += 1;
                         if (!isReplay) {
                             this.totalCoins += 1;
+                            this.levelCoinsEarned += 1;
                         }
                         playCoin();
                         gotAny = true;
@@ -1214,6 +1220,7 @@
                             this.levelCoins += 1;
                             if (!isReplay) {
                                 this.totalCoins += 1;
+                                this.levelCoinsEarned += 1;
                             }
                             playCoin();
                             gotAny = true;
@@ -1396,6 +1403,7 @@
                 if (isCorrect) {
                     if (!isReplay) {
                         this.totalCoins += 3;
+                        this.levelCoinsEarned += 3;
                         this.showMessage('+3 Coins!');
                     } else {
                         this.showMessage('Correct!');
@@ -1518,6 +1526,7 @@
                     if (isCorrect) {
                         if (!isReplay) {
                             this.totalCoins += 1;
+                            this.levelCoinsEarned += 1;
                             this.showMessage('+1 Coin for thinking!');
                         } else {
                             this.showMessage('Great Thinker!');
@@ -1529,6 +1538,7 @@
                     if (isCorrect) {
                         if (!isReplay) {
                             this.totalCoins += 2;
+                            this.levelCoinsEarned += 2;
                             this.showMessage('+2 Coins for applying!');
                         } else {
                             this.showMessage('Great Job!');
@@ -1560,11 +1570,12 @@
 
             async saveCoinsToDB(isCompleted) {
                 try {
-                    await fetch('api/save_capybara_coins.php', {
+                    const response = await fetch('api/save_capybara_coins.php', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             child_id: getActiveChildId(),
+                            coins_earned: this.levelCoinsEarned,
                             total_coins: this.totalCoins,
                             level_number: this.levelIndex + 1,
                             oranges_collected: this.levelCoins,
@@ -1572,7 +1583,21 @@
                             level_completed: isCompleted
                         })
                     });
-                    console.log('✅ Coins saved to DB successfully');
+                    const data = await response.json();
+                    console.log('✅ Coins saved to DB successfully:', data);
+                    if (data && typeof data.total_coins === 'number' && data.total_coins > 0) {
+                        this.totalCoins = data.total_coins;
+                        const childId = getActiveChildId();
+                        const completedLevels = JSON.parse(localStorage.getItem('capybara_completed_levels_' + childId) || '[]');
+                        localStorage.setItem('capybara_game_progress_' + childId, JSON.stringify({
+                            totalCoins: this.totalCoins,
+                            completedLevels: completedLevels
+                        }));
+                        if (this.levelCompleteData) {
+                            this.levelCompleteData.totalCoins = this.totalCoins;
+                        }
+                        this.updateAlpine();
+                    }
                 } catch (e) {
                     console.warn('⚠️ Coins saved locally (API offline):', e);
                 }
