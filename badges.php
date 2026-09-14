@@ -25,6 +25,13 @@ if ($_SESSION['role'] === 'child') {
     $username = $_SESSION['username'] ?? $child['username'];
 }
 
+$mascotStmt = $conn->prepare("SELECT m.emoji_or_icon FROM children c LEFT JOIN mascots m ON c.mascot_id = m.mascot_id WHERE c.child_id = ?");
+$mascotStmt->bind_param("i", $childId);
+$mascotStmt->execute();
+$mascotRes = $mascotStmt->get_result()->fetch_assoc();
+$mascotStmt->close();
+$mascot_emoji = $mascotRes['emoji_or_icon'] ?? $_SESSION['mascot'] ?? '🧒';
+
 function badgeSlug(string $value): string {
     return trim((string) preg_replace('/-+/', '-', preg_replace('/[^a-z0-9]+/', '-', strtolower($value))), '-');
 }
@@ -54,7 +61,7 @@ while ($row = $categoryRows->fetch_assoc()) {
 $thumbnailBySubject = [
     'english' => 'badges/english badge thumbnail.png',
     'general-knowledge' => 'badges/gk thumbnail.png',
-    'science' => 'badges/gk thumbnail.png',
+'capybara-nepal-adventure' => 'badges/gk thumbnail.png',
 ];
 foreach (['english' => 'English', 'general-knowledge' => 'General Knowledge', 'science' => 'Science'] as $slug => $name) {
     if (!isset($categories[$slug])) {
@@ -97,28 +104,17 @@ $badgePhotos = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gyan Setu - Badges</title>
+    <link rel="stylesheet" href="css/nav.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/badges.css">
 </head>
 <body>
-    <header class="dashboard-navbar">
-        <a href="index.html" class="logo"><img src="assets/images/website/logo.png" alt="Gyan Setu Logo" class="logo-img"><h2>ज्ञान Setu</h2></a>
-        <button class="menu-toggle" type="button" id="menuToggleBtn" aria-label="Open menu" aria-expanded="false">&#9776;</button>
-        <div class="nav-wrapper">
-            <nav class="dashboard-menu"><a href="child-dashboard.php">🎮 Game Zone</a><a href="progress.html">📈 My Progress</a><a href="shop.php">🏪 Store</a></nav>
-            <div class="dashboard-right">
-                <button class="language-btn" type="button">🌐 Language</button>
-                <div class="profile-dropdown-wrapper" id="profileDropdownWrapper">
-                    <button class="profile-avatar-btn" id="profileAvatarBtn" onclick="toggleDropdown()" title="Profile Menu" aria-haspopup="true" aria-expanded="false"><?php echo htmlspecialchars(strtoupper(substr($username, 0, 1))); ?></button>
-                    <div class="profile-dropdown-menu" id="profileDropdownMenu" role="menu">
-                        <div class="dropdown-header"><div class="dh-name"><?php echo htmlspecialchars($username); ?></div><div class="dh-role">Child Account</div></div>
-                        <a href="grownup-gate.php" class="dropdown-item" role="menuitem"><span class="di-icon">👨‍💼</span>Player Management</a>
-                        <div class="dropdown-divider"></div><a href="logout.php" class="dropdown-item danger" role="menuitem"><span class="di-icon">🚪</span>Logout</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+    <div id="nav-placeholder"></div>
+    <script>
+        window.USER_MASCOT = <?php echo json_encode($mascot_emoji); ?>;
+        window.USER_NAME   = <?php echo json_encode($username); ?>;
+    </script>
+    <script src="js/nav.js"></script>
 
     <main class="badges-page">
         <?php if (!$selected): ?>

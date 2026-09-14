@@ -15,7 +15,7 @@ if ($role === 'child') {
     $child_id = $_SESSION['user_id'];
     
     // Fetch child details and parent_id from database
-    $query = "SELECT parent_id, username, total_coins FROM children WHERE child_id = ?";
+    $query = "SELECT c.parent_id, c.username, c.total_coins, m.emoji_or_icon AS mascot_emoji FROM children c LEFT JOIN mascots m ON c.mascot_id = m.mascot_id WHERE c.child_id = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("i", $child_id);
     $stmt->execute();
@@ -28,9 +28,10 @@ if ($role === 'child') {
         exit();
     }
     
-    $parent_id = $child_data['parent_id'];
+    $parent_id      = $child_data['parent_id'];
     $child_username = $child_data['username'];
-    $total_points = $child_data['total_coins'];
+    $total_points   = $child_data['total_coins'];
+    $mascot_emoji   = $child_data['mascot_emoji'] ?? $_SESSION['mascot'] ?? '🧒';
 } else {
     // Parent is logged in
     $parent_id = $_SESSION['user_id'];
@@ -58,7 +59,7 @@ if ($role === 'child') {
     }
     
     // Verify this child belongs to this parent
-    $verify_query = "SELECT username, total_coins FROM children WHERE child_id = ? AND parent_id = ?";
+    $verify_query = "SELECT c.username, c.total_coins, m.emoji_or_icon AS mascot_emoji FROM children c LEFT JOIN mascots m ON c.mascot_id = m.mascot_id WHERE c.child_id = ? AND c.parent_id = ?";
     $stmt = $conn->prepare($verify_query);
     $stmt->bind_param("ii", $child_id, $parent_id);
     $stmt->execute();
@@ -69,9 +70,10 @@ if ($role === 'child') {
         exit();
     }
     
-    $child_data = $result->fetch_assoc();
+    $child_data     = $result->fetch_assoc();
     $child_username = $child_data['username'];
-    $total_points = $child_data['total_coins'];
+    $total_points   = $child_data['total_coins'];
+    $mascot_emoji   = $child_data['mascot_emoji'] ?? $_SESSION['mascot'] ?? '🧒';
     $stmt->close();
 }
 
@@ -149,31 +151,18 @@ while ($row = $res->fetch_assoc()) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gyan Setu Shop</title>
+    <link rel="stylesheet" href="css/nav.css">
     <link rel="stylesheet" href="css/shop.css">
 </head>
 <body>
 
-    <!-- Navbar  -->
-    <header class="dashboard-navbar">
-        <!-- Logo -->
-        <a href="index.html" class="logo">
-            <img src="assets/images/website/logo.png" alt="Gyan Setu Logo" class="logo-img">
-            <h2>ज्ञान Setu</h2>
-        </a>
-        <button class="menu-toggle" type="button">☰</button>
-        <div class="nav-wrapper">
-            <nav class="dashboard-menu">
-                <a href="child-dashboard.php">🎮 Game Zone</a>
-                <a href="#">📈 My Progress</a>
-                <a href="shop.php?child_id=<?php echo $child_id; ?>">🏪 Store</a>
-                <a href="#">💰 Coins</a>
-            </nav>
-            <div class="dashboard-right">
-                <button class="language-btn" type="button">🌐 Language</button>
-                <a href="logout.php" class="profile-icon" title="Logout" style="text-decoration: none; font-size: 14px; font-weight: 700; color: #fff; background: rgba(255,255,255,0.22); padding: 6px 12px; border-radius: 20px;">Logout</a>
-            </div>
-        </div>
-    </header>
+    <!-- Navbar -->
+    <div id="nav-placeholder"></div>
+    <script>
+        window.USER_MASCOT = <?php echo json_encode($mascot_emoji); ?>;
+        window.USER_NAME   = <?php echo json_encode($child_username); ?>;
+    </script>
+    <script src="js/nav.js"></script>
 
     <!-- Top Bar (Back button + coin balance)-->
     <div class="top-bar">
