@@ -122,10 +122,9 @@ $capybara_facts_done = (int)($capybara_stats['facts_seen'] ?? 0);
 $stmt->close();
 
 // --- Estimate Time Spent ---
-// Estimate ~4 minutes per round in scores + ~2 minutes per word/fact attempt
 $estimated_time_minutes = ($total_rounds_played * 4) + ($alphabets_words_done * 2) + ($capybara_facts_done * 2);
 if ($total_rounds_played > 0 && $estimated_time_minutes < 15) {
-    $estimated_time_minutes = 15; // default minimum baseline for active kids
+    $estimated_time_minutes = 15;
 }
 $time_hours = floor($estimated_time_minutes / 60);
 $time_mins  = $estimated_time_minutes % 60;
@@ -163,20 +162,19 @@ while ($row = $res->fetch_assoc()) {
 }
 $stmt->close();
 
-// Max time for chart scaling
 $max_weekly_time = 1;
 foreach ($weekly_activity as $wa) {
     if ($wa['time_mins'] > $max_weekly_time) $max_weekly_time = $wa['time_mins'];
 }
 
-// --- Fetch Game-by-Game Performance (Differentiated by Subject) ---
-// Base definition of known games with their subject mapping, covers, and play links
+// --- Game Catalog & Subject Mapping ---
 $game_catalog = [
     1 => [
         'game_id' => 1,
         'title' => 'Word Whack',
         'subject' => 'english',
         'subject_label' => '📚 ENGLISH',
+        'icon' => '📚',
         'cover' => 'wack-a-mole/assets/thumbnail.jpg',
         'play_url' => 'wack-a-mole/index.php?child_id=' . $child_id,
         'border_color' => '#2196f3',
@@ -187,6 +185,7 @@ $game_catalog = [
         'title' => 'Capybara Nepal Adventure',
         'subject' => 'gk',
         'subject_label' => '🌍 GK / NEPAL',
+        'icon' => '🌍',
         'cover' => 'games/capybara-platformer-quiz/assets/cover.png',
         'play_url' => 'games/capybara-platformer-quiz/index.html',
         'border_color' => '#ff9800',
@@ -197,6 +196,7 @@ $game_catalog = [
         'title' => 'Alphabet Adventure',
         'subject' => 'alphabets',
         'subject_label' => '🔤 ALPHABETS',
+        'icon' => '🔤',
         'cover' => 'games/alphabet-adventure/assets/cover.jpg',
         'play_url' => 'games/alphabet-adventure/index.php',
         'border_color' => '#4caf50',
@@ -207,6 +207,7 @@ $game_catalog = [
         'title' => 'Quiz & Flashcards',
         'subject' => 'science',
         'subject_label' => '🔬 SCIENCE',
+        'icon' => '🔬',
         'cover' => 'games/quiz_flashcard/assets/cover.png',
         'play_url' => 'games/quiz_flashcard/quiz_flashcard.html',
         'border_color' => '#9c27b0',
@@ -217,12 +218,26 @@ $game_catalog = [
         'title' => 'Hangman Spelling',
         'subject' => 'english',
         'subject_label' => '📚 ENGLISH',
+        'icon' => '📚',
         'cover' => 'games/hangman/cover.png',
         'play_url' => 'games/hangman/index.php',
         'border_color' => '#21f37c',
         'age' => 'Ages 6-10'
     ]
 ];
+
+// Dynamically extract ONLY active subjects that have games available
+$active_subject_tabs = [];
+foreach ($game_catalog as $g) {
+    $s_key = $g['subject'];
+    if (!isset($active_subject_tabs[$s_key])) {
+        $active_subject_tabs[$s_key] = [
+            'key' => $s_key,
+            'label' => $g['subject_label'],
+            'icon' => $g['icon']
+        ];
+    }
+}
 
 // Fetch per-game stats from scores
 $game_stats = [];
@@ -249,14 +264,21 @@ while ($row = $res->fetch_assoc()) {
 }
 $stmt->close();
 
-// Compute Subject-based Time & Stats Summary
-$subject_stats = [
-    'gk' => ['name' => 'GK / Nepal', 'icon' => '🌍', 'color' => '#ff9800', 'time_mins' => 0, 'rounds' => 0],
-    'english' => ['name' => 'English', 'icon' => '📚', 'color' => '#2196f3', 'time_mins' => 0, 'rounds' => 0],
-    'alphabets' => ['name' => 'Alphabets', 'icon' => '🔤', 'color' => '#4caf50', 'time_mins' => 0, 'rounds' => 0],
-    'science' => ['name' => 'Science', 'icon' => '🔬', 'color' => '#9c27b0', 'time_mins' => 0, 'rounds' => 0],
-    'maths' => ['name' => 'Maths', 'icon' => '🔢', 'color' => '#e91e63', 'time_mins' => 0, 'rounds' => 0]
-];
+// Compute Subject-based Time & Stats Summary for active subjects only
+$subject_stats = [];
+foreach ($active_subject_tabs as $s_key => $s_meta) {
+    $subject_stats[$s_key] = [
+        'name' => str_replace(['📚 ', '🌍 ', '🔤 ', '🔬 '], '', $s_meta['label']),
+        'icon' => $s_meta['icon'],
+        'color' => '#7997cb',
+        'time_mins' => 0,
+        'rounds' => 0
+    ];
+}
+if (isset($subject_stats['gk'])) $subject_stats['gk']['color'] = '#ff9800';
+if (isset($subject_stats['english'])) $subject_stats['english']['color'] = '#2196f3';
+if (isset($subject_stats['alphabets'])) $subject_stats['alphabets']['color'] = '#4caf50';
+if (isset($subject_stats['science'])) $subject_stats['science']['color'] = '#9c27b0';
 
 foreach ($game_catalog as $gid => $gdef) {
     $sub = $gdef['subject'];
@@ -266,14 +288,14 @@ foreach ($game_catalog as $gid => $gdef) {
         $subject_stats[$sub]['time_mins'] += ($r * 4);
     }
 }
-if ($alphabets_words_done > 0) {
+if (isset($subject_stats['alphabets']) && $alphabets_words_done > 0) {
     $subject_stats['alphabets']['time_mins'] += ($alphabets_words_done * 2);
 }
-if ($capybara_facts_done > 0) {
+if (isset($subject_stats['gk']) && $capybara_facts_done > 0) {
     $subject_stats['gk']['time_mins'] += ($capybara_facts_done * 2);
 }
 
-// --- Fetch Recent Activities Log ---
+// --- Fetch Recent Activities Log (Limit to 15 total in DB query) ---
 $recent_activities = [];
 $stmt = $conn->prepare("
     SELECT s.*, g.title as db_game_title, g.subject as db_subject
@@ -811,6 +833,29 @@ $stmt->close();
             color: #d97706;
         }
 
+        .view-more-btn-wrapper {
+            text-align: center;
+            margin-top: 18px;
+        }
+
+        .view-more-btn {
+            background: #f1f5f9;
+            color: #475569;
+            border: 2px solid #cbd5e1;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-weight: 800;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .view-more-btn:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+            transform: translateY(-2px);
+        }
+
         /* Badges Section Banner */
         .badges-preview-box {
             background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
@@ -1006,14 +1051,12 @@ $stmt->close();
             <h2 class="section-title">🎮 Subject Scores & Accuracy Breakdown</h2>
         </div>
 
-        <!-- Subject Filter Tabs -->
+        <!-- Dynamic Subject Filter Tabs (Only showing active subjects that have games) -->
         <div class="subject-filter-bar">
-            <button type="button" class="subject-btn active" onclick="filterSubject('all', this)">🌟 All Subjects</button>
-            <button type="button" class="subject-btn" onclick="filterSubject('gk', this)">🌍 GK / Nepal</button>
-            <button type="button" class="subject-btn" onclick="filterSubject('english', this)">📚 English</button>
-            <button type="button" class="subject-btn" onclick="filterSubject('alphabets', this)">🔤 Alphabets</button>
-            <button type="button" class="subject-btn" onclick="filterSubject('science', this)">🔬 Science</button>
-            <button type="button" class="subject-btn" onclick="filterSubject('maths', this)">🔢 Maths</button>
+            <button type="button" class="subject-btn active" data-sub-key="all" onclick="filterSubject('all', this)">🌟 All Subjects</button>
+            <?php foreach ($active_subject_tabs as $sk => $smeta): ?>
+                <button type="button" class="subject-btn" data-sub-key="<?php echo $sk; ?>" onclick="filterSubject('<?php echo $sk; ?>', this)"><?php echo $smeta['label']; ?></button>
+            <?php endforeach; ?>
         </div>
 
         <!-- Games Grid -->
@@ -1032,7 +1075,6 @@ $stmt->close();
                 $high_sc = (int)$st['high_score'];
                 $coins   = (int)$st['coins_earned'];
 
-                // Specific progress overrides for unique games
                 if ($gid == 3 && $alphabets_words_done > 0) {
                     $rounds = max($rounds, $alphabets_words_done);
                 }
@@ -1040,7 +1082,6 @@ $stmt->close();
                     $rounds = max($rounds, $capybara_facts_done);
                 }
 
-                // Accuracy Class
                 $acc_class = 'mid';
                 if ($avg_acc >= 85) $acc_class = 'high';
                 else if ($avg_acc < 60) $acc_class = 'low';
@@ -1053,7 +1094,6 @@ $stmt->close();
                     <div class="game-card-body">
                         <div class="game-card-title"><?php echo htmlspecialchars($gdef['title']); ?></div>
                         
-                        <!-- Accuracy Bar -->
                         <div class="accuracy-bar-wrapper">
                             <div class="accuracy-label">
                                 <span>Average Accuracy</span>
@@ -1064,7 +1104,6 @@ $stmt->close();
                             </div>
                         </div>
 
-                        <!-- Mini Stats -->
                         <div class="game-mini-stats">
                             <div class="mini-stat-item">
                                 <div class="lbl">Rounds</div>
@@ -1084,7 +1123,7 @@ $stmt->close();
             <?php endforeach; ?>
         </div>
 
-        <!-- Section: Recent Activities Feed -->
+        <!-- Section: Recent Activities Feed (Initial 3 + View More Toggle) -->
         <div class="section-header">
             <h2 class="section-title">⏱️ Recent Activity Log</h2>
         </div>
@@ -1096,7 +1135,9 @@ $stmt->close();
                 </div>
             <?php else: ?>
                 <div class="activity-feed-list" id="activityFeedList">
-                    <?php foreach ($recent_activities as $act): 
+                    <?php 
+                    $total_recent_count = count($recent_activities);
+                    foreach ($recent_activities as $idx => $act): 
                         $gid = (int)$act['game_id'];
                         $ginfo = $game_catalog[$gid] ?? [
                             'title' => $act['db_game_title'] ?? 'Game Session',
@@ -1109,8 +1150,9 @@ $stmt->close();
                         else if ($acc < 60) $acc_pill_class = 'low';
 
                         $date_str = date('M j, Y g:i A', strtotime($act['date_played']));
+                        $is_extra = ($idx >= 3);
                     ?>
-                        <div class="activity-item" data-subject="<?php echo $ginfo['subject']; ?>">
+                        <div class="activity-item <?php echo $is_extra ? 'extra-activity' : ''; ?>" data-subject="<?php echo $ginfo['subject']; ?>" style="<?php echo $is_extra ? 'display: none;' : ''; ?>">
                             <div class="activity-left">
                                 <div class="activity-icon-bubble">🎮</div>
                                 <div class="activity-details">
@@ -1125,6 +1167,14 @@ $stmt->close();
                         </div>
                     <?php endforeach; ?>
                 </div>
+
+                <?php if ($total_recent_count > 3): ?>
+                    <div class="view-more-btn-wrapper">
+                        <button type="button" id="viewMoreActivitiesBtn" class="view-more-btn" onclick="toggleViewMoreActivities()">
+                            View More Activities (<?php echo $total_recent_count - 3; ?> more) 👇
+                        </button>
+                    </div>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
 
@@ -1146,12 +1196,13 @@ $stmt->close();
 
     <script src="js/script.js"></script>
     <script>
+        let activitiesExpanded = false;
+
         // Subject Filtering Logic for Game Cards & Recent Activities
         function filterSubject(subjectKey, btnElement) {
-            // Update Active Button
             const buttons = document.querySelectorAll('.subject-filter-bar .subject-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
+            if (btnElement) btnElement.classList.add('active');
 
             // Filter Game Cards
             const gameCards = document.querySelectorAll('.game-progress-card');
@@ -1164,16 +1215,49 @@ $stmt->close();
                 }
             });
 
-            // Filter Activity Logs
+            // Filter Activity Logs with 3 item baseline
             const activityItems = document.querySelectorAll('.activity-item');
+            let matchingCount = 0;
+
             activityItems.forEach(item => {
                 const itemSub = item.getAttribute('data-subject');
-                if (subjectKey === 'all' || itemSub === subjectKey) {
-                    item.style.display = 'flex';
+                const matchesSubject = (subjectKey === 'all' || itemSub === subjectKey);
+
+                if (matchesSubject) {
+                    matchingCount++;
+                    if (activitiesExpanded || matchingCount <= 3) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
                 } else {
                     item.style.display = 'none';
                 }
             });
+
+            // Update View More button based on matching activities count
+            const viewMoreBtn = document.getElementById('viewMoreActivitiesBtn');
+            if (viewMoreBtn) {
+                if (matchingCount > 3) {
+                    viewMoreBtn.style.display = 'inline-block';
+                    if (activitiesExpanded) {
+                        viewMoreBtn.innerHTML = 'Show Less ☝️';
+                    } else {
+                        const hiddenCount = matchingCount - 3;
+                        viewMoreBtn.innerHTML = 'View More Activities (' + hiddenCount + ' more) 👇';
+                    }
+                } else {
+                    viewMoreBtn.style.display = 'none';
+                }
+            }
+        }
+
+        // Toggle Expand / Collapse Recent Activities
+        function toggleViewMoreActivities() {
+            activitiesExpanded = !activitiesExpanded;
+            const activeSubBtn = document.querySelector('.subject-filter-bar .subject-btn.active');
+            const activeSub = activeSubBtn ? activeSubBtn.getAttribute('data-sub-key') : 'all';
+            filterSubject(activeSub, activeSubBtn);
         }
 
         // Profile Dropdown Toggle 
