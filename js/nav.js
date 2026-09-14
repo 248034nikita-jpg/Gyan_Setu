@@ -6,7 +6,7 @@
         const placeholder = document.getElementById('nav-placeholder');
         if (!placeholder) return;
 
-        const response = await fetch('nav.html');
+        const response = await fetch('partials/nav.html');
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const navHTML = await response.text();
         placeholder.innerHTML = navHTML;
