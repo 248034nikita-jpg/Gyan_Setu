@@ -164,7 +164,7 @@ while ($row = $res->fetch_assoc()) {
         <div class="nav-wrapper">
             <nav class="dashboard-menu">
                 <a href="child-dashboard.php">🎮 Game Zone</a>
-                <a href="progress.php">📈 My Progress</a>
+                <a href="#">📈 My Progress</a>
                 <a href="shop.php?child_id=<?php echo $child_id; ?>">🏪 Store</a>
                 <a href="#">💰 Coins</a>
             </nav>
