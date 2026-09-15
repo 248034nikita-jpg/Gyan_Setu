@@ -156,7 +156,7 @@ if (isset($_GET['play_game'])) {
 }
 
 // Fetch Fresh Child Data
-$stmt = $conn->prepare("SELECT total_coins, current_level, age FROM children WHERE child_id = ?");
+$stmt = $conn->prepare("SELECT c.total_coins, c.current_level, c.age, m.emoji_or_icon AS mascot_emoji FROM children c LEFT JOIN mascots m ON c.mascot_id = m.mascot_id WHERE c.child_id = ?");
 $stmt->bind_param("i", $child_id);
 $stmt->execute();
 $res = $stmt->get_result();
@@ -170,9 +170,10 @@ if (!$child_info) {
     exit();
 }
 
-$total_points = $child_info['total_coins'];
+$total_points  = $child_info['total_coins'];
 $current_level = $child_info['current_level'];
-$child_age = isset($child_info['age']) ? (int)$child_info['age'] : 8;
+$child_age     = isset($child_info['age']) ? (int)$child_info['age'] : 8;
+$mascot_emoji  = $child_info['mascot_emoji'] ?? $_SESSION['mascot'] ?? '🧒';
 
 // Fetch Earned Badge IDs
 $earned_badge_ids = [];
@@ -203,59 +204,20 @@ $total_coins_earned = count($earned_badge_ids);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gyan Setu - Child Dashboard</title>
+    <link rel="stylesheet" href="css/nav.css">
     <link rel="stylesheet" href="css/dashboard.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
     <!-- Navbar -->
-    <header class="dashboard-navbar">
-        <!-- Logo -->
-        <a href="index.html" class="logo">
-            <img src="assets/images/website/logo.png" alt="Gyan Setu Logo" class="logo-img">
-            <h2>ज्ञान Setu</h2>
-        </a>
-        <button class="menu-toggle" type="button" id="menuToggleBtn" aria-label="Open menu" aria-expanded="false">&#9776;</button>
-        <div class="nav-wrapper">
-            <nav class="dashboard-menu">
-                <a href="child-dashboard.php">🎮 Game Zone</a>
-                <a href="progress.html">📈 My Progress</a>
-                <a href="shop.php?child_id=<?php echo $child_id; ?>">🏪 Store</a>
-            </nav>
-            <div class="dashboard-right">
-                <button class="language-btn">🌐 Language</button>
-
-                <!-- Profile Avatar + Dropdown -->
-                <div class="profile-dropdown-wrapper" id="profileDropdownWrapper">
-                    <button class="profile-avatar-btn" id="profileAvatarBtn" onclick="toggleDropdown()" title="Profile Menu" aria-haspopup="true" aria-expanded="false">
-                        <?php echo strtoupper(substr($username, 0, 1)); ?>
-                    </button>
-                    <div class="profile-dropdown-menu" id="profileDropdownMenu" role="menu">
-                        <!-- Header -->
-                        <div class="dropdown-header">
-                            <div class="dh-name"><?php echo htmlspecialchars($username); ?></div>
-                            <div class="dh-role"> Child Account</div>
-                        </div>
-                        <!-- Items -->
-                        <a href="#" class="dropdown-item" role="menuitem">
-                            <span class="di-icon">👤</span> My Profile
-                        </a>
-                        <a href="#" class="dropdown-item" role="menuitem">
-                            <span class="di-icon">📈</span> My Progress
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <!-- Player Management link through the grownup gate -->
-                        <a href="grownup-gate.php" class="dropdown-item" role="menuitem">
-                            <span class="di-icon">👨‍💼</span> Player Management
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="logout.php" class="dropdown-item danger" role="menuitem">
-                            <span class="di-icon">🚪</span> Logout
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+    <div id="nav-placeholder"></div>
+    <script>
+        window.USER_MASCOT = <?php echo json_encode($mascot_emoji); ?>;
+        window.USER_NAME   = <?php echo json_encode($username); ?>;
+        localStorage.setItem('active_child_id', '<?php echo (int)$child_id; ?>');
+        localStorage.setItem('child_id', '<?php echo (int)$child_id; ?>');
+    </script>
+    <script src="js/nav.js"></script>
 
     <!-- Main Dashboard  -->
     <main class="dashboard-container" style="display: grid; grid-template-columns: 200px 1fr; gap: 20px; padding: 20px;">
@@ -378,7 +340,7 @@ $total_coins_earned = count($earned_badge_ids);
         </div>
     </a>
 <!-- Capybara Nepal Adventure (Featured Platformer Quiz for Ages 8-9) -->
-                <a href="games/capybara-platformer-quiz/index.html" class="game-link" data-subject="gk" style="display:none;">
+                <a href="games/capybara-platformer-quiz/index.php?child_id=<?php echo (int)$child_id; ?>" class="game-link" data-subject="gk" style="display:none;">
                     <div class="game-card active" style="
                         background: url('games/capybara-platformer-quiz/assets/cover.png') no-repeat center / 100% 100%;
                         position: relative;
@@ -477,7 +439,7 @@ $total_coins_earned = count($earned_badge_ids);
                     </a>
                 <a href="games/hangman/index.php" class="game-link" data-subject="english" style="display:none;">
                     <div class="game-card" style="
-                        background: url('games/hangman/cover.png') no-repeat center / 100% 100%;
+                        background: url('games/hangman/assets/cover.png') no-repeat center / 100% 100%;
                         position: relative;
                         border: 3.5px solid #21f37c;
                         border-radius: 16px;

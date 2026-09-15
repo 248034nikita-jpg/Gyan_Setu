@@ -1,0 +1,43 @@
+<header class="dashboard-navbar">
+    <!-- Logo -->
+    <a href="index.html" class="logo">
+        <img src="assets/images/website/logo.png" alt="Gyan Setu Logo" class="logo-img">
+        <h2>ज्ञान Setu</h2>
+    </a>
+    <button class="menu-toggle" type="button" id="menuToggleBtn" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+    <div class="nav-wrapper">
+        <nav class="dashboard-menu">
+            <a href="child-dashboard.php">🎮 Game Zone</a>
+            <a href="shop.php">🏪 Store</a>
+        </nav>
+        <div class="dashboard-right">
+            <button class="language-btn" type="button">🌐 Language</button>
+            <!-- Profile Avatar + Dropdown -->
+            <div class="profile-dropdown-wrapper" id="profileDropdownWrapper">
+                <button class="profile-avatar-btn" id="profileAvatarBtn" type="button" title="Profile Menu" aria-haspopup="true" aria-expanded="false">
+                    C
+                </button>
+                <div class="profile-dropdown-menu" id="profileDropdownMenu" role="menu">
+                    <!-- Header -->
+                    <div class="dropdown-header">
+                        <div class="dh-name">Child Account</div>
+                        <div class="dh-role">Active Session</div>
+                    </div>
+                    <!-- Items -->
+                    <a href="#" class="dropdown-item" role="menuitem">
+                        <span class="di-icon">👤</span> My Profile
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <!-- Player Management link through the grownup gate -->
+                    <a href="grownup-gate.php" class="dropdown-item" role="menuitem">
+                        <span class="di-icon">👨‍💼</span> Player Management
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="logout.php" class="dropdown-item danger" role="menuitem">
+                        <span class="di-icon">🚪</span> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
