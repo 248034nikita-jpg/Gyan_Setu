@@ -107,6 +107,7 @@ $badgePhotos = [
     <link rel="stylesheet" href="css/nav.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/badges.css">
+    <link rel="stylesheet" href="time_limit/time_limit.css?v=<?php echo time(); ?>">
 </head>
 <body>
     <div id="nav-placeholder"></div>
@@ -167,5 +168,6 @@ $badgePhotos = [
         document.addEventListener('click', e => { const w = document.getElementById('profileDropdownWrapper'); if (w && !w.contains(e.target)) { document.getElementById('profileDropdownMenu').classList.remove('open'); } });
         document.getElementById('menuToggleBtn').addEventListener('click', () => document.querySelector('.nav-wrapper').classList.toggle('show'));
     </script>
+    <script src="time_limit/time_limit.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

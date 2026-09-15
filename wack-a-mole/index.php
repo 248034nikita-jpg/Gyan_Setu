@@ -76,6 +76,7 @@ if ($child_id > 0) {
 
     <!-- Google Fonts for Bubbly Title -->
     <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../time_limit/time_limit.css?v=<?php echo time(); ?>">
 
     <style>
         *, *::before, *::after { box-sizing: border-box; }
@@ -807,5 +808,6 @@ if ($child_id > 0) {
 
     <!-- Game script -->
     <script src="game.js?v=<?php echo time(); ?>"></script>
+    <script src="../time_limit/time_limit.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

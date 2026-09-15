@@ -175,12 +175,13 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
  <!-- SCREENTIME -->
   <p class="section-title">⏰ Safe Screentime Mode</p>
   <div class="panel" style="margin-bottom:28px;">
-    <select class="screentime-dropdown">
-      <option>⏱️ Time Limit – 1 hour/day</option>
-      <option>⏱️ Time Limit – 2 hours/day</option>
-      <option>🔓 Unlimited Mode</option>
-      <option>🌙 Bedtime Lock – 9 PM</option>
+    <select class="screentime-dropdown" id="screentime-dropdown">
+      <option value="0" selected>🔓 Unlimited Mode</option>
+      <option value="30">⏱️ Time Limit – 30 mins/day</option>
+      <option value="60">⏱️ Time Limit – 1 hour/day</option>
+      <option value="120">⏱️ Time Limit – 2 hours/day</option>
     </select>
+    <div id="screentime-status-msg" style="margin-top:8px; font-size:13px; font-weight:700; color:#2e7d32; display:none;"></div>
     <p style="margin-top:10px;font-size:13px;font-weight:600;color:var(--muted);">
       <?php if ($total_children > 0): ?>
         ✅ Screentime protection is active for <?php echo $total_children; ?> children.
@@ -438,6 +439,54 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
       });
     }
   })();
+
+  // Screentime parent dropdown management
+  document.addEventListener('DOMContentLoaded', function() {
+    const dropdown = document.getElementById('screentime-dropdown');
+    const msgEl = document.getElementById('screentime-status-msg');
+
+    if (!dropdown) return;
+
+    // Fetch parent's saved limit setting
+    fetch('time_limit/screentime_api.php?action=get_parent_limit')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.limit_minutes !== undefined) {
+          dropdown.value = String(data.limit_minutes);
+        }
+      })
+      .catch(err => console.error('Failed to fetch parent screentime setting:', err));
+
+    // Handle dropdown change
+    dropdown.addEventListener('change', function() {
+      const selectedValue = dropdown.value;
+
+      const formData = new FormData();
+      formData.append('action', 'set_limit');
+      formData.append('limit_minutes', selectedValue);
+
+      fetch('time_limit/screentime_api.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          if (msgEl) {
+            msgEl.textContent = '✅ ' + data.message;
+            msgEl.style.display = 'block';
+            setTimeout(() => { msgEl.style.display = 'none'; }, 4000);
+          }
+        } else {
+          alert('Failed to update screentime limit: ' + (data.error || 'Unknown error'));
+        }
+      })
+      .catch(err => {
+        console.error('Error setting screentime limit:', err);
+        alert('An error occurred while saving screentime setting.');
+      });
+    });
+  });
 </script>
 <script src="js/script.js"></script>
 </body>

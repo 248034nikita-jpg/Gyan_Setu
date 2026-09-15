@@ -206,6 +206,7 @@ $total_coins_earned = count($earned_badge_ids);
     <title>Gyan Setu - Child Dashboard</title>
     <link rel="stylesheet" href="css/nav.css">
     <link rel="stylesheet" href="css/dashboard.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="time_limit/time_limit.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
@@ -249,6 +250,11 @@ $total_coins_earned = count($earned_badge_ids);
                 <div style="text-align: center; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 8px;">
                     <div style="font-size: 10px; font-weight: 700; opacity: 0.8; letter-spacing: 0.05em;">TOTAL POINTS</div>
                     <div style="font-size: 20px; font-weight: 800; color: #ffe4b5;">🪙 <?php echo $total_points; ?> pts</div>
+                </div>
+                <div style="text-align: center; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 8px; min-width: 76px; display: flex; align-items: center; justify-content: center;" id="screentime-banner-card">
+                    <div id="screentime-banner-counter" style="color: #ffffff;">
+                        <span class="hourglass-anim" style="font-size: 24px; display: inline-block;">⏳</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -298,7 +304,7 @@ $total_coins_earned = count($earned_badge_ids);
             </div>
 
             <div class="games-grid" style="margin-bottom: 30px;" style="display: flex; flex-wrap: wrap; gap: 20px;">
-    <a href="games/alphabet-adventure/index.php" class="game-link" data-subject="alphabets" style="display:none;">
+    <a href="games/alphabet-adventure/index.php?child_id=<?php echo (int)$child_id; ?>" class="game-link" data-subject="alphabets" style="display:none;">
         <div class="game-card active" style="
             background: url('games/alphabet-adventure/assets/cover.jpg') no-repeat center / 100% 100%;
             position: relative;
@@ -409,7 +415,7 @@ $total_coins_earned = count($earned_badge_ids);
                         ">▶</div>
                     </div>
                 </a>
-                <a href="games/quiz_flashcard/quiz_flashcard.html" class="game-link" data-subject="science" style="display:none;">
+                <a href="games/quiz_flashcard/quiz_flashcard.html?child_id=<?php echo (int)$child_id; ?>" class="game-link" data-subject="science" style="display:none;">
                     <div class="game-card active" style="
                         background: url('games/quiz_flashcard/assets/cover.png') no-repeat center / 100% 100%;
                         position: relative;
@@ -437,7 +443,7 @@ $total_coins_earned = count($earned_badge_ids);
                         ">▶</div>
                     </div>
                     </a>
-                <a href="games/hangman/index.php" class="game-link" data-subject="english" style="display:none;">
+                <a href="games/hangman/index.php?child_id=<?php echo (int)$child_id; ?>" class="game-link" data-subject="english" style="display:none;">
                     <div class="game-card" style="
                         background: url('games/hangman/assets/cover.png') no-repeat center / 100% 100%;
                         position: relative;
@@ -601,6 +607,6 @@ $total_coins_earned = count($earned_badge_ids);
         }
     })();
     </script>
-
+    <script src="time_limit/time_limit.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

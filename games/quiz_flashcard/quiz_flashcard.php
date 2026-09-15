@@ -41,6 +41,7 @@ if ($_SESSION['role'] === 'child') {
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../time_limit/time_limit.css?v=<?php echo time(); ?>" />
 
     <style>
         /* ===== Same styles as original index.html – keeping the game look ===== */
@@ -1952,5 +1953,6 @@ if ($_SESSION['role'] === 'child') {
 
         })();
     </script>
+    <script src="../../time_limit/time_limit.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

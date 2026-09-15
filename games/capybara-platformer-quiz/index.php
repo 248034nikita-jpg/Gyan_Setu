@@ -60,6 +60,7 @@ if ($child_id <= 0 && isset($_SESSION['child_id']) && (int)$_SESSION['child_id']
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <link rel="stylesheet" href="style.css?v=3.4">
+    <link rel="stylesheet" href="../../time_limit/time_limit.css?v=<?php echo time(); ?>">
 
     <script>
         const TOTAL_LEVELS = 9;
@@ -731,6 +732,6 @@ if ($child_id <= 0 && isset($_SESSION['child_id']) && (int)$_SESSION['child_id']
         window.addEventListener('pointerdown', tryPlayBGM);
         window.addEventListener('keydown', tryPlayBGM);
     </script>
-
+    <script src="../../time_limit/time_limit.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

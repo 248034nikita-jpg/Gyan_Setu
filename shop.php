@@ -153,6 +153,7 @@ while ($row = $res->fetch_assoc()) {
     <title>Gyan Setu Shop</title>
     <link rel="stylesheet" href="css/nav.css">
     <link rel="stylesheet" href="css/shop.css">
+    <link rel="stylesheet" href="time_limit/time_limit.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
@@ -222,6 +223,6 @@ while ($row = $res->fetch_assoc()) {
     </footer>
 
     <script src="js/script.js"></script>
-
+    <script src="time_limit/time_limit.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

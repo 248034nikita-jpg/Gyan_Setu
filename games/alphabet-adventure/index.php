@@ -48,6 +48,7 @@ if (file_exists($dbPath)) {
 <meta name="child_id" content="<?php echo $child_id; ?>">
 <title>Alphabet Adventure 🐾 Learn, Play & Spell!</title>
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../../time_limit/time_limit.css?v=<?php echo time(); ?>">
 <script>
     window.CHILD_ID = <?php echo (int)$child_id; ?>;
     window.CHILD_USERNAME = <?php echo json_encode($child_username); ?>;
@@ -331,5 +332,6 @@ if (file_exists($dbPath)) {
 <div id="toast-message" class="message-popup"></div>
 
 <script src="script.js"></script>
+<script src="../../time_limit/time_limit.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

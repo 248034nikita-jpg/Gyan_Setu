@@ -23,6 +23,7 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role']
     
     <!-- Link to CSS file (styling) -->
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../time_limit/time_limit.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
@@ -383,5 +384,6 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['role']) && $_SESSION['role']
     ======================================== -->
     <script src="words.js"></script>
     <script src="script.js"></script>
+    <script src="../../time_limit/time_limit.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

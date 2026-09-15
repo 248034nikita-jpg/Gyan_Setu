@@ -61,6 +61,7 @@ $_SESSION['grownup_math_ans'] = $ans;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gyan Setu - Entering Grown Up Area</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="time_limit/time_limit.css?v=<?php echo time(); ?>">
     <style>
         * {
             box-sizing: border-box;
@@ -381,5 +382,6 @@ $_SESSION['grownup_math_ans'] = $ans;
             });
         });
     </script>
+    <script src="time_limit/time_limit.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>
