@@ -36,6 +36,24 @@ html, body {
     background: #87ceeb;
     container-type: inline-size;
 }
+/* Fullscreen: remove size cap, rounded corners, and set sky background */
+#game-container:fullscreen {
+    max-width: 100vw !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    aspect-ratio: auto !important;
+    border-radius: 0 !important;
+    background: #87ceeb !important;
+}
+
+#game-container:-webkit-full-screen {
+    max-width: 100vw !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    aspect-ratio: auto !important;
+    border-radius: 0 !important;
+    background: #87ceeb !important;
+}
 
 #game {
     width: 100%;
@@ -464,7 +482,7 @@ html, body {
 
 /* ---------- LEVEL SELECT SCREEN ---------- */
 .level-select-screen {
-    background: linear-gradient(160deg, #fff8e7 0%, #ffe2a8 55%, #f5c94c 100%);
+    background:  #ffe2a8;
     z-index: 5000;
     flex-direction: column;
     align-items: center;
@@ -506,7 +524,7 @@ html, body {
 
 .ls-avatar {
     position: absolute;
-    top: 3.5cqh;
+    bottom: 3.5cqh;
     right: 3.5cqw;
     width: 7.5cqw;
     height: 7.5cqw;

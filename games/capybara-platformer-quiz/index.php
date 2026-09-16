@@ -59,7 +59,7 @@ if ($child_id <= 0 && isset($_SESSION['child_id']) && (int)$_SESSION['child_id']
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <link rel="stylesheet" href="style.css?v=3.4">
+    <link rel="stylesheet" href="style.css?v=<?php echo time(); ?>  ">
     <link rel="stylesheet" href="../../time_limit/time_limit.css?v=<?php echo time(); ?>">
 
     <script>
@@ -93,6 +93,7 @@ if ($child_id <= 0 && isset($_SESSION['child_id']) && (int)$_SESSION['child_id']
                     showNextButton: false,
                     levelCompleteData: null,
                     bgmMuted: localStorage.getItem('capybara_bgm_muted') === 'true',
+                    langLabel: (localStorage.getItem('capybara_lang') === 'np') ? 'English' : 'नेपाली',
 
                     // ===== TUTORIAL & PAUSE =====
                     showTutorial: false,
@@ -137,6 +138,8 @@ if ($child_id <= 0 && isset($_SESSION['child_id']) && (int)$_SESSION['child_id']
                         this.totalLevelPages = Math.ceil(TOTAL_LEVELS / 15);
                         this.loadProgressFromStorage();
                         this.syncBGM();
+
+                        
                         
                         // Check for first-time tutorial
                         this.checkFirstTimeTutorial();
@@ -249,7 +252,18 @@ if ($child_id <= 0 && isset($_SESSION['child_id']) && (int)$_SESSION['child_id']
                             }
                         }
                     },
+                    // ===== BILINGUAL TOGGLE =====
+                    toggleLang() {
+                        const current = localStorage.getItem('capybara_lang') || 'en';
+                        const next    = (current === 'en') ? 'np' : 'en';
+                        localStorage.setItem('capybara_lang', next);
+                        this.langLabel = (next === 'np') ? 'English' : 'नेपाली';
 
+                        // If game is running, reload the current level with new language
+                        if (window.gameInstance && typeof window.gameInstance.loadLevel === 'function') {
+                            window.gameInstance.loadLevel(true);
+                        }
+                    },
                     getActiveChildId() {
                         const childMeta = document.querySelector('meta[name="child_id"]');
                         if (childMeta && parseInt(childMeta.content, 10) > 0) return parseInt(childMeta.content, 10);
@@ -456,9 +470,13 @@ if ($child_id <= 0 && isset($_SESSION['child_id']) && (int)$_SESSION['child_id']
                     <h1 class="game-title">CAPYBARA</h1>
                     <h2 class="game-subtitle">NEPAL ADVENTURE</h2>
                 </div>
+                
                 <div class="profile-avatar">
                     <img src="assets/capy.png" alt="Avatar">
                 </div>
+                <button class="btn btn-clay btn-md mb-2" @click="toggleLang()" type="button">
+                    🌐 <span x-text="langLabel"></span>
+                </button>
                 <div class="menu-buttons d-flex flex-column align-items-center">
                     <button class="btn btn-clay btn-lg mb-3" @click="startGame()">▶ START GAME</button>
                     <div class="d-flex justify-content-center gap-3 mb-2">
@@ -473,6 +491,11 @@ if ($child_id <= 0 && isset($_SESSION['child_id']) && (int)$_SESSION['child_id']
             <div class="game-overlay level-select-screen" x-cloak x-show="mode === 'level_select'" x-transition.opacity.duration.300ms>
                 <button class="btn-level-select-back" @click="mode = 'start'" title="Back to Main Menu">
                     ⬅ BACK
+                </button>
+                <button class="btn btn-clay btn-md mb-2" @click="toggleLang()" type="button" style="position: absolute;
+                                                                                                            top: 3.5cqh;
+                                                                                                            right: 3.5cqw;">
+                    🌐 <span x-text="langLabel"></span>
                 </button>
                 <div class="ls-avatar">
                     <img src="assets/capy.png" alt="Avatar">

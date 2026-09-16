@@ -100,21 +100,31 @@
         const ctx = canvas.getContext("2d");
 
         function resizeCanvas() {
-            const pad = 12;
-            const topUI = 60;
+            const isFullscreen = !!document.fullscreenElement;
+            const pad = isFullscreen ? 0 : 12;
+            const topUI = isFullscreen ? 0 : 60;
             const maxW = Math.max(320, window.innerWidth - pad);
             const maxH = Math.max(260, window.innerHeight - topUI - pad);
             const scale = Math.min(maxW / WIDTH, maxH / HEIGHT);
 
-            canvas.style.width = Math.floor(WIDTH * scale) + "px";
+            canvas.style.width  = Math.floor(WIDTH  * scale) + "px";
             canvas.style.height = Math.floor(HEIGHT * scale) + "px";
 
             const dpr = window.devicePixelRatio || 1;
-            canvas.width = Math.floor(WIDTH * dpr);
+            canvas.width  = Math.floor(WIDTH  * dpr);
             canvas.height = Math.floor(HEIGHT * dpr);
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         }
         window.addEventListener("resize", resizeCanvas, { passive: true });
+        // Also resize when entering/exiting fullscreen
+        document.addEventListener("fullscreenchange", function () {
+            setTimeout(resizeCanvas, 100);
+        });
+        // Webkit prefix (older browsers)
+        document.addEventListener("webkitfullscreenchange", function () {
+            setTimeout(resizeCanvas, 100);
+        });
+        // Initial sizing
         resizeCanvas();
 
         const capySprites = {
