@@ -1283,185 +1283,115 @@ h3 { font-size: 16px; }
         min-height: 40px !important;
     }
 }
+
 /* ============================================
-   DESKTOP FINAL — Center + Wider Layout
+   FINAL FIXES
+   1. Wider container
+   2. Shorter word display box
+   3. Keyboard back to 7 columns
+   (Hangman area stays EXACTLY the same)
    ============================================ */
 
-/* Body: center everything */
-body {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    padding: 20px !important;
-    min-height: 100vh !important;
-}
-
-/* Container: wider + centered */
+/* Container — wider on desktop */
 .container {
-    max-width: 900px !important;
-    width: 100% !important;
-    padding: 40px 50px !important;
-    margin: 0 auto !important;
-    border-radius: 28px !important;
+    max-width: 1400px !important;
 }
 
-/* Headings bigger */
-h1 {
-    font-size: 40px !important;
-    margin: 12px 0 20px 0 !important;
-}
-h2 {
-    font-size: 26px !important;
-    margin: 14px 0 20px 0 !important;
-}
-.subtitle {
-    font-size: 17px !important;
-    margin: 10px 0 24px 0 !important;
-}
-
-/* ---------- CATEGORY SCREEN — bigger grid ---------- */
-.category-grid {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 22px !important;
-    margin: 24px 0 !important;
-    max-width: 100% !important;
-}
-
-.category-card {
-    padding: 30px 24px !important;
-    border-radius: 22px !important;
-    border-width: 5px !important;
-}
-
-.cat-emoji {
-    font-size: 64px !important;
-    display: block !important;
-    margin-bottom: 12px !important;
-}
-
-.category-card h3 {
-    font-size: 22px !important;
-    margin: 6px 0 10px 0 !important;
-    color: #2E1A6B !important;
-    font-weight: 900 !important;
-}
-
-.cat-status {
-    font-size: 14px !important;
-    padding: 6px 18px !important;
-    margin-top: 8px !important;
-}
-
-/* Progress bar section — bigger */
-.progress-section {
-    padding: 20px 24px !important;
-    border-radius: 22px !important;
-}
-.progress-section small {
-    font-size: 16px !important;
-}
-.progress-track {
-    height: 20px !important;
+/* Word display (_ _ _) — shorter */
+.word-display {
+    padding: 10px 16px !important;
+    min-height: 45px !important;
+    font-size: 30px !important;
+    letter-spacing: 8px !important;
     margin: 10px 0 !important;
+    line-height: 1.2 !important;
 }
 
-/* ---------- DIFFICULTY SCREEN — wider buttons ---------- */
-.diff-grid {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 18px !important;
-    margin: 24px 0 !important;
-}
-
-.diff-btn {
-    padding: 26px 30px !important;
-    border-radius: 22px !important;
-    border-width: 5px !important;
-    gap: 22px !important;
-    align-items: center !important;
-}
-
-.diff-icon {
-    font-size: 44px !important;
-    flex-shrink: 0 !important;
-}
-
-.diff-btn h3 {
-    font-size: 22px !important;
-    font-weight: 900 !important;
-}
-
-.diff-btn p {
-    font-size: 15px !important;
-    font-weight: 600 !important;
-}
-
-/* Back button — nicer */
-.btn-back {
-    padding: 12px 24px !important;
+/* Hint box — shorter */
+.feedback {
+    padding: 10px 16px !important;
+    min-height: 42px !important;
     font-size: 16px !important;
-    margin-bottom: 16px !important;
+    margin: 8px 0 !important;
 }
 
-/* ---------- HOME SCREEN — bigger ---------- */
-.animal-gang {
-    font-size: 90px !important;
-    margin: 16px 0 !important;
+/* Keyboard — force 7 columns (original style) */
+.keyboard {
+    grid-template-columns: repeat(7, 1fr) !important;
+    max-width: 620px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    gap: 8px !important;
 }
 
-.stats {
-    font-size: 20px !important;
-    padding: 16px 24px !important;
-    gap: 30px !important;
-    margin: 16px 0 !important;
-}
-.stats b {
-    font-size: 24px !important;
+.key-btn {
+    font-size: 22px !important;
+    max-height: 72px !important;
 }
 
-/* Quick buttons — bigger */
-.quick-buttons {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 18px !important;
-    margin-top: 20px !important;
-}
-.quick-buttons .btn-cartoon {
-    font-size: 18px !important;
-    padding: 18px 20px !important;
-    min-height: 64px !important;
-    max-width: none !important;
-}
-
-/* Start button bigger */
-.btn-start {
-    font-size: 24px !important;
-    padding: 22px 52px !important;
-    min-height: 78px !important;
-    max-width: 460px !important;
-}
-
-/* ---------- MOBILE — keep narrow ---------- */
-@media (max-width: 700px) {
-    .container {
-        max-width: 520px !important;
-        padding: 24px 20px !important;
+/* On larger screens — keep 7 columns */
+@media (min-width: 900px) {
+    .keyboard {
+        grid-template-columns: repeat(7, 1fr) !important;
+        max-width: 620px !important;
     }
-    h1 { font-size: 28px !important; }
-    h2 { font-size: 20px !important; }
-    .category-grid { gap: 14px !important; }
-    .category-card { padding: 20px 16px !important; border-width: 4px !important; }
-    .cat-emoji { font-size: 46px !important; }
-    .category-card h3 { font-size: 17px !important; }
-    .cat-status { font-size: 12px !important; padding: 4px 12px !important; }
-    .diff-btn { padding: 18px 20px !important; border-width: 4px !important; gap: 14px !important; }
-    .diff-icon { font-size: 34px !important; }
-    .diff-btn h3 { font-size: 17px !important; }
-    .diff-btn p { font-size: 13px !important; }
-    .animal-gang { font-size: 64px !important; }
-    .stats { font-size: 16px !important; padding: 12px 16px !important; gap: 18px !important; }
-    .stats b { font-size: 19px !important; }
-    .btn-start { font-size: 20px !important; padding: 18px 40px !important; min-height: 68px !important; max-width: 360px !important; }
-    .quick-buttons .btn-cartoon { font-size: 15px !important; padding: 14px 16px !important; min-height: 56px !important; }
+    .key-btn {
+        font-size: 22px !important;
+        max-height: 72px !important;
+    }
+}
+
+@media (min-width: 1300px) {
+    .keyboard {
+        grid-template-columns: repeat(7, 1fr) !important;
+        max-width: 700px !important;
+        gap: 10px !important;
+    }
+    .key-btn {
+        font-size: 24px !important;
+        max-height: 78px !important;
+    }
+    .word-display {
+        font-size: 34px !important;
+        letter-spacing: 10px !important;
+        min-height: 48px !important;
+    }
+}
+
+/* Mobile — keep compact */
+@media (max-width: 550px) {
+    .container {
+        max-width: 500px !important;
+    }
+    .word-display {
+        font-size: 24px !important;
+        letter-spacing: 5px !important;
+        min-height: 40px !important;
+        padding: 8px 12px !important;
+    }
+    .feedback {
+        font-size: 14px !important;
+        min-height: 38px !important;
+        padding: 8px 12px !important;
+    }
+    .keyboard {
+        gap: 6px !important;
+        max-width: 100% !important;
+    }
+    .key-btn {
+        font-size: 17px !important;
+        max-height: 55px !important;
+    }
+}
+
+@media (max-width: 400px) {
+    .word-display {
+        font-size: 20px !important;
+        letter-spacing: 3px !important;
+        min-height: 36px !important;
+    }
+    .key-btn {
+        font-size: 15px !important;
+        max-height: 48px !important;
+    }
 }
