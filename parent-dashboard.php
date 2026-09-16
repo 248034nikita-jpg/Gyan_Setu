@@ -173,7 +173,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
   </div>
   
  <!-- SCREENTIME -->
-  <p class="section-title">⏰ Safe Screentime Mode</p>
+  <p class="section-title">Safe Screentime Mode</p>
   <div class="panel" style="margin-bottom:28px;">
     <select class="screentime-dropdown" id="screentime-dropdown">
       <option value="0" selected>🔓 Unlimited Mode</option>
@@ -192,7 +192,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
   </div>
 
   <!-- PARENT RESOURCES SHOP -->
-  <p class="section-title">🏪 Parent Resources Shop</p>
+  <p class="section-title">Parent Resources Shop</p>
   <div class="panel" style="margin-bottom:28px; background: var(--orange-light); border-color: var(--orange);">
     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
       <div>
@@ -204,7 +204,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
   </div>
 
 <!-- MY CHILDREN -->
-  <p class="section-title">👨‍👩‍👧 My Children</p>
+  <p class="section-title">My Children</p>
   <div class="children-grid">
 
     <?php if (empty($children_stats)): ?>
@@ -238,10 +238,17 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
     <?php endif; ?>
 
     <!-- Add Child Card Button -->
-    <div class="add-child-card" onclick="location.href='child_profilesetuppage.php';">
-      <div class="add-icon">＋</div>
-      <span>Add Child</span>
-    </div>
+    <?php if ($total_children >=1 && $total_children < 2): ?>
+      <div class="add-child-card" onclick="location.href='child_profilesetuppage.php';">
+          <div class="add-icon">＋</div>
+          <span>Add Child</span>
+        </div>
+      <?else: ?>
+        <div class="add-child-card disabled" title="Maximum of 2 child profiles reached.">
+        <div class="add-icon">＋</div>
+        <span>Add Child</span>
+      </div>
+    <?php endif; ?>
 
   </div>
 
