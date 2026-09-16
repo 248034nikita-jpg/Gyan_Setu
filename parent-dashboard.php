@@ -253,7 +253,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
   </div>
 
   <!-- STATS ROW -->
-  <p class="section-title">📊 Overall Learning Progress</p>
+  <p class="section-title">Overall Learning Progress</p>
   <div class="stats-grid">
 
     <!-- Circular Progress -->
@@ -293,7 +293,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
 
     <!-- Streak -->
     <div class="panel">
-      <div class="panel-title">🔥 Learning Streak — <?php echo $streak; ?> Days!</div>
+      <div class="panel-title">Learning Streak — <?php echo $streak; ?> Days!</div>
       <div class="streak-row">
         <div class="streak-day"><div class="streak-dot done">✓</div><span>Mon</span></div>
         <div class="streak-day"><div class="streak-dot done">✓</div><span>Tue</span></div>
@@ -309,7 +309,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
   </div>
     <!-- Badges -->
     <div class="panel">
-      <div class="panel-title">🏅 Badges Earned</div>
+      <div class="panel-title">Badges Earned</div>
       <div class="badges-grid">
         <div class="badge-item"><span class="badge-icon">🌟</span><span>Star Learner</span></div>
         <div class="badge-item"><span class="badge-icon">📚</span><span>Bookworm</span></div>
@@ -326,7 +326,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
  
   <!-- PURCHASE HISTORY -->
   <div class="purchase-panel">
-    <div class="panel-title" style="color:#7A5A00;">🛒 Children Store Transactions</div>
+    <div class="panel-title" style="color:#7A5A00;">Children Store Transactions</div>
     <table class="purchase-table">
       <thead>
         <tr>
