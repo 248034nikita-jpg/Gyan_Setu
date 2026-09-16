@@ -230,7 +230,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
           <div class="mini-progress-label"><span>Quiz Score</span><span><?php echo $progress; ?>%</span></div>
           <div class="mini-bar-bg"><div class="mini-bar-fill" style="width:<?php echo $progress; ?>%; background:<?php echo $theme['bar']; ?>"></div></div>
           <div class="child-btns">
-            <button class="btn-play" onclick="alert('To play as <?php echo htmlspecialchars($child['child_name']); ?>, log out and log in using their username: <?php echo htmlspecialchars($child['child_name']); ?>');">▶ Play</button>
+            <button class="btn-play" onclick="location.href='child-dashboard.php?child_id=<?php echo $child['child_id']; ?>';">▶ Play</button>
             <button class="btn-edit" onclick="alert('Editing child profiles can be managed directly via PhpMyAdmin or will be supported in the next update.');">✏️ Edit</button>
           </div>
         </div>

@@ -19,24 +19,50 @@ if ($_SESSION['role'] === 'child') {
     $child_id = $_SESSION['user_id'];
     $username = $_SESSION['username'];
 } else {
-    // Parent is logged in show their first/most-recent child
+    // Parent is logged in
     $parent_id_lookup = $_SESSION['user_id'];
-    $stmt = $conn->prepare(
-        "SELECT child_id, username FROM children WHERE parent_id = ? ORDER BY created_at ASC LIMIT 1"
-    );
-    $stmt->bind_param("i", $parent_id_lookup);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    $child_row = $res->fetch_assoc();
-    $stmt->close();
-
-    if (!$child_row) {
-        // Parent has no child yet  redirect to create one
-        header("Location: child_profilesetuppage.php");
-        exit();
+    // If a specific child_id is provided via GET, verify it belongs to the parent
+    if (isset($_GET['child_id'])) {
+        $requested_child_id = (int)$_GET['child_id'];
+        $stmt = $conn->prepare("SELECT child_id, username FROM children WHERE child_id = ? AND parent_id = ?");
+        $stmt->bind_param("ii", $requested_child_id, $parent_id_lookup);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $child_row = $res->fetch_assoc();
+        $stmt->close();
+        if ($child_row) {
+            $child_id = $child_row['child_id'];
+            $username = $child_row['username'];
+        } else {
+            // Fallback to first/most-recent child if verification fails
+            $stmt = $conn->prepare("SELECT child_id, username FROM children WHERE parent_id = ? ORDER BY created_at ASC LIMIT 1");
+            $stmt->bind_param("i", $parent_id_lookup);
+            $stmt->execute();
+            $res = $stmt->get_result();
+            $child_row = $res->fetch_assoc();
+            $stmt->close();
+            if (!$child_row) {
+                header("Location: child_profilesetuppage.php");
+                exit();
+            }
+            $child_id = $child_row['child_id'];
+            $username = $child_row['username'];
+        }
+    } else {
+        // No child_id in GET – load first/most-recent child
+        $stmt = $conn->prepare("SELECT child_id, username FROM children WHERE parent_id = ? ORDER BY created_at ASC LIMIT 1");
+        $stmt->bind_param("i", $parent_id_lookup);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $child_row = $res->fetch_assoc();
+        $stmt->close();
+        if (!$child_row) {
+            header("Location: child_profilesetuppage.php");
+            exit();
+        }
+        $child_id = $child_row['child_id'];
+        $username = $child_row['username'];
     }
-    $child_id = $child_row['child_id'];
-    $username = $_SESSION['username'] ?? $child_row['username'];
 }
 // Handle Game Play Simulation
 if (isset($_GET['play_game'])) {
