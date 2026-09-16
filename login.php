@@ -22,22 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signIn'])) {
         sendJson('error', 'Please fill in all required fields.');
     }
 
-    // ── Admin login check (email or username) ───────────────────────────────
-    /*$stmt = $conn->prepare("SELECT admin_id, username, email, password_hash FROM admins WHERE email = ? OR username = ?");
-    if ($stmt) {
-        $stmt->bind_param("ss", $identifier, $identifier);
-        $stmt->execute();
-        $adminRow = $stmt->get_result()->fetch_assoc();
-        $stmt->close();
-
-        if ($adminRow && password_verify($password, $adminRow['password_hash'])) {
-            session_regenerate_id(true); // Prevent session fixation
-            $_SESSION['role']           = 'admin';
-            $_SESSION['admin_id']       = $adminRow['admin_id'];
-            $_SESSION['admin_username']  = $adminRow['username'];
-            sendJson('success', 'Logged in as Admin successfully!', 'admin.php');
-        }
-    }*/
 
     // ── Parent login (contains @) ──────────────────────────────────────────
     if (strpos($identifier, '@') !== false) {
@@ -56,29 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signIn'])) {
             $_SESSION['email']   = $row['email'];
             sendJson('success', 'Logged in successfully!', 'child-dashboard.php');
         }
-
-    } else {
-        // ── Child login (username, no @) ───────────────────────────────────
-        $stmt = $conn->prepare(
-            "SELECT c.child_id, c.username, c.parent_id, p.password_hash 
-             FROM children c 
-             JOIN parents p ON c.parent_id = p.parent_id 
-             WHERE c.username = ?"
-        );
-        $stmt->bind_param("s", $identifier);
-        $stmt->execute();
-        $row = $stmt->get_result()->fetch_assoc();
-        $stmt->close();
-
-        if ($row && password_verify($password, $row['password_hash'])) {
-            $_SESSION['role']      = 'child';
-            $_SESSION['user_id']   = $row['child_id'];
-            $_SESSION['username']  = $row['username'];
-            $_SESSION['parent_id'] = $row['parent_id'];
-            sendJson('success', 'Logged in successfully!', 'child-dashboard.php');
-        }
     }
-
     // If we reach here, credentials were invalid
     sendJson('error', 'Invalid email/username or password.');
 }
