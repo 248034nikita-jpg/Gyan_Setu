@@ -238,15 +238,15 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
     <?php endif; ?>
 
     <!-- Add Child Card Button -->
-    <?php if ($total_children >=1 && $total_children < 2): ?>
-      <div class="add-child-card" onclick="location.href='child_profilesetuppage.php';">
-          <div class="add-icon">＋</div>
-          <span>Add Child</span>
-        </div>
-      <?else: ?>
-        <div class="add-child-card disabled" title="Maximum of 2 child profiles reached.">
+    <?php if ($total_children < 2): ?>
+      <div class="add-child-card" onclick="location.href='child_profilesetuppage.php';" title="Add child profile (Max 2)">
         <div class="add-icon">＋</div>
-        <span>Add Child</span>
+        <span>Add Child (<?php echo $total_children; ?>/2)</span>
+      </div>
+    <?php else: ?>
+      <div class="add-child-card disabled" onclick="alert('You have reached the maximum limit of 2 child profiles.');" title="Maximum of 2 child profiles reached.">
+        <div class="add-icon" style="font-size:20px;">🔒</div>
+        <span>Max Limit (2/2)</span>
       </div>
     <?php endif; ?>
 

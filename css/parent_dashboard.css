@@ -405,6 +405,15 @@
     min-height: 200px;
   }
   .add-child-card:hover { background: #FFF3B0; }
+  .add-child-card.disabled {
+    background: #f1f3f5;
+    border: 2px dashed #ced4da;
+    cursor: not-allowed;
+    opacity: 0.75;
+  }
+  .add-child-card.disabled:hover { background: #f1f3f5; }
+  .add-child-card.disabled .add-icon { background: #adb5bd; }
+  .add-child-card.disabled span { color: #6c757d; }
   .add-icon {
     width: 48px; height: 48px; border-radius: 50%; background: var(--yellow);
     display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; color: #fff;

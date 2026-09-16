@@ -7,6 +7,22 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'parent') {
     exit();
 }
 
+include 'database/includes/db_connect.php';
+$parent_id = $_SESSION['user_id'];
+
+// Check if parent already has 2 children
+$stmt = $conn->prepare("SELECT COUNT(*) FROM children WHERE parent_id = ?");
+$stmt->bind_param("i", $parent_id);
+$stmt->execute();
+$stmt->bind_result($existing_children_count);
+$stmt->fetch();
+$stmt->close();
+
+if ($existing_children_count >= 2) {
+    header("Location: parent-dashboard.php");
+    exit();
+}
+
 $parent_name = $_SESSION['name'] ?? 'Parent';
 $first_name  = explode(' ', $parent_name)[0];
 ?>

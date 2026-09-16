@@ -26,6 +26,18 @@ $child_age    = intval($_POST['child_age']  ?? 0);
 $mascot_emoji = trim($_POST['mascot_emoji'] ?? '');
 $mascot_name  = trim($_POST['mascot_name']  ?? '');
 
+// Check maximum limit of 2 child profiles per parent
+$stmt = $conn->prepare("SELECT COUNT(*) FROM children WHERE parent_id = ?");
+$stmt->bind_param("i", $parent_id);
+$stmt->execute();
+$stmt->bind_result($child_count);
+$stmt->fetch();
+$stmt->close();
+
+if ($child_count >= 2) {
+    sendJson('error', 'You have reached the maximum limit of 2 child profiles.');
+}
+
 // Validate inputs
 if (empty($child_name)) {
     sendJson('error', "Please enter your child's name.");
