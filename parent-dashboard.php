@@ -226,7 +226,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
           <div class="child-avatar" style="background:<?php echo $theme['bg']; ?>; border-color:<?php echo $theme['border']; ?>;">🧒</div>
           <div class="child-name"><?php echo htmlspecialchars($child['child_name']); ?></div>
           <div class="child-meta">Level <?php echo htmlspecialchars($child['current_level']); ?></div>
-          <div class="coins-row"><span class="coin-icon">🪙</span> <?php echo htmlspecialchars($child['total_coins']); ?> pts</div>
+          <div class="coins-row"><span class="coin-icon"><img src="assets/images/website/coin.png" alt="Coin" width="24" height="24"></span> <?php echo htmlspecialchars($child['total_coins']); ?> pts</div>
           <div class="mini-progress-label"><span>Quiz Score</span><span><?php echo $progress; ?>%</span></div>
           <div class="mini-bar-bg"><div class="mini-bar-fill" style="width:<?php echo $progress; ?>%; background:<?php echo $theme['bar']; ?>"></div></div>
           <div class="child-btns">
@@ -279,7 +279,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
     </div>
 
     <div class="stat-card">
-      <div class="stat-icon" style="background:var(--purple-light); font-size:26px;">🪙</div>
+      <div class="stat-icon" style="background:var(--purple-light); font-size:26px;"><img src="assets/images/website/coin.png" alt="Coin" width="24" height="24"></div>
       <div class="stat-value" style="color:var(--purple)"><?php echo $total_points_sum; ?></div>
       <div class="stat-label">Total Coins/Points</div>
     </div>
@@ -333,7 +333,7 @@ $weekly_study_hours = count($children_stats) > 0 ? round($total_lessons_complete
           <th>Child Name</th>
           <th>Worksheet / Item</th>
           <th>Date</th>
-          <th style="text-align:right;">🪙 Coins / Points</th>
+          <th style="text-align:right;"><img src="assets/images/website/coin.png" alt="Coin" width="24" height="24">Coins / Points</th>
         </tr>
       </thead>
       <tbody>
