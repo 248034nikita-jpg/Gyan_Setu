@@ -3,10 +3,10 @@
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
     // 2. Your database details
-    $host     = 'localhost';
-    $user     = 'root';
+    $host  = 'localhost';
+    $user  = 'root';
     $password = '';
-    $db       = 'gyan_setu';
+    $db = 'gyan_setu';
 
     // 3. TRY to connect. If it works, great. If not, jump to CATCH.
     try {
