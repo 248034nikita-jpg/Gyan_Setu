@@ -2,7 +2,7 @@
 session_start();
 
 // Must be logged in as a parent to set up a child profile
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'parent') {
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'parent') { //if role is not set or role is not parent, redirect to login
     header("Location: login.php");
     exit();
 }
@@ -49,18 +49,6 @@ $first_name  = explode(' ', $parent_name)[0];
       padding: 30px 16px;
     }
 
-    /* ── Decorative blobs ── */
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(60px);
-      opacity: 0.35;
-      pointer-events: none;
-    }
-    .blob-1 { width: 400px; height: 400px; background: #fff; top: -120px; left: -120px; }
-    .blob-2 { width: 300px; height: 300px; background: #ffe4b5; bottom: -80px; right: -80px; }
-    .blob-3 { width: 200px; height: 200px; background: #f78fb3; top: 50%; right: 60px; }
-
     /* ── Card ── */
     .card-wrap {
       background: #fff;
@@ -103,7 +91,7 @@ $first_name  = explode(' ', $parent_name)[0];
 
     /* ── Progress bar ── */
     .progress-track { height: 5px; background: #eef0fb; border-radius: 3px; margin-bottom: 28px; overflow: hidden; }
-    .progress-fill  { height: 100%; width: 0; background: linear-gradient(90deg,#1abcbf,#6b7fc4); border-radius: 3px; transition: width 0.5s ease; }
+    .progress-fill  { height: 100%; width: 0; background: #1abcbf; border-radius: 3px; transition: width 0.5s ease; }
 
     /* ── Field labels ── */
     .field-label { font-size: .72rem; font-weight: 800; letter-spacing: .07em; color: #999; margin-bottom: 6px; }
@@ -226,12 +214,6 @@ $first_name  = explode(' ', $parent_name)[0];
   </style>
 </head>
 <body>
-
-  <!-- Decorative blobs -->
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
-  <div class="blob blob-3"></div>
-
   <!-- Card -->
   <div class="card-wrap">
 
